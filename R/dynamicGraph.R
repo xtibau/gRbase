@@ -11,23 +11,15 @@ UserMenus <- list(MainUser =
                          
                          object.new <- fit(object)
                          
-                         env$redrawGraphWindow(
-                                               env$graphLattice,
-                                               env$graphWindow,
-                                               env$edgeList,
-                                               env$blockEdgeList,
-                                               env$factorVertexList,
-                                               env$factorEdgeList,
-                                               env$visibleVertices,
-                                               env$extraList,
-                                               object = object.new,
-                                               title = "Result from Fit",
-                                               objectName = "currentObject",
-                                               Transformation = NULL,  
-                                               background = "white",
-                                               vertexcolor = "black",
-                                               w = 10, width = 400,  
-                                               height = 400)                                     
+                         env$redrawView(
+                                        graphWindow=env$graphWindow,
+                                        edgeList=env$edgeList,
+                                        factorEdgeList=env$factorEdgeList,
+                                        blockEdgeList=env$blockEdgeList,
+                                        title = "Not used!",
+                                        width = NULL, height = NULL,
+                                        Arguments = env,
+                                        object = object.new)
                          return(list(object=object.new))
                        },
                        update.vertices = TRUE,
@@ -68,6 +60,7 @@ gREdges <- function(object)
     for (i in 1:length(listform)) {
 #                print(listform[[i]])
       edges <- selectOrder(listform[[i]])
+      if (length(edges)==0) next
       edges.ul <- unlist(edges)
 #      print(edges.ul) 
       from <- c(from,edges.ul[1:length(edges.ul)%%2==1])
@@ -109,8 +102,8 @@ gREdges <- function(object)
 dynamic.gR.Graph <-  function(object, ...)
 {
 
-  require(dynamicGraph)
-  .Load.gRbase.dynamic()
+#  require(dynamicGraph)
+#  .Load.gRbase.dynamic()
     
     if (inherits(object,"gmData")) 
       object <- new("hllm",~.^.,object)
@@ -141,6 +134,7 @@ dynamic.gR.Graph <-  function(object, ...)
                       object = object,
                       UserMenus = UserMenus,
                       ...)
+  invisible(Z)
   }
 
 LabelAllEdges <- function(object, slave = FALSE, 
@@ -179,11 +173,11 @@ LabelAllEdges <- function(object, slave = FALSE,
                 factorEdgeList <- visitEdges(Args$factorEdgeList)
                 blockEdgeList <- visitEdges(Args$blockEdgeList)
                 if (slave) 
-                  Args$redrawGraphWindow(graphWindow = NULL, 
+                  Args$redrawView(graphWindow = NULL, 
                     edgeList = edgeList, factorEdgeList = factorEdgeList, 
                     blockEdgeList = blockEdgeList, title = "A slave window", 
                     ...)
-                else Args$redrawGraphWindow(graphWindow = Args$graphWindow, 
+                else Args$redrawView(graphWindow = Args$graphWindow, 
                   edgeList = edgeList, factorEdgeList = factorEdgeList, 
                   blockEdgeList = blockEdgeList, title = "Not used!", 
                   width = NULL, height = NULL, Arguments = Args)

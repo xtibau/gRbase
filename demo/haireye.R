@@ -1,11 +1,12 @@
+library(gRbase)
 data(HairEyeColor)
 gm.hec <- as(HairEyeColor,"gmData")
 
 varNames(gm.hec)
 print(gm.hec)
 
-m1i <- new("hllm", Hair+Eye+Sex ~ 1, gm.hec) 
-m2i <- new("hllm", Hair:Eye+Sex ~ 1, gm.hec) 
+m1i <- new("hllm", ~Hair+Eye+Sex, gm.hec) 
+m2i <- new("hllm", ~Hair*Eye+Sex, gm.hec) 
 
 m1f <- fit(m1i); class(m1f)
 m2f <- fit(m2i,engine="loglin"); class(m2f)
@@ -18,7 +19,7 @@ m2s <- new("hllm", ~.. , gmData=gm.hec)
 
 
 ### Test of several models
-mod.list <- c(~., ~.., ~..., ~...., ~.^1, ~.^2, ~.^3, ~.^4, ~Hair+Eye+Sex, ~Hair:Eye+Sex, ~Hair:Eye)
+mod.list <- c(~., ~.., ~..., ~...., ~.^1, ~.^2, ~.^3, ~.^4, ~Hair+Eye+Sex, ~Hair*Eye+Sex, ~Hair*Eye)
 
 v1<- lapply(mod.list,
     function(m){cat("\nMODEL FORMULA GIVEN:", paste(m),"\n\n")

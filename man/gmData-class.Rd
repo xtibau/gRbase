@@ -6,6 +6,7 @@
 \alias{coerce,array,gmData-method}
 \alias{description,gmData-method}
 \alias{description<-,gmData-method}
+\alias{dynamic.Graph,gmData-method}
 \alias{initialize,gmData-method}
 \alias{latent,gmData-method}
 \alias{latent<-,gmData-method}
@@ -30,6 +31,7 @@
     varNames, varTypes, numberLevels, latent, valueLabels,
     observations)}.
 
+  
   A \code{gmData} object contains the abstraction of data into a
   meta data object including variable names and types etc. However, the
   actual data might not be present or may be represented by a reference
@@ -40,6 +42,8 @@
   investigated without any reference to data, for example
   decomposability and collapsibility.
 }
+
+  
 \section{Slots}{
   \describe{
     \item{\code{description}:}{Object of class \code{"data.frame"}
@@ -64,6 +68,7 @@
       description slot from a gmData object. }
     \item{description<-}{\code{signature(x = "gmData")}: Replace the
       description slot from a gmData object. }
+    \item{dynamic.Graph}{\code{signature(object = "gmData")}: ... }
     \item{initialize}{\code{signature(.Object = "gmData")}: Creation of
       a gmData object. }
     \item{latent}{\code{signature(x = "gmData")}: Extract the
@@ -94,17 +99,14 @@
       column "varTypes" from the description slot from a gmData object. }
   }
 }
-%\references{ ~put references to the literature/web site here ~ }
+\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{dethlef@math.aau.dk}}
 %\note{ ~~further notes~~ }
 
 % ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{\code{demo(gmData)}
-%  ~~objects to See Also as \code{\link{~~fun~~}}, ~~~
-%  or \code{\link{CLASSNAME-class}} for links to other classes
-}
+\seealso{\code{demo(gmData)}}
 %\examples{
-%
+%##---- Should be DIRECTLY executable !! ----
 %}
 \keyword{classes}

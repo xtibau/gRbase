@@ -48,7 +48,7 @@ subsetof <- function(g1, g2) all(is.element(g1, g2))
   
 # A function to write a generator as a string:
 #
-showg <- function(g, v.sep=":") {
+showg <- function(g, v.sep="*") {
   if (length(g)==0)
     s<-'<empty>'
   else {s <- g[1];
@@ -66,7 +66,7 @@ showg <- function(g, v.sep=":") {
 # A function to read a generator as a string. 
 # nb: s is a character (vector), but must have length one.
 #
-readg <- function(s, v.sep=":") {
+readg <- function(s, v.sep="*") {
   g <- character(0)
   s <- paste(s, v.sep, sep="") # add a separator
   s <- gsub(" ","",s) # strip spaces
@@ -88,7 +88,7 @@ readg <- function(s, v.sep=":") {
 
 
 # Function to write a generator list as a formula
-showf <- function(f, g.sep="+", v.sep=":") {
+showf <- function(f, g.sep="+", v.sep="*") {
    if (length(f)==0) s <- '<empty formula>' else {
    s <- showg(f[[1]])
    if (length(f)>1)
@@ -100,7 +100,7 @@ showf <- function(f, g.sep="+", v.sep=":") {
 # Function to read a generator list as a string 
 # nb: length of string must be one
 
-readf <- function(s, v.sep=":", g.sep="+") {
+readf <- function(s, v.sep="*", g.sep="+") {
   gens <- readg(s, g.sep) 
   l <- list(length(gens))
   for (i in 1:length(gens)) l[[i]] <- readg(gens[i], v.sep)
@@ -130,7 +130,7 @@ in.list <- function(g, l)
 is.cont <- function(k, l) {
   g <- l[[k]]
   a <- sapply(l, function(xx) all(is.element(g, xx)))
-  a[k] <- F
+  a[k] <- FALSE
   any(a)
 }
 
@@ -140,7 +140,7 @@ is.cont <- function(k, l) {
 contains <- function(k, l) {
   g <- l[[k]]
   a <- unlist(lapply(l, function(xx) all(is.element(xx, g))))
-  a[k] <- F
+  a[k] <- FALSE
   any(a)
 }
 

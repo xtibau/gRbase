@@ -1,11 +1,10 @@
-.Load.gRbase <- function() {
-  .Load.gRbase.general()
-  .Load.gRbase.hllm()
-  .Load.gRbase.hllmfit()
-  .Load.gRbase.hllmodify()
-  .Load.dynamicgraph()
-}
-
+#.Load.gRbase <- function() {
+#  .Load.gRbase.general()
+#  .Load.gRbase.hllm()
+#  .Load.gRbase.hllmfit()
+#  .Load.gRbase.hllmodify()
+#  .Load.dynamicgraph()
+#}
 
 
 .First.lib <- function(lib, pkg)
@@ -32,7 +31,9 @@
   cat("-------------------------------------------------------------\n")
 
   require(methods)
-  .Load.gRbase()
+  require(MASS)
+  require(dynamicGraph)
+#  .Load.gRbase()
   
   return(invisible(0))
 }
@@ -40,13 +41,17 @@
 .onAttach <- function (lib, pkg) 
 {
     require(methods)
-    .Load.gRbase()
+  require(MASS)
+  require(dynamicGraph)
+#    .Load.gRbase()
   }
 
 .onLoad <- function (lib, pkg) 
 {
     require(methods)
-    .Load.gRbase()
+  require(MASS)
+  require(dynamicGraph)
+#    .Load.gRbase()
 }
 
 

@@ -14,6 +14,33 @@
 \alias{showg}
 \alias{subsetof}
 \alias{varset}
+\alias{addEdge}
+\alias{addVertex}
+  \alias{description}
+  \alias{description<-}
+  \alias{dropEdge}
+  \alias{dropVertex}
+  \alias{dynamic.Graph}
+  \alias{fit}
+  \alias{Formula}
+  \alias{Formula<-}
+  \alias{getFit}
+  \alias{gmData}
+  \alias{latent}
+  \alias{latent<-}
+  \alias{modifyModel}
+  \alias{numberLevels}
+  \alias{numberLevels<-}
+  \alias{observations}
+  \alias{observations<-}
+  \alias{testEdge}
+  \alias{valueLabels}
+  \alias{valueLabels<-}
+  \alias{varNames}
+  \alias{varNames<-}
+  \alias{varTypes}
+  \alias{varTypes<-}
+
 
 \alias{all.subsets}
 \alias{extract.power}
@@ -24,6 +51,8 @@
 \alias{process.formula}
 \alias{selectOrder}
 \alias{UserMenus}
+\alias{label}
+\alias{width}
 
 \title{gRbase internal functions}
 

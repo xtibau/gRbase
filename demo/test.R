@@ -1,16 +1,10 @@
-#setwd("c:/R/grbasedevel/grbase/R")
-#source("gmData.R")
-#source("formulae.R")
-#source("hllmclass.R")
-#source("hllmfit.R")
-#source("dynamichllm.R")
 
 data(ksl,package="deal")
-a <- ksl[,5:7]
-aa <- as(a,"gmData")
+ksl.disc <- ksl[,5:7]
+ksl.gmData <- as(ksl.disc,"gmData")
 
-b <- new("hllm",.^1~1,aa)
+ksl.main <- new("hllm",~.^1,ksl.gmData)
 
-fit(b)
-fit(b,engine="loglin")
-dynamic.Graph(b)
+fit(ksl.main)
+fit(ksl.main,engine="loglin")
+dynamic.Graph(ksl.main)

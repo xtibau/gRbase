@@ -1,5 +1,5 @@
-.Load.gRbase.dynamic <- function() {
-  require(dynamicGraph)
+#.Load.gRbase.dynamic <- function() {
+#  require(dynamicGraph)
   
   if (!isGeneric("label") && !isGeneric("label", where = 3)) {
     if (is.function("label"))
@@ -25,22 +25,22 @@
 
 
   
+#}
+
+#.Load.dynamicgraph <- function() {
+if (!isGeneric("dynamic.Graph")) {
+  if (is.function("dynamic.Graph")) 
+    fun <- dynamic.Graph
+  else fun <- function(object, ...) standardGeneric("dynamic.Graph")
+  setGeneric("dynamic.Graph", fun)
 }
-
-.Load.dynamicgraph <- function() {
-    if (!isGeneric("dynamic.Graph")) {
-    if (is.function("dynamic.Graph")) 
-      fun <- dynamic.Graph
-    else fun <- function(object, ...) standardGeneric("dynamic.Graph")
-    setGeneric("dynamic.Graph", fun)
-  }
-  setMethod("dynamic.Graph", signature(object = "hllm"), 
-            function(object, ...) {
-              dynamic.gR.Graph(object, title="Hierarchical log-linear model",...)
-        })
-  setMethod("dynamic.Graph", signature(object = "gmData"), 
-            function(object, ...) {
-              dynamic.gR.Graph(new("hllm",.^.~1,object), title="Hierarchical log-linear model",...)
-        })
-
-  }
+setMethod("dynamic.Graph", signature(object = "hllm"), 
+          function(object, ...) {
+            dynamic.gR.Graph(object, title="Hierarchical log-linear model",...)
+          })
+setMethod("dynamic.Graph", signature(object = "gmData"), 
+          function(object, ...) {
+            dynamic.gR.Graph(new("hllm",.^.~1,object), title="Hierarchical log-linear model",...)
+          })
+#    invisible()
+#  }
