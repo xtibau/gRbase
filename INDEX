@@ -1,0 +1,9 @@
+cadcomplete             Coronary artery disease data
+carcass                 lean meat contents of pig carcasses
+dietox                  Growth curves of pigs in a 3x3 factorial
+                        experiment
+gModel-class            Class "gModel" - graphical models
+gmData-class            Class "gmData" graphical meta data
+mathmark                Mathematics marks for students
+rats                    Weightloss of rats
+validVarTypes           Admissible variable types in gmData objects
