@@ -58,19 +58,52 @@ gRVariableDescription <- function(obj) {
 gREdges <- function(object)
   {
     ## object is an hllmclass
+    nodelabels <- varNames(gmData(object))
+    form <- Formula(object)
+    listform <- readf(form[2])
+#              new.form <- add.edge(listform,c(name.1,name.2))
+#              print(listform)
+    from <- c()
+    to <- c()
+    for (i in 1:length(listform)) {
+#                print(listform[[i]])
+      edges <- selectOrder(listform[[i]])
+      edges.ul <- unlist(edges)
+#      print(edges.ul) 
+      from <- c(from,edges.ul[1:length(edges.ul)%%2==1])
+#      print(1:length(edges.ul)%%2)
+#      print((1:length(edges.ul)+1)%%2)
+      to <- c(to,edges.ul[(1:length(edges.ul)+1)%%2==1])
+#      print(c(1:length(nodelabels))[unlist(edges)==nodelabels])
+    }
+#    object.UG <- as.UG(Formula(object))
+#    edgemat <- allEdges(object.UG)
+
+
+#      print(from)
+#      print(to)
     
-    object.UG <- as.UG(Formula(object))
-    edgemat <- allEdges(object.UG)
+    from <- match(from,nodelabels)
+    to   <- match(to,nodelabels)
+    edgemat <- cbind(from,to)
+
+#      print(from)
+#      print(to)
+
+#    print(edgemat)
     
-    labels <- rownames(object.UG)
-    labels.gR <- varNames(gmData(object))
+#    labels.gR <- varNames(gmData(object))    
+#    labels <- rownames(object.UG)
+
     
     ## convert ggm-edges to gR-edges
-    ggm2gr <- function(edge) match(labels[edge],labels.gR)
+#    ggm2gr <- function(edge) match(labels[edge],labels.gR)
     
     if (length(edgemat)==0) return(matrix(nrow=0,ncol=2))
     
-    return(t(apply(edgemat,1,ggm2gr)))
+#    return(t(apply(edgemat,1,ggm2gr)))
+#    print(edgemat)
+        return(edgemat)
   }
 
 dynamic.gR.Graph <-  function(object, ...)
@@ -80,19 +113,30 @@ dynamic.gR.Graph <-  function(object, ...)
   .Load.gRbase.dynamic()
     
     if (inherits(object,"gmData")) 
-      object <- new("hllm",.^.~1,object)
-    
-    VariableDescription <- gRVariableDescription(obj = object)
-    
+      object <- new("hllm",~.^.,object)
+
+  VariableDescription <- gRVariableDescription(obj = object)
+
+   if (!is.graphical(readf(Formula(object)[2]))) {
+     cat("Model not graphical, using factorgraph\n")
+     ## factor-edges, factorgraph
+#     FactorEdges <- gRFactorEdges(object = object)
+     Edges<-NULL
+     FactorEdges <-     readf(Formula(object)[2])
+   }
+  else {
     Edges <- gREdges(object = object)
+    FactorEdges <- NULL
+  }
 
 #    print(VariableDescription)
 #    print(Edges)
+#    print(FactorEdges)
     
     Z <- DynamicGraph(names = VariableDescription$names,
                       types = VariableDescription$types,
                       from = Edges[,1], to = Edges[,2],
-#                      factors=object@numformula,
+                      factors=FactorEdges,
                       oriented = FALSE, 
                       object = object,
                       UserMenus = UserMenus,

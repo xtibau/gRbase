@@ -7,7 +7,7 @@
   setClass("hllm", contains="gModel")
            
   ## creator
-  setMethod("initialize", "hllm", function(.Object,formula=.^1~1,gmData,marginal)
+  setMethod("initialize", "hllm", function(.Object,formula=~.^1,gmData,marginal)
             {
               .Object@formula <- process.formula(formula,gmData,marginal,type="Discrete")$formula
               .Object@gmData  <- gmData
@@ -23,81 +23,80 @@
     x
   })
 
-    setMethod("dropEdge", "hllm",
-            function(object,name.1,name.2) {
+setMethod("dropEdge", "hllm",
+          function(object,name.1,name.2) {
+            
+            ## cat("Drop:",name.1,name.2,"\n",sep=" ")
               
-              ## edit hllm formula
-              form <- Formula(object)
-              u <- as.UG(form)
-              u[name.1,name.2] <- u[name.2,name.1] <- 0
-              u.cl <- cliques(u)
-              u.form <- paste(unlist(lapply(u.cl,paste,collapse=":")),collapse=" + ")
-            form <- paste("~",u.form)
-              #form <- paste(u.form,form[1],form[3])
-              Formula(object) <- as.formula(form)
-#            object@formula <- as.formula(form)
-              new.object <- object
+            ## edit hllm formula
+            form <- Formula(object)
+            listform <- readf(form[2])
+            new.form <- delete.edge(listform,c(name.1,name.2))
               
-              if (extends(class(new.object),"hllmengine"))
-                new.object <- fit(new.object)
+            form <- paste("~",showf(new.form))
+            Formula(object) <- as.formula(form)
+            new.object <- object
               
-              return(new.object)
-            }
-            )
+            if (extends(class(new.object),"hllmengine"))
+              new.object <- fit(new.object)
+            
+            return(new.object)
+          }
+          )
 
-    setMethod("addEdge", "hllm",
-            function(object,name.1,name.2) {
+setMethod("addEdge", "hllm",
+          function(object,name.1,name.2) {
+            
+            ## edit hllm formula
+            form <- Formula(object)
+            listform <- readf(form[2])
+            new.form <- add.edge(listform,c(name.1,name.2))
+            form <- paste("~",showf(new.form))
+            Formula(object) <- as.formula(form)
+            new.object <- object
+            
+            if (extends(class(new.object),"hllmengine"))
+              new.object <- fit(new.object)
+            return(new.object)
+          })
 
-              ## edit hllm formula
-              form <- Formula(object)
-              u <- as.UG(form)
-              u[name.1,name.2] <- u[name.2,name.1] <- 1
-              u.cl <- cliques(u)
-              u.form <- paste(unlist(lapply(u.cl,paste,collapse=":")),collapse=" + ")
-#              form <- paste(u.form,form[1],form[3])
-            form <- paste("~",u.form)              
-              Formula(object) <- as.formula(form)
-#            object@formula <- as.formula(form)
-              new.object <- object
-              
-              if (extends(class(new.object),"hllmengine"))
-                new.object <- fit(new.object)
-              return(new.object)
-            })
-  setMethod("dropVertex", "hllm",
-            function(object,name) {
-              ## edit hllm formula
-              form <- Formula(object)
-              u <- as.UG(form)
-              idx <- match(name,colnames(u))
-              u <- u[-idx,-idx] 
-              u.cl <- cliques(u)
-              u.form <- paste(unlist(lapply(u.cl,paste,collapse=":")),collapse=" + ")
-#              form <- paste(u.form,form[1],form[3])
-            form <- paste("~",u.form)              
-              Formula(object) <- as.formula(form)
-#            object@formula <- as.formula(form)
-              new.object <- object
-              
-              if (extends(class(new.object),"hllmengine"))
-                new.object <- fit(new.object)
-              return(new.object)
-            })
 
-    setMethod("addVertex", "hllm",
-            function(object,name) {
-              ## edit hllm formula
-              form <- Formula(object)
-              u <- as.UG(form)
-              u <- cbind(u,0)
-              u <- rbind(u,0)
-              rownames(u)[nrow(u)] <- name
-              colnames(u)[ncol(u)] <- name
-              u.cl <- cliques(u)
-              u.form <- paste(unlist(lapply(u.cl,paste,collapse=":")),collapse=" + ")
+setMethod("dropVertex", "hllm",
+          function(object,name) {
+            ## edit hllm formula
+            form <- Formula(object)
+            listform <- readf(form[2])
+
+            ## delete 'name' from generators
+            new.form <- lapply(listform,setdiff,name)
+            form <- paste("~",showf(new.form))
+            Formula(object) <- as.formula(form)
+            
+            new.object <- object
+              
+            if (extends(class(new.object),"hllmengine"))
+              new.object <- fit(new.object)
+            return(new.object)
+          })
+
+setMethod("addVertex", "hllm",
+          function(object,name) {
+            ## edit hllm formula
+            form <- Formula(object)
+            listform <- readf(form[2])
+            listform[[length(listform)+1]] <- name
+            form <- paste("~",showf(listform))
+            Formula(object) <- as.formula(form)
+#              u <- as.UG(form)
+#              u <- cbind(u,0)
+#              u <- rbind(u,0)
+#              rownames(u)[nrow(u)] <- name
+#              colnames(u)[ncol(u)] <- name
+#              u.cl <- cliques(u)
+#              u.form <- paste(unlist(lapply(u.cl,paste,collapse=":")),collapse=" + ")
 #              form <- paste(u.form,form[1],form[3])
-            form <- paste("~",u.form)
-              Formula(object) <- as.formula(form)
+#            form <- paste("~",u.form)
+#              Formula(object) <- as.formula(form)
 #            object@formula <- as.formula(form)
               new.object <- object
               

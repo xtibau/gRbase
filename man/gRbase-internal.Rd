@@ -1,14 +1,28 @@
 \name{gRbase-internal}
 
+\alias{add.edge}
+\alias{contains}
+\alias{delete.edge}
+\alias{dual.rep}
+\alias{in.list}
+\alias{is.cont}
+\alias{is.graphical}
+\alias{readf}
+\alias{readg}
+\alias{remove.redundant}
+\alias{showf}
+\alias{showg}
+\alias{subsetof}
+\alias{varset}
+
 \alias{all.subsets}
-\alias{as.UG}
 \alias{extract.power}
 \alias{gREdges}
 \alias{dynamic.gR.Graph}
 \alias{gRVariableDescription}
 \alias{LabelAllEdges}
 \alias{process.formula}
-\alias{select.order}
+\alias{selectOrder}
 \alias{UserMenus}
 
 \title{gRbase internal functions}

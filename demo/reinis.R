@@ -1,27 +1,11 @@
 library(gRbase)
 
-data(Reinis,package="CoCo")
+data(reinis)
+reinis <- as(reinis,"gmData")
 
-#Reinis.obs <- attr(Reinis,".observations")$counts
-#n <- length(Reinis.obs)
-#A <- gl(2,1,n)
-#B <- gl(2,2,n)
-#C <- gl(2,4,n)
-#D <- gl(2,8,n)
-#E <- gl(2,16,n)
-#FF<- gl(2,32,n)
+m1 <- new("hllm",~.. , reinis) 
+fit(m1,engine="loglm")
 
-#Reinis.tab <- xtabs(Reinis.obs~A+B+C+D+E+FF)
+m2 <- new("hllm",~A:D:F+B:D+B:G+A:E:F, reinis) 
+dynamic.Graph(m2)
 
-
-
-#rei <- as.gmData(Reinis.tab);
-rei <- as(as.table(Reinis),"gmData")
-#rei <- as.gmData(as.table(Reinis))
-
-#m1 <- hllm( .^10 ~ 1,  rei, engine="loglm")
-
-
-dynamic.Graph(rei)
-
-## factor.Graph(newhllm(m1))

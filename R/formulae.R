@@ -8,35 +8,22 @@
 ## uses adjancancy-matrix representation and not lists as gRaph does.
 ## ####################################################################
 
-as.UG <- function(gRformula) {
-  ## gives adjacancy matrix using UG() from ggm-package
-  
-  require(ggm)
-  strgRformula <- paste(gRformula[2])
-  ## gRformulas use ":" in place of "*" from ggm
-  strUGformula <- gsub(":","*",strgRformula)
-  ## gRformulas has "formula~1" in place of "~formula" in ggm
-  UGformula    <- formula(paste("~",strUGformula))
-  
-  u <- UG(UGformula)
-  u
-}
 
-all.subsets <- function(x){
+all.subsets <- function(x,g.sep="+"){
   if (length(x)==1)
     return(x)
   else {
     val <- x[1]
     for (i in 2:length(x)){
-      v <- paste(val,x[i],sep='+')
+      v <- paste(val,x[i],sep=g.sep)
       val <- c(val,x[i],v)
     }
-    val <- strsplit(val,"\\+")
+    val <- strsplit(val,paste("\\",g.sep,sep=""))
     return(val)
   }
 }
 
-select.order  <- function(x,order=2){
+selectOrder  <- function(x,order=2){
   v <- all.subsets(x)
   ##print(x); print(v); print(order)
   value <- v[lapply(v,length)==as.numeric(order)]
@@ -64,8 +51,7 @@ extract.power<-function(fff){
 
 
 
-process.formula <- function(formula, data, marginal, type=c("Discrete","Continuous")){
-  
+process.formula <- function(formula, data, marginal, type=c("Discrete","Continuous"),v.sep=":",g.sep="+"){
   
   get.var.of.type <- function(type){varNames(data)[varTypes(data)==type]}
   
@@ -77,30 +63,24 @@ process.formula <- function(formula, data, marginal, type=c("Discrete","Continuo
       used.var <- intersect(marginal,used.var)
     }
     if (pow==-1)
-      mimf <- paste(used.var,collapse=":")
+      mimf <- paste(used.var,collapse=v.sep,sep="")
     else{
       pow <- min(c(pow, length(used.var)))
-      ##      print(used.var)
-      tmp <- select.order(used.var, pow)
-      ##      print(tmp)
-      mimf <- paste(unlist(lapply(tmp, paste, collapse=":")),collapse=" + ")
-      ##      cat("1\n");print(mimf)
-      ##      formula <- formula(paste(mimf, "~1 "))
+      tmp <- selectOrder(used.var, pow)
+      mimf <- paste(unlist(lapply(tmp, paste, collapse=v.sep)),collapse=g.sep,sep="")
     }
   } else {
     mf    <- as.formula(formula)
-    mimf  <- paste(mf)[2]
+    mimf  <- paste(mf,sep="")[2]
   }
-#  formula <- formula(paste(mimf, "~1 "))
-  formula <- formula(paste("~ ",mimf))
-  interactions <- strsplit(mimf,"\\+")[[1]]
-  interactions <- gsub(" +","",interactions)
-  int.list <- strsplit(interactions, ":")
+  formula <- formula(paste("~",mimf,sep=""))
+  interactions <- strsplit(mimf,paste("\\",g.sep,sep=""))[[1]]
+  interactions <- gsub(g.sep,"",interactions)
+  int.list <- strsplit(interactions, v.sep)
   gc1   <- lapply(int.list, function(l){ match(l,used.var) })
   
   value <- list(formula=formula, mimformula=mimf, numformula=gc1,
                 gmData=data, varnames=used.var)
-  ##  print(value)
   value
 }
 
