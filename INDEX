@@ -6,4 +6,5 @@ gModel-class            Class "gModel" - graphical models
 gmData-class            Class "gmData" graphical meta data
 mathmark                Mathematics marks for students
 rats                    Weightloss of rats
+reinis                  Risk factors for coronary heart disease.
 validVarTypes           Admissible variable types in gmData objects
