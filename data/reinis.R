@@ -11,7 +11,11 @@
 
   Reinis <- array(Reinis, dim = rep(2, 6))
   Names <- lapply(dim(Reinis), function(i) paste(1:i))
-  names(Names) <- c("A", "B", "D", "E", "F", "G")
+
+names(Names) <- c("smoke","mental","phys","systol","protein","family")
+
+#names(Names) <- c("A", "B", "D", "E", "F", "G")
+
   dimnames(Reinis) <- Names
   rm(Names, Title)
 

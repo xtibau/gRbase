@@ -1,4 +1,4 @@
-.Load.gRbase.hllm <- function() {
+#.Load.gRbase.hllm <- function() {
 
     ## ####################################################################
   ## S4 class for hllm
@@ -117,10 +117,10 @@ setMethod("addVertex", "hllm",
   ## end hllmTest  (adopted from CoCoObjects)
   ## ####################################################################
 
-}
+#}
 
 
-.Load.gRbase.hllmfit <- function() {
+#.Load.gRbase.hllmfit <- function() {
     ## ####################################################################
   ## hllm fit
   ## ####################################################################
@@ -147,10 +147,51 @@ setMethod("addVertex", "hllm",
 
 setMethod("summary","hllm",function(object) summary(getFit(object)))
 
-  
-  ## test
-  ## extends(class(currentObject),"hllmengine")
-  
+#  if(!isGeneric("terms")){
+#    if (is.function("terms"))
+#      fun <- terms
+#    else fun <- function(x,...) standardGeneric("terms")
+#    setGeneric("terms", fun)
+#  }
+#setMethod("terms","hllm",function(x,...) terms.formula(formula(x)))
+
+# S3 method needed???
+
+terms.hllm <- function(x,...) terms.formula(formula(x))
+terms.hllmloglm <- function(x,...) terms.formula(formula(x))
+
+##deviance.hllm <- function(object,...) deviance(getFit(object))
+deviance.hllmloglm <- function(object,...) deviance(getFit(object))
+
+##extractAIC.hllm <- function(fit,scale,k = 2, ...)  extractAIC(get
+extractAIC.hllmloglm <- function(fit,scale,k = 2, ...)  extractAIC(getFit(fit))
+
+
+resid.hllmloglm <- function(object,...)  {
+  rawdata <- observations(gmData(object))
+  if (is.data.frame(rawdata)){
+    rawdata <- xtabs(~., rawdata)
+    ##rawdata <- as.data.frame(rawdata)
+  }
+  mimform <- process.formula(Formula(object),gmData(object),type="Discrete")$mimformula
+  loglm.formula <- formula(paste("~",mimform))
+  val <- loglm(loglm.formula, rawdata,...) 
+  resid(val)
+}
+
+
+fitted.hllmloglm <- function(object,...) 
+{
+  rawdata <- observations(gmData(object))
+  if (is.data.frame(rawdata)){
+    rawdata <- xtabs(~., rawdata)
+    ##rawdata <- as.data.frame(rawdata)
+  }
+  mimform <- process.formula(Formula(object),gmData(object),type="Discrete")$mimformula
+  loglm.formula <- formula(paste("~",mimform))
+  val <- loglm(loglm.formula, rawdata,...) 
+  fitted(val)
+}
   
   if(!isGeneric("fit")){
     if (is.function("fit"))
@@ -158,8 +199,8 @@ setMethod("summary","hllm",function(object) summary(getFit(object)))
     else fun <- function(object,...) standardGeneric("fit")
     setGeneric("fit", fun)
   }
-  
-  setMethod("fit", "hllm",
+
+setMethod("fit", "hllm",
             function(object,engine="loglm",...) {
               obj <- as(object,paste("hllm",engine,sep=""))
               res <- fit(obj,...)
@@ -179,10 +220,8 @@ setMethod("summary","hllm",function(object) summary(getFit(object)))
   setMethod("fit","hllmloglin", function(object,...) {
     
     rawdata <- observations(gmData(object))
-    if (is.data.frame(rawdata)){
+    if (is(rawdata,"data.frame"))
       rawdata <- xtabs(~., rawdata)
-      ##rawdata <- as.data.frame(rawdata)
-    }
     numform <- process.formula(Formula(object),gmData(object),type="Discrete")$numformula
     val <- loglin(rawdata, numform,...)
 #    print(class(val))
@@ -192,6 +231,7 @@ setMethod("summary","hllm",function(object) summary(getFit(object)))
             )
   
   ## loglm engine
+setOldClass("loglm")
   setClass("hllmloglm", contains="hllm",representation(fit="loglm"))
   setIs("hllmloglm","hllmengine")
   setIs("hllmloglm","hllm")
@@ -201,7 +241,7 @@ setMethod("summary","hllm",function(object) summary(getFit(object)))
   }
         )
   setMethod("fit","hllmloglm", function(object,...) {
-    require(MASS)
+#    require(MASS)
     
     rawdata <- observations(gmData(object))
     if (is.data.frame(rawdata)){
@@ -221,9 +261,9 @@ setMethod("summary","hllm",function(object) summary(getFit(object)))
   ## end hllm fit
   ## ####################################################################
 
-}
+#}
 
-.Load.gRbase.hllmodify <- function() {
+#.Load.gRbase.hllmodify <- function() {
     ## ####################################################################
   ## Editing hllm object 
   ## ####################################################################
@@ -349,4 +389,4 @@ setMethod("summary","hllm",function(object) summary(getFit(object)))
   ## ####################################################################
   ## end Interface   gRbase <-> dynamicGraph
   ## ####################################################################
-}
+#}

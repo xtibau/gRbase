@@ -1,9 +1,15 @@
 cadcomplete             Coronary artery disease data
 carcass                 lean meat contents of pig carcasses
+dataOrNULL-class        Class "dataOrNULL"
 dietox                  Growth curves of pigs in a 3x3 factorial
                         experiment
-gModel-class            Class "gModel" - graphical models
 gmData-class            Class "gmData" graphical meta data
+gModel-class            Class "gModel" - graphical models
+hllm-class              Class "hllm" ~~~
+hllmengine-class        Class "hllmengine" ~~~
+hllmloglin-class        Class "hllmloglin" ~~~
+hllmloglm-class         Class "hllmloglm" ~~~
+hllmTestClass-class     Class "hllmTestClass" ~~~
 mathmark                Mathematics marks for students
 rats                    Weightloss of rats
 reinis                  Risk factors for coronary heart disease.

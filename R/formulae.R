@@ -51,7 +51,7 @@ extract.power<-function(fff){
 
 
 
-process.formula <- function(formula, data, marginal, type=c("Discrete","Continuous"),v.sep=":",g.sep="+"){
+process.formula <- function(formula, data, marginal, type=c("Discrete","Continuous"),v.sep="*",g.sep="+"){
   
   get.var.of.type <- function(type){varNames(data)[varTypes(data)==type]}
   
@@ -75,7 +75,9 @@ process.formula <- function(formula, data, marginal, type=c("Discrete","Continuo
   }
   formula <- formula(paste("~",mimf,sep=""))
   interactions <- strsplit(mimf,paste("\\",g.sep,sep=""))[[1]]
+  interactions <- gsub(" ","",interactions)
   interactions <- gsub(g.sep,"",interactions)
+  if (v.sep == "*") v.sep <- "[*]"
   int.list <- strsplit(interactions, v.sep)
   gc1   <- lapply(int.list, function(l){ match(l,used.var) })
   

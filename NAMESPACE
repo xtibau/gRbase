@@ -1,0 +1,91 @@
+import(methods)
+#import(dynamicGraph)
+
+S3method(terms,hllm)
+S3method(terms,hllmloglm)
+
+##S3method(deviance,hllm)
+S3method(deviance,hllmloglm)
+
+##S3method(extractAIC,hllm)
+S3method(extractAIC,hllmloglm)
+S3method(resid,hllmloglm)
+S3method(fitted,hllmloglm)
+
+export(#".Load.gRbase", 
+       #".Load.gRbase.hllm",
+       #".Load.gRbase.hllmfit",
+       #".Load.gRbase.hllmodify",
+       #".Load.dynamicgraph",
+       #".Load.gRbase.general",
+       "LabelAllEdges",
+       "dynamic.gR.Graph",
+       "gREdges",
+       "gRVariableDescription",
+       "UserMenus",
+       "all.subsets",
+       "selectOrder",
+       "extract.power",
+       "process.formula",
+       "subsetof",
+       "showg",
+       "readg",
+       "showf",
+       "readf",
+       "varset",
+       "in.list",
+       "is.cont",
+       "contains",
+       "remove.redundant",
+       "dual.rep",
+       "delete.edge",
+       "add.edge",
+       "is.graphical",
+       "validVarTypes"
+       )
+
+
+exportClasses("gmData",
+              "dataOrNULL",
+              "gModel",
+              "hllm",
+              "hllmTestClass",
+              "hllmengine",
+              "hllmloglin",
+              "hllmloglm"
+              )
+
+              
+exportMethods("description",
+              "description<-",
+              "varTypes",
+              "varTypes<-",
+              "varNames",
+              "varNames<-",
+              "numberLevels",
+              "numberLevels<-",
+              "latent",
+              "latent<-",
+              "valueLabels",
+              "valueLabels<-",
+              "observations",
+              "observations<-",
+              "Formula",
+              "Formula<-",
+              "dropEdge",
+              "addEdge",
+              "dropVertex",
+              "addVertex",
+              "getFit",
+              "summary",
+              "fit",
+              "modifyModel",
+              "testEdge",
+              "label",
+              "width",
+              "dynamic.Graph",
+              "initialize",
+              "coerce",
+              "gmData"
+              )
+
