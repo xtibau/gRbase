@@ -1,11 +1,13 @@
-library(gRbase)
 
 data(reinis)
-reinis <- as(reinis,"gmData")
+reinis <- as.gmData(reinis)
 
-m1 <- new("hllm",~.. , reinis) 
-fit(m1,engine="loglm")
+m1 <- hllm(~.^. , reinis) 
+m1 <- fit(m1,engine="loglm")
 
-m2 <- new("hllm",~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein, reinis) 
+m1res <- stepwise(m1)
+formula(m1res)
+
+m2 <- hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein, reinis) 
 dynamic.Graph(m2)
 

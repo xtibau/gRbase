@@ -1,21 +1,21 @@
 library(gRbase)
 data(HairEyeColor)
-gm.hec <- as(HairEyeColor,"gmData")
+gm.hec <- as.gmData(HairEyeColor)
 
 varNames(gm.hec)
 print(gm.hec)
 
-m1i <- new("hllm", ~Hair+Eye+Sex, gm.hec) 
-m2i <- new("hllm", ~Hair*Eye+Sex, gm.hec) 
+m1i <- hllm(~Hair+Eye+Sex, gm.hec) 
+m2i <- hllm( ~Hair*Eye+Sex, gm.hec) 
 
 m1f <- fit(m1i); class(m1f)
-m2f <- fit(m2i,engine="loglin"); class(m2f)
+m2f <- fit(m2i); class(m2f)
 
-m1i <- new("hllm", ~. , gmData=gm.hec) 
-m2i <- new("hllm", ~., gm.hec) 
+m1i <- hllm( ~. , gmData=gm.hec) 
+m2i <- hllm( ~., gm.hec) 
 
-m1s <- new("hllm", ~.. , gmData=gm.hec) 
-m2s <- new("hllm", ~.. , gmData=gm.hec) 
+m1s <- hllm( ~.. , gmData=gm.hec) 
+m2s <- hllm( ~.. , gmData=gm.hec) 
 
 
 ### Test of several models
@@ -23,7 +23,7 @@ mod.list <- c(~., ~.., ~..., ~...., ~.^1, ~.^2, ~.^3, ~.^4, ~Hair+Eye+Sex, ~Hair
 
 v1<- lapply(mod.list,
     function(m){cat("\nMODEL FORMULA GIVEN:", paste(m),"\n\n")
-                mo<-new("hllm",m,gmData=gm.hec);
+                mo<-hllm(m,gmData=gm.hec);
                 mof<- fit(mo)
                 print(mof)
                 }
@@ -31,7 +31,7 @@ v1<- lapply(mod.list,
 
 v2<- lapply(mod.list,
     function(m){cat("\nMODEL FORMULA GIVEN:", paste(m),"\n\n")
-                mo<-new("hllm",m,gmData=gm.hec,marginal=c("Hair","Eye"));
+                mo<-hllm(m,gmData=gm.hec,marginal=c("Hair","Eye"));
                 mof<- fit(mo)
                 print(mof)
                 mof

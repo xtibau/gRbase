@@ -2,9 +2,9 @@ library(gRbase)
 
 data(cadcomplete)
 cadcomplete <- data.frame(lapply(cadcomplete,as.factor))
-cad <- as(cadcomplete,"gmData")
+cad <- as.gmData(cadcomplete)
 
-m1 <- new("hllm",~.^.,cad,marginal=names(cadcomplete)[1:6])
+m1 <- hllm(~.^.,cad,marginal=names(cadcomplete)[1:6])
 
 #m1s <- hllm( ~Sex*STcode*AngPec + QWavecode*QWave + AMI*Sex*AngPec,  cad, marginal=names(cadcomplete)[1:6], engine="loglm")
 

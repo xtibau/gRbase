@@ -1,0 +1,53 @@
+\name{gRfit}
+\alias{gRfit}
+\alias{getFit}
+\alias{getFit<-}
+\alias{getFit<-.gRfit}
+\alias{getFit.gRfit}
+\alias{print.gRfit}
+\alias{summary.gRfit}
+\alias{fit}
+
+\title{Class "gRfit" - fitted graphical models}
+\description{
+ Objects of class \code{gRfit} are created when the function \code{fit}
+ is applied to a \code{\link{gModel}} object. When adding new types of
+ gModel objects, one must also supply the appropritate \code{fit}
+ function. The \code{gRfit} object contains the output of the fit which
+ can be accessed by \code{getFit}. Separate \code{print} and
+ \code{summary} methods exist for \code{gRfit} objects.
+}
+\usage{
+fit(m, engine)
+getFit(x)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{m}{an object of class \code{gModel}}.
+  \item{engine}{a string with the possibility of implementing different
+    fitting engines for the same \code{gModel}s.}
+  \item{x}{an object of class \code{gRfit} as created from \code{fit}
+    applied to a \code{\link{gModel}} object.}
+}
+%\details{
+%}
+\value{
+  \code{fit} creates an object of class \code{gRfit}.
+  \code{getFit} returns the fit information created by the fitting
+  algorithm. 
+}
+%\references{ ~put references to the literature/web site here ~ }
+\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{aas.claus.dethlefsen@nja.dk}}
+%\note{ ~~further notes~~ }
+
+\seealso{\code{\link{gModel}}.}
+
+\examples{
+data(reinis)
+reinis <- as.gmData(reinis)
+
+m1 <- hllm(~.^. , reinis) 
+m1 <- fit(m1,engine="loglm")
+}
+\keyword{models}% at least one, from doc/KEYWORDS
+

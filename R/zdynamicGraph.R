@@ -1,9 +1,19 @@
+##                              -*- Mode: Ess -*- 
+##zdynamicGraph.R --- 
+##Author          : Claus Dethlefsen
+##Created On      : Mon May 02 09:39:23 2005
+##Last Modified By: 
+##Last Modified On: 
+##Update Count    : 0
+##Status          : Unknown, Use with caution!
+##
+
   ## ####################################################################
   ## Interface   gRbase <-> dynamicGraph
   ## ####################################################################
 
-UserMenus <- list(MainUser =
-                  list(label = "Fit",
+UserMenus <- c(UserMenus,list(MainUser =
+                              list(label = "Fit",
                        command = function(object, ...)
                        {
                          args <- list(...)
@@ -11,15 +21,41 @@ UserMenus <- list(MainUser =
                          
                          object.new <- fit(object)
                          
-                         env$redrawView(
-                                        graphWindow=env$graphWindow,
-                                        edgeList=env$edgeList,
-                                        factorEdgeList=env$factorEdgeList,
-                                        blockEdgeList=env$blockEdgeList,
-                                        title = "Not used!",
-                                        width = NULL, height = NULL,
-                                        Arguments = env,
-                                        object = object.new)
+#                         env$redrawView(
+#                                        graphWindow=env$graphWindow,
+#                                        edgeList=env$edgeList,
+#                                        factorEdgeList=env$factorEdgeList,
+#                                        blockEdgeList=env$blockEdgeList,
+#                                        title = "Not used!",
+#                                        width = NULL, height = NULL,
+#                                        Arguments = env,
+#                                        object = object.new)
+    Edges <- gREdges(object = object.new)
+
+    two.to.pairs <- function(from, to) {
+        edge.list <- vector("list", length(to))
+        for (j in seq(along = to)) edge.list[[j]] <- c(from[j], 
+            to[j])
+        return(edge.list)
+    }
+    ArgEdges <-   
+          returnEdgeList(edge.list=two.to.pairs(Edges[,1],Edges[,2]),
+                         vertices=env$vertexList,
+                         oriented=TRUE
+                         )
+                         DynamicGraph(addModel = FALSE,
+                                      addView = FALSE,
+                                      frameModels = env$frameModels, 
+                                      frameViews = env$frameViews,
+                                      graphWindow = env$graphWindow,
+                                      edgeList = ArgEdges,
+                                      oriented=FALSE,
+                                      object = object.new,
+                                      factorVertexList = env$factorVertexList, 
+                                      factorEdgeList =  env$FactorEdgeList,
+                                      blockEdgeList = env$BlockEdgeList, 
+                                      title = "Fitted object", Arguments = env)
+                         
                          return(list(object=object.new))
                        },
                        update.vertices = TRUE,
@@ -29,12 +65,11 @@ UserMenus <- list(MainUser =
            command = function(object, ...) LabelAllEdges(object, 
                     slave = FALSE, ...)),
 
-                  )
+                  ))
 
 
 
 gRVariableDescription <- function(obj) {
-  ## obj is an hllm object
   
   object <- gmData(obj)
   
@@ -49,83 +84,45 @@ gRVariableDescription <- function(obj) {
 
 gREdges <- function(object)
   {
-    ## object is an hllmclass
     nodelabels <- varNames(gmData(object))
-    form <- Formula(object)
+    form <- formula(object)
     listform <- readf(form[2])
-#              new.form <- add.edge(listform,c(name.1,name.2))
-#              print(listform)
     from <- c()
     to <- c()
     for (i in 1:length(listform)) {
-#                print(listform[[i]])
       edges <- selectOrder(listform[[i]])
       if (length(edges)==0) next
       edges.ul <- unlist(edges)
-#      print(edges.ul) 
       from <- c(from,edges.ul[1:length(edges.ul)%%2==1])
-#      print(1:length(edges.ul)%%2)
-#      print((1:length(edges.ul)+1)%%2)
       to <- c(to,edges.ul[(1:length(edges.ul)+1)%%2==1])
-#      print(c(1:length(nodelabels))[unlist(edges)==nodelabels])
     }
-#    object.UG <- as.UG(Formula(object))
-#    edgemat <- allEdges(object.UG)
-
-
-#      print(from)
-#      print(to)
     
     from <- match(from,nodelabels)
     to   <- match(to,nodelabels)
     edgemat <- cbind(from,to)
 
-#      print(from)
-#      print(to)
-
-#    print(edgemat)
-    
-#    labels.gR <- varNames(gmData(object))    
-#    labels <- rownames(object.UG)
-
-    
-    ## convert ggm-edges to gR-edges
-#    ggm2gr <- function(edge) match(labels[edge],labels.gR)
-    
     if (length(edgemat)==0) return(matrix(nrow=0,ncol=2))
     
-#    return(t(apply(edgemat,1,ggm2gr)))
-#    print(edgemat)
         return(edgemat)
   }
 
 dynamic.gR.Graph <-  function(object, ...)
 {
 
-#  require(dynamicGraph)
-#  .Load.gRbase.dynamic()
-    
-    if (inherits(object,"gmData")) 
-      object <- new("hllm",~.^.,object)
-
   VariableDescription <- gRVariableDescription(obj = object)
 
-   if (!is.graphical(readf(Formula(object)[2]))) {
+   if (!is.graphical(readf(formula(object)[2]))) {
      cat("Model not graphical, using factorgraph\n")
      ## factor-edges, factorgraph
 #     FactorEdges <- gRFactorEdges(object = object)
      Edges<-NULL
-     FactorEdges <-     readf(Formula(object)[2])
+     FactorEdges <-     readf(formula(object)[2])
    }
   else {
     Edges <- gREdges(object = object)
     FactorEdges <- NULL
   }
 
-#    print(VariableDescription)
-#    print(Edges)
-#    print(FactorEdges)
-    
     Z <- DynamicGraph(names = VariableDescription$names,
                       types = VariableDescription$types,
                       from = Edges[,1], to = Edges[,2],

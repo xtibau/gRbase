@@ -3,10 +3,10 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Admissible variable types in gmData objects }
 \description{
-The variable types in a \code{\link{gmData-class}} object must be from a
+The variable types in a \code{\link{gmData}} object must be from a
 vector predefined types which may be 
 inspected by the command \code{validVarTypes()}. The available types
-may be extended by the package developers as demonstrated in \code{demo(gmData)}. The
+may be extended by the package developers as demonstrated in the example. The
 types of the variables are important for the way they are displayed
 using the package \pkg{dynamicGraph}. The type is also important when
 the models are fitted to data.
@@ -27,12 +27,12 @@ validVarTypes()
 %  ...
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{dethlef@math.aau.dk}}
+\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{aas.claus.dethlefsen@nja.dk}}
 %\note{ ~~further notes~~ }
 
 % ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{ \code{\link{gmData-class}}, and \code{demo(gmData)} }
+\seealso{ \code{\link{gmData}}, \code{\link{dynamic.Graph}} }
 \examples{
 oldtypes <- validVarTypes()
 validVartypes <- function() c(oldtypes, "MyVarType")

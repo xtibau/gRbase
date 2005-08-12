@@ -1,195 +1,134 @@
-## ##########################################################
-## ###### gmData #############
-## ##########################################################
-
-## a virtual class for data in any format (or NULL)
-setClassUnion("dataOrNULL", c("NULL","data.frame","table"))
-
-##setClassUnion("displayOrNULL", c("NULL","dynamicDisplay"))
-
-## Other datatypes may be added later:
-## setIs("mydataclass", "dataOrNULL")
+##gmData.R --- 
+##Author          : Claus Dethlefsen
+##Created On      : Mon May 02 09:34:40 2005
+##Last Modified By: 
+##Last Modified On: 
+##Update Count    : 0
+##Status          : Unknown, Use with caution!
 ##
-## existing may be inspected as
-## getClass("dataOrNULL")
 
-## ####################################################################
-## CLASS: gmData. 
-setClass('gmData', representation(description='data.frame',
-                                  valueLabels='vector',
-                                  observations='dataOrNULL'
-                                  )
-         )
+### Some generic functions
 
-## creator. Default: no data 
-setMethod("initialize", "gmData", function(.Object,
-                                           varNames=vector(),
-                                           varTypes=
-                                           rep(validVarTypes()[1],
-                                               length(varNames)),
-                                           numberLevels=NA,
-                                           latent=FALSE,
-                                           valueLabels=list(),
-                                           observations=NULL) {
-  
-  .Object@description              <- data.frame(I(varNames))
-  .Object@description$numberLevels <- numberLevels
-  .Object@description$latent       <- latent
-  .Object@description$varTypes <- factor(varTypes,levels=validVarTypes())
-  
-  ## TODO: create numberLevels=2 for discrete variables
-  ## TODO: create valueLabels for discrete variables
-  
-  .Object@valueLabels   <- valueLabels
-  .Object@observations  <- observations
-  
-  .Object
-}
-          )
+"latent.gmData" <- function(x){attr(x,"latent")}
+"latent" <- function(x) UseMethod("latent")
 
-## note that 'description' can be extended by further information
-## about the variables.
-##
-## description(mydata)$mimName <- letters[1:nrow(description(mydata))]
+"latent<-.gmData" <- function(tmp,value){attr(tmp,"latent")<-value; return(tmp)}
+"latent<-" <- function(tmp,value) UseMethod("latent<-")
 
-## ####################################################################
-## get/set methods
+valueLabels.gmData<- function(x) attr(x,"valueLabels")
+valueLabels       <- function(x) UseMethod("valueLabels")
 
-## description
+"valueLabels<-.gmData"<- function(tmp,value){attr(tmp,"valueLabels")<-value; return(tmp)}
+"valueLabels<-"       <- function(tmp,value) UseMethod("valueLabels<-")
 
-if (!isGeneric("description")) {
-  if (is.function("description")) 
-    fun <- description
-  else fun <- function(x) standardGeneric("description")
-  setGeneric("description", fun)
-}
-setMethod("description","gmData",function(x) x@description)
+observations.gmData <- function(x) attr(x,"observations")
+observations    <- function(x) UseMethod("observations")
+obs             <- function(x) UseMethod("observations")
 
-setGeneric("description<-", function(x, value) standardGeneric("description<-"))
-setReplaceMethod("description", "gmData", function(x, value){
-  x@description <- value
-  x
-})
+"observations<-.gmData"<- function(tmp,value){attr(tmp,"observations")<-value; return(tmp)}
+"observations<-"       <- function(tmp,value)UseMethod("observations<-")
 
-## get/set variable properties
+"description.gmData" <- function(x){attr(x,"description")}
+"description" <- function(x) UseMethod("description")
 
-## varTypes
+"description<-.gmData" <- function(tmp,value){attr(tmp,"description")<-value; return(tmp)}
+"description<-" <- function(tmp,value) UseMethod("description<-")
 
-if (!isGeneric("varTypes")) {
-  if (is.function("varTypes")) 
-    fun <- varTypes
-  else fun <- function(x) standardGeneric("varTypes")
-  setGeneric("varTypes", fun)
-}
-setMethod("varTypes","gmData",function(x) description(x)$varTypes)
+"varTypes.gmData" <- function(x){x$varTypes}
+"varTypes" <- function(x) UseMethod("varTypes")
 
-setGeneric("varTypes<-", function(x, value) standardGeneric("varTypes<-"))
-setReplaceMethod("varTypes", "gmData", function(x, value){
-  tmp <- 
-    description(x)$varTypes <- value
-  x
-})
+"varTypes<-.gmData" <- function(tmp,value){ tmp$varTypes <-value; return(tmp)}
+"varTypes<-" <- function(tmp,value) UseMethod("varTypes<-")
 
-## varNames
+varNames.gmData <- function(x)as.vector(x$varNames)
+varNames <- function(x)UseMethod("varNames")
 
-if (!isGeneric("varNames")) {
-  if (is.function("varNames")) 
-    fun <- varNames
-  else fun <- function(x) standardGeneric("varNames")
-  setGeneric("varNames", fun)
-}
-setMethod("varNames","gmData",function(x) description(x)$varNames)
+"varNames<-.gmData" <- function(tmp,value){ tmp$varNames <-value; return(tmp)}
+"varNames<-" <- function(tmp,value) UseMethod("varNames<-")
 
-setGeneric("varNames<-", function(x, value) standardGeneric("varNames<-"))
-setReplaceMethod("varNames", "gmData", function(x, value){
-  description(x)$varNames <- value
-  x
-})
+nLevels.gmData <- function(x)as.vector(x$nLevels)
+nLevels <- function(x)UseMethod("nLevels")
 
-## numberLevels
-
-if (!isGeneric("numberLevels")) {
-  if (is.function("numberLevels")) 
-    fun <- numberLevels
-  else fun <- function(x) standardGeneric("numberLevels")
-  setGeneric("numberLevels", fun)
-}
-setMethod("numberLevels","gmData",function(x) description(x)$numberLevels)
-
-setGeneric("numberLevels<-", function(x, value) standardGeneric("numberLevels<-"))
-setReplaceMethod("numberLevels", "gmData", function(x, value){
-  description(x)$numberLevels <- value
-  x
-})
-
-## latent
-
-if (!isGeneric("latent")) {
-  if (is.function("latent")) 
-    fun <- latent
-  else fun <- function(x) standardGeneric("latent")
-  setGeneric("latent", fun)
-}
-setMethod("latent","gmData",function(x) description(x)$latent)
-
-setGeneric("latent<-", function(x, value) standardGeneric("latent<-"))
-setReplaceMethod("latent", "gmData", function(x, value){
-  description(x)$latent <- value
-  x
-})
-
-## valueLabels
-
-if (!isGeneric("valueLabels")) {
-  if (is.function("valueLabels")) 
-    fun <- valueLabels
-  else fun <- function(x) standardGeneric("valueLabels")
-  setGeneric("valueLabels", fun)
-}
-setMethod("valueLabels","gmData",function(x) x@valueLabels)
-
-setGeneric("valueLabels<-", function(x, value) standardGeneric("valueLabels<-"))
-setReplaceMethod("valueLabels", "gmData", function(x, value){
-  x@valueLabels <- value
-  x
-})
+"nLevels<-.gmData" <- function(tmp,value){ tmp$nLevels <-value; return(tmp)}
+"nLevels<-" <- function(tmp,value) UseMethod("nLevels<-")
 
 
-## observations
+shortNames.gmData <- function(x)as.vector(x$shortNames)
+shortNames <- function(x)UseMethod("shortNames")
 
-if (!isGeneric("observations")) {
-  if (is.function("observations")) 
-    fun <- observations
-  else fun <- function(x) standardGeneric("observations")
-  setGeneric("observations", fun)
-}
-setMethod("observations","gmData",function(x) x@observations)
+"shortNames<-.gmData" <- function(tmp,value){ tmp$shortNames <-value; return(tmp)}
+"shortNames<-" <- function(tmp,value) UseMethod("shortNames<-")
 
-setGeneric("observations<-", function(x, value) standardGeneric("observations<-"))
-setReplaceMethod("observations", "gmData", function(x, value){
-  x@observations <- value
-  
-  ## How do we ensure that varNames that are not latent can be
-  ## found in data (should we?)?
-  
-  x
-})
+#.dataOrigin   <- function(x) attr(x,"dataOrigin")
 
+##################################################################################
+as.gmData       <- function(from) UseMethod("as.gmData")
+##################################################################################
 
-
-setMethod("show","gmData", function(object) {
-  cat("Description:\n")
-  show(description(object))
+print.gmData  <- function(x, ...){
+  if (!is.na(description(x)))
+    cat("Description:", description(x), "\n")
+  print.data.frame(x);
+  ##cat("Data origin:     ", .dataOrigin(x),"\n")
+  if (!is.na(latent(x)))
+    cat ("Latent variables:", paste(latent(x),collapse=' '), "\n")
+  if (!is.null(valueLabels(x)))
   cat("To see the values of the factors use the 'valueLabels' function\n")
+  if (!is.null(observations(x)))
   cat("To see the data use the 'observations' function\n")
+  return(invisible(x))
 }
-          )
+
+summary.gmData  <- function(object, ...){
+  print(table(object$varTypes))
+  if (!is.null(observations(object))) {
+    cat("\nObservation summary:\n")
+    print(summary(obs(object)))
+  }
+  invisible(object)
+}
+
+
+
+
+#### ##############################################################
+
+newgmData <- function(varNames,
+                   varTypes=rep(validVarTypes()[1],length(varNames)),
+                   nLevels=NA,
+                   latent=NA,
+                   valueLabels=NULL,
+                   observations=NULL,
+                   description=NA,
+                   shortNames=c(letters,LETTERS)
+                   ){
+  value <- data.frame(varNames, abbreviate(varNames,1),row.names=NULL)
+  
+  names(value) <- c("varNames","shortNames")
+  value$varTypes <- factor(varTypes,levels=validVarTypes())
+  value$nLevels  <- nLevels
+
+  class(value) <- c("gmData","data.frame")
+  
+  attr(value,"valueLabels")    <- valueLabels
+  attr(value,"latent")         <- latent
+  attr(value,"description")    <- description
+  attr(value,"observations")   <- observations
+  switch(class(data),
+         "table"=     { attr(value,"dataOrigin")     <- "table"      },
+         "data.frame"={ attr(value,"dataOrigin")     <- "data.frame" },
+         NULL=        { attr(value,"dataOrigin")     <- "table"      })
+  return(value)
+}
+
+
+validVarTypes <- function() {c("Discrete","Ordinal","Continuous")}
+
 
 ## ####################################################################
 ## Convert data.frame into gmData
 
-setAs("data.frame","gmData", function(from,to) {
-  
+as.gmData.data.frame <- function(from){
   fact   <- unlist(lapply(1:ncol(from), function(j)
                           is.factor(from[,j])))
   Types <- rep(validVarTypes()[3],length(fact))
@@ -214,48 +153,41 @@ setAs("data.frame","gmData", function(from,to) {
     vallabels <- list()
   }
   
-  new("gmData",
+  newgmData(
       varNames=names(from),
       varTypes=Types,
-      numberLevels=levels,
+      nLevels=levels,
       valueLabels=vallabels,
       observations=from
-      )
+ )
 }
-      )
+
+
 
 ## ####################################################################
 ## Convert table into gmData
 
-setAs("table","gmData", function(from,to) {
+as.gmData.table <- function(from){
   counts <- as.vector(from)
   dn     <- dimnames(from)
   name   <- names(lapply(dn,function(x)names(x)))
   dim    <- unlist(lapply(dn,length))
-  new("gmData",
-      varNames=name,
-      varTypes="Discrete",
-      numberLevels=dim,
-      valueLabels=dn,
-      observations=from
-      )
+  newgmData(
+         varNames=name,
+         varTypes="Discrete",
+         nLevels=dim,
+         valueLabels=dn,
+         observations=from
+         )
 }
-      )
+  
 
 ## ####################################################################
 ## Convert array into gmData
-## example of adding a data-type
 
-setIs("array", "dataOrNULL")
-
-setAs("array","gmData", function(from,to) {
-  res <- as(as.table(from),"gmData")
+as.gmData.array <- function(from){
+  res <- as.gmData(as.table(from))
   observations(res) <- from
   res
 }
-      )
-
-## ##########################################################
-##  ###### end gmData #############
-## ##########################################################
 

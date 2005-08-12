@@ -1,16 +1,13 @@
 cadcomplete             Coronary artery disease data
 carcass                 lean meat contents of pig carcasses
-dataOrNULL-class        Class "dataOrNULL"
 dietox                  Growth curves of pigs in a 3x3 factorial
                         experiment
-gmData-class            Class "gmData" graphical meta data
-gModel-class            Class "gModel" - graphical models
-hllm-class              Class "hllm" ~~~
-hllmengine-class        Class "hllmengine" ~~~
-hllmloglin-class        Class "hllmloglin" ~~~
-hllmloglm-class         Class "hllmloglm" ~~~
-hllmTestClass-class     Class "hllmTestClass" ~~~
+gModel                  Class "gModel" - graphical models
+gRbase                  The package 'gRbase': summary information
+gRfit                   Class "gRfit" - fitted graphical models
+hllm                    Hierarchical log-linear models
 mathmark                Mathematics marks for students
+newgmData               Class "gmData" graphical meta data
 rats                    Weightloss of rats
 reinis                  Risk factors for coronary heart disease.
 validVarTypes           Admissible variable types in gmData objects
