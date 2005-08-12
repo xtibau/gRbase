@@ -15,10 +15,7 @@
   locations.
 }
 \source{
- Busk, Hans XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-}
-\references{
-~~ possibly secondary sources and usages ~~
+ Busk, Hans 
 }
 \keyword{datasets}
 

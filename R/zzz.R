@@ -1,10 +1,13 @@
-#.Load.gRbase <- function() {
-#  .Load.gRbase.general()
-#  .Load.gRbase.hllm()
-#  .Load.gRbase.hllmfit()
-#  .Load.gRbase.hllmodify()
-#  .Load.dynamicgraph()
-#}
+##                              -*- Mode: Ess -*- 
+##zzz.R --- 
+##Author          : Claus Dethlefsen
+##Created On      : Mon May 02 09:39:41 2005
+##Last Modified By: 
+##Last Modified On: 
+##Update Count    : 0
+##Status          : Unknown, Use with caution!
+##
+
 
 
 .First.lib <- function(lib, pkg)
@@ -33,27 +36,9 @@
   require(methods)
   require(MASS)
   require(dynamicGraph)
-#  .Load.gRbase()
   
   return(invisible(0))
 }
-
-.onAttach <- function (lib, pkg) 
-{
-    require(methods)
-  require(MASS)
-  require(dynamicGraph)
-#    .Load.gRbase()
-  }
-
-.onLoad <- function (lib, pkg) 
-{
-    require(methods)
-  require(MASS)
-  require(dynamicGraph)
-#    .Load.gRbase()
-}
-
 
 .Last.lib <- function(lib) {
   cat("Thank you for using gRbase\n")

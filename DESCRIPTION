@@ -1,13 +1,12 @@
 Package: gRbase
-Version: 0.1.13
-Date: 2004-19-11
+Version: 0.1.23
+Date: 2005-08-12
 Title: gRbase - a package for graphical modelling in R
 Author: Søren Højsgaard <sorenh@agrsci.dk>, Claus Dethlefsen
-  <dethlef@math.aau.dk>, David Edwards <ded@novonordisk.com>
+  <aas.claus.dethlefsen@nja.dk> 
 Maintainer: Søren Højsgaard <sorenh@agrsci.dk>
-Depends: R (>= 1.9.1), MASS, dynamicGraph,stats4
-Description: This package defines S4-classes gmData (graphical meta data), gModel (graphical model) and illustrates how hierarchical log-linear models (hllm) may be implemented and combined with dynamicGraph.
+Depends: R (>= 2.1.0), MASS, dynamicGraph
+Description: This package defines S3-classes gmData (graphical meta data), gModel (graphical model) and illustrates how hierarchical log-linear models (hllm) may be implemented and combined with dynamicGraph.
 License: GPL version 2 or newer
 URL: http://www.r-project.org/gR
-Collate: zzz.R formulae.R hll.R validVarTypes.R gmData.R gModel.R modify.R loadgRbasehllm.R loadgRbaseDynamic.R dynamicGraph.R 
-Packaged: Fri Nov 19 13:20:24 2004; dethlef
+Packaged: Fri Aug 12 13:51:54 2005; 86c9

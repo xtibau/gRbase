@@ -9,7 +9,7 @@ S3method(deviance,hllmloglm)
 
 ##S3method(extractAIC,hllm)
 S3method(extractAIC,hllmloglm)
-S3method(resid,hllmloglm)
+S3method(residuals,hllmloglm)
 S3method(fitted,hllmloglm)
 
 export(#".Load.gRbase", 
@@ -62,8 +62,8 @@ exportMethods("description",
               "varTypes<-",
               "varNames",
               "varNames<-",
-              "numberLevels",
-              "numberLevels<-",
+              "nLevels",
+              "nLevels<-",
               "latent",
               "latent<-",
               "valueLabels",
@@ -86,6 +86,7 @@ exportMethods("description",
               "dynamic.Graph",
               "initialize",
               "coerce",
-              "gmData"
+              "gmData",
+		"modelsearch"
               )
 

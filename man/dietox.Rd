@@ -7,15 +7,8 @@
 The \code{dietox} data frame has 861 rows and 7 columns.
 }
 \format{
-  This data frame contains the following columns:
-  \describe{
-    \item{Weight}{a numeric vector}
-    \item{Feed}{a numeric vector}
-    \item{Time}{a numeric vector}
-    \item{Pig}{a numeric vector}
-    \item{Evit}{a numeric vector}
-    \item{Cu}{a numeric vector}
-    \item{Litter}{a numeric vector}
+  This data frame contains the following columns: Weight, Feed, Time,
+  Pig, Evit, Cu, Litter.
   }
 }
 %\details{
@@ -31,7 +24,6 @@ Dietary Rapeseed Oli, Vitamin E, and Copper on Performance and
 %}
 \examples{
 data(dietox)
-## maybe str(dietox) ; plot(dietox) ...
 }
 \keyword{datasets}
 
