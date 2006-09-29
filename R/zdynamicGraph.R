@@ -1,4 +1,3 @@
-##                              -*- Mode: Ess -*- 
 ##zdynamicGraph.R --- 
 ##Author          : Claus Dethlefsen
 ##Created On      : Mon May 02 09:39:23 2005
@@ -57,15 +56,19 @@ UserMenus <- c(UserMenus,list(MainUser =
                                       title = "Fitted object", Arguments = env)
                          
                          return(list(object=object.new))
-                       },
-                       update.vertices = TRUE,
-                       update.edges = TRUE
-                       ),
-                  MainUser = list(label = "Label all edges", 
-           command = function(object, ...) LabelAllEdges(object, 
-                    slave = FALSE, ...)),
-
-                  ))
+                       }
+                                   )
+                              )
+               )
+#,
+#                       update.vertices = TRUE,
+#                       update.edges = TRUE
+#                       ),
+#                  MainUser = list(label = "Label all edges", 
+#           command = function(object, ...) LabelAllEdges(object, 
+#                    slave = FALSE, ...)),
+#
+#                  ))
 
 
 
