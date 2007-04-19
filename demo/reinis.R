@@ -9,5 +9,5 @@ m1res <- stepwise(m1)
 formula(m1res)
 
 m2 <- hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein, reinis) 
-dynamic.Graph(m2)
+#dynamic.Graph(m2)
 

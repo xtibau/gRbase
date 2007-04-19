@@ -14,15 +14,6 @@
 
 \alias{print.gModel}
 
-\alias{addEdge}
-\alias{addEdge.gModel}
-\alias{addVertex}
-\alias{addVertex.gModel}
-\alias{dropEdge}
-\alias{dropEdge.gModel}
-\alias{dropVertex}
-\alias{dropVertex.gModel}
-
 \title{Class "gModel" - graphical models}
 \description{
   The general class \code{gModel} contains a formula object and a
@@ -34,24 +25,11 @@
 }
 \usage{
 gModel(formula, gmData)
-addEdge(object, name.1, name.2)
-dropEdge(object, name.1, name.2)
-addVertex(object, name)
-dropVertex(object, name)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{formula}{an object of class \code{\link{formula}}.}
   \item{gmData}{an object of class \code{\link{gmData}}.}
-  \item{object}{an object of class \code{gModel}.}
-  \item{name}{a string with a name of a variable available in
-    \code{gmData} to be added or removed from the model formula.}
-  \item{name.1}{a string with a name of a variable available in
-    \code{gmData} to mark the first node in the edge to be added or
-    dropped from the model.}
-  \item{name.2}{a string with a name of a variable available in
-    \code{gmData} to mark the second node in the edge to be added or
-    dropped from the model..}
 }
 %\details{
 %}
@@ -63,10 +41,10 @@ dropVertex(object, name)
   \code{dynamicGraph} interface.
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{aas.claus.dethlefsen@nja.dk}}
+\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
 %\note{ ~~further notes~~ }
 
-\seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{hllm}}, \code{\link{dynamic.Graph}}.}
+\seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{hllm}}.}
 
 \examples{
 data(rats)

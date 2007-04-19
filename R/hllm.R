@@ -74,6 +74,6 @@ UserMenus <-
 
 
 # for use with dynamicGraph
-setOldClass("hllm")
-setIs("hllm","gModel")
+##setOldClass("hllm")
+##setIs("hllm","gModel")
 
