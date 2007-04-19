@@ -33,9 +33,9 @@
   cat("\nBuilt:",built,"\n")
   cat("-------------------------------------------------------------\n")
 
-  require(methods)
+#  require(methods)
   require(MASS)
-  require(dynamicGraph)
+#  require(dynamicGraph)
   
   return(invisible(0))
 }

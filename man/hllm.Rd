@@ -34,7 +34,7 @@ hllm(formula = ~.^1, gmData, marginal)
 \value{\code{hllm} returns an object of class \code{hllm}, inheriting
   from the superclass \code{gModel}.
 }
-\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{aas.claus.dethlefsen@nja.dk}}
+\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
 
 \seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{ggm}}, \code{\link{dynamic.Graph}}}
 \examples{

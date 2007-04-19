@@ -29,5 +29,5 @@ stepwise.default <- function(object,...) return(step(getFit(object)))
 
 
 # for use with dynamicGraph
-setOldClass("gRfit")
-setIs("gRfit","gModel")
+##setOldClass("gRfit")
+##setIs("gRfit","gModel")

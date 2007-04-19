@@ -31,4 +31,4 @@ print.gModel <- function(x, ...){
 }
 
 ## necessary for use with dynamicGraph
-setOldClass("gModel")
+## setOldClass("gModel")

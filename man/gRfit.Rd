@@ -37,7 +37,7 @@ getFit(x)
   algorithm. 
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{aas.claus.dethlefsen@nja.dk}}
+\author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
 %\note{ ~~further notes~~ }
 
 \seealso{\code{\link{gModel}}.}
