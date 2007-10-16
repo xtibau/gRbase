@@ -9,7 +9,7 @@ The package `gRbase': summary information
 \section{Details}{
 \itemize{
   \item gRbase provides the general framework for setting up data and
-  model structures and provide examples  for fitting hierarchical log linear
+  model structures and provide examples for fitting hierarchical log linear
   models for contingency tables and graphical Gaussian models for the
   multivariate normal distribution.
   \item Other graphical model software on CRAN includes: mimR, deal,
@@ -19,8 +19,7 @@ The package is intended as a contribution to the gR-project
 described by Lauritzen (2002).
 }
 \section{Authors}{
-Søren Højsgaard, Biometry Research Unit, Danish Institute of
-Agricultural Sciences, DK-8830 Tjele, Denmark
+Søren Højsgaard, Aarhus University, DK-8830 Tjele, Denmark
 
 Claus Dethlefsen, Center for Cardiovascular Research, Aalborg Hospital,
 Århus University Hospital, DK-9000 Aalborg, Denmark

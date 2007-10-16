@@ -40,14 +40,33 @@
  \alias{varTypes<-}
  \alias{varTypes<-.gmData}
 
+ \alias{dataOrigin}
+ \alias{dataOrigin.gmData}
+
+ \alias{ordinal<-}
+ \alias{ordinal<-.gmData}
+
+  \alias{ordinal}
+ \alias{ordinal.gmData}
+
+  \alias{nominal<-}
+ \alias{nominal<-.gmData}
+
+ \alias{nominal}
+ \alias{nominal.gmData}
+
+ 
 \title{Class "gmData" graphical meta data}
 \description{A common class for representing data. No matter the actual
   representation of data, the important characteristics are contained in
   a graphical metadata object. }
 \section{Objects from the Class}{
-  Objects can be created by calls of the form \code{newgmData(
+  Objects can be created by calls of the form
+  \code{newgmData(
     varNames, varTypes, nLevels, latent, valueLabels,
-    observations, description)}. More often, gmData objects will be
+    observations, description)}.
+
+  More often, gmData objects will be
   created from a data.frame or table.
 
   
@@ -65,18 +84,20 @@
 \usage{
 newgmData(varNames,
                    varTypes=rep(validVarTypes()[1],length(varNames)),
-                   nLevels=NA,
-                   latent=NA,
+                   nLevels=NULL,
+                   latent=NULL,
                    valueLabels=NULL,
                    observations=NULL,
-                   description=NA,
-                   shortNames=c(letters,LETTERS)
+                   description=NULL,
+                   shortNames=NULL
                    )
 }
 \arguments{
   \item{varNames}{a vector of strings with names of variables.}
   \item{varTypes}{a vector of strings with values from
-    \code{\link{validVarTypes}} giving the types of the variables.}
+    \code{\link{validVarTypes}} giving the types of the variables;
+    typical types are "Discrete","Ordinal","Continuous", but others can
+    be defined. The types can be abbreviated.}
   \item{nLevels}{a numeric vector with integer values for discrete or
     ordinal variables giving the number of levels.}
   \item{latent}{a vector of strings with names of the latent variables.}
@@ -96,6 +117,39 @@ newgmData(varNames,
 
 % ~Make other sections like Warning with \section{Warning }{....} ~
 
+\details{
+
+  If neither nLevels nor valueLabels are given, then all categorical
+  variables are assumed to be binary. If valueLabels are given then
+  nLevels are infered from these. valueLabels / nLevels are recycled if
+  necessary. 
+
+}
+
 \seealso{\code{demo(gmData)}}
- 
+
+\examples{
+
+vn <- c("a","b","c","d")
+z<-newgmData(vn,varTypes=c("dis","dis","con","con"))
+summary(z)
+z<-newgmData(vn,varTypes=c("dis","dis","con","con"),nLevels=c(4,3,NA,NA))
+summary(z)
+z<-newgmData(vn,varTypes=c("dis","dis","con","con"),nLevels=c(4,NA,NA,NA))
+summary(z)
+z<-newgmData(vn,varTypes=c("dis","dis","ord","con"),valueLabels=list("a"=1:2, "b"=1:4))
+summary(z)
+
+ccnames <- c("asia", "smoke", "tub", "lung", "bronc", "either", "xray", "dysp")
+gmd <- newgmData(ccnames,valueLabels=c("yes","no"), description="Chest clinic")
+summary(gmd)
+
+data(mathmark)
+as.gmData(mathmark)
+
+data(HairEyeColor)
+as.gmData(HairEyeColor)
+
+}
+
 \keyword{models}% at least one, from doc/KEYWORDS

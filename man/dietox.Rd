@@ -1,6 +1,6 @@
 \name{dietox}
 \alias{dietox}
-\non_function{}
+
 \title{Growth curves of pigs in a 3x3 factorial experiment}
 \usage{data(dietox)}
 \description{
@@ -10,7 +10,7 @@ The \code{dietox} data frame has 861 rows and 7 columns.
   This data frame contains the following columns: Weight, Feed, Time,
   Pig, Evit, Cu, Litter.
   }
-}
+
 %\details{
 % ~~ If necessary, more details than the description above ~~
 %}

@@ -1,6 +1,6 @@
 \name{carcass}
 \alias{carcass}
-\non_function{}
+
 \title{lean meat contents of pig carcasses}
 \usage{data(carcass)}
 \description{

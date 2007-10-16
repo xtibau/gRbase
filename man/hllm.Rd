@@ -44,7 +44,7 @@ m2 <-
 hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein,
 reinis)
 m2 <- fit(m2,engine="loglm")
-\dontrun{dynamic.Graph(m2)}
+## plot(m2)
 }
 \keyword{models}% at least one, from doc/KEYWORDS
 

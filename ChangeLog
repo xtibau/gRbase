@@ -1,0 +1,36 @@
+2007-10-16 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* newgmData can infer valueLabels automatically
+
+	* Rewriting of gmData part in vignette
+	
+	* addEdge/dropEdge have been removed because they collide with the
+	graph package. As an alternative, an update.gModel method added
+	(this needs more work).
+
+
+2007-05-13 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* This change log file has been introduced; please add to it from
+	the top
+
+	* description function for gmData is removed (collides with
+	generic description function from graph package). 
+
+	* newgmData modified: Makes shortNames to be of length 1 if at all
+	possible. Sets dataOrigin as the class of the observations.
+
+	* dataOrigin function for gmData added.
+
+	* ordinal, ordinal<-, nominal, nominal functions for gmData
+	added. 
+
+	* Version number changed to 0.2.0
+
+	* ZipData: no added to description file
+
+	* cad-data: A .R file has been added to read data as factors
+
+	
+
+	
