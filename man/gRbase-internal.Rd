@@ -15,6 +15,11 @@
  \alias{delete.edge}
  \alias{add.edge}
 
+ \alias{addEdge}
+ \alias{dropEdge}
+ \alias{addEdge.gModel}
+ \alias{dropEdge.gModel}
+
  \alias{is.graphical}
 
 
@@ -28,26 +33,30 @@
  \alias{corr.matrix}
  \alias{partial.corr.matrix}
 
+ \alias{update.gModel}
+
+ 
 % \alias{dynamic.Graph-methods}
 % \alias{dynamic.Graph,hllm-method}
 % \alias{dynamic.Graph,gmData-method}
- \alias{dynamic.Graph,gModel-method}
- \alias{dynamic.Graph,gRfit-method}
- \alias{label}
- \alias{width}
- \alias{label-methods}
+% \alias{dynamic.Graph,gModel-method}
+% \alias{dynamic.Graph,gRfit-method}
+% \alias{label}
+% \alias{width}
+% \alias{label-methods}
 % \alias{label,dg.Node-method}
- \alias{label,gModelTestClass-method}
+% \alias{label,gModelTestClass-method}
 % \alias{modifyModel-methods}
- \alias{modifyModel,gModel-method}
+% \alias{modifyModel,gModel-method}
 % \alias{testEdge-methods}
- \alias{testEdge,gModel-method}
- \alias{width-methods}
+% \alias{testEdge,gModel-method}
+% \alias{width-methods}
 % \alias{width,dg.Edge-method}
- \alias{width,gModelTestClass-method}
- \alias{gModelTestClass-class}
+% \alias{width,gModelTestClass-method}
+% \alias{gModelTestClass-class}
 % \alias{gModelTestClass}
- \alias{gRfit-class}
+
+\alias{gRfit-class}
 
  \alias{dynamic.Graph}
  \alias{modifyModel}

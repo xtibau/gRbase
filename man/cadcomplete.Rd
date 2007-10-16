@@ -1,6 +1,8 @@
 \name{cadcomplete}
 \alias{cadcomplete}
 \alias{cadincomplete}
+\alias{cad1}
+\alias{cad2}
 \docType{data}
 \title{Coronary artery disease data}
 \description{
@@ -12,7 +14,7 @@ Coronary artery disease data
   AngPec, AMI, QWave, QWavecode, STcode, STchange, SuffHeartF,
   Hypertrophi, Hyperchol, Smoker, Inherit, Heartfail, CAD
   }
-}
+
 \examples{
 data(cadcomplete)
 }

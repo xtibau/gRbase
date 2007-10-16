@@ -62,15 +62,29 @@ stepwise.hllm <-    function (object, ...)
     stop("You will have to move/rename rawdata and loglm.formula from .GlobalEnv\n")
   }
 
-## example of how to extende the user menu in dynamicGraph
-UserMenus <- 
-  list(
-       MainUser =
-       list(label = "Stepwise",
-              command = function(object, ...)
-            stepwise(object,...)
-              )
-          )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ## example of how to extende the user menu in dynamicGraph
+# UserMenus <- 
+#   list(
+#        MainUser =
+#        list(label = "Stepwise",
+#               command = function(object, ...)
+#             stepwise(object,...)
+#               )
+#           )
 
 
 # for use with dynamicGraph

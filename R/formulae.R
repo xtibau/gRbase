@@ -58,7 +58,9 @@ processFormula <- function(formula, data, marginal,
   
   used.var <- get.var.of.type(type)
   pow <- extract.power(formula)
-  if (is.numeric(pow)){
+
+
+if (is.numeric(pow)){
     if (!missing(marginal)){
       ##      print(used.var); print(marginal)
       used.var <- intersect(marginal,used.var)
@@ -69,16 +71,26 @@ processFormula <- function(formula, data, marginal,
       pow <- min(c(pow, length(used.var)))
       tmp <- selectOrder(used.var, pow)
       mimf <- paste(unlist(lapply(tmp, paste, collapse=v.sep)),collapse=g.sep,sep="")
-    }
+
+}
   } else {
     mf    <- as.formula(formula)
-    mimf  <- paste(mf,sep="")[2]
-  }
-  formula <- formula(paste("~",mimf,sep=""))
-  interactions <- strsplit(mimf,paste("\\",g.sep,sep=""))[[1]]
+    ##  print("iiiiiiiii")
+    ## mimf  <- paste(mf,sep="")[2]
+  mimf <-  paste(deparse(mf[[2]]), collapse="")
+
+}
+
+##mf <<- mf
+##print("KKKKKKKKKKKKKKKKKKK")
+##mimf <<-mimf
+formula <- formula(paste("~",mimf,sep=""))
+
+interactions <- strsplit(mimf,paste("\\",g.sep,sep=""))[[1]]
   interactions <- gsub(" ","",interactions,fixed=TRUE)
 #  interactions <- gsub(g.sep,"",interactions)
-  if (v.sep == "*") v.sep <- "[*]"
+
+if (v.sep == "*") v.sep <- "[*]"
   int.list <- strsplit(interactions, v.sep)
   gc1   <- lapply(int.list, function(l){ match(l,used.var) })
   
@@ -86,6 +98,10 @@ processFormula <- function(formula, data, marginal,
                 gmData=data, varnames=used.var)
   value
 }
+
+
+
+
 
 # Notes, functions and examples for generator lists (model formulae
 # for hierarchical loglinear models) in R. 
