@@ -58,11 +58,11 @@
 
 \alias{gRfit-class}
 
- \alias{dynamic.Graph}
- \alias{modifyModel}
+% \alias{dynamic.Graph}
+% \alias{modifyModel}
 % \alias{numberLevels}
 % \alias{numberLevels<-}
- \alias{testEdge}
+% \alias{testEdge}
 
 % \alias{all.subsets}
 % \alias{extract.power}
