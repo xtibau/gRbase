@@ -1,5 +1,5 @@
 Package: gRbase
-Version: 0.2.0
+Version: 0.2.1
 Title: A package for graphical modelling in R
 Author: Søren Højsgaard <sorenh@agrsci.dk>, Claus Dethlefsen <cld@rn.dk> 
 Maintainer: Claus Dethlefsen <cld@rn.dk> 
@@ -9,4 +9,4 @@ URL: http://www.r-project.org/gR
 ZipData: no
 Depends: R (>= 2.1.0), MASS
 Encoding: latin1
-Packaged: Tue Oct 16 10:59:23 2007; shd
+Packaged: Wed Oct 24 22:39:54 2007; shd

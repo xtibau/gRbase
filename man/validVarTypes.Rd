@@ -6,10 +6,12 @@
 The variable types in a \code{\link{gmData}} object must be from a
 vector predefined types which may be 
 inspected by the command \code{validVarTypes()}. The available types
-may be extended by the package developers as demonstrated in the example. The
-types of the variables are important for the way they are displayed
-using the package \pkg{dynamicGraph}. The type is also important when
-the models are fitted to data.
+may be extended by the package developers as demonstrated in the
+example.
+%The
+%types of the variables are important for the way they are displayed
+%using the package \pkg{dynamicGraph}. The type is also important when
+%the models are fitted to data.
 }
 \usage{
 validVarTypes()
@@ -32,7 +34,7 @@ validVarTypes()
 
 % ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{ \code{\link{gmData}}, \code{\link{dynamic.Graph}} }
+\seealso{ \code{\link{gmData}}}
 \examples{
 oldtypes <- validVarTypes()
 validVartypes <- function() c(oldtypes, "MyVarType")

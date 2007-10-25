@@ -11,7 +11,7 @@
   \code{hllm}, fitted using \code{fit} (which calls \code{\link[MASS]{loglm}})
   and a model search performed 
   using \code{stepwise}. The models may be displayed and manipulated
-  using the \code{\link{gRbase}} functions, eg. \code{\link{dynamic.Graph}}.
+  using the \code{\link{gRbase}}.
 }
 \usage{
 hllm(formula = ~.^1, gmData, marginal)
@@ -36,7 +36,8 @@ hllm(formula = ~.^1, gmData, marginal)
 }
 \author{Søren Højsgaard, \email{sorenh@agrsci.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
 
-\seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{ggm}}, \code{\link{dynamic.Graph}}}
+\seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{ggm}}
+}
 \examples{
 data(reinis)
 reinis <- as.gmData(reinis)
