@@ -1,3 +1,13 @@
+2007-11-07 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* All the info printed on startup has been removed.
+
+	* Coronary artery disease data now properly described. They are in
+	data sets cad1 and cad2.
+	
+	* Version 0.2.2 uploaded
+
+
 2007-10-24 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Minor typos in the docs corrected
