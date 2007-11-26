@@ -1,8 +1,14 @@
 
-	* Improve documentation of functions
+* Use subsetof from gRain - it is more efficient.
 
-	* Describe why gModel objects are useful
+* Use maximalSet from gRrain rather than remove.redundant - it is more efficient.
+	
+* Improve documentation of functions
 
-	* Create vignette
+* Describe why gModel objects are useful
+
+* Solve the rawdata issut
+
+* Create vignette
 
 	

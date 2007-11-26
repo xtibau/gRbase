@@ -34,7 +34,7 @@ obs             <- function(x) UseMethod("observations")
 "description<-.gmData" <- function(tmp,value){attr(tmp,"description")<-value; return(tmp)}
 "description<-" <- function(tmp,value) UseMethod("description<-")
 
-"varTypes.gmData" <- function(x){x$varTypes}
+"varTypes.gmData" <- function(x){structure(x$varTypes, .Names=varNames(x))}
 "varTypes" <- function(x) UseMethod("varTypes")
 
 "varTypes<-.gmData" <- function(tmp,value){ tmp$varTypes <-value; return(tmp)}
@@ -46,14 +46,14 @@ varNames <- function(x)UseMethod("varNames")
 "varNames<-.gmData" <- function(tmp,value){ tmp$varNames <-value; return(tmp)}
 "varNames<-" <- function(tmp,value) UseMethod("varNames<-")
 
-nLevels.gmData <- function(x)as.vector(x$nLevels)
+nLevels.gmData <- function(x)structure(as.vector(x$nLevels), .Names=varNames(x))
 nLevels <- function(x)UseMethod("nLevels")
 
 "nLevels<-.gmData" <- function(tmp,value){ tmp$nLevels <-value; return(tmp)}
 "nLevels<-" <- function(tmp,value) UseMethod("nLevels<-")
 
 
-shortNames.gmData <- function(x)as.vector(x$shortNames)
+shortNames.gmData <- function(x)structure(as.vector(x$shortNames), .Names=varNames(x))
 shortNames <- function(x)UseMethod("shortNames")
 
 "shortNames<-.gmData" <- function(tmp,value){ tmp$shortNames <-value; return(tmp)}
@@ -238,7 +238,7 @@ function (varNames,
     uu            <- valueLabels[varNames[discidx]]
     uu            <- sapply(uu,length)
     aa[discidx]   <- uu
-    value$nLevels <- aa
+    value$nLevels <- unlist(aa)
   } else {
     ## Use nLevels as given; recycle if necessary
     ## Infer valueLabels from these
@@ -249,7 +249,7 @@ function (varNames,
     v <- rep(v, length(discidx))
     v <- v[discidx]
     aa[discidx]   <-  v
-    value$nLevels <- aa
+    value$nLevels <- unlist(aa)
     uu <- varNames[discidx]
     ##v  <<- v
     

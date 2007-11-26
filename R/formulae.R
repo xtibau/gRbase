@@ -149,6 +149,7 @@ if (v.sep == "*") v.sep <- "[*]"
 # g1 <= g2 <=> all(is.element(g1, g2))
 # g1 == g2 <=> setequal(g1, g2)
 #
+
 subsetof <- function(g1, g2) all(is.element(g1, g2))  
   
 # A function to write a generator as a string:
