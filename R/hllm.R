@@ -14,8 +14,6 @@ hllm <- function(formula = ~.^1,  gmData, marginal){
   return(value)
 }
 
-
-
 fit.hllm <- function(m,engine="loglm"){
   rawdata <- observations(m$gmData)
   if (is.data.frame(rawdata)){
@@ -28,7 +26,9 @@ fit.hllm <- function(m,engine="loglm"){
          "loglm"={
            mimformula <- mimform$mimformula
            loglm.formula <- formula(paste("~",mimformula))
-           val <- loglm(loglm.formula, rawdata)          
+           ##val <- loglm(loglm.formula, rawdata)
+           val <- loglm(loglm.formula, data=rawdata)
+           val$call$data <- rawdata
            class(value) <- c("gRfit","loglm", class(m))
          },
          {stop("Only engine 'loglm' currently implemented...")
@@ -37,6 +37,23 @@ fit.hllm <- function(m,engine="loglm"){
   return(value)
 }
 
+
+# loglmSHD <- function (formula, data, subset, na.action, ...) 
+# {
+#     .call <- match.call()
+#     if (missing(data) || inherits(data, "data.frame")) {
+#         m <- match.call(expand.dots = FALSE)
+#         m$... <- NULL
+#         m[[1]] <- as.name("model.frame")
+#         data <- eval.parent(m)
+#         .formula <- as.formula(attr(data, "terms"))
+#     }
+#     else {
+#       trms <- attr(data, "terms") <- terms(formula <- denumerate(formula))
+#       .formula <- renumerate(as.formula(trms))
+#     }
+#     loglm1(formula, data, ..., .call = .call, .formula = .formula)
+# }
 
 
 

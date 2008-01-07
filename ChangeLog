@@ -1,3 +1,11 @@
+2008-01-07 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Breast cancer data set added.
+
+	* Reinis data stored as RData object
+
+	* Version 0.2.4 uploaded.
+
 2007-11-25 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Functions shortNames, varTypes and nLevels now returns named
@@ -7,6 +15,7 @@
 
 	* Version 0.2.3 uploaded.
 
+	
 2007-11-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* All the info printed on startup has been removed.
