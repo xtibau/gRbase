@@ -1,3 +1,17 @@
+2008-03-10 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Arguments of generic fit function changed
+
+	* Version 0.2.6 uploaded.
+
+
+2008-02-28 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* breastcancer data has been corrected
+
+	* Version 0.2.5 uploaded.
+
+	
 2008-01-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Breast cancer data set added.
@@ -6,6 +20,7 @@
 
 	* Version 0.2.4 uploaded.
 
+	
 2007-11-25 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Functions shortNames, varTypes and nLevels now returns named

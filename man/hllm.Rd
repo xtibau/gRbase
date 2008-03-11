@@ -15,6 +15,7 @@
 }
 \usage{
 hllm(formula = ~.^1, gmData, marginal)
+\method{fit}{hllm}(m, engine="loglm", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,6 +28,10 @@ hllm(formula = ~.^1, gmData, marginal)
   \item{gmData}{an object of class \code{\link{gmData}}.}
   \item{marginal}{an optional argument specifying a subset of the
     variables from the \code{gmData} object.}
+  \item{m}{A hllm object}.
+  \item{engine}{Definining the fitting engine. For hllm objects only
+    "loglm" is implemented.}
+  \item{...}{Additional arguments}
 }
 %\details{
 %  ~~ If necessary, more details than the __description__  above ~~
