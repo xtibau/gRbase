@@ -14,7 +14,7 @@ ggm <- function(formula=~.^1, gmData, marginal){
   return(value)
 }
 
-fit.ggm <- function(m,engine){
+fit.ggm <- function(m, ...){
   Ydf  <- observations(m$gmData)
   nobs <- nrow(Ydf)
   gc <- m$numformula

@@ -8,6 +8,7 @@
 \alias{summary.gRfit}
 \alias{fit}
 
+
 \title{Class "gRfit" - fitted graphical models}
 \description{
  Objects of class \code{gRfit} are created when the function \code{fit}
@@ -18,16 +19,15 @@
  \code{summary} methods exist for \code{gRfit} objects.
 }
 \usage{
-fit(m, engine)
+fit(m, ...)
 getFit(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{m}{an object of class \code{gModel}}.
-  \item{engine}{a string with the possibility of implementing different
-    fitting engines for the same \code{gModel}s.}
+  \item{m}{An object for which a fit method has been defined}.
   \item{x}{an object of class \code{gRfit} as created from \code{fit}
     applied to a \code{\link{gModel}} object.}
+  \item{...}{Additional arguments}
 }
 %\details{
 %}
