@@ -21,7 +21,7 @@ fit.ggm <- function(m, ...){
   Ymat <- as.matrix(Ydf)
   Smat   <- cov(Ymat)*(nobs-1)/nobs
   ipsFit <- ips(gc,Smat)
-  fit      <- out( ipsFit$MLE, Smat,nrow(Ydf))
+  fit      <- outfun( ipsFit$MLE, Smat,nrow(Ydf))
   fit$n    <- nobs
   fit$mean <- apply(Ymat,2,mean)
   fit$df   <- length(which(fit$part==0))/2
@@ -52,10 +52,10 @@ ell <- function(Sigma, S, n){
 
 ## Correlation matrix ##
 ## computes correlation matrix for covariance matrix ##
-corr.matrix <- function(S){
-  temp <- diag(1/sqrt(diag(S)))
-  return(zapsmall(temp%*%S%*%temp))
-}
+#corr.matrix <- function(S){
+#  temp <- diag(1/sqrt(diag(S)))
+#  return(zapsmall(temp%*%S%*%temp))
+#}
 
 
 ## Partial correlation matrix ##
@@ -70,10 +70,10 @@ partial.corr.matrix <- function(S){
 
 
 ## Output function ##
-out <- function(Sigma, S, n){
+outfun <- function(Sigma, S, n){
   return(list(Sigma=round(Sigma,3),
               eigenvalues=eigen(Sigma)[[1]],
-              correlation=corr.matrix(Sigma),
+              correlation=cov2cor(Sigma),###corr.matrix(Sigma),
               partial.correlations=partial.corr.matrix(Sigma),
               loglik=ell(Sigma,S,n)))
 }

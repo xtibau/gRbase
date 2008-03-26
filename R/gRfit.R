@@ -24,6 +24,4 @@ print.gRfit <- function(x, ...){
 summary.gRfit <- function(object,...)
   summary(getFit(object))
 
-stepwise <- function(object,...) UseMethod("stepwise")
-stepwise.default <- function(object,...) return(step(getFit(object)))
 
