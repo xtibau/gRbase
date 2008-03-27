@@ -1,3 +1,12 @@
+2008-03-25 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* C implementation of certain set operations (remove.redundant,
+	isin).
+
+	* names2pairs and subsetof included. 
+
+	* Version 0.3.1 uploaded
+
 2008-03-10 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Arguments of generic fit function changed

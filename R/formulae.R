@@ -1,13 +1,3 @@
-##                              -*- Mode: Ess -*- 
-##formulae.R --- 
-##Author          : Claus Dethlefsen
-##Created On      : Mon May 02 09:34:13 2005
-##Last Modified By: 
-##Last Modified On: 
-##Update Count    : 0
-##Status          : Unknown, Use with caution!
-##
-
   
 all.subsets <- function(x,g.sep="+"){
   if (length(x)==1)
@@ -52,15 +42,15 @@ extract.power<-function(fff){
 
 
 processFormula <- function(formula, data, marginal,
-                            type=c("Discrete","Continuous"),v.sep="*",g.sep="+"){
+                           type=c("Discrete","Continuous"),v.sep="*",g.sep="+"){
   
   get.var.of.type <- function(type){varNames(data)[varTypes(data)==type]}
   
   used.var <- get.var.of.type(type)
   pow <- extract.power(formula)
+  
 
-
-if (is.numeric(pow)){
+  if (is.numeric(pow)){
     if (!missing(marginal)){
       ##      print(used.var); print(marginal)
       used.var <- intersect(marginal,used.var)
@@ -71,26 +61,20 @@ if (is.numeric(pow)){
       pow <- min(c(pow, length(used.var)))
       tmp <- selectOrder(used.var, pow)
       mimf <- paste(unlist(lapply(tmp, paste, collapse=v.sep)),collapse=g.sep,sep="")
-
-}
+      
+    }
   } else {
     mf    <- as.formula(formula)
-    ##  print("iiiiiiiii")
-    ## mimf  <- paste(mf,sep="")[2]
-  mimf <-  paste(deparse(mf[[2]]), collapse="")
+    mimf <-  paste(deparse(mf[[2]]), collapse="")
+  }
 
-}
+  formula <- formula(paste("~",mimf,sep=""))
 
-##mf <<- mf
-##print("KKKKKKKKKKKKKKKKKKK")
-##mimf <<-mimf
-formula <- formula(paste("~",mimf,sep=""))
-
-interactions <- strsplit(mimf,paste("\\",g.sep,sep=""))[[1]]
+  interactions <- strsplit(mimf,paste("\\",g.sep,sep=""))[[1]]
   interactions <- gsub(" ","",interactions,fixed=TRUE)
-#  interactions <- gsub(g.sep,"",interactions)
-
-if (v.sep == "*") v.sep <- "[*]"
+                                        #  interactions <- gsub(g.sep,"",interactions)
+  
+  if (v.sep == "*") v.sep <- "[*]"
   int.list <- strsplit(interactions, v.sep)
   gc1   <- lapply(int.list, function(l){ match(l,used.var) })
   
@@ -150,8 +134,8 @@ if (v.sep == "*") v.sep <- "[*]"
 # g1 == g2 <=> setequal(g1, g2)
 #
 
-subsetof <- function(g1, g2) all(is.element(g1, g2))  
-  
+
+
 # A function to write a generator as a string:
 #
 showg <- function(g, v.sep="*") {
@@ -250,33 +234,10 @@ contains <- function(k, l) {
   any(a)
 }
 
-# A function to remove redundant generators.
-# If maximal=T, returns the maximal generators, if =F, the minimal generators.
-# This seems difficult to vectorize: any suggestions? 
-# This function is a prime candidate for a C routine.
 
-remove.redundant <- function(f, maximal=TRUE) {
-  k <- length(f)
-  new.f <- f
-  if (k>1) {
-    for (i in 1:(k-1)) {
-      g1 <- f[[i]]
-      if (length(g1)>0) {
-        for (j in (i+1):k) {
-          g2 <- f[[j]]
-          if (length(g2)>0) {
-           if (setequal(g1,g2)) f[[j]]<-vector() else {
-             kk <- 0
-             if (subsetof(g1, g2)) {if (maximal) kk <- i else kk <- j}
-             if (subsetof(g2, g1)) {if (maximal) kk <- j else kk <- i}
-             if (kk>0) f[[kk]] <- vector()
-      } # else    
-     }} # length(g2)>0; for j in (i+1):k
-    }}  # length(g1)>0; for i in 1:(k-1)
-    f <- f[lapply(f, length)>0]
-  } # if k>1
-  f
-}
+
+
+
 
 # A function to return dual representation for a list. 
 # See description in Edwards & Havranek, Biometrika (1985), 72, 2, p.341.
@@ -392,3 +353,45 @@ is.graphical <- function(m) {
 #is.graphical(readf('A.B+A.C+B.C'))
 #is.graphical(readf('A.B.C'))
 #is.graphical(readf('A.B+B.C'))
+
+
+
+
+########################################################################
+###
+### Functions removed from here because faster versions exist elsewhere
+###
+########################################################################
+
+## subsetof <- function(g1, g2) all(is.element(g1, g2))  
+## SHD: Faster version in setopsR.R
+
+# A function to remove redundant generators.  If maximal=T, returns
+# the maximal generators, if =F, the minimal generators.  This seems
+# difficult to vectorize: any suggestions?  This function is a prime
+# candidate for a C routine.
+
+## SHD: Faster version in setopsC.R
+
+# remove.redundant <- function(f, maximal=TRUE) {
+#   k <- length(f)
+#   new.f <- f
+#   if (k>1) {
+#     for (i in 1:(k-1)) {
+#       g1 <- f[[i]]
+#       if (length(g1)>0) {
+#         for (j in (i+1):k) {
+#           g2 <- f[[j]]
+#           if (length(g2)>0) {
+#            if (setequal(g1,g2)) f[[j]]<-vector() else {
+#              kk <- 0
+#              if (subsetof(g1, g2)) {if (maximal) kk <- i else kk <- j}
+#              if (subsetof(g2, g1)) {if (maximal) kk <- j else kk <- i}
+#              if (kk>0) f[[kk]] <- vector()
+#       } # else    
+#      }} # length(g2)>0; for j in (i+1):k
+#     }}  # length(g1)>0; for i in 1:(k-1)
+#     f <- f[lapply(f, length)>0]
+#   } # if k>1
+#   f
+# }
