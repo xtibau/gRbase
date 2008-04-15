@@ -261,23 +261,6 @@ contains <- function(k, l) {
 # list.save
 #} 
 
-dual.rep <- function(glist, S, minimal=TRUE) {
- # S is total varset - often but by no means always given by unique(unlist(g.list)) 
- list.save <- list()
- #if (length(glist)==0) list.save <- list(S)
- if (length(glist)==1 & is.logical(glist[[1]])) list.save <- list(S)
- else { 
-   for (v in 1:length(glist)) {
-     m1 <- list.save
-   if (minimal) m2 <- as.list(setdiff(S,glist[[v]])) else m2 <- as.list(glist[[v]])
-   if (v==1) list.save <- m2 else {
-      list.save <- remove.redundant(unlist(lapply(m1, function(g)
-                                                  lapply(m2, union,
-                                                         g)),recursive=FALSE),FALSE)}}
- if (!minimal) list.save <- lapply(list.save, function(g) setdiff(S,
-                                                                  g))}
- list.save }  
-
 
 #m1 <- readf('A.B+A.C')
 #showf(m1)
@@ -362,6 +345,25 @@ is.graphical <- function(m) {
 ### Functions removed from here because faster versions exist elsewhere
 ###
 ########################################################################
+
+
+# dual.rep <- function(glist, S, minimal=TRUE) {
+#  # S is total varset - often but by no means always given by unique(unlist(g.list)) 
+#  list.save <- list()
+#  #if (length(glist)==0) list.save <- list(S)
+#  if (length(glist)==1 & is.logical(glist[[1]])) list.save <- list(S)
+#  else { 
+#    for (v in 1:length(glist)) {
+#      m1 <- list.save
+#    if (minimal) m2 <- as.list(setdiff(S,glist[[v]])) else m2 <- as.list(glist[[v]])
+#    if (v==1) list.save <- m2 else {
+#       list.save <- remove.redundant(unlist(lapply(m1, function(g)
+#                                                   lapply(m2, union,
+#                                                          g)),recursive=FALSE),FALSE)}}
+#  if (!minimal) list.save <- lapply(list.save, function(g) setdiff(S,
+#                                                                   g))}
+#  list.save }  
+
 
 ## subsetof <- function(g1, g2) all(is.element(g1, g2))  
 ## SHD: Faster version in setopsR.R

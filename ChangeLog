@@ -1,3 +1,13 @@
+2008-04-15 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* uniquePrim, setdiffPrim, unlistPrim added
+	
+	* Speed improved of remove.redundant, isin 
+
+	* Speed improved of dual.rep 
+
+	* Version 0.3.2 uploaded
+
 2008-03-25 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* C implementation of certain set operations (remove.redundant,

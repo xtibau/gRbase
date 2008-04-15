@@ -2,6 +2,8 @@
 ## A function to remove redundant generators.  If maximal=T, returns
 ## the maximal generators, if =F, the minimal generators.
 
+## Can be speeded up if the as.character part can be avoided...
+
 remove.redundant <- maximalSet <- function(x, maximal=TRUE, index=FALSE){
   if (length(x)<=1){
     if (index)
@@ -9,20 +11,26 @@ remove.redundant <- maximalSet <- function(x, maximal=TRUE, index=FALSE){
     else
       return(x)
   }
-  lenx  <- sapply(x,length)
+  lenx  <- unlistPrim(lapply(x,length))
   if (maximal){
     o     <- order(lenx, decreasing=TRUE)
     x2    <- x[o]
     x2    <- lapply(x2, as.character)
-    i<-.C("maxset", unlist(x2), cumsum(sapply(x2,length)), length(x2),
-          ans=integer(length(x2)),PACKAGE="gRbase")$ans
+    ll    <- cumsum(unlistPrim(lapply(x2,length)))
+    i<-.C("maxset", unlistPrim(x2), ll, length(x2),
+          ans=integer(length(x2))
+          , PACKAGE="gRbase"
+          )$ans
     i <- i[order(o)]
   } else {
     o     <- order(lenx, decreasing=FALSE)
     x2    <- x[o]
     x2    <- lapply(x2, as.character)
-    i<-.C("minset", unlist(x2), cumsum(sapply(x2,length)), length(x2),
-          ans=integer(length(x2)),PACKAGE="gRbase")$ans
+    ll    <- cumsum(unlistPrim(lapply(x2,length)))
+    i<-.C("minset", unlistPrim(x2), ll, length(x2),
+          ans=integer(length(x2))
+          ,PACKAGE="gRbase"
+          )$ans
     i <- i[order(o)]  
   }  
   if (index){
@@ -49,7 +57,8 @@ isin <- function(x, e, index=FALSE){
       return(TRUE)
   }
 
-  i<-.C("isin", e, length(e), unlist(x), cumsum(sapply(x,length)), length(x),
+  ll <- cumsum(unlistPrim(lapply(x,length)))
+  i<-.C("isin", e, length(e), unlist(x), ll , length(x),
         ans=integer(length(x)),PACKAGE="gRbase")$ans
   if (index) {
     return(i)
