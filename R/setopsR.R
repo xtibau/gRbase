@@ -1,12 +1,17 @@
 ## Faster versions of 'standard R functions'
 ##
 
-subsetof <- function(g1, g2){
-  all(.Internal(match( g1, g2, 0))>0)
+subsetof <- function(x, y){
+  all(.Internal(match( x, y, 0, NULL))>0)
 }
 
+subsetofList <- function(x,l){  ## Uses DEDs subsetof - faster than mine
+  any(unlistPrim(lapply(l, function(y) subsetof(x,y))))
+}
+
+
 uniquePrim <- function(x)
-  .Internal(unique(x, FALSE))
+  .Internal(unique(x, FALSE, FALSE))
 
 setdiffPrim <- function (x, y) 
 {
@@ -17,5 +22,5 @@ setdiffPrim <- function (x, y)
     else x)
 }
 
-unlistPrim <- function(x, recursive=TRUE, use.names=TRUE)
-  .Internal(unlist(x, recursive, use.names))
+unlistPrim <- function(l, recursive=TRUE, use.names=TRUE)
+  .Internal(unlist(l, recursive, use.names))

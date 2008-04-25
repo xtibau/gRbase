@@ -4,17 +4,17 @@
 
 ## Can be speeded up if the as.character part can be avoided...
 
-remove.redundant <- maximalSet <- function(x, maximal=TRUE, index=FALSE){
-  if (length(x)<=1){
+removeRedundant <- remove.redundant <- maximalSet <- function(l, maximal=TRUE, index=FALSE){
+  if (length(l)<=1){
     if (index)
       return(1)
     else
-      return(x)
+      return(l)
   }
-  lenx  <- unlistPrim(lapply(x,length))
+  lenx  <- unlistPrim(lapply(l,length))
   if (maximal){
     o     <- order(lenx, decreasing=TRUE)
-    x2    <- x[o]
+    x2    <- l[o]
     x2    <- lapply(x2, as.character)
     ll    <- cumsum(unlistPrim(lapply(x2,length)))
     i<-.C("maxset", unlistPrim(x2), ll, length(x2),
@@ -24,7 +24,7 @@ remove.redundant <- maximalSet <- function(x, maximal=TRUE, index=FALSE){
     i <- i[order(o)]
   } else {
     o     <- order(lenx, decreasing=FALSE)
-    x2    <- x[o]
+    x2    <- l[o]
     x2    <- lapply(x2, as.character)
     ll    <- cumsum(unlistPrim(lapply(x2,length)))
     i<-.C("minset", unlistPrim(x2), ll, length(x2),
@@ -36,30 +36,34 @@ remove.redundant <- maximalSet <- function(x, maximal=TRUE, index=FALSE){
   if (index){
     i
   } else {
-    x[i==1]
+    l[i==1]
   }
 }
 
 ## Is e contained in any vector in x; 
 ## NOTE: x (the list) is the first argument
 ## Exceptions....
-isin <- function(x, e, index=FALSE){
-  if (length(x)==0){
+
+isin <- function(l, x, index=FALSE){
+  if (length(l)==0){
     if (index)
       return(0)
     else
       return(FALSE)
   }    
-  if (length(x)< 1){
+  if (length(l)< 1){
     if (index)
-      return(rep(1,length(e)))
+      return(rep(1,length(x)))
     else
       return(TRUE)
   }
 
-  ll <- cumsum(unlistPrim(lapply(x,length)))
-  i<-.C("isin", e, length(e), unlist(x), ll , length(x),
-        ans=integer(length(x)),PACKAGE="gRbase")$ans
+  l <- lapply(l, "as.character")
+  x <- as.character(x)
+  
+  ll <- cumsum(unlistPrim(lapply(l,length)))
+  i<-.C("isin", x, length(x), unlist(l), ll , length(l),
+        ans=integer(length(l)),PACKAGE="gRbase")$ans
   if (index) {
     return(i)
   } else {
