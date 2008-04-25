@@ -2,14 +2,11 @@
 
 
 %% SHD stuff
-\alias{subsetof}
 \alias{remove.redundant}
 \alias{maximalSet}
 \alias{isin}
 \alias{names2pairs}
-\alias{uniquePrim}
-\alias{setdiffPrim}
-\alias{unlistPrim}
+
 
 %% !!
 

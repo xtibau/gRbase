@@ -1,3 +1,12 @@
+2008-04-24 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Minor changes made to match R 2.7.0 
+
+	* Reorganizing code structure
+
+	* Version 0.4.0 uploaded
+
+
 2008-04-15 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* uniquePrim, setdiffPrim, unlistPrim added

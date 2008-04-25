@@ -7,25 +7,12 @@
      - Indexing follows R-standard, i.e. starts from 1
 */
 
-
 void subsetof1(char **aaa, int *sx, int *ex, int *sy, int *ey, int *ans){
 /*   Rprintf("    sx %i ex %i sy %i ey %i\n", *sx, *ex, *sy, *ey ); */
   int ii, jj, nmatch=0, nx;
   
   nx   = *ex-*sx+1;
   *ans = 0;
-
-/*   Rprintf("x: %i", nx); */
-/*   for (ii=*sx-1; ii<*ex; ii++){ */
-/*     Rprintf(" %s", aaa[ii]); */
-/*   } */
-/*   Rprintf("\n"); */
-  
-/*   Rprintf(" y: "); */
-/*   for (jj=*sy-1; jj<*ey; jj++){ */
-/*     Rprintf(" %s", aaa[jj]); */
-/*   } */
-/*   Rprintf("\n"); */
   
   for (ii=*sx-1; ii<*ex; ii++){
     /* Rprintf("    ii %i %s\n", ii, aaa[ii]);  */
@@ -126,19 +113,6 @@ void subsetof2(char **eee, int *ne,
   
   nx   = *ex-*sx+1;
   *ans = 0;
-
-  
-/*   Rprintf(" e: "); */
-/*   for (jj=0; jj<*ne; jj++){ */
-/*     Rprintf(" %s", eee[jj]); */
-/*   } */
-/*   Rprintf("\n"); */
-
-/*   Rprintf("x: %i", nx); */
-/*   for (ii=*sx-1; ii<*ex; ii++){ */
-/*     Rprintf(" %s", aaa[ii]); */
-/*   } */
-/*   Rprintf("\n"); */
   
   for (ii=0; ii<*ne; ii++){
     /* Rprintf("    ii %i %s\n", ii, aaa[ii]);   */
@@ -157,8 +131,6 @@ void subsetof2(char **eee, int *ne,
   }
   /* Rprintf(" ans:  %i \n", *ans);    */
 }
-
-
 
 void isin(char **set, int *ne, char **setlist, int *ends, int *nset, int *keepvec){
   
@@ -184,44 +156,6 @@ void isin(char **set, int *ne, char **setlist, int *ends, int *nset, int *keepve
 /* ************************************************************ */
 /* ************************************************************ */
 
-
-/* void subsetof3(char **eee, int *ne,  */
-/* 	       char **aaa, int *na, int *ans){ */
-/* /\*   Rprintf("    sx %i ex %i sy %i ey %i\n", *sx, *ex, *sy, *ey ); *\/ */
-/*   int ii, jj, nmatch=0; */
-  
-/*   *ans = 0; */
-
-  
-/* /\*   Rprintf(" e: "); *\/ */
-/* /\*   for (jj=0; jj<*ne; jj++){ *\/ */
-/* /\*     Rprintf(" %s", eee[jj]); *\/ */
-/* /\*   } *\/ */
-/* /\*   Rprintf("\n"); *\/ */
-
-/* /\*   Rprintf("x: %i", nx); *\/ */
-/* /\*   for (ii=*sx-1; ii<*ex; ii++){ *\/ */
-/* /\*     Rprintf(" %s", aaa[ii]); *\/ */
-/* /\*   } *\/ */
-/* /\*   Rprintf("\n"); *\/ */
-  
-/*   for (ii=0; ii<*ne; ii++){ */
-/*     /\* Rprintf("    ii %i %s\n", ii, aaa[ii]);   *\/ */
-/*     for (jj=0; jj<*na; jj++){ */
-/*       /\* Rprintf("      jj %i %s\n", jj, aaa[jj]);   *\/ */
-/*       if (!strcmp(eee[ii],aaa[jj])){ */
-/* 	nmatch++; */
-/* 	/\* Rprintf("  match...%i %i %s %s %i\n", ii, jj, aaa[ii], aaa[jj], nmatch);   *\/ */
-/* 	break; */
-/*       }       */
-/*     } */
-/*     if (nmatch == *ne){ */
-/*       *ans = 1; */
-/*       break; */
-/*     } */
-/*   } */
-/*   /\* Rprintf(" ans:  %i \n", *ans);    *\/ */
-/* } */
 
 
 

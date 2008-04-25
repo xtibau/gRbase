@@ -12,4 +12,5 @@ mathmark                Mathematics marks for students
 newgmData               Class "gmData" graphical meta data
 rats                    Weightloss of rats
 reinis                  Risk factors for coronary heart disease.
+uniquePrim              Utility functions for gRbase
 validVarTypes           Admissible variable types in gmData objects
