@@ -41,19 +41,57 @@ extract.power<-function(fff){
 
 
 
+
+
+
+## Turn a right-hand-sided formula into a list
+##
+## SHD, July 2008
+rhsFormula2list <- function(f){
+  if (inherits(f,"list")){
+    return(f)
+  } else {
+    if (inherits(f,"character")){
+      return(list(f))
+    }
+  }
+  rhs <- paste(f)[2]
+  f1 <- strsplit(rhs,"\\+")[[1]]
+  f2 <- unlist(lapply(f1, strsplit, "\\*|:"),rec=FALSE)
+  f2 <- lapply(f2, function(x) gsub(" +","",x))
+  f2
+}
+
+## Turn list into right-hand-sided formula
+##
+## SHD, July 2008
+list2rhsFormula <- function(f){
+  if (inherits(f,"formula"))
+    return(f)
+  as.formula(paste("~",paste(unlist(lapply(f,paste, collapse='*')),collapse="+")))
+}
+
+
+
 processFormula <- function(formula, data, marginal,
-                           type=c("Discrete","Continuous"),v.sep="*",g.sep="+"){
+                           type=c("Discrete","Continuous"), v.sep="*", g.sep="+"){
   
   get.var.of.type <- function(type){varNames(data)[varTypes(data)==type]}
+
+  if (!inherits(formula,"formula")){
+    formula <- list2rhsFormula(formula)
+  }
+
   
   used.var <- get.var.of.type(type)
   pow <- extract.power(formula)
-  
+#  print(pow); print(used.var)
 
   if (is.numeric(pow)){
     if (!missing(marginal)){
-      ##      print(used.var); print(marginal)
       used.var <- intersect(marginal,used.var)
+#      print(used.var); print(marginal)
+
     }
     if (pow==-1)
       mimf <- paste(used.var,collapse=v.sep,sep="")
@@ -75,10 +113,13 @@ processFormula <- function(formula, data, marginal,
                                         #  interactions <- gsub(g.sep,"",interactions)
   
   if (v.sep == "*") v.sep <- "[*]"
-  int.list <- strsplit(interactions, v.sep)
-  gc1   <- lapply(int.list, function(l){ match(l,used.var) })
+  varformula <- strsplit(interactions, v.sep)
   
-  value <- list(formula=formula, mimformula=mimf, numformula=gc1,
+  numformula   <- lapply(varformula, function(l){ match(l,used.var) })
+  
+  value <- list(formula=formula, mimformula=mimf,
+                numformula=numformula,
+                varformula=varformula,
                 gmData=data, varnames=used.var)
   value
 }
