@@ -6,6 +6,12 @@
 \alias{maximalSet}
 \alias{isin}
 \alias{names2pairs}
+\alias{ellK}
+\alias{list2rhsFormula}
+\alias{rhsFormula2list}
+
+
+
 
 
 %% !!

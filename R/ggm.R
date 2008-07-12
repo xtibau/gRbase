@@ -32,30 +32,8 @@ fit.ggm <- function(m, ...){
   return(value)
 }
 
-## GENERAL STUFF ##
-
-## Log-likelihood ##
-## Sigma = Covariance matrix parameter ##
-## S = sample covariance matrix ##
-## n = sample size ##
-ell <- function(Sigma, S, n){
-
-  shdet <- function(Sigma){
-    prod(eigen(Sigma)[[1]])
-  }
-  p <- dim(S)[1]
-  const <- -n*p/2*log(2*pi)
-  return(const-n/2*log(shdet(Sigma))
-         -n/2*sum(diag( solve(Sigma)%*%S )) )
-}
 
 
-## Correlation matrix ##
-## computes correlation matrix for covariance matrix ##
-#corr.matrix <- function(S){
-#  temp <- diag(1/sqrt(diag(S)))
-#  return(zapsmall(temp%*%S%*%temp))
-#}
 
 
 ## Partial correlation matrix ##
