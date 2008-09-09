@@ -2,6 +2,9 @@
 \alias{uniquePrim}
 \alias{setdiffPrim}
 \alias{unlistPrim}
+\alias{colSumsPrim}
+\alias{rowSumsPrim}
+\alias{outerPrim}
 \alias{subsetof}
 \alias{subsetofList}
 \alias{removeRedundant}

@@ -112,7 +112,7 @@ processFormula <- function(formula, data, marginal,
   interactions <- gsub(" ","",interactions,fixed=TRUE)
                                         #  interactions <- gsub(g.sep,"",interactions)
   
-  if (v.sep == "*") v.sep <- "[*]"
+  if (v.sep == "*") v.sep <- "[*|:]"
   varformula <- strsplit(interactions, v.sep)
   
   numformula   <- lapply(varformula, function(l){ match(l,used.var) })

@@ -9,8 +9,14 @@ gRbase                  The package 'gRbase': summary information
 gRfit                   Class "gRfit" - fitted graphical models
 hllm                    Hierarchical log-linear models
 mathmark                Mathematics marks for students
+MCS                     Operations on undirected and directed acyclic
+                        graphs.
 newgmData               Class "gmData" graphical meta data
+newUG                   Create undirected and directed graphs
+querygraph              Query a graph
 rats                    Weightloss of rats
 reinis                  Risk factors for coronary heart disease.
+tableSlice              Compute table margin or table slice
+triang                  Triangulation of an undirected graph
 uniquePrim              Utility functions for gRbase
 validVarTypes           Admissible variable types in gmData objects
