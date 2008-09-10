@@ -1,3 +1,15 @@
+2008-09-09 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* General table operations functions added (taken from gRain)
+
+	* Functions for specifying graphs in graphNEL format added (newUG
+	and newDAG)
+
+	* MCS, RIP and querygraph functions added. 
+	
+	* Version 0.5.0 uploaded
+	
+
 2008-07-12 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* processFormula extended
