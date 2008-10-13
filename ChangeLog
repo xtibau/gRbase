@@ -1,3 +1,9 @@
+2008-10-13 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* triangulation algorithms from gRain moved to gRbase
+
+	* Version 0.6.0 uploaded
+	
 2008-09-09 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* General table operations functions added (taken from gRain)

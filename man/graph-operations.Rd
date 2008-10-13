@@ -7,6 +7,7 @@
 \alias{as.adjMAT}
 \alias{moralize}
 \alias{print.ripOrder}
+\alias{jTree}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 
@@ -23,6 +24,7 @@ MCSMAT(amat, vn = colnames(amat), root = NULL, index = FALSE)
 RIPMAT(amat, root = NULL, nLevels = NULL) 
 as.adjMAT(object)
 moralize(object)
+jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,6 +34,12 @@ moralize(object)
   \item{nLevels}{Number of levels of the nodes in the graph}
   \item{amat}{Adjacency matrix (symmetrical) for undirected graph}
   \item{vn}{Nodes in the graph given by adjacency matrix}
+    \item{method}{The triangulation method, \code{"mcwh"} is a C
+    implementation of a minimum clique weight heuristic,
+    \code{"R"} is a corresponding R
+    implementation (experimental) }
+%%  \item{nLevels}{Number of levels of the nodes in the graph}
+  \item{control}{Currently not used}
   
 %   \item{ug}{An undirected graph (of class "ugsh")}
 %   \item{method}{The triangulation method, \code{"standard"} is a C
