@@ -1,7 +1,21 @@
 \name{gRbase-internal}
 
+%%%
+%%% Functions comming from the gRain package
+%%%
 
-%% SHD stuff
+\alias{mcwhSH}
+\alias{makeDimNames}
+\alias{ripOrderGreen}
+\alias{triangPG}
+\alias{triangR}
+
+
+
+%%%
+%%% SHD stuff
+%%%
+
 \alias{remove.redundant}
 \alias{maximalSet}
 \alias{isin}

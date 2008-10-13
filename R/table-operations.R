@@ -55,7 +55,7 @@ tableOp <- function(t1, t2, op = "*"){
     pot1   <- as.numeric(aperm(pot1, perm)) / as.numeric(t2)
     pot1[!is.finite(pot1)] <- 0
   }
-  attributes(pot1) <- list(dim=lev1[perm], dimnames=levels1[perm], class="ptab")
+  attributes(pot1) <- list(dim=lev1[perm], dimnames=levels1[perm], class="ptable")
 
   pot1 <- tablePerm(pot1, vn1)
   #print(vn1); print(vn2)
