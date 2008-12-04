@@ -1,4 +1,4 @@
-\name{cad1}
+\name{cad}
 \alias{cad1}
 \alias{cad2}
 \docType{data}

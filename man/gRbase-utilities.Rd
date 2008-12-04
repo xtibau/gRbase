@@ -1,6 +1,7 @@
 \name{gRbase-utilities}
 \alias{uniquePrim}
 \alias{setdiffPrim}
+\alias{intersectPrim}
 \alias{unlistPrim}
 \alias{colSumsPrim}
 \alias{rowSumsPrim}
@@ -18,6 +19,7 @@
 \usage{
 uniquePrim(x)
 setdiffPrim(x,y)
+intersectPrim(x,y)
 subsetof(x, y)
 subsetofList(x, l)
 unlistPrim(l, recursive = TRUE, use.names = TRUE)

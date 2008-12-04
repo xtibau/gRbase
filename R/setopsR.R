@@ -10,6 +10,7 @@ subsetofList <- function(x,l){
 }
 
 
+
 uniquePrim <- function(x)
   .Internal(unique(x, FALSE, FALSE))
 
@@ -20,6 +21,12 @@ setdiffPrim <- function (x, y)
     uniquePrim(if (length(x) || length(y)) 
                x[.Internal(match( x, y, 0, NULL)) == 0]
     else x)
+}
+
+intersectPrim <- function (x, y) 
+{
+    y <- as.vector(y)
+    .Internal(unique( y[  .Internal(match( as.vector(x), y, 0, NULL))    ], FALSE, FALSE))
 }
 
 

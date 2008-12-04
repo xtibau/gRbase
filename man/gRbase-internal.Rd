@@ -23,7 +23,8 @@
 \alias{ellK}
 \alias{list2rhsFormula}
 \alias{rhsFormula2list}
-
+\alias{which.arr.ind}
+\alias{pairs2num}
 
 
 

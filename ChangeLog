@@ -1,3 +1,25 @@
+2008-12-04 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* MCS now returns character(0) when MCS fails
+
+	* RIP now returns list() when RIP fails.
+
+	* Version 0.6.4 uploaded
+
+2008-11-05 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Functions ug(), dag(), ugList() and dagList() now replace
+	newUG(), newDAG(), newUGlist() and newDAGlist()
+
+	* A collection of graph operations have been added
+	
+	* carcassall data have been added
+
+	* edgeList and nonEdgeList functions added
+
+	* pairs2num function added
+	
+
 2008-10-13 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* triangulation algorithms from gRain moved to gRbase
