@@ -1,17 +1,16 @@
-\name{graph-operations}
+\name{graph-operations2}
 
 \alias{MCS}
 \alias{RIP}
 \alias{MCSMAT}
 \alias{RIPMAT}
-\alias{as.adjMAT}
 \alias{moralize}
 \alias{print.ripOrder}
 \alias{jTree}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 
-\title{Operations on undirected and directed acyclic graphs.}
+\title{More advanced operations on undirected and directed acyclic graphs.}
 \description{
   Make operations on undirected and directed acyclic graphs.
 }
@@ -19,10 +18,9 @@
 \usage{
 %mcs(ug,amat=as.adjmat(ug), vn=colnames(amat), root=NULL, index=FALSE)
 MCS(object, root=NULL, index=FALSE)
-RIP(object,root=NULL,nLevels=NULL)
 MCSMAT(amat, vn = colnames(amat), root = NULL, index = FALSE) 
+RIP(object,root=NULL,nLevels=NULL)
 RIPMAT(amat, root = NULL, nLevels = NULL) 
-as.adjMAT(object)
 moralize(object)
 jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list())
 }
@@ -34,38 +32,35 @@ jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list()
   \item{nLevels}{Number of levels of the nodes in the graph}
   \item{amat}{Adjacency matrix (symmetrical) for undirected graph}
   \item{vn}{Nodes in the graph given by adjacency matrix}
-    \item{method}{The triangulation method, \code{"mcwh"} is a C
+  \item{method}{The triangulation method, \code{"mcwh"} is a C
     implementation of a minimum clique weight heuristic,
     \code{"R"} is a corresponding R
     implementation (experimental) }
-%%  \item{nLevels}{Number of levels of the nodes in the graph}
   \item{control}{Currently not used}
-  
-%   \item{ug}{An undirected graph (of class "ugsh")}
-%   \item{method}{The triangulation method, \code{"standard"} is a C
-%     implementation of a minimum clique weight heuristic,
-%     \code{"mcwh"} is a Fortran implementation of the same (kindly
-%     provided by Peter Green) and \code{"R"} is a corresponding R
-%     implementation. }
-%   \item{matrix}{Should the triangulated graph be returned as an
-%     adjacency matrix}
-%   \item{amat}{The graph represented as an adjancecy matrix}
-%   \item{vn}{The node names as they appear in the adjancecy matrix}
-%   \item{control}{Currently not used}
-%   \item{\dots}{Currently not used.}
 }
-%\details{
-  %The jTree (for "junction tree") is just a wrapper for a call of
-  %\code{triangulate} followed by a call of \code{ripOrder}.
-%}
-%\value{
-%   \code{moralize} and   \code{triangulate} returns objects of class
-%   "graphsh".
+\details{
+  The \code{RIP} and \code{RIPMAT} functions return a RIP ordering of
+  the cliques. This is obtained by first ordering the variables linearly
+  with maximum cardinality search (by \code{MCS}). The root argument is
+  transfered to \code{MCS} as a way of controlling which clique will be
+  the first in the RIP ordering. 
+  
+  The jTree (for "junction tree") is just a wrapper for a call of
+  \code{triangulate} followed by a call of \code{RIP}.
 
-%   \code{mcs} returns a vector or NULL.
+  
+}
+\value{
+   \code{moralize} and   \code{triangulate} returns objects of class
+   "graphsh".
 
-%   \code{ripOrder} returns a list with cliques, separators etc.
-%}
+   \code{MCS} and \code{MCSMAT} return a vector with a linear ordering
+   (obtained by maximum cardinality search) of the variables or
+   character(0) if such an ordering can not be created. 
+
+   \code{RIP} and \code{RIPMAT} returns a list with cliques, separators
+   etc. if a RIP ordering can be made and an empty list if not. 
+}
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, sorenh@agrsci.dk}
 %\note{ ~~further notes~~ 
@@ -73,27 +68,27 @@ jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list()
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 \seealso{
-  \code{\link{newUG}}, 
-  \code{\link{newDAG}}
+  \code{\link{ug}}, 
+  \code{\link{dag}}
 }
 \examples{
 
 ## Undirected graphs
 ##
-ug <- newUG(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
-edges(ug)
-nodes(ug)
-MCS(ug)
-MCSMAT(as.adjMAT(ug))
-RIP(ug)
-RIPMAT(as.adjMAT(ug))
+ugr <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
+edges(ugr)
+nodes(ugr)
+MCS(ugr)
+MCSMAT(as.adjMAT(ugr))
+RIP(ugr)
+RIPMAT(as.adjMAT(ugr))
 
 ## Directed graphs
 ##
-#dag <- newdag(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
-#edges(dag)
-#nodes(dag)
-#moralize(dag)
+dagr <- dag(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
+edges(dagr)
+nodes(dagr)
+moralize(dagr)
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the

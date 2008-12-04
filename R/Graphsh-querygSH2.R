@@ -10,28 +10,27 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
     choices=c( 
       ## From graph / RBGL packages
       ##
-      "maxClique","cliques", 
-      "connectedComp","concomp",
+      "maxClique", 
+      "connectedComp",
       "separates",
-      "adj",
-      "closure",  "cl",
-      "ne",
-      "is.triangulated", "is.chordal",
+      "adj", 
+      "is.triangulated", 
       "subgraph",
       "nodes",
       "edges",                          
       
       ## SHD functions
       ##
-      "ancestors", "an",
+      "ancestors", 
       "ancestralGraph",
       "ancestralSet",
-      "children",  "ch",
+      "children",  
+      "closure",  
       "edgePairs", 
       "is.decomposition",
       "is.complete",
       "is.simplicial",
-      "parents",   "pa",      
+      "parents", 
       "simplicialNodes"
       ))
   
@@ -41,11 +40,11 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
          ## Functions from graph/RBGL package here.
          ##
 
-         "maxClique"=,"cliques"={
+         "maxClique"={
            maxClique(object)$maxCliques
          },
 
-         "connectedComp"=,"concomp"={
+         "connectedComp"={
            connectedComp(object)
          },
 
@@ -56,12 +55,8 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
          "adj"={
            adj(object, set)
          },
-
-         "closure"=, "cl"={
-           unique(c(set, unlist(adj(object, set))))
-         },
                   
-         "is.triangulated"=,"is.chordal"={
+         "is.triangulated"={
            is.triangulated(object)
          },
          
@@ -81,19 +76,27 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
          
          ## SHD graph functions here
          "ancestors"=,"an"={
-           .ancestors(object, set)
+           ancestors(set, object)
          },
 
          "ancestralGraph"={
-           subGraph(.ancestral_set(object, set), object)
+           ancestralGraph(set, object)
+           ##subGraph(.ancestral_set(object, set), object)
          },         
          "ancestralSet"={
-           .ancestral_set(object, set)
+           ancestralSet(set, object)
          },
                   
-         "children"=,"ch"={
-           ch <- structure(unlist(edges(object)[set]), names=NULL)
-           if (length(ch)) ch else NULL
+         "children"={
+           children(set, object)
+           ##ch <- structure(unlist(edges(object)[set]), names=NULL)
+           ##if (length(ch)) ch else NULL
+         },
+
+         
+         "closure"={
+           closure(set, object)
+           ##unique(c(set, unlist(adj(object, set))))
          },
 
          "edgePairs"={
@@ -101,47 +104,33 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
          },
          
          "is.decomposition"={
-           vn <- uniquePrim(c(set, set2, set3))
-           sg <- subGraph(vn, object)
-           separates(set, set2, set3, sg) & .is_complete(sg, set3)
+           is.decomposition(set, set2, set3, object)
+           ## vn <- uniquePrim(c(set, set2, set3))
+           ##            sg <- subGraph(vn, object)
+           ##            separates(set, set2, set3, sg) & .is_complete(sg, set3)
          },
 
          "is.complete"={
-           .is_complete(object, set)
+           is.complete(object, set)
          },
          
          "is.simplicial"={
-           .is_simplicial(object, set)
+           is.simplicial(set, object)
          },
          
-         "parents"=,"pa"={
-           .parents(object,set)
+         "parents"={
+           parents(set, object)
          },
 
          "simplicialNodes"={
-           .simplicialNodes(object)
-         }
-         
+           simplicialNodes(object)
+         }         
          )  
 }
 
 
-.is_simplicial <- function(object, set){
-  x <- unlist(adj(object,set))
-  .is_complete(subGraph(x, object), x)
-}
 
-
-.simplicialNodes <- function(object){
-  nodes <- nodes(object)
-  b     <- unlistPrim(lapply(nodes, function(s) .is_simplicial(object,s)))
-  sim   <- nodes[b]
-  return(sim)
-}
-
-
-
-.ancestors <- function(object, set){
+ancestors <- function(set, object){
   An <- setorig <- set
   x <- as.adjMAT(object)
   x <- x[-match(set, rownames(x)),]
@@ -157,30 +146,11 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
   setdiff(An, setorig)
 }
 
-
-
-## Does not check for graphNEL and directed
-##
-.parents <- function(object,set){
-  amat <- as.adjMAT(object)
-  pa <- names(which(amat[,set]>0))
-  pa <- setdiff(pa,set)
-  if (length(pa)) pa else NULL
+ancestralGraph <- function(set, object){
+  subGraph(ancestralSet(set, object), object)
 }
 
-## Does not check for graphNEL and undirected
-##
-.is_complete <- function(object, set=NULL){
-
-  if (is.null(set))
-    submat <- as.adjMAT(object)
-  else
-    submat <- as.adjMAT(object)[set,set]
-  all(submat[upper.tri(submat)]>0)
-}
-
-
-.ancestral_set <- function(object, set){
+ancestralSet <- function(set, object){
   if (missing(set))
     stop("'set' must be given..\n")
   amat <- as.adjMAT(object)
@@ -205,3 +175,73 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
   }
   names(an[an>0])
 }
+
+
+children <- function(set, object){
+  ch <- structure(unlist(edges(object)[set]), names=NULL)
+  if (length(ch)) ch else NULL
+}
+
+
+closure <- function(set, object){
+  uniquePrim(c(set, unlist(adj(object, set))))
+}
+
+## Should be declared as a method for graphNEL's
+##
+edgePairs <- function(object){
+  if(!is(object, "graphNEL"))
+    stop("Must be a graphNEL object...")
+  
+  ed  <- edges(object)
+  ed  <- ed[lapply(ed,length)>0]
+  ed2 <- mapply(function(a,b)names2pairs(a,b,sort=FALSE), ed,names(ed),SIMPLIFY=FALSE)
+  ed2 <- structure(unlist(ed2, recursive=FALSE), names=NULL)
+  ed2 <- remove.redundant(ed2)
+  if(length(ed2)==0)
+    return(NULL)
+  ed2
+}
+
+
+is.complete <- function(object, set=NULL){  
+  if (is.null(set))
+    submat <- as.adjMAT(object)
+  else
+    submat <- as.adjMAT(object)[set,set]
+  all(submat[upper.tri(submat)]>0)
+}
+
+is.decomposition <- function(set, set2, set3, object){
+  vn <- uniquePrim(c(set, set2, set3))
+  sg <- subGraph(vn, object)
+  separates(set, set2, set3, sg) & is.complete(sg, set3)
+}
+
+
+is.simplicial <- function(set, object){
+  x <- unlist(adj(object,set))
+  is.complete(subGraph(x, object), x)
+}
+
+parents <- function(set, object){
+  amat <- as.adjMAT(object)
+  pa <- names(which(amat[,set]>0))
+  pa <- setdiff(pa,set)
+  if (length(pa)) pa else NULL
+}
+
+
+
+simplicialNodes <- function(object){
+  nodes <- nodes(object)
+  b     <- unlistPrim(lapply(nodes, function(s) is.simplicial(s, object)))
+  sim   <- nodes[b]
+  return(sim)
+}
+
+
+
+
+
+

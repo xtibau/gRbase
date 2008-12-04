@@ -4,7 +4,11 @@
 \alias{newDAG}
 \alias{newUGlist}
 \alias{newDAGlist}
-\alias{edgePairs}
+
+\alias{ug}
+\alias{dag}
+\alias{ugList}
+\alias{dagList}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Create undirected and directed graphs}
@@ -13,19 +17,23 @@
   graphNEL objects in the \code{graph} package.
 }
 \usage{
-newUG(..., short = FALSE)
-newDAG(..., short = FALSE)
-edgePairs(object)
+newUG(...)
+newDAG(...)
+ug(...)
+dag(...)
+ugList(x)
+dagList(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{\dots}{A generating class for a graph, see examples below}
-  \item{short}{Not used}
-  \item{object}{A graph of class 'graphNEL'}
+  \item{x}{A list containing a generating class for a graph, see examples below}
 }
-%\details{
-%  
-%}
+\details{
+  Functions dag() and ug() were originally called newDAG() and
+  newUG(). The latter functions are retained in the package for backward
+  compatibility, but they will be removed at some point of time in the future. 
+}
 \value{
   A 'graphNEL' object.
 }
@@ -37,24 +45,36 @@ edgePairs(object)
 % }
 %\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
-ug <- newUG(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+ugr <- newUG(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+ugr <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 
-ug <- newUG(~me:ve:al,~al:an:st)
+ugr <- newUG(~me:ve:al,~al:an:st)
+ugr <- ug(~me:ve:al,~al:an:st)
 
-ug <- newUG(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+ugr <- newUG(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+ugr <- ug(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st")) 
 
-ug <- newUG(~me:ve:al, c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+ugr <- newUG(~me:ve:al, c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+ugr <- ug(~me:ve:al, c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 
-dag <- newDAG(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
-dag <- newDAG(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+dagr <- newDAG(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+dagr <- dag(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 
-dag2 <- newDAG(~me:ve:al,~ve:al:an)
+dagr <- newDAG(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+dagr <- dag(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 
-edges(ug)
-nodes(ug)
+dagr <- newDAG(~me:ve:al,~ve:al:an)
+dagr <- dag(~me:ve:al,~ve:al:an)
 
-edges(dag)
-nodes(dag)
+edges(ugr)
+nodes(ugr)
+
+edges(dagr)
+nodes(dagr)
+
+ugList(list(~me:ve:al,~al:an:st))
+dagList(list(~me:ve:al,~ve:al:an))
+
 
 
 }

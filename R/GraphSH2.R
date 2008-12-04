@@ -1,4 +1,4 @@
-newUGlist <- function(x=NULL, ..., short=FALSE){
+ugList <- newUGlist <- function(x){
 #  cat("newUGlist - working\n")
   
   isForm <-sapply(x, inherits, "formula")
@@ -31,12 +31,12 @@ newUGlist <- function(x=NULL, ..., short=FALSE){
 }
 
 
-newUG <- function(..., short=FALSE){
-  newUGlist(list(...),short=short)
+ug <- newUG <- function(...){
+  newUGlist(list(...))
 }
 
 
-newDAGlist <- function(x=NULL, ..., short=FALSE){
+dagList <- newDAGlist <- function(x){
   isForm <-sapply(x, inherits, "formula")
   flist <- x[isForm]
 
@@ -93,30 +93,11 @@ newDAGlist <- function(x=NULL, ..., short=FALSE){
 }
 
 
-newDAG <- function(...,short=FALSE){
-  newDAGlist(list(...),short=short)
+dag <- newDAG <- function(...){
+  newDAGlist(list(...))
 }
 
 
-
-
-
-
-## Should be declared as a method for graphNEL's
-##
-edgePairs <- function(object){
-  if(!is(object, "graphNEL"))
-    stop("Must be a graphNEL object...")
-  
-  ed  <- edges(object)
-  ed  <- ed[lapply(ed,length)>0]
-  ed2 <- mapply(function(a,b)names2pairs(a,b,sort=FALSE), ed,names(ed),SIMPLIFY=FALSE)
-  ed2 <- structure(unlist(ed2, recursive=FALSE), names=NULL)
-  ed2 <- remove.redundant(ed2)
-  if(length(ed2)==0)
-    return(NULL)
-  ed2
-}
 
 as.adjMAT <- function(object){
   if(!is(object, "graphNEL"))

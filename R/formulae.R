@@ -15,7 +15,6 @@ all.subsets <- function(x,g.sep="+"){
 
 selectOrder  <- function(x,order=2){
   v <- all.subsets(x)
-  ##print(x); print(v); print(order)
   value <- v[lapply(v,length)==as.numeric(order)]
   return(value)
 }
@@ -28,7 +27,6 @@ extract.power<-function(fff){
   } else {
     has.hat <- match("^",mimf.split)
     sub <- unlist(strsplit(mimf,"\\^"))
-    ##print(sub)
     if (!is.na(has.hat)){
       pow <- ifelse (sub[2]==".", -1, as.numeric(sub[2]))
     }
@@ -38,9 +36,6 @@ extract.power<-function(fff){
   }
   return(pow)
 }
-
-
-
 
 
 
@@ -69,59 +64,6 @@ list2rhsFormula <- function(f){
   if (inherits(f,"formula"))
     return(f)
   as.formula(paste("~",paste(unlist(lapply(f,paste, collapse='*')),collapse="+")))
-}
-
-
-
-processFormula <- function(formula, data, marginal,
-                           type=c("Discrete","Continuous"), v.sep="*", g.sep="+"){
-  
-  get.var.of.type <- function(type){varNames(data)[varTypes(data)==type]}
-
-  if (!inherits(formula,"formula")){
-    formula <- list2rhsFormula(formula)
-  }
-
-  
-  used.var <- get.var.of.type(type)
-  pow <- extract.power(formula)
-#  print(pow); print(used.var)
-
-  if (is.numeric(pow)){
-    if (!missing(marginal)){
-      used.var <- intersect(marginal,used.var)
-#      print(used.var); print(marginal)
-
-    }
-    if (pow==-1)
-      mimf <- paste(used.var,collapse=v.sep,sep="")
-    else{
-      pow <- min(c(pow, length(used.var)))
-      tmp <- selectOrder(used.var, pow)
-      mimf <- paste(unlist(lapply(tmp, paste, collapse=v.sep)),collapse=g.sep,sep="")
-      
-    }
-  } else {
-    mf    <- as.formula(formula)
-    mimf <-  paste(deparse(mf[[2]]), collapse="")
-  }
-
-  formula <- formula(paste("~",mimf,sep=""))
-
-  interactions <- strsplit(mimf,paste("\\",g.sep,sep=""))[[1]]
-  interactions <- gsub(" ","",interactions,fixed=TRUE)
-                                        #  interactions <- gsub(g.sep,"",interactions)
-  
-  if (v.sep == "*") v.sep <- "[*|:]"
-  varformula <- strsplit(interactions, v.sep)
-  
-  numformula   <- lapply(varformula, function(l){ match(l,used.var) })
-  
-  value <- list(formula=formula, mimformula=mimf,
-                numformula=numformula,
-                varformula=varformula,
-                gmData=data, varnames=used.var)
-  value
 }
 
 

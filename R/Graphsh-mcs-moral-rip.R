@@ -39,7 +39,8 @@ MCSMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
   
   is.perfect <- TRUE
 
-  if (!is.null(root)){ # Make 'root' the variables to be searched first when finding elimination order.
+  ## Make 'root' the variables to be searched first when finding elimination order.
+  if (!is.null(root)){ 
     vn2      <- c(root, setdiff(vn, root))
     neworder <- match(vn2, vn)
     amat     <- amat[neworder,neworder]
@@ -100,7 +101,7 @@ MCSMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
     else
       return(vn[ans])
   } else {
-    return(NULL)
+    return(character(0))
   }
 }
 
@@ -122,22 +123,21 @@ RIP <- function(object, root=NULL, nLevels=NULL){
   RIPMAT(amat, root=root, nLevels=nLevels)
 }
 RIPMAT <- function(amat, root=NULL, nLevels=NULL){
-
-  #subsetof3 <- function(g1, g2){
-  #  all(.Internal(match( g1, g2, 0))>0)
-  #}
   
   t0 <- proc.time()
   vn <- colnames(amat)
                                         #cat("finding amat", proc.time()-t0,"\n"); t0 <- proc.time()
-  #mcidx <- mcs(ug,amat=amat, root=root, index=TRUE)
+                                        #mcidx <- mcs(ug,amat=amat, root=root, index=TRUE)
   mcidx <- MCSMAT(amat=amat, root=root, index=TRUE)
                                         #cat("finding mcs", proc.time()-t0,"\n"); t0 <- proc.time()
 
   #cat("mcs", proc.time()-t0,"\n"); t0 <- proc.time()
-  if (is.null(mcidx))
-    return(NULL)
+  ##if (is.null(mcidx))
+  ##  return(NULL)
 
+  if (length(mcidx)==0)
+    return(list())
+  
   len <- length(mcidx)
   ladder <- is.ladder <- rep.int(0, len)
   is.ladder[len] <- 1

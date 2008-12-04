@@ -25,8 +25,8 @@ querygraph(object, type, set = NULL, set2 = NULL, set3 = NULL)
     \item {ancestralSet:} Ancestral set of \code{set}
     \item {cl:} Closure of \code{set}
     \item {ch:} Children of \code{set}
-    \item {cliques,maxClique:} The cliques
-    \item {connectedComp,concomp:} The connected components
+    \item {maxClique:} The cliques
+    \item {connectedComp} The connected components
     \item {edges:} Edges of graph
     \item {ne:} Neighbours of \code{set}
     \item {nodes:} Nodes of graph
@@ -51,8 +51,8 @@ querygraph(object, type, set = NULL, set2 = NULL, set3 = NULL)
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 \seealso{
-  \code{\link{newUG}},
-  \code{\link{newDAG}}
+  \code{\link{ug}},
+  \code{\link{dag}}
 }
 \examples{
 
@@ -64,16 +64,15 @@ querygraph(ug0, "edges")
 querygraph(ug0, "subgraph", c("b","c","d","e"))
 
 querygraph(ug0, "adj", "c")
-querygraph(ug0, "cl", "c") 
+querygraph(ug0, "closure", "c") 
 querygraph(ug0, "is.simplicial", "b")
 querygraph(ug0, "simplicialNodes")
 
 querygraph(ug0, "is.complete")
 querygraph(ug0, "is.complete", c("b","c","d"))
-querygraph(ug0, "cliques")
+querygraph(ug0, "maxClique")
 
 querygraph(ug0, "is.triangulated")
-
 querygraph(ug0, "is.decomposition", "a","d",c("b","c"))
 
 }
