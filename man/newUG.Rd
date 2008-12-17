@@ -1,10 +1,5 @@
 \name{newUG}
 
-\alias{newUG}
-\alias{newDAG}
-\alias{newUGlist}
-\alias{newDAGlist}
-
 \alias{ug}
 \alias{dag}
 \alias{ugList}
@@ -17,8 +12,6 @@
   graphNEL objects in the \code{graph} package.
 }
 \usage{
-newUG(...)
-newDAG(...)
 ug(...)
 dag(...)
 ugList(x)
@@ -45,25 +38,21 @@ dagList(x)
 % }
 %\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
-ugr <- newUG(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 ugr <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 
-ugr <- newUG(~me:ve:al,~al:an:st)
 ugr <- ug(~me:ve:al,~al:an:st)
 
-ugr <- newUG(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 ugr <- ug(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st")) 
 
-ugr <- newUG(~me:ve:al, c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 ugr <- ug(~me:ve:al, c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 
-dagr <- newDAG(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+
 dagr <- dag(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 
-dagr <- newDAG(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+
 dagr <- dag(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 
-dagr <- newDAG(~me:ve:al,~ve:al:an)
+
 dagr <- dag(~me:ve:al,~ve:al:an)
 
 edges(ugr)

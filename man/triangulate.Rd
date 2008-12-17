@@ -40,8 +40,8 @@ length(nodes(object))), matrix=FALSE)
   \code{\link{RIP}}
 }
 \examples{
-ug <- newUG(~a:b+b:c+c:d+d:e+e:f+f:a)
-triangulate(ug)
+ugr <- ug(~a:b+b:c+c:d+d:e+e:f+f:a)
+triangulate(ugr)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -7,12 +7,9 @@
 \alias{nLevels.ptable}
 \alias{valueLabels.ptable}
 
-
 \alias{varNames.array}
 \alias{nLevels.array}
 \alias{valueLabels.array}
-
-
 
 \alias{print.ptable}
 \alias{tableMarginPrim}
@@ -58,8 +55,8 @@ tableMarginPrim(t1, margin, normalize=FALSE)
   \code{normalize="all"} then the sum over all entries of f(a,b,c) is
   one. 
   
-  If \code{smooth} is non--zero then zero entries of
-  \code{values} are replaced with \code{smooth} before normalization takes place.
+  If \code{smooth} is positive then \code{smooth} is added to 
+  \code{values}  before normalization takes place.
 
 }
 \value{

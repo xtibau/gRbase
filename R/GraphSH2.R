@@ -1,5 +1,4 @@
-ugList <- newUGlist <- function(x){
-#  cat("newUGlist - working\n")
+ugList <-  function(x){
   
   isForm <-sapply(x, inherits, "formula")
   
@@ -31,12 +30,12 @@ ugList <- newUGlist <- function(x){
 }
 
 
-ug <- newUG <- function(...){
-  newUGlist(list(...))
+ug <- function(...){
+  ugList(list(...))
 }
 
 
-dagList <- newDAGlist <- function(x){
+dagList  <- function(x){
   isForm <-sapply(x, inherits, "formula")
   flist <- x[isForm]
 
@@ -93,8 +92,8 @@ dagList <- newDAGlist <- function(x){
 }
 
 
-dag <- newDAG <- function(...){
-  newDAGlist(list(...))
+dag <- function(...){
+  dagList(list(...))
 }
 
 

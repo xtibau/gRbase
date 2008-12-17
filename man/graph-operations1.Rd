@@ -7,7 +7,7 @@
 \alias{ancestralSet}
 \alias{children}
 \alias{closure}
-\alias{edgePairs}
+
 \alias{edgeList}
 \alias{nonEdgeList}
 \alias{is.complete}
@@ -30,7 +30,6 @@ ancestralGraph(set, object)
 ancestralSet(set, object)
 children(set, object)
 closure(set, object)
-edgePairs(object)
 edgeList(object,matrix=FALSE)
 nonEdgeList(object, matrix=FALSE)
 is.complete(object, set)

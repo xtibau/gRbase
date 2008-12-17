@@ -19,9 +19,8 @@ ptable <- function(varNames, nLevels, values=1, normalize=c("none","first","all"
 
   normalize <- match.arg(normalize, choices=c("none","first","all"))
 
-  ##cat("ptable:", smooth, "\n")
-  if (!identical(smooth,0)){
-    values[values==0] <- smooth
+  if (smooth>0){
+    values <- values + smooth
   }
 
   ans <- array(values, dim=nLevels, dimnames=dimnames)
