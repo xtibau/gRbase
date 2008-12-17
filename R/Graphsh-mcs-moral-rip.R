@@ -40,6 +40,8 @@ MCSMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
   is.perfect <- TRUE
 
   ## Make 'root' the variables to be searched first when finding elimination order.
+
+  vn.orig <- vn
   if (!is.null(root)){ 
     vn2      <- c(root, setdiff(vn, root))
     neworder <- match(vn2, vn)
@@ -91,15 +93,15 @@ MCSMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
       cnode <- which.max(nnvec * passive)
     }
     vn[ans]
-
-
   }
+
+  names(ans)<-vn
   
   if (is.perfect){
     if (index)
-      return(ans)
+      return(match(vn[ans],vn.orig))
     else
-      return(vn[ans])
+      return(vn.orig[match(vn[ans],vn.orig)])
   } else {
     return(character(0))
   }
@@ -122,6 +124,7 @@ RIP <- function(object, root=NULL, nLevels=NULL){
   amat <- as.adjMAT(object)
   RIPMAT(amat, root=root, nLevels=nLevels)
 }
+
 RIPMAT <- function(amat, root=NULL, nLevels=NULL){
   
   t0 <- proc.time()
@@ -132,8 +135,9 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
                                         #cat("finding mcs", proc.time()-t0,"\n"); t0 <- proc.time()
 
   #cat("mcs", proc.time()-t0,"\n"); t0 <- proc.time()
-  ##if (is.null(mcidx))
-  ##  return(NULL)
+
+##   cat("root:", root, "\n")
+##   cat("mcidx:", mcidx,"\n")
 
   if (length(mcidx)==0)
     return(list())
@@ -201,7 +205,7 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
     structure(list(nodes      =vn[mcidx],               
                    cliques    =cq,
                    separators =sp,
-                   pa         =pa,
+                   parents    =pa,
                    nLevels    =nLevels
                    ),
               class="ripOrder")
@@ -213,13 +217,13 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
 
 print.ripOrder <- function(x, ...){
   idx <- 1:length(x$cliques)
-  cat("Cliques\n")
+  cat("cliques\n")
   mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$cliques, idx)
   
-  cat("Separators\n")
+  cat("separators\n")
   mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$separators, idx)
   
-  cat("Parents\n")
+  cat("parents\n")
   mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$pa, idx)
   
 #  cat("Children\n")

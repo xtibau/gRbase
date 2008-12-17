@@ -31,6 +31,7 @@ querygraph(object, type, set = NULL, set2 = NULL, set3 = NULL)
     \item {ne:} Neighbours of \code{set}
     \item {nodes:} Nodes of graph
     \item {is.complete:}
+    \item {edgeList}
     \item {is.simplicial:}
     \item {is.triangulated:}
     \item {pa:} Parents of \code{set}
@@ -56,7 +57,7 @@ querygraph(object, type, set = NULL, set2 = NULL, set3 = NULL)
 }
 \examples{
 
-ug0 <- newUG(~a:b, ~b:c:d, ~e)
+ug0 <- ug(~a:b, ~b:c:d, ~e)
 
 querygraph(ug0, "nodes")
 querygraph(ug0, "edges")

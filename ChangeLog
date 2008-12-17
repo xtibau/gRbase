@@ -1,3 +1,21 @@
+2008-12-17 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* newDAG, newUG etc are now removed
+
+	* edgePairs now removed
+
+	* Version 0.6.6 uploaded
+
+
+2008-12-11 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* cov2pcor function added. 
+
+	* MCS function fixed to return indices correctly when 'root'
+	argument is used.
+
+	* Version 0.6.5 uploaded	
+
 2008-12-04 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* MCS now returns character(0) when MCS fails

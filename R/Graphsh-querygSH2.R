@@ -26,7 +26,7 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
       "ancestralSet",
       "children",  
       "closure",  
-      "edgePairs", 
+      "edgeList", 
       "is.decomposition",
       "is.complete",
       "is.simplicial",
@@ -99,8 +99,8 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
            ##unique(c(set, unlist(adj(object, set))))
          },
 
-         "edgePairs"={
-           edgePairs(object)
+         "edgeList"={
+           edgeList(object)
          },
          
          "is.decomposition"={
@@ -189,19 +189,37 @@ closure <- function(set, object){
 
 ## Should be declared as a method for graphNEL's
 ##
-edgePairs <- function(object){
-  if(!is(object, "graphNEL"))
-    stop("Must be a graphNEL object...")
+## edgePairs <- function(object){
+##   if(!is(object, "graphNEL"))
+##     stop("Must be a graphNEL object...")
   
-  ed  <- edges(object)
-  ed  <- ed[lapply(ed,length)>0]
-  ed2 <- mapply(function(a,b)names2pairs(a,b,sort=FALSE), ed,names(ed),SIMPLIFY=FALSE)
-  ed2 <- structure(unlist(ed2, recursive=FALSE), names=NULL)
-  ed2 <- remove.redundant(ed2)
-  if(length(ed2)==0)
-    return(NULL)
-  ed2
+##   ed  <- edges(object)
+##   ed  <- ed[lapply(ed,length)>0]
+##   ed2 <- mapply(function(a,b)names2pairs(a,b,sort=FALSE), ed,names(ed),SIMPLIFY=FALSE)
+##   ed2 <- structure(unlist(ed2, recursive=FALSE), names=NULL)
+##   ed2 <- remove.redundant(ed2)
+##   if(length(ed2)==0)
+##     return(NULL)
+##   ed2
+## }
+
+
+
+## Returns edges (pairs of vertices) of graph object.
+## Based on lower triangular part of adjacency matrix; 
+## hence for directed graphs it has the form (from, to)
+## FIXME: Should check for graphNEL
+edgeList <- function(object,matrix=FALSE){
+  m <- as.adjMAT(object)
+  if (edgemode(object)=="undirected")
+    m[upper.tri(m)] <- 0
+  epp <- which.arr.ind(m)
+  ans <- matrix(colnames(m)[epp],nc=2)
+  if (!matrix)
+    ans<- split(ans,row(ans))
+  ans
 }
+
 
 
 is.complete <- function(object, set=NULL){  

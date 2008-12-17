@@ -9,19 +9,6 @@ which.arr.ind <- function(m){
   epp
 }
 
-## Returns edges (pairs of vertices) of graph object.
-## Based on lower triangular part of adjacency matrix; 
-## hence for directed graphs it has the form (from, to)
-edgeList <- function(object,matrix=FALSE){
-  m <- as.adjMAT(object)
-  m[upper.tri(m)] <- 0
-  epp <- which.arr.ind(m)
-  ans <- matrix(colnames(m)[epp],nc=2)
-  if (!matrix)
-    ans<- split(ans,row(ans))
-  ans
-}
-
 ## Returns edges (pairs of vertices) not in graph object.
 ## Based on lower triangular part of adjacency matrix; 
 ## hence for directed graphs it has the form (from, to)

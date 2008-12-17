@@ -1,6 +1,4 @@
 
-
-
 ## GENERAL STUFF ##
 
 ## Log-likelihood ##
@@ -24,3 +22,12 @@ ellK <- function (K, S, n)
     value <- (n/2) * (log(det(K)) - sum(rowSums(K * S)))
     return(value)
 }
+
+cov2pcor <- function(V){
+  ans <- -cov2cor(solve(V))
+  diag(ans) <- -diag(ans)
+  ans
+  }
+
+
+
