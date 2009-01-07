@@ -8,6 +8,7 @@
 \alias{children}
 \alias{closure}
 
+\alias{vpav}
 \alias{edgeList}
 \alias{nonEdgeList}
 \alias{is.complete}
@@ -24,7 +25,6 @@
 
 \usage{
 as.adjMAT(object)
-
 ancestors(set, object)
 ancestralGraph(set, object)
 ancestralSet(set, object)
@@ -32,6 +32,7 @@ children(set, object)
 closure(set, object)
 edgeList(object,matrix=FALSE)
 nonEdgeList(object, matrix=FALSE)
+vpav(object)
 is.complete(object, set)
 is.decomposition(set, set2, set3, object)
 is.simplicial(set, object)

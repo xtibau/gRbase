@@ -43,8 +43,6 @@
 
 \alias{is.graphical}
 \alias{dual.rep}
-\alias{delete.edge}
-\alias{add.edge}
 %% !!
 
 %% ggm related stuff

@@ -31,7 +31,8 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
       "is.complete",
       "is.simplicial",
       "parents", 
-      "simplicialNodes"
+      "simplicialNodes",
+      "vpav"
       ))
   
 ##  nelobject <- .grash2nel(object)
@@ -124,7 +125,11 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
 
          "simplicialNodes"={
            simplicialNodes(object)
-         }         
+         },
+
+         "vpav"={
+           vpav(object)
+         }
          )  
 }
 
@@ -232,8 +237,13 @@ is.complete <- function(object, set=NULL){
 
 is.decomposition <- function(set, set2, set3, object){
   vn <- uniquePrim(c(set, set2, set3))
-  sg <- subGraph(vn, object)
-  separates(set, set2, set3, sg) & is.complete(sg, set3)
+  if (setequal(vn, nodes(object))){
+    #sg <- subGraph(vn, object)
+    #separates(set, set2, set3, sg) & is.complete(sg, set3)
+    separates(set, set2, set3, object) & is.complete(object, set3)
+  } else {
+    FALSE
+  }
 }
 
 
@@ -259,6 +269,18 @@ simplicialNodes <- function(object){
 }
 
 
+vpav <- function(object){
+  if (edgemode(object)=="undirected")
+    stop("Graph is undirected; (v,pa(v)) does not exist...\n")
+  amat <- as.adjMAT(object)
+  vn <- rownames(amat) 
+  ans <- vector("list", length(vn))
+  for (ii in seq_along(vn)){
+    ans[[ii]] <- c(vn[ii], vn[amat[,ii]>0])
+  }
+  names(ans) <- vn
+  return(ans)
+}
 
 
 

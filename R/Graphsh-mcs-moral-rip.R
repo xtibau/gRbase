@@ -95,9 +95,10 @@ MCSMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
     vn[ans]
   }
 
-  names(ans)<-vn
   
   if (is.perfect){
+    names(ans)<-vn
+
     if (index)
       return(match(vn[ans],vn.orig))
     else
@@ -169,15 +170,16 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
     }
   }
   
-  cq <- rev(cq)
-  cq <- lapply(cq, function(x) {names(x)<-NULL; x})
-
+  cq <- lapply(rev(cq), function(x) {names(x)<-NULL; x})
   
   #cat("finding cliques", proc.time()-t0,"\n"); t0 <- proc.time()
   
   ncq <- length(cq)
   sp  <- as.list(rep(NA, ncq))
-  pa  <- rep(NA, ncq)
+  pa  <- rep(0, ncq)
+
+  #pa[1]<-character(0)
+  
   if (ncq>1){
     for (ii in 2:ncq){
       paset <- unlist(cq[1:(ii-1)])
@@ -194,12 +196,12 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
     }
   }
   #cat("finding sep/pa", proc.time()-t0,"\n"); t0 <- proc.time()
+
+  sp <- lapply(sp, function(x)if (any(is.na(x))) character(0) else vn[x])
+  cq <- lapply(cq, function(a) vn[a])
   
-  sp[sapply(sp, length)==0] <- NA
-
-  cq    <- lapply(cq, function(a) vn[a])
-  sp    <- lapply(sp, function(a) if(length(a)==1 && is.na(a)) NA else vn[a])
-
+  ##sp    <- lapply(sp, function(a) if(length(a)==1 && is.na(a)) NA else vn[a])
+  ##  sp    <- lapply(sp, function(a) if(length(a)==0 ) character(0) else vn[a])
   
   rip2 <-
     structure(list(nodes      =vn[mcidx],               
@@ -211,6 +213,10 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
               class="ripOrder")
   
   return(rip2)
+
+  ##sp[sapply(sp, length)==0] <- NA
+  ##sp[unlistPrim(lapply(sp, function(x)any(is.na(x))))] <- character(0)
+  ##sp[sapply(sp, length)==0] <- character(0)
 
 }
 

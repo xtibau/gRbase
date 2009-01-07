@@ -1,3 +1,19 @@
+2009-01-05 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Bug fixed in MCS (failed if graph was not chordal)
+
+	* add.edge and delete.edge renamed to .add.edge and .delete.edge
+	to avoid conflicts with RHugin
+
+	* Version 0.7.0 uploaded
+	
+
+2008-12-17 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* is.decomposition fixed.
+
+	
+
 2008-12-17 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* newDAG, newUG etc are now removed

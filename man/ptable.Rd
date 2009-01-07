@@ -26,6 +26,7 @@
 
 \usage{
 ptable(varNames, nLevels, values = 1, normalize = c("none", "first", "all"), smooth = 0)
+as.ptable  <- function(values, normalize=c("none","first","all"), smooth=0)
 tableMarginPrim(t1, margin, normalize=FALSE)
 
 \method{varNames}{ptable}(x)
@@ -57,6 +58,9 @@ tableMarginPrim(t1, margin, normalize=FALSE)
   
   If \code{smooth} is positive then \code{smooth} is added to 
   \code{values}  before normalization takes place.
+
+  \code{as.ptable} can be used for coercing a an array to a ptable
+  object.
 
 }
 \value{

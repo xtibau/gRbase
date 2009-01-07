@@ -13,7 +13,7 @@ dropEdge.gModel <-
             ## edit hllm formula
             form <- formula(object)
             listform <- readf(form[2])
-            new.form <- delete.edge(listform,c(name.1,name.2))
+            new.form <- .delete.edge(listform,c(name.1,name.2))
               
             form <- paste("~",showf(new.form))
             formula(object) <- as.formula(form)
@@ -33,7 +33,7 @@ addEdge.gModel <-
             ## edit hllm formula
             form <- formula(object)
             listform <- readf(form[2])
-            new.form <- add.edge(listform,c(name.1,name.2))
+            new.form <- .add.edge(listform,c(name.1,name.2))
             form <- paste("~",showf(new.form))
             formula(new.object) <- as.formula(form)
 

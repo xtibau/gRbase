@@ -74,13 +74,42 @@ makeDimNames <- function(varNames, nLevels, sep=''){
   mapply(function(n,v) paste(n,v,sep=sep), varNames, lev, SIMPLIFY=FALSE)
 }
 
-## Coercion
-##
-as.ptable  <- function(x, ...){
-  values <- x
-  if (!inherits(values, c("array","matrix","integer","double"))){
-    stop("arg must be array, matrix, integer or double\n")
+## ## Coercion
+## ##
+## as.ptable  <- function(x, ...){
+##   values <- x
+##   if (!inherits(values, c("array","matrix","integer","double"))){
+##     stop("arg must be array, matrix, integer or double\n")
+##   }
+##   if (is.null(dimnames(values))){
+##     if (!is.null(dim(values)))
+##       nLevels <- dim(values)
+##     else 
+##       nLevels <- length(values)
+##     varNames <- paste("V", 1:length(nLevels),sep='')
+##     dimnames <- makeDimNames(varNames, nLevels)
+##     ans <- array(values, dim = nLevels, dimnames = dimnames)
+##     class(ans) <- "ptable"
+##   } else {
+##     ans <- values
+##     class(ans) <- "ptable"
+##   }
+##   return(ans)
+## }  
+
+
+
+
+as.ptable  <- function(values, normalize=c("none","first","all"), smooth=0){
+  ##values <- x
+  normalize <- match.arg(normalize, choices=c("none","first","all"))
+  if (!inherits(values, c("array","matrix","integer","double","table"))){
+    stop("arg must be array, matrix, table, integer or double\n")
   }
+  if (smooth>0){
+    values <- values + smooth
+  }
+
   if (is.null(dimnames(values))){
     if (!is.null(dim(values)))
       nLevels <- dim(values)
@@ -94,10 +123,24 @@ as.ptable  <- function(x, ...){
     ans <- values
     class(ans) <- "ptable"
   }
+  
+  switch(normalize,
+    "first"={
+      if (length(dim(ans))>1){
+        marg  <- 2:length(dim(ans))
+        ma    <- apply(ans, marg, sum)
+        ans   <- sweep(ans, marg, ma, "/")
+      } else {
+        ans <- ans / sum(ans)
+      }
+    },
+    "all"={ans <- ans / sum(ans)
+    },
+    "none"={}
+    )
+
   return(ans)
 }  
-
-
 
 
 
