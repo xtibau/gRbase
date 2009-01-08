@@ -32,6 +32,7 @@ querygraph(object, type, set = NULL, set2 = NULL, set3 = NULL)
     \item {nodes:} Nodes of graph
     \item {is.complete:}
     \item {edgeList}
+    \item {vpav}
     \item {is.simplicial:}
     \item {is.triangulated:}
     \item {pa:} Parents of \code{set}

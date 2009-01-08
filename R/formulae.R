@@ -262,7 +262,7 @@ contains <- function(k, l) {
 # representation. 'Edge' is given as vector of length 2:  
 # it can also have length >2, ie. be a higher-order interaction.
 
-delete.edge <- function(m, edge) {
+.delete.edge <- function(m, edge) {
   S <- varset(m)
   dr <- dual.rep(m, S)
   dr <- c(dr, list(edge))
@@ -282,7 +282,7 @@ delete.edge <- function(m, edge) {
 # representation. 'Edge' is given as vector of length 2:  
 # it can also have length >2, ie. be a higher-order interaction.
 
-add.edge <- function(m, edge) {
+.add.edge <- function(m, edge) {
   S <- varset(m)
   dr <- dual.rep(m, S)
   k <- length(dr)

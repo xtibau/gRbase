@@ -1025,7 +1025,7 @@
   p53 sequence (code=case) or not (code=control).
 }
 \source{
-  Dr. Chris Holmes, c.holmes at stats dot. ox . ac .uk
+  Dr. Chris Holmes, c.holmes {at} stats {dot.} ox . ac .uk
 }
 \references{
   Miller et al (2005, PubMed ID:16141321)
