@@ -1,4 +1,27 @@
 
+.tableOp2 <- function(t1, t2, op=`*`, restore=FALSE){
+  vn1 <- names(dimnames(t1))
+  vn2 <- names(dimnames(t2))
+  newvn <- c(vn2, setdiffPrim(vn1,vn2))
+  perm  <- matchPrim(newvn, vn1)
+  pot1 <-
+    if (restore){
+      zz<- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+      perm2 <- matchPrim(vn1, newvn)
+      .Internal(aperm(zz, perm2, TRUE))      
+    } else { 
+      op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+    }
+
+  if (identical(op, `/`))
+    pot1[!is.finite(pot1)] <- 0
+
+  pot1
+}
+
+
+
+
 ## Multiply two arrays
 ##
 tableOp <- function(t1, t2, op = "*"){
@@ -9,10 +32,15 @@ tableOp <- function(t1, t2, op = "*"){
   permidx <- function(set1, set2, direction="right"){
     idx <- 1:length(set2)
     i   <- match(set1, set2)
-    switch(direction,
-           "right"={c(idx[-i],i)},
-           "left" ={c(i,idx[-i])}
-           )
+    ##     switch(direction,
+    ##            "right"={c(idx[-i],i)},
+    ##            "left" ={c(i,idx[-i])}
+    ##            )
+    if (direction=="left") {
+      c(i,idx[-i])
+    } else {
+      c(idx[-i],i)
+    }    
   }
   
   if (!is.array(t1)) 
@@ -31,8 +59,12 @@ tableOp <- function(t1, t2, op = "*"){
   vn1    <- names(levels1)
   vn2    <- names(levels2)
   
-  lev1 <- sapply(levels1,length)
-  lev2 <- sapply(levels2,length)
+##   lev1 <- sapply(levels1,length)
+##   lev2 <- sapply(levels2,length)
+
+  lev1 <- unlistPrim(lapply(levels1,length))
+  lev2 <- unlistPrim(lapply(levels2,length))
+
   
   idx       <- match(vn2, vn1)
   if (any(is.na(idx))){
@@ -50,9 +82,11 @@ tableOp <- function(t1, t2, op = "*"){
   
   perm  <- permidx(set1=vn2, set2=vn1,"left")
   if (op=="*"){
-    pot1   <- as.numeric(aperm(pot1, perm)) * as.numeric(t2)
+    ##pot1   <- as.numeric(aperm(pot1, perm)) * as.numeric(t2)
+    pot1   <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * as.numeric(t2)
   } else {
-    pot1   <- as.numeric(aperm(pot1, perm)) / as.numeric(t2)
+    ##pot1   <- as.numeric(aperm(pot1, perm)) / as.numeric(t2)
+    pot1   <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) / as.numeric(t2)
     pot1[!is.finite(pot1)] <- 0
   }
   attributes(pot1) <- list(dim=lev1[perm], dimnames=levels1[perm], class="ptable")
@@ -125,60 +159,54 @@ tableMargin <-  function (x, margin)
 {
   if (!is.array(x)) 
     stop("'x' is not an array")
-
+  
+  di <- dim(x)
+  dn <- dimnames(x)
+  vn <- names(dn)
+  
   if (length(margin)) {
     if (is.character(margin)){
-      varnames <- names(dimnames(x))
-      margin2 <- match(margin, varnames)
-      if (any(is.na(margin2)))
+      marg.idx <- match(margin, vn)
+      if (any(is.na(marg.idx)))
         stop("Variable not in table...\n")
     } else {
-      margin2 <- margin
+      marg.idx <- margin
     }
 
-    di <- dim(x)
-    dn <- dimnames(x)
-    vn <- names(dn)
-
-    ##print(margin); print(margin2)
-    ##print(vn); print(length(vn))
-    ##m.idx <- match(margin2,vn)
-    m.idx <- margin2
-    ##cat("m.idx:"); print(m.idx)
-    c.idx <- (1:length(vn))[-m.idx]
-    ##cat("c.idx:"); print(c.idx);
-
-    x <- aperm(x, c(c.idx, m.idx))
-
-    nr <- prod(unlistPrim(lapply(dn[margin2],length)))
-    
-    nc <- ceiling(length(x)/nr)
-    ##print(nr); print(nc)
+    rest.idx <- (1:length(vn))[-marg.idx]
+    x     <- .Internal(aperm(x, c(rest.idx, marg.idx), TRUE))    
+    nr    <- prod(unlistPrim(lapply(dn[marg.idx],length)))    
+    nc    <- ceiling(length(x)/nr)
     xmat  <- matrix(x,nr=nr, nc=nc, byrow=TRUE)
-    ##xmat <- structure(x, dim=c(nr,nc))
-    z <- rowSumsPrim(xmat)
-    ##z <- structure(z, dim=di[m.idx], dimnames=dn[m.idx])
-    z <- array(z, dim=di[m.idx], dimnames=dn[m.idx])
-    
-    ##     z <- apply(x, margin2, sum)
-    ##     dim(z) <- dim(x)[margin2]
-    ##     dimnames(z) <- dimnames(x)[margin2]
-    ##z <- structure(apply(x, margin2, sum),
-    ##               dim=dim(x)[margin2], dimnames=dimnames(x)[margin2])
+
+    z     <- .Internal(rowSums(xmat, nr, nc, FALSE))
+    z     <- array(z, dim=di[marg.idx], dimnames=dn[marg.idx])
   }
   else
     return(sum(x))
+
   class(z) <- oldClass(x)
   z
 }
 
+## Marginalize array onto margin
+## FIXME: Remove this...
+tableMarginPrim <- function(t1, margin, normalize=FALSE){
+  if (missing(margin) || (length(margin)==1 && is.na(margin))){
+    return(sum(as.numeric(t1)))
+  }
+  vn    <- names(dimnames(t1))
+  idx   <- match(margin,vn)
+  x     <- apply(t1, idx, sum)
+  if (normalize)
+    x <- x/sum(x)
+  att           <- attributes(t1)
+  attributes(x) <- list(dim=att$dim[idx], dimnames=att$dimnames[idx], class="ptable")
+  x
+}
 
-
-
-
-
-
-
+## 
+##
 .tableSlice <-  function (x, margin, level, impose) 
 {
 
@@ -298,10 +326,31 @@ tableSlicePrim <- function(x, margin, level){
 
 
 
-tablePerm <- function(a, perm, resize=TRUE){
+## tablePerm <- function(a, perm, resize=TRUE){
+##   # Like aperm() but perm can be dimnames 
+##   if (missing(perm)){
+##     return(aperm(a,resize=resize))
+##   }
+  
+##   if (is.character(perm)){
+##     perm <- match(perm,names(dimnames(a)))
+##     if (any(is.na(perm)))
+##       stop("Invalid permutation...")
+##   }
+##   ans<-aperm(a,perm, resize=resize)
+##   class(ans) <- oldClass(a)
+##   ans
+## }
+
+
+## FIXME: This one is way faster than the original tablePerm;
+## especially when keep.class=FALSE
+##
+tablePerm <- function(a, perm, resize=TRUE, keep.class=TRUE){
   # Like aperm() but perm can be dimnames 
   if (missing(perm)){
-    return(aperm(a,resize=resize))
+    perm <- integer(0)
+    return(.Internal(aperm(a, perm, resize)))
   }
   
   if (is.character(perm)){
@@ -309,7 +358,9 @@ tablePerm <- function(a, perm, resize=TRUE){
     if (any(is.na(perm)))
       stop("Invalid permutation...")
   }
-  ans<-aperm(a,perm, resize=resize)
-  class(ans) <- oldClass(a)
+  ans <- .Internal(aperm(a, perm, resize))
+  if (keep.class){
+      class(ans) <- oldClass(a)
+  }
   ans
 }

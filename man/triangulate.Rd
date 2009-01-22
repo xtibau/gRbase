@@ -1,17 +1,19 @@
 \name{triangulate}
 \alias{triangulate}
+\alias{triangulateMAT}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Triangulation of an undirected graph}
 \description{
   This function will triangulate an undirected graph by adding fillins. 
 }
 \usage{
-triangulate(object, method="mcwh",  nLevels = rep(2,
-length(nodes(object))), matrix=FALSE) 
+triangulate(object, method="mcwh",  nLevels = rep(2,length(nodes(object))), matrix=FALSE)
+triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{An undirected graph (of class 'graphNEL')}
+  \item{amat}{An adjacency matrix (symmetrical)}
   \item{method}{Triangulation method. Either "mcwh" (minimum clique
     weight heuristic) which is implemented in C or "r" (an experimental
     R version)}
@@ -36,8 +38,8 @@ length(nodes(object))), matrix=FALSE)
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 \seealso{
-  \code{\link{MCS}}
-  \code{\link{RIP}}
+  \code{\link{mcs}}
+  \code{\link{rip}}
 }
 \examples{
 ugr <- ug(~a:b+b:c+c:d+d:e+e:f+f:a)

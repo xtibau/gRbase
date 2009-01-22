@@ -32,7 +32,7 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
       "is.simplicial",
       "parents", 
       "simplicialNodes",
-      "vpav"
+      "vpar"
       ))
   
 ##  nelobject <- .grash2nel(object)
@@ -127,8 +127,8 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
            simplicialNodes(object)
          },
 
-         "vpav"={
-           vpav(object)
+         "vpar"={
+           vpar(object)
          }
          )  
 }
@@ -269,7 +269,7 @@ simplicialNodes <- function(object){
 }
 
 
-vpav <- function(object){
+vpar <- function(object){
   if (edgemode(object)=="undirected")
     stop("Graph is undirected; (v,pa(v)) does not exist...\n")
   amat <- as.adjMAT(object)

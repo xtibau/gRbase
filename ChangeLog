@@ -1,3 +1,16 @@
+2009-01-22 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Bug fixed in rhsFormula2list
+
+	* Calls to aperm replaced with .Internal(aperm...) whenever
+	possible (for speed)
+
+	* Miscellaneous other speed ups.
+
+	* Various xxxMAT functions added for graph algorithms on adjancecy matrices
+
+	* Version 0.8.0 uploaded
+	
 2009-01-05 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Bug fixed in MCS (failed if graph was not chordal)

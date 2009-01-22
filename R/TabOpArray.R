@@ -155,20 +155,3 @@ as.ptable  <- function(values, normalize=c("none","first","all"), smooth=0){
 
 
 
-## Marginalize array onto margin
-##
-tableMarginPrim <- function(t1, margin, normalize=FALSE){
-  if (missing(margin) || (length(margin)==1 && is.na(margin))){
-    return(sum(as.numeric(t1)))
-  }
-  vn    <- names(dimnames(t1))
-  idx   <- match(margin,vn)
-  x     <- apply(t1, idx, sum)
-  if (normalize)
-    x <- x/sum(x)
-  att           <- attributes(t1)
-  attributes(x) <- list(dim=att$dim[idx], dimnames=att$dimnames[idx], class="ptable")
-  x
-}
-
-

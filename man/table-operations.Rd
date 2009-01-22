@@ -16,7 +16,7 @@
 tableMargin(x, margin)
 tableSlice(x, margin, level, impose)
 tableOp(t1, t2, op = "*") 
-tablePerm(a, perm, resize = TRUE) 
+tablePerm(a, perm, resize = TRUE, keep.class=TRUE) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,6 +34,8 @@ tablePerm(a, perm, resize = TRUE)
     a.}
   \item{resize}{A flag indicating whether the vector should be resized as
     well as having its elements reordered. }
+  \item{keep.class}{If TRUE the result has the same class as \code{a};
+    otherwise the result has the class returned by \code{aperm}.}
 }
 
 \details{

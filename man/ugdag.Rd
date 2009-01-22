@@ -1,9 +1,16 @@
-\name{newUG}
+\name{ug}
 
 \alias{ug}
-\alias{dag}
 \alias{ugList}
+
+\alias{ugMAT}
+\alias{ugListMAT}
+
+\alias{dag}
+\alias{dagMAT}
+
 \alias{dagList}
+\alias{dagListMAT}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Create undirected and directed graphs}
@@ -22,13 +29,15 @@ dagList(x)
   \item{\dots}{A generating class for a graph, see examples below}
   \item{x}{A list containing a generating class for a graph, see examples below}
 }
-\details{
-  Functions dag() and ug() were originally called newDAG() and
-  newUG(). The latter functions are retained in the package for backward
-  compatibility, but they will be removed at some point of time in the future. 
-}
+% \details{
+%   Functions dag() and ug() were originally called newDAG() and
+%   newUG(). The latter functions are retained in the package for backward
+%   compatibility, but they will be removed at some point of time in the future. 
+% }
 \value{
-  A 'graphNEL' object.
+  Functions ug(), dag(), ugList() and dagList() return a 'graphNEL' object.
+
+  Functions ugMAT() and ugListMAT() return an adjacency matrix. 
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, sorenh at agrsci.dk}

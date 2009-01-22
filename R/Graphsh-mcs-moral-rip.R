@@ -21,6 +21,27 @@ moralize <- function(object){
 }
 
 
+moralizeMAT <- function(amat){
+
+  amat2 <- amat  
+  for(k in 1:ncol(amat)){
+    idx <- which(amat[,k]==1)
+    lenidx <- length(idx)
+    if (lenidx>1){ 
+      for (i in 1:(lenidx-1)){
+        for (j in (i+1):lenidx) {
+          amat2[idx[i],idx[j]] <- TRUE
+        }
+      }
+    }
+  }
+  
+  vn      <- colnames(amat2)
+  amat2   <- amat2 + amat + t(amat2 + amat)
+  return(amat2)
+  
+}
+
 
 ##
 ## Maximum Cardinality Search, October, 2007
@@ -30,12 +51,12 @@ moralize <- function(object){
 
 ## Work on this one...
 
-MCS <- function(object, root=NULL, index=FALSE){
+mcs <- function(object, root=NULL, index=FALSE){
   amat <- as.adjMAT(object)
-  MCSMAT(amat, root=root, index=index)
+  mcsMAT(amat, root=root, index=index)
 }
 
-MCSMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
+mcsMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
   
   is.perfect <- TRUE
 
@@ -121,18 +142,18 @@ MCSMAT <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
 ## Based on Algorithm 4.11 in Steffen et all (the yellow book)
 ##
 
-RIP <- function(object, root=NULL, nLevels=NULL){
+rip <- function(object, root=NULL, nLevels=NULL){
   amat <- as.adjMAT(object)
-  RIPMAT(amat, root=root, nLevels=nLevels)
+  ripMAT(amat, root=root, nLevels=nLevels)
 }
 
-RIPMAT <- function(amat, root=NULL, nLevels=NULL){
+ripMAT <- function(amat, root=NULL, nLevels=NULL){
   
   t0 <- proc.time()
   vn <- colnames(amat)
                                         #cat("finding amat", proc.time()-t0,"\n"); t0 <- proc.time()
                                         #mcidx <- mcs(ug,amat=amat, root=root, index=TRUE)
-  mcidx <- MCSMAT(amat=amat, root=root, index=TRUE)
+  mcidx <- mcsMAT(amat=amat, root=root, index=TRUE)
                                         #cat("finding mcs", proc.time()-t0,"\n"); t0 <- proc.time()
 
   #cat("mcs", proc.time()-t0,"\n"); t0 <- proc.time()
@@ -183,7 +204,7 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
   if (ncq>1){
     for (ii in 2:ncq){
       paset <- unlist(cq[1:(ii-1)])
-      isect <- intersect(cq[[ii]], paset)
+      isect <- intersectPrim(cq[[ii]], paset)
       sp[[ii]] <- isect  
       if (length(isect)){
         for (kk in (ii-1):1){  #print("----");print(kk); print(cq[[kk]]); print(isect)
@@ -202,13 +223,16 @@ RIPMAT <- function(amat, root=NULL, nLevels=NULL){
   
   ##sp    <- lapply(sp, function(a) if(length(a)==1 && is.na(a)) NA else vn[a])
   ##  sp    <- lapply(sp, function(a) if(length(a)==0 ) character(0) else vn[a])
+
+  child <- match(seq_along(cq), pa)
   
   rip2 <-
-    structure(list(nodes      =vn[mcidx],               
-                   cliques    =cq,
-                   separators =sp,
-                   parents    =pa,
-                   nLevels    =nLevels
+    structure(list(nodes      = vn[mcidx],               
+                   cliques    = cq,
+                   separators = sp,
+                   parents    = pa,
+                   children   = child,
+                   nLevels    = nLevels
                    ),
               class="ripOrder")
   

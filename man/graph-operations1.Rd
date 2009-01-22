@@ -8,7 +8,7 @@
 \alias{children}
 \alias{closure}
 
-\alias{vpav}
+\alias{vpar}
 \alias{edgeList}
 \alias{nonEdgeList}
 \alias{is.complete}
@@ -32,7 +32,7 @@ children(set, object)
 closure(set, object)
 edgeList(object,matrix=FALSE)
 nonEdgeList(object, matrix=FALSE)
-vpav(object)
+vpar(object)
 is.complete(object, set)
 is.decomposition(set, set2, set3, object)
 is.simplicial(set, object)
@@ -64,8 +64,8 @@ simplicialNodes(object)
 %  ~Make other sections like Warning with \section{Warning }{....} ~
 % }
 \seealso{
-  \code{\link{MCS}}
-  \code{\link{RIP}}
+  \code{\link{mcs}}
+  \code{\link{rip}}
   \code{\link{moralize}}
   \code{\link{jTree}}
 }
