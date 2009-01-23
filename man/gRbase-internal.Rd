@@ -9,6 +9,7 @@
 \alias{ripOrderGreen}
 \alias{triangPG}
 \alias{triangR}
+\alias{triangRMAT}
 
 
 

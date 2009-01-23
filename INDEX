@@ -4,6 +4,8 @@ breastcancer            Gene expression signatures for p53 mutation
                         status in 250 breast cancer samples
 cad1                    Coronary artery disease data
 carcass                 lean meat contents of pig carcasses
+chestSim                Simulated data from the Chest Clinic example
+colSumsPrim             Utility functions for gRbase
 cov2pcor                Partial correlation (matrix)
 dietox                  Growth curves of pigs in a 3x3 factorial
                         experiment
@@ -12,7 +14,7 @@ gRbase                  The package 'gRbase': summary information
 gRfit                   Class "gRfit" - fitted graphical models
 hllm                    Hierarchical log-linear models
 mathmark                Mathematics marks for students
-MCS                     More advanced operations on undirected and
+mcs                     More advanced operations on undirected and
                         directed acyclic graphs.
 newgmData               Class "gmData" graphical meta data
 ptable                  Representation of and operations on
@@ -23,5 +25,4 @@ reinis                  Risk factors for coronary heart disease.
 tableSlice              Compute table margin or table slice
 triangulate             Triangulation of an undirected graph
 ug                      Create undirected and directed graphs
-uniquePrim              Utility functions for gRbase
 validVarTypes           Admissible variable types in gmData objects

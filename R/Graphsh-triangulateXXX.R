@@ -1,4 +1,37 @@
 
+triangulateMAT <- function(amat, method="mcwh",
+                           nLevels=rep(2,ncol(amat))){
+
+  trimethod <- c("mcwh","r")
+  method <- match.arg(tolower(method),trimethod)
+
+  ##cat("triangulate - method:", method,"\n")
+  switch(method,
+         "r"={ ## Pure R implementations
+           ans <- triangR(amat, nLevels=nLevels)
+           if (matrix)
+             ans <- as(ans,"matrix")
+         },
+         "mcwh"={
+           A  <- amat
+           Av <- as.numeric(A)
+           nc <- ncol(A)
+           vn <- colnames(A)
+           i  <-.C("triangmcwh", Av=as.integer(Av), nc, vn,
+                   as.integer(nLevels), ans=integer(1), PACKAGE="gRbase")$Av
+           ans  <-matrix(i, nc=nc,nr=nc)
+
+           dimnames(ans)<-dimnames(A)
+           ans <- abs(ans)
+           diag(ans) <- 0L           
+         }
+         )
+
+  return(ans)
+}
+
+
+
 triangulate <- function(object, method="mcwh",
                         nLevels=rep(2,length(nodes(object))), matrix=FALSE){
 
@@ -7,15 +40,8 @@ triangulate <- function(object, method="mcwh",
 
   ##cat("triangulate - method:", method,"\n")
   switch(method,
-         ##          "mcwh"={ ## Peter Greens code
-         ##            ans <- triangPG(object,nLevels=nLevels)
-         ##            if (matrix)
-         ##              ans <- as.adjMAT(ans)
-         ##          },
          "r"={ ## Pure R implementations
            ans <- triangR(object, nLevels=nLevels)
-           if (matrix)
-             ans <- as(ans,"matrix")
          },
          "mcwh"={
            A  <- as.adjMAT(object)
@@ -37,6 +63,9 @@ triangulate <- function(object, method="mcwh",
 
   return(ans)
 }
+
+
+
 
 
 
@@ -105,18 +134,61 @@ triangR <- function(object, vn=nodes(object), nLevels=rep(2, length(vn))){
   }
 
   as(amat2, "graphNEL")
-  
-##   amat2[lower.tri(amat2)] <- FALSE
-##   edmat <- edmat2 <- which(amat2, arr.ind=TRUE)
-##   storage.mode(edmat2) <- "character"
-##   dimnames(edmat2) <- NULL
-##   edmat2[,1] <- vn[edmat[,1]]
-##   edmat2[,2] <- vn[edmat[,2]]
-##   ed <- split(edmat2, row(edmat2))
-##   tug <- new("ugsh", nodes=vn, edges=ed)
-##   ##print("DONE")
-##   return(tug)
+}
 
+
+
+## Triangulation based on an adjacency matrix
+##
+triangRMAT <- function(amat, vn=colnames(amat), nLevels=rep(2, ncol(amat))){
+  
+  amat2       <- amat 
+
+  anodes     <- vn     
+  activeList <- gnodes <- rep(1, length(vn))
+  wgt        <- rep(NA,length(vn))
+  
+  names(activeList) <- names(gnodes) <- names(nLevels) <- names(wgt) <- vn
+
+  repeat{
+    for (ii in 1:length(anodes)){
+      cn <- anodes[ii]
+      if (activeList[cn]==1){
+        nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
+        w  <-  prod(nLevels[c(cn,nb)])
+        wgt[cn] <- w 
+        ##   cat("cn:", cn, "nb:", paste(nb, collapse=' '), "wgt:", w, "\n")
+        activeList[cn] <- 0
+      }
+    }
+    ##    print(wgt)
+    id    <- which.min(wgt)
+    wgt[id] <- Inf    
+    ##    print(id)
+    cn <- vn[id]
+    nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
+    activeList[cn] <- -1
+    activeList[nb] <-  1
+    
+    ##   cat("completing bd for node:", cn, "nb:", paste(nb, collapse=' '), "\n")
+    
+    if (length(nb)>1){
+      for (i in 1:(length(nb)-1)){
+        for (j in (i+1):length(nb)){
+          amat2[nb[i],nb[j]] <- amat2[nb[j],nb[i]] <- TRUE
+          amat [nb[i],nb[j]] <- amat [nb[j],nb[i]] <- TRUE
+        }
+      }
+    }
+
+    gnodes[id] <- 0
+    #print(anodes)
+    anodes <- setdiff(anodes,cn)
+    if (length(anodes)==1) 
+      break()
+                                        #    amat   <- amat[anodes, anodes]
+  }
+  return(amat2)
 }
 
 
@@ -128,7 +200,7 @@ jTree <- function(object,
   method <- match.arg(tolower(method),c("mcwh","r"))
 
   tug        <- triangulate(object, method=method, nLevels=nLevels)
-  val        <- RIP(tug,nLevels=nLevels)
+  val        <- rip(tug,nLevels=nLevels)
   val$tug    <- tug
   return(val)
 }

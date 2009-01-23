@@ -1,15 +1,18 @@
 ugList <-  function(x){
   
-  isForm <-sapply(x, inherits, "formula")
+  #isForm <-sapply(x, inherits, "formula")
+  isForm <- unlistPrim(lapply(x, function(a) {"formula" %in% class(a)}))
   
   flist <- x[isForm]
-  
+
   ans <- lapply(flist, function(f){
     tt    <- terms(f)
-    glist <- remove.redundant(strsplit(attr(tt,"term.labels"),":|\\*"))
+    ##glist <- remove.redundant(strsplit(attr(tt,"term.labels"),":|\\*"))
+    glist <- strsplit(attr(tt,"term.labels"),":|\\*")
     V     <- rownames(attr(tt,"factors"))
     list(glist=glist,V=V)
   }) 
+
   
   gset  <- unlist(lapply(ans, "[[", "glist"), recursive=FALSE)
   V     <- lapply(ans, "[[", "V")
@@ -30,8 +33,145 @@ ugList <-  function(x){
 }
 
 
+
+ugListMAT <-  function(x){
+  n2p <- function(set){
+    len <- length(set)
+    if (len==2)
+      return(set)
+    idx1<-unlistPrim(lapply(1:(len-1), function(i) rep(i, len-i)))
+    idx2<-unlistPrim(lapply(1:(len-1), function(i) seq(i+1, len)))
+    ans<-cbind(set[idx1],set[idx2])
+                                        #  ans <- split(ans, row(ans))
+    ans
+  }
+
+  isForm <- unlistPrim(lapply(x, function(a) {"formula" %in% class(a)}))
+  
+  flist <- x[isForm]
+  
+  ans <- lapply(flist, function(f){
+    tt    <- terms(f)
+    ##glist <- remove.redundant(strsplit(attr(tt,"term.labels"),":|\\*"))
+    glist <- strsplit(attr(tt,"term.labels"),":|\\*")
+    V     <- rownames(attr(tt,"factors"))
+    list(glist=glist,V=V)
+  }) 
+  
+  
+  gset  <- unlist(lapply(ans, "[[", "glist"), recursive=FALSE)
+  gset <- c(gset, x[!isForm])
+  
+  V     <- lapply(ans, "[[", "V")
+  V    <- unique(unlist(c(V, x[!isForm])))
+  
+  ed <- gset[lapply(gset,length)>1]
+  
+  if (length(ed)>0){    
+    ed   <- do.call(rbind, lapply(ed, n2p))
+    ed   <- split(ed, row(ed))
+    ed   <- do.call(rbind, removeRedundant(ed))
+    mm   <- matrix(matchPrim(ed,V),nc=2)
+    amat <- matrix(0L, nr=length(V), nc=length(V))
+    dimnames(amat) <- list(V,V)
+    amat[rbind(mm,mm[,2:1])] <- 1L
+  } else {
+    amat <- matrix(0L, nr=length(V), nc=length(V))
+    dimnames(amat) <- list(V,V)
+  }
+  amat    
+}
+
+
+ugMAT <- function(...){
+  ugListMAT(list(...))
+}
+
+
 ug <- function(...){
   ugList(list(...))
+}
+
+
+
+dagListMAT <-  function(x){
+  n2p <- function(set){
+    len <- length(set)
+    if (len==2)
+      return(set)
+    idx1<-unlistPrim(lapply(1:(len-1), function(i) rep(i, len-i)))
+    idx2<-unlistPrim(lapply(1:(len-1), function(i) seq(i+1, len)))
+    ans<-cbind(set[idx1],set[idx2])
+                                        #  ans <- split(ans, row(ans))
+    ans
+  }
+
+  isForm <- unlistPrim(lapply(x, function(a) {"formula" %in% class(a)}))
+  
+  flist <- x[isForm]
+  
+  ans <- lapply(flist, function(f){
+    tt    <- terms(f)
+    ##glist <- remove.redundant(strsplit(attr(tt,"term.labels"),":|\\*"))
+    glist <- strsplit(attr(tt,"term.labels"),":|\\*")
+    V     <- rownames(attr(tt,"factors"))
+    list(glist=glist,V=V)
+  }) 
+  
+
+
+  gset  <- unlist(lapply(ans, "[[", "glist"), recursive=FALSE)
+  gset <- c(gset, x[!isForm])
+
+  
+  V     <- lapply(ans, "[[", "V")
+  V    <- unique(unlist(c(V, x[!isForm])))
+
+  gset<-gset[lapply(gset,length)>1]
+
+  if (length(gset)>0){
+    gset <- lapply(gset, function(xx) {
+      if (length(xx)>2)
+        cbind( xx[rep(1,length(xx)-1)], xx[2:length(xx)])
+      else
+        xx  
+    })
+
+    
+    ed<- do.call(rbind, gset)
+    mm   <- matrix(matchPrim(ed,V),nc=2)
+    amat <- matrix(0L, nr=length(V), nc=length(V))
+    dimnames(amat) <- list(V,V)
+    amat[mm[,2:1]] <- 1L
+  } else {
+    amat <- matrix(0L, nr=length(V), nc=length(V))
+    dimnames(amat) <- list(V,V)
+  }
+
+
+  ## Check if acyclic:
+  ##
+  is.acyc <- TRUE
+  elorder <- NULL
+  amat2 <- amat
+  repeat{
+    idx <- which(rowSums(amat2)==0)
+    if (!length(idx)){
+      return(NULL)
+    }
+    elorder <- c(elorder, idx)
+    amat2 <- amat2[-idx,-idx]
+    
+    if(all(c(0,0)==dim(amat2))){
+      break()
+    }
+  }
+  zzz <- names(rev(elorder))
+  
+  if(!is.null(zzz))
+    return(amat)
+  else
+    return(NULL)
 }
 
 
@@ -45,7 +185,6 @@ dagList  <- function(x){
     V     <- rownames(attr(tt,"factors"))
     list(glist=glist,V=V)
   }) 
-
 
   gset  <-lapply(lapply(ans, "[[", "glist"), unlist)
   V     <- lapply(ans, "[[", "V")
@@ -66,7 +205,7 @@ dagList  <- function(x){
   } 
 
   ## Check if acyclic:
-
+  ##
   is.acyc <- TRUE
   amat <- as.adjMAT(value)
   elorder <- NULL
@@ -94,6 +233,11 @@ dagList  <- function(x){
 
 dag <- function(...){
   dagList(list(...))
+}
+
+
+dagMAT <- function(...){
+  dagListMAT(list(...))
 }
 
 

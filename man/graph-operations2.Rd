@@ -1,12 +1,14 @@
 \name{graph-operations2}
 
-\alias{MCS}
-\alias{RIP}
-\alias{MCSMAT}
-\alias{RIPMAT}
+\alias{mcs}
+\alias{mcsMAT}
+
+\alias{rip}
+\alias{ripMAT}
 \alias{moralize}
-\alias{print.ripOrder}
+\alias{moralizeMAT}
 \alias{jTree}
+\alias{print.ripOrder}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 
@@ -17,11 +19,13 @@
 
 \usage{
 %mcs(ug,amat=as.adjmat(ug), vn=colnames(amat), root=NULL, index=FALSE)
-MCS(object, root=NULL, index=FALSE)
-MCSMAT(amat, vn = colnames(amat), root = NULL, index = FALSE) 
-RIP(object,root=NULL,nLevels=NULL)
-RIPMAT(amat, root = NULL, nLevels = NULL) 
+mcs(object, root=NULL, index=FALSE)
+mcsMAT(amat, vn = colnames(amat), root = NULL, index = FALSE) 
+rip(object,root=NULL,nLevels=NULL)
+ripMAT(amat, root = NULL, nLevels = NULL) 
 moralize(object)
+moralizeMAT(amat)
+
 jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list())
 }
 %- maybe also 'usage' for other objects documented here.
@@ -30,7 +34,7 @@ jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list()
   \item{root}{Variables to be considered first when doing the orderings}
   \item{index}{If TRUE, then a permutation is returned}
   \item{nLevels}{Number of levels of the nodes in the graph}
-  \item{amat}{Adjacency matrix (symmetrical) for undirected graph}
+  \item{amat}{Adjacency matrix}
   \item{vn}{Nodes in the graph given by adjacency matrix}
   \item{method}{The triangulation method, \code{"mcwh"} is a C
     implementation of a minimum clique weight heuristic,
@@ -46,9 +50,7 @@ jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list()
   the first in the RIP ordering. 
   
   The jTree (for "junction tree") is just a wrapper for a call of
-  \code{triangulate} followed by a call of \code{RIP}.
-
-  
+  \code{triangulate} followed by a call of \code{RIP}.  
 }
 \value{
    \code{moralize} and   \code{triangulate} returns objects of class
@@ -78,10 +80,10 @@ jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list()
 ugr <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
 edges(ugr)
 nodes(ugr)
-MCS(ugr)
-MCSMAT(as.adjMAT(ugr))
-RIP(ugr)
-RIPMAT(as.adjMAT(ugr))
+mcs(ugr)
+mcsMAT(as.adjMAT(ugr))
+rip(ugr)
+ripMAT(as.adjMAT(ugr))
 
 ## Directed graphs
 ##

@@ -5,10 +5,12 @@ processFormula <- function (formula, data, marginal, type = c("Discrete", "Conti
         varNames(data)[varTypes(data) == type]
     }
     used.var <- get.var.of.type(type)
-    
+
+
     if (!inherits(formula, "formula")) {
-        formula <- list2rhsFormula(formula)
+      formula <- list2rhsFormula(formula)
     }
+
     list.formula <- rhsFormula2list(formula)
     
     pow <- extract.power(formula)
@@ -55,6 +57,18 @@ processFormula <- function (formula, data, marginal, type = c("Discrete", "Conti
         list.formula = list.formula, gmData = data, varnames = used.var)
     value
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

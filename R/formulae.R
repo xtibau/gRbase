@@ -50,12 +50,18 @@ rhsFormula2list <- function(f){
       return(list(f))
     }
   }
-  rhs <- paste(f)[2]
-  f1 <- strsplit(rhs,"\\+")[[1]]
+##   rhs <- paste(f)[2]
+##   f1 <- strsplit(rhs,"\\+")[[1]]
+  .xxx. <- f[[2]]
+  f1 <- unlist(strsplit(paste(deparse(.xxx.), collapse="")," *\\+ *"))
   f2 <- unlist(lapply(f1, strsplit, "\\*|:"),rec=FALSE)
   f2 <- lapply(f2, function(x) gsub(" +","",x))
   f2
 }
+
+
+
+
 
 ## Turn list into right-hand-sided formula
 ##
