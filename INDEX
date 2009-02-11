@@ -13,9 +13,11 @@ gModel                  Class "gModel" - graphical models
 gRbase                  The package 'gRbase': summary information
 gRfit                   Class "gRfit" - fitted graphical models
 hllm                    Hierarchical log-linear models
+lizard                  Lizard behaviour
 mathmark                Mathematics marks for students
 mcs                     More advanced operations on undirected and
                         directed acyclic graphs.
+mildew                  Mildew fungus
 newgmData               Class "gmData" graphical meta data
 ptable                  Representation of and operations on
                         multidimensional tables

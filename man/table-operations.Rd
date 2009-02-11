@@ -13,15 +13,17 @@
   the table defined by specific margins being at a specific level.
 }
 \usage{
-tableMargin(x, margin)
-tableSlice(x, margin, level, impose)
 tableOp(t1, t2, op = "*") 
-tablePerm(a, perm, resize = TRUE, keep.class=TRUE) 
+tableMargin(x, margin, keep.class=FALSE)
+tableSlice(x, margin, level, impose)
+tablePerm(a, perm, resize = TRUE, keep.class=FALSE) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x, t1, t2, a}{An array}
   \item{margin}{An index, either numerical  or character}
+  \item{keep.class}{If TRUE the result will be forced to have the same
+    class as the input; otherwise the result will be an array.}
   \item{level}{A value, either numerical or character}
   \item{impose}{Possible value used to fill up a slice to give it full
     dimension}
@@ -34,8 +36,7 @@ tablePerm(a, perm, resize = TRUE, keep.class=TRUE)
     a.}
   \item{resize}{A flag indicating whether the vector should be resized as
     well as having its elements reordered. }
-  \item{keep.class}{If TRUE the result has the same class as \code{a};
-    otherwise the result has the class returned by \code{aperm}.}
+  
 }
 
 \details{
@@ -58,8 +59,7 @@ tablePerm(a, perm, resize = TRUE, keep.class=TRUE)
   See examples below.
 }
 \value{
-  
-  A table.
+  An array.
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard}
