@@ -112,19 +112,17 @@ dagListMAT <-  function(x){
   
   ans <- lapply(flist, function(f){
     tt    <- terms(f)
-    ##glist <- remove.redundant(strsplit(attr(tt,"term.labels"),":|\\*"))
-    glist <- strsplit(attr(tt,"term.labels"),":|\\*")
+    glist <- removeRedundant(strsplit(attr(tt,"term.labels"),":|\\*"))
+    ##glist <- strsplit(attr(tt,"term.labels"),":|\\*")
     V     <- rownames(attr(tt,"factors"))
     list(glist=glist,V=V)
   }) 
-  
 
 
   gset  <- unlist(lapply(ans, "[[", "glist"), recursive=FALSE)
   gset <- c(gset, x[!isForm])
 
-  
-  V     <- lapply(ans, "[[", "V")
+  V    <- lapply(ans, "[[", "V")
   V    <- unique(unlist(c(V, x[!isForm])))
 
   gset<-gset[lapply(gset,length)>1]

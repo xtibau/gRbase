@@ -25,7 +25,7 @@
 }
 
 \usage{
-ptable(varNames, nLevels, values = 1, normalize = c("none", "first", "all"), smooth = 0)
+ptable(varNames, levels, values = 1, normalize = c("none", "first", "all"), smooth = 0)
 as.ptable  <- function(values, normalize=c("none","first","all"), smooth=0)
 tableMarginPrim(t1, margin, normalize=FALSE)
 
@@ -36,7 +36,9 @@ tableMarginPrim(t1, margin, normalize=FALSE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{varNames}{Names of variables defining table}
-  \item{nLevels}{Levels of variables}
+  \item{levels}{Either vector with number of levels of the factors in
+    varNames or list vith specification of the levels of the factors in
+    varNames. See 'examples' below.}
   \item{values}{Table values}
   \item{x}{Objects of class "ptable"}
   \item{t1}{Objects of class "ptable"}
@@ -82,8 +84,15 @@ tableMarginPrim(t1, margin, normalize=FALSE)
 
 \examples{
 t1 <- ptable(c("gender","answer"),list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- ptable(~gender+answer,list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- ptable(~gender+answer,c(2,2), values=1:4)
+
 t2 <- ptable(c("answer","category"), list(c('yes','no'),c(1,2)), values=1:4+10)
 t3 <- ptable(c("category","foo"), c(2,2), values=1:4+100)
+
+
+
+
 
 varNames(t1)
 nLevels(t1)

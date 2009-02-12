@@ -1,3 +1,12 @@
+2009-02-11 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Vignette about graphs added.
+
+	* More datasets added.
+	
+	* Version 0.9.0 uploaded
+	
+	
 2009-01-22 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Bug fixed in rhsFormula2list
