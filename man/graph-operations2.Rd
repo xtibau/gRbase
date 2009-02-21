@@ -7,6 +7,7 @@
 \alias{ripMAT}
 \alias{moralize}
 \alias{moralizeMAT}
+\alias{maxCliqueMAT}
 \alias{jTree}
 \alias{print.ripOrder}
 
@@ -25,7 +26,7 @@ rip(object,root=NULL,nLevels=NULL)
 ripMAT(amat, root = NULL, nLevels = NULL) 
 moralize(object)
 moralizeMAT(amat)
-
+maxCliqueMAT(amat)
 jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list())
 }
 %- maybe also 'usage' for other objects documented here.
@@ -78,12 +79,16 @@ jTree(object, method="mcwh", nLevels=rep(2,length(nodes(object))),control=list()
 ## Undirected graphs
 ##
 ugr <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
+ugm <- as.adjMAT(ugr)
 edges(ugr)
 nodes(ugr)
 mcs(ugr)
-mcsMAT(as.adjMAT(ugr))
+mcsMAT(ugm)
 rip(ugr)
-ripMAT(as.adjMAT(ugr))
+ripMAT(ugm)
+
+maxClique(ugr)
+maxCliqueMAT(ugm)
 
 ## Directed graphs
 ##

@@ -1,3 +1,14 @@
+2009-02-21 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* maxCliqueMAT added
+
+	* mcsMAT implemented in C
+
+	* Bug fixed in moralizeMAT
+
+	* Version 1.0.0 uploaded
+	
+
 2009-02-11 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Vignette about graphs added.
