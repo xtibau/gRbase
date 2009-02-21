@@ -3,7 +3,9 @@
 \docType{data}
 \title{Mildew fungus}
 \description{
-  To be written...
+ The data stem from a cross between two isolates of the barley powdery mildew fungus. For each offspring
+ 6 binary characteristics, each corresponding to a single locus, were recorded. The object of the analysis
+ is to determine the order of the loci along the chromosome.
 }
 \usage{data(mildew)}
 \format{
@@ -24,7 +26,7 @@
 %   ~~ reference to a publication or URL from which the data were obtained ~~
 % }
 \references{
-Christiansen, S.K., Fiese, H (1991) Genetic analysis of obligate barley
+Christiansen, S.K., Giese, H (1991) Genetic analysis of obligate barley
 powdery mildew fungus based on RFLP and virulence
 loci. Theor. Appl. Genet. 79:705-712
 }

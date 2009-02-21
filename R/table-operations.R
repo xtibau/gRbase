@@ -133,21 +133,29 @@ tableMargin <-  function (x, margin, keep.class=FALSE)
       marg.idx <- margin
     }
 
+##     cat("di:\n"); print(di)
+##     cat("dn:\n"); print(dn)
+##     cat("marg.idx:\n"); print(marg.idx)
+
+    nr <- prod(di[marg.idx])
+    
     rest.idx <- (1:length(vn))[-marg.idx]
-    nr    <- prod(unlistPrim(lapply(dn[marg.idx],length)))    
+                                        #nr    <- prod(unlistPrim(lapply(dn[marg.idx],length)))
+                                        #nr <- prod(.Internal(unlist(lapply(dn[marg.idx],length), TRUE, TRUE)))
+
     nc    <- ceiling(length(x)/nr)
     z     <- .Internal(aperm(x, c(rest.idx, marg.idx), TRUE))    
-
-   z  <- matrix(z,nr=nr, nc=nc, byrow=TRUE)
-   z  <- .Internal(rowSums(z, nr, nc, FALSE))
-
-    ##z     <- array(z, dim=di[marg.idx], dimnames=dn[marg.idx])
+    
+    z  <- matrix(z,nr=nr, nc=nc, byrow=TRUE)
+    z  <- .Internal(rowSums(z, nr, nc, FALSE))
+    
+    #z     <- array(z, dim=di[marg.idx], dimnames=dn[marg.idx])
     dim(z) <- di[marg.idx]
     dimnames(z) <- dn[marg.idx]
   }
   else
     return(sum(x))
-
+  
   if (keep.class)
     class(z) <- oc
   return(z)
