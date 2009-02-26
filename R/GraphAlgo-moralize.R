@@ -1,7 +1,7 @@
 
 moralize <- function(object){
   if ((class(object)=="graphNEL") && (edgemode(object)=="directed")){
-    moralizeMAT(as.adjMAT(object))
+    as(moralizeMAT(as.adjMAT(object)), "graphNEL")
   } else {
     stop("'object' must be graphNEL object with directed edges")
   }
