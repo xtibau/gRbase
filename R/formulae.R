@@ -272,7 +272,7 @@ contains <- function(k, l) {
   S <- varset(m)
   dr <- dual.rep(m, S)
   dr <- c(dr, list(edge))
-  remove.redundant(dual.rep(dr, S, FALSE)) 
+  removeRedundant(dual.rep(dr, S, FALSE)) 
 }
 
 #m2 <- readf('B.D+A.D+C.D')
@@ -294,7 +294,7 @@ contains <- function(k, l) {
   k <- length(dr)
   if (k>0) {for (i in 1:k) if (setequal(dr[[i]], edge)) dr[[i]] <- vector()} 
 #  if (k>0) {for (i in 1:k) if (setequal(dr[[i]], edge)) dr[[i]] <- NULL}
-  dr <- remove.redundant(dr, FALSE)
+  dr <- removeRedundant(dr, FALSE)
   dual.rep(dr, S, FALSE)
 }
 
@@ -346,7 +346,7 @@ is.graphical <- function(m) {
 #      m1 <- list.save
 #    if (minimal) m2 <- as.list(setdiff(S,glist[[v]])) else m2 <- as.list(glist[[v]])
 #    if (v==1) list.save <- m2 else {
-#       list.save <- remove.redundant(unlist(lapply(m1, function(g)
+#       list.save <- removeRedundant(unlist(lapply(m1, function(g)
 #                                                   lapply(m2, union,
 #                                                          g)),recursive=FALSE),FALSE)}}
 #  if (!minimal) list.save <- lapply(list.save, function(g) setdiff(S,

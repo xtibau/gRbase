@@ -13,6 +13,7 @@ gModel                  Class "gModel" - graphical models
 gRbase                  The package 'gRbase': summary information
 gRfit                   Class "gRfit" - fitted graphical models
 hllm                    Hierarchical log-linear models
+is.insetlist            Set operations
 lizard                  Lizard behaviour
 mathmark                Mathematics marks for students
 mcs                     More advanced operations on undirected and

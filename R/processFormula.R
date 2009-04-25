@@ -50,7 +50,7 @@ processFormula <- function (formula, data, marginal, type = c("Discrete", "Conti
     
 
     num.formula <- lapply(list.formula, function(l) {
-        match(l, used.var)
+        charmatch(l, used.var)
     })
 
     value <- list(formula = formula, str.formula = str.formula, num.formula = num.formula, 
