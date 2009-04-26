@@ -1,3 +1,11 @@
+2009-04-07 Søren Højsgaard <sorenh@agrsci.dk>
+
+	* Maximum prime subgraph decomposition (mpd()) function added 
+
+	* Speedups of various functions; cleaning up some code. 
+	
+	* Version 1.1.0 uploaded	
+
 2009-02-21 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* maxCliqueMAT added

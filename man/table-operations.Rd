@@ -40,20 +40,20 @@ tablePerm(a, perm, resize = TRUE, keep.class=FALSE)
 }
 
 \details{
-  tableMargin: tableMargin is analogous to margin.table except that margin can be given
+  \code{tableMargin}: tableMargin is analogous to margin.table except that margin can be given
   both as array indices or as variable names
   
-  tableSlice: If the table x has dimensions Z,U,V where V has levels 1 and 2
+  \code{tableSlice}: If the table x has dimensions Z,U,V where V has levels 1 and 2
   then tableSlice can extract the
   slice of x (in this case a 2-way table) defined by e.g. U=2. Setting
   impose=1000 implies that a 3-way table is returned with the U=2 slice
   in the right place and the U=1-slice consisting of 1000 in each cell.
   
-  tableOp: If t1 has dimnames A and B and t2 has dimnames B and C then
+  \code{tableOp}: If t1 has dimnames A and B and t2 has dimnames B and C then
   tableOp(t1,t2) will return a table (an array) with dimnames A, B and C
   containing the product.
 
-  tablePerm: A wrapper for aperm, but tablePerm accepts dimnames in
+  \code{tablePerm}: A wrapper for aperm, but tablePerm accepts dimnames in
   addition to indices. 
   
   See examples below.
@@ -88,6 +88,19 @@ t2 <- array(1:4+10, dim=c(2,2), dimnames=list(answer=c('yes','no'),category=c(1,
 
 tableOp(t1,t2, "*")
 tableOp(t1,t2, "/")
+
+data(reinis)
+
+t1 <- tableMargin(reinis, c(6,5,2,1))
+t2 <- tableMargin(reinis, c(6,5,3,4))
+
+tt1 <- tableOp(t1,t2)
+
+t1 <- tableMargin(reinis, c(6,5,2,4,1))
+t2 <- tableMargin(reinis, c(6,5,4))
+
+tt1 <- tableOp2(t1,t2)
+
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -6,7 +6,7 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
   }
   
   if (is.character(perm)){
-    perm <- match(perm,names(dimnames(a)))
+    perm <- charmatch(perm,names(dimnames(a)))
     if (any(is.na(perm)))
       stop("Invalid permutation...")
   }
@@ -18,98 +18,89 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
 }
 
 
-.tableOp2 <- function(t1, t2, op=`*`, restore=FALSE){
-  vn1 <- names(dimnames(t1))
-  vn2 <- names(dimnames(t2))
-  newvn <- c(vn2, setdiffPrim(vn1,vn2))
-  perm  <- matchPrim(newvn, vn1)
-  pot1 <-
-    if (restore){
-      zz<- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
-      perm2 <- matchPrim(vn1, newvn)
-      .Internal(aperm(zz, perm2, TRUE))      
-    } else { 
-      op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
-    }
-
-  if (identical(op, `/`))
-    pot1[!is.finite(pot1)] <- 0
-
-  pot1
-}
 
 
 
-
-## Multiply two arrays
+## Alternative to tableOp
 ##
-tableOp <- function(t1, t2, op = "*"){
+tableOp <- function(t1,t2,op="*"){
 
-  ## Find permutation of variables in set2 such that those in set1 are either
-  ## to the far right or far left
-  ##
-  permidx <- function(set1, set2, direction="right"){
-    idx <- 1:length(set2)
-    i   <- matchPrim(set1, set2)
-    if (direction=="left") {
-      c(i,idx[-i])
-    } else {
-      c(idx[-i],i)
-    }    
-  }
-  
   if (!is.array(t1)) 
     stop("'t1' is not an array")
   if (!is.array(t2)) 
     stop("'t2' is not an array")
 
-  levels1 <- dimnames(t1)
-  levels2 <- dimnames(t2)
-
-  if (is.null(levels1))
-    stop("'t1' does not have dimnames")
-  if (is.null(levels2))
-    stop("'t2' does not have dimnames")
+  di1 <- dim(t1)
+  di2 <- dim(t2)
+  dn1 <- dimnames(t1)
+  dn2 <- dimnames(t2)
+  vn1 <- names(dn1)
+  vn2 <- names(dn2)
   
-  vn1    <- names(levels1)
-  vn2    <- names(levels2)
-
-  lev1 <- unlistPrim(lapply(levels1,length))
-  lev2 <- unlistPrim(lapply(levels2,length))
-
-  idx       <- matchPrim(vn2, vn1)
-  if (any(is.na(idx))){
-    augnames  <- vn2[is.na(idx)]
-    auglevn   <- lev2[is.na(idx)]
-    auglevels <- levels2[is.na(idx)]
-    pot1      <- rep(as.numeric(t1), prod(auglevn))
-    vn1       <- c(vn1, augnames)
-    lev1      <- c(lev1, auglevn)
-    levels1   <- c(levels1, auglevels)
-    dim(pot1) <- lev1
+  idx <- charmatch(vn2,vn1)
+  idx.na <- is.na(idx)
+  
+  if (any(idx.na)){
+    aug.vn <- vn2[idx.na]
+    aug.di <- di2[idx.na]
+    aug.dn <- dn2[idx.na]
+    
+    pot1   <- rep(as.numeric(t1), prod(aug.di))
+    vn.new <- c(vn1, aug.vn)
+    di.new <- c(di1, aug.di)
+    dn.new <- c(dn1, aug.dn)
+    dim(pot1) <- di.new
+    dimnames(pot1) <- dn.new
   } else {
-    pot1 <- t1
+    pot1   <- t1
+    vn.new <- vn1
+    di.new <- di1
+    dn.new <- dn1
   }
-  
-  perm  <- permidx(set1=vn2, set2=vn1,"left")
-  if (op=="*"){
-    ##pot1   <- as.numeric(aperm(pot1, perm)) * as.numeric(t2)
-    pot1   <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * as.numeric(t2)
-  } else {
-    ##pot1   <- as.numeric(aperm(pot1, perm)) / as.numeric(t2)
-    pot1   <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) / as.numeric(t2)
+
+  ii    <-  charmatch(vn2, vn.new)
+  perm  <-  c(ii, (1:length(vn.new))[-ii])
+
+  if (op == "*") {
+    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * 
+      as.numeric(t2)
+  }
+  else {
+    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE)))/as.numeric(t2)
     pot1[!is.finite(pot1)] <- 0
   }
-  #.z <<- pot1
-  dim(pot1) <- lev1[perm]
-  dimnames(pot1) <- levels1[perm]
-  #attributes(pot1) <- list(dim=lev1[perm], dimnames=levels1[perm], class="ptable")
-  #.z2 <<- pot1
+  dim(pot1)      <- di.new[perm]
+  dimnames(pot1) <- dn.new[perm]
+  return(pot1)
 
-  ## FIXME: Bruges det nuget sted, at der er permuteret rigigt? tror det ikke...
-  ##pot1 <- tablePerm(pot1, vn1)
-  #print(vn1); print(vn2)
+}
+
+
+.tableOp2 <- tableOp2 <- function (t1, t2, op = `*`, restore = FALSE) 
+{
+
+  if (!is.array(t1)) 
+    stop("'t1' is not an array")
+  if (!is.array(t2)) 
+    stop("'t2' is not an array")
+
+  vn1 <- names(dimnames(t1))
+  vn2 <- names(dimnames(t2))
   
+  ii <- charmatch(vn2, vn1)
+  perm  <-  c(ii, (1:length(vn1))[-ii])
+  
+  pot1 <- if (restore) {
+    zz <- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+    newvn <- c(vn2, setdiffPrim(vn1, vn2))
+    perm2 <- charmatch(vn1, newvn)
+    .Internal(aperm(zz, perm2, TRUE))
+  }
+  else {
+    op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+  }
+  if (identical(op, `/`)) 
+    pot1[!is.finite(pot1)] <- 0
   pot1
 }
 
@@ -126,31 +117,24 @@ tableMargin <-  function (x, margin, keep.class=FALSE)
   oc <- oldClass(x)
   if (length(margin)) {
     if (is.character(margin)){
-      marg.idx <- matchPrim(margin, vn)
+      marg.idx <- charmatch(margin, vn)
       if (any(is.na(marg.idx)))
         stop("Variable not in table...\n")
     } else {
       marg.idx <- margin
     }
-
-##     cat("di:\n"); print(di)
-##     cat("dn:\n"); print(dn)
-##     cat("marg.idx:\n"); print(marg.idx)
-
-    nr <- prod(di[marg.idx])
     
     rest.idx <- (1:length(vn))[-marg.idx]
-                                        #nr    <- prod(unlistPrim(lapply(dn[marg.idx],length)))
-                                        #nr <- prod(.Internal(unlist(lapply(dn[marg.idx],length), TRUE, TRUE)))
+    nr <- prod(di[marg.idx])
+    nc <- prod(di[rest.idx])
 
-    nc    <- ceiling(length(x)/nr)
-    z     <- .Internal(aperm(x, c(rest.idx, marg.idx), TRUE))    
-    
-    z  <- matrix(z,nr=nr, nc=nc, byrow=TRUE)
-    z  <- .Internal(rowSums(z, nr, nc, FALSE))
-    
-    #z     <- array(z, dim=di[marg.idx], dimnames=dn[marg.idx])
-    dim(z) <- di[marg.idx]
+    z <- .Internal(rowSums(.Internal(matrix(.Internal(aperm(x, c(rest.idx, marg.idx), TRUE)), nr, nc, TRUE, NULL)), nr, nc, FALSE))
+    ## This call is just short for
+    ##     z  <- .Internal(aperm(x, c(rest.idx, marg.idx), TRUE))        
+    ##     z  <- .Internal(matrix(z, nr, nc, TRUE, NULL))    
+    ##     z  <- .Internal(rowSums(z, nr, nc, FALSE))
+
+    dim(z)      <- di[marg.idx]
     dimnames(z) <- dn[marg.idx]
   }
   else
@@ -162,6 +146,21 @@ tableMargin <-  function (x, margin, keep.class=FALSE)
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 tableSlice <-  function (x, margin, level, impose) 
 {
 
@@ -171,7 +170,7 @@ tableSlice <-  function (x, margin, level, impose)
   varnames <- names(dn)
 
   if (is.character(margin)){
-    margin2 <- match(margin, varnames)
+    margin2 <- charmatch(margin, varnames)
     if (any(is.na(margin2)))
       stop("Variables: ", margin[is.na(margin2)], " do not exist in table...")
   } else {
@@ -226,6 +225,104 @@ tableSlicePrim <- function(x, margin, level){
   .Internal(do.call("[", c(list(x), idx), parent.frame()))
 }
 
+
+
+
+
+
+## ## Multiply two arrays
+## ##
+## tableOp <- function(t1, t2, op = "*"){
+
+##   ## Find permutation of variables in set2 such that those in set1 are either
+##   ## to the far right or far left
+##   ##
+##   permidx <- function(set1, set2, direction="right"){
+##     idx <- 1:length(set2)
+##     i   <- matchPrim(set1, set2)
+##     if (direction=="left") {
+##       c(i,idx[-i])
+##     } else {
+##       c(idx[-i],i)
+##     }    
+##   }
+  
+##   if (!is.array(t1)) 
+##     stop("'t1' is not an array")
+##   if (!is.array(t2)) 
+##     stop("'t2' is not an array")
+
+##   levels1 <- dimnames(t1)
+##   levels2 <- dimnames(t2)
+
+##   if (is.null(levels1))
+##     stop("'t1' does not have dimnames")
+##   if (is.null(levels2))
+##     stop("'t2' does not have dimnames")
+  
+##   vn1    <- names(levels1)
+##   vn2    <- names(levels2)
+
+##   lev1 <- unlistPrim(lapply(levels1,length))
+##   lev2 <- unlistPrim(lapply(levels2,length))
+
+##   idx       <- matchPrim(vn2, vn1)
+##   if (any(is.na(idx))){
+##     augnames  <- vn2[is.na(idx)]
+##     auglevn   <- lev2[is.na(idx)]
+##     auglevels <- levels2[is.na(idx)]
+##     pot1      <- rep(as.numeric(t1), prod(auglevn))
+##     vn1       <- c(vn1, augnames)
+##     lev1      <- c(lev1, auglevn)
+##     levels1   <- c(levels1, auglevels)
+##     dim(pot1) <- lev1
+##   } else {
+##     pot1 <- t1
+##   }
+  
+##   perm  <- permidx(set1=vn2, set2=vn1,"left")
+##   if (op=="*"){
+##     ##pot1   <- as.numeric(aperm(pot1, perm)) * as.numeric(t2)
+##     pot1   <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * as.numeric(t2)
+##   } else {
+##     ##pot1   <- as.numeric(aperm(pot1, perm)) / as.numeric(t2)
+##     pot1   <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) / as.numeric(t2)
+##     pot1[!is.finite(pot1)] <- 0
+##   }
+##   #.z <<- pot1
+##   dim(pot1) <- lev1[perm]
+##   dimnames(pot1) <- levels1[perm]
+##   #attributes(pot1) <- list(dim=lev1[perm], dimnames=levels1[perm], class="ptable")
+##   #.z2 <<- pot1
+
+##   ## FIXME: Bruges det nuget sted, at der er permuteret rigigt? tror det ikke...
+##   ##pot1 <- tablePerm(pot1, vn1)
+##   #print(vn1); print(vn2)
+  
+##   pot1
+## }
+
+
+
+## .tableOp2 <- function(t1, t2, op=`*`, restore=FALSE){
+##   vn1 <- names(dimnames(t1))
+##   vn2 <- names(dimnames(t2))
+##   newvn <- c(vn2, setdiffPrim(vn1,vn2))
+##   perm  <- matchPrim(newvn, vn1)
+##   pot1 <-
+##     if (restore){
+##       zz<- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+##       perm2 <- matchPrim(vn1, newvn)
+##       .Internal(aperm(zz, perm2, TRUE))      
+##     } else { 
+##       op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+##     }
+
+##   if (identical(op, `/`))
+##     pot1[!is.finite(pot1)] <- 0
+
+##   pot1
+## }
 
 
 

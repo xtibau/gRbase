@@ -25,7 +25,7 @@ dual.rep <- function(glist, S, minimal=TRUE) {
         aaa <- unlist(lapply(m1, function(g)
                              lapply(m2, function(oo){uniquePrim(c(oo, g))})),
                       recursive=FALSE)
-        list.save <- remove.redundant(aaa,FALSE)
+        list.save <- removeRedundant(aaa,FALSE)
       }
     }
     if (!minimal)

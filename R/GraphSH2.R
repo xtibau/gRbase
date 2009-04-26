@@ -71,7 +71,7 @@ ugListMAT <-  function(x){
     ed   <- do.call(rbind, lapply(ed, n2p))
     ed   <- split(ed, row(ed))
     ed   <- do.call(rbind, removeRedundant(ed))
-    mm   <- matrix(matchPrim(ed,V),nc=2)
+    mm   <- matrix(charmatch(ed,V),nc=2)
     amat <- matrix(0L, nr=length(V), nc=length(V))
     dimnames(amat) <- list(V,V)
     amat[rbind(mm,mm[,2:1])] <- 1L
@@ -137,7 +137,7 @@ dagListMAT <-  function(x){
 
     
     ed<- do.call(rbind, gset)
-    mm   <- matrix(matchPrim(ed,V),nc=2)
+    mm   <- matrix(charmatch(ed,V),nc=2)
     amat <- matrix(0L, nr=length(V), nc=length(V))
     dimnames(amat) <- list(V,V)
     amat[mm[,2:1]] <- 1L
@@ -179,7 +179,7 @@ dagList  <- function(x){
 
   ans <- lapply(flist, function(f){
     tt    <- terms(f)
-    glist <- remove.redundant(strsplit(attr(tt,"term.labels"),":|\\*"))
+    glist <- removeRedundant(strsplit(attr(tt,"term.labels"),":|\\*"))
     V     <- rownames(attr(tt,"factors"))
     list(glist=glist,V=V)
   }) 

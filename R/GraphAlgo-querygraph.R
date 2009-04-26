@@ -138,7 +138,7 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
 ancestors <- function(set, object){
   An <- setorig <- set
   x <- as.adjMAT(object)
-  x <- x[-match(set, rownames(x)),]
+  x <- x[-charmatch(set, rownames(x)),]
   
   repeat{
     set2 <- rowSums(x[,set, drop=FALSE])
@@ -171,7 +171,7 @@ ancestralSet <- function(set, object){
     if (!length(B))
       break()
     an[B] <- 1
-    idx  <- match(A0, colnames(amat))
+    idx  <- charmatch(A0, colnames(amat))
     amat <- amat[-idx,-idx,drop=FALSE]
     vn   <- colnames(amat)
     A0   <- intersect(B,vn)

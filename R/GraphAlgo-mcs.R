@@ -18,7 +18,7 @@ mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE){
     rootNUM <- 0:(length(vn)-1)
   } else {
     root    <- c(root, setdiffPrim(vn, root))
-    rootNUM <- matchPrim(root, vn)-1L
+    rootNUM <- charmatch(root, vn)-1L
   }
   ## cat("root    :"); print(root)
   ##   cat("rootNUM :"); print(rootNUM)
@@ -52,7 +52,7 @@ mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE){
   vn.orig <- vn
   if (!is.null(root)){ 
     vn2      <- c(root, setdiff(vn, root))
-    neworder <- match(vn2, vn)
+    neworder <- charmatch(vn2, vn)
     amat     <- amat[neworder,neworder]
     vn       <- vn2
   }
@@ -108,9 +108,9 @@ mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE){
     names(ans)<-vn
 
     if (index)
-      return(match(vn[ans],vn.orig))
+      return(charmatch(vn[ans],vn.orig))
     else
-      return(vn.orig[match(vn[ans],vn.orig)])
+      return(vn.orig[charmatch(vn[ans],vn.orig)])
   } else {
     return(character(0))
   }

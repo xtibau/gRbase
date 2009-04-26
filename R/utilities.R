@@ -25,7 +25,9 @@ nonEdgeList <- function(object,matrix=FALSE){
 ## Codes a p x 2 matrix of characters or a list with pairs
 ## of characters into a vector of numbers. 
 pairs2num <- function(x, vn, sort=TRUE){
-
+  if (is.null(x))
+    return(NULL)
+  
   if (inherits(x,"list"))
     x <- do.call(rbind,x)
   else {
@@ -40,7 +42,7 @@ pairs2num <- function(x, vn, sort=TRUE){
           x[cbind(seq_along(c1),c1)], 
           x[cbind(seq_along(c2),c2)])
   }
-  ans       <- match(x,vn)
+  ans       <- charmatch(x,vn)
   dim(ans)  <- dim(x)
   ans       <- colSumsPrim(t(ans) * c(100000,1))
   ans
