@@ -9,7 +9,8 @@ void printvec(int *x, int *n){
   Rprintf("\n");
 }
 
-void printmat(int **Avec, int *nvar, char **vnames, int *nlev){
+//void printmat(int **Avec, int *nvar, char **vnames, int *nlev){
+void printmat(int *Avec, int *nvar, char **vnames, int *nlev){
   int ii, jj;
   
   Rprintf("   ");
@@ -28,7 +29,8 @@ void printmat(int **Avec, int *nvar, char **vnames, int *nlev){
 }
 
 
-void nbfun(int **Avec, int *nvar, int varidx, int *active, int *nb, int *nne){
+//void nbfun(int **Avec, int *nvar, int varidx, int *active, int *nb, int *nne){
+void nbfun(int *Avec, int *nvar, int varidx, int *active, int *nb, int *nne){
   *nne = 0;
   for (int jj=0; jj<*nvar; jj++){
     if (active[jj]==1){
@@ -40,7 +42,8 @@ void nbfun(int **Avec, int *nvar, int varidx, int *active, int *nb, int *nne){
   }
 }
 
-void nedgesfun (int **Avec, int *nvar, int *nb, int *ans){
+//void nedgesfun (int **Avec, int *nvar, int *nb, int *ans){
+void nedgesfun (int *Avec, int *nvar, int *nb, int *ans){
   *ans = 0;
   //int tmp;
   //Rprintf("nedgesfun: ");
@@ -65,9 +68,11 @@ void nedgesfun (int **Avec, int *nvar, int *nb, int *ans){
   //Rprintf("ans (nedgesfun): %i\n", *ans); 
 }
 
-void triangmcwh(int **Avec, int *nvar, char **vnames, int *nlev, int *ans){
+//void triangmcwh(int **Avec, int *nvar, char **vnames, int *nlev, int *ans){
+void triangmcwh(int *Avec, int *nvar, char **vnames, int *nlev, int *ans){
   int ii, i;
-  int active[*nvar], nb[*nvar];
+  //int active[*nvar], nb[*nvar];
+  int *active, *nb;
   int nne, nedges=0;
   int totedges, nfillin;
   int goon = 0;
@@ -76,6 +81,10 @@ void triangmcwh(int **Avec, int *nvar, char **vnames, int *nlev, int *ans){
   
   // Initialize
   float statespace = 0;
+
+  active = (int *)R_alloc(sizeof(int),*nvar);
+  nb     = (int *)R_alloc(sizeof(int),*nvar);
+
   for (ii=0; ii<*nvar; ii++) {
     active[ii]   = 1;
     //cqweight[ii] = 0;
@@ -133,8 +142,11 @@ void triangmcwh(int **Avec, int *nvar, char **vnames, int *nlev, int *ans){
 	  for (int jj=0; jj<*nvar; jj++){
 	    if (nb[jj]!=0){
 	      if ((int) Avec[ii + *nvar * jj] == 0){
-		Avec[ii + *nvar * jj] = (int*) -1;
-		Avec[jj + *nvar * ii] = (int*) -1;
+		//Avec[ii + *nvar * jj] = (int*) -1;
+		//Avec[jj + *nvar * ii] = (int*) -1;
+		Avec[ii + *nvar * jj] = -1;
+		Avec[jj + *nvar * ii] = -1;
+
 	      }
 	    }
 	  }
