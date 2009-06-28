@@ -1,6 +1,13 @@
-2009-04-07 Søren Højsgaard <sorenh@agrsci.dk>
+2009-06-28 Søren Højsgaard <sorenh@agrsci.dk>	
 
-	* Maximum prime subgraph decomposition (mpd()) function added 
+	* rip failed when a graph had only one node. Fixed now.
+
+	* triangmcwh failed on 64 bit machines due to a memory leak. Fix
+	provided by Charles Brundell. Thanks.
+
+	* Version 1.1.2 uploaded
+
+2009-04-26 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Speedups of various functions; cleaning up some code. 
 	
