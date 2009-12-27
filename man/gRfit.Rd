@@ -19,12 +19,12 @@
  \code{summary} methods exist for \code{gRfit} objects.
 }
 \usage{
-fit(m, ...)
+fit(object, ...)
 getFit(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{m}{An object for which a fit method has been defined}.
+  \item{object}{An object for which a fit method has been defined}.
   \item{x}{an object of class \code{gRfit} as created from \code{fit}
     applied to a \code{\link{gModel}} object.}
   \item{...}{Additional arguments}

@@ -38,21 +38,21 @@ hllm <- function(formula = ~.^1,  gmData, marginal){
 ## }
 
 
-fit.hllm <- function(m,engine="loglm",...){
+fit.hllm <- function(object,engine="loglm",...){
 
-  rawdata <- observations(m$gmData)
+  rawdata <- observations(object$gmData)
   if (is.data.frame(rawdata)){
     rawdata <- xtabs(~., rawdata)
   }
-  value <- m
-  mimform <- processFormula(formula(m),gmData(m),type="Discrete")
+  value <- object
+  mimform <- processFormula(formula(object),gmData(object),type="Discrete")
                                         #cat("processFormula done...\n")
   switch(engine,
          "loglm"={
            loglm.formula <- mimform$formula
            val <- loglm(loglm.formula, data=rawdata)
            val$call$data <- rawdata
-           class(value) <- c("gRfit","loglm", class(m))
+           class(value) <- c("gRfit","loglm", class(object))
          },
          {stop("Only engine 'loglm' currently implemented...")
         })

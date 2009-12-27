@@ -1,5 +1,5 @@
 Package: gRbase
-Version: 1.1.2
+Version: 1.2.0
 Title: A package for graphical modelling in R
 Author: Søren Højsgaard <sorenh@agrsci.dk> and Claus Dethlefsen
         <cld@rn.dk> with contributions from Clive Bowsher
@@ -17,6 +17,6 @@ URL: http://genetics.agrsci.dk/~sorenh/public/R/gRbaseweb/
 Depends: R (>= 2.7.0),MASS,graph,RBGL
 Suggests: Rgraphviz
 Encoding: latin1
-Packaged: 2009-06-27 22:06:04 UTC; shd
+Packaged: 2009-12-27 00:05:53 UTC; shd
 Repository: CRAN
-Date/Publication: 2009-06-28 16:48:44
+Date/Publication: 2009-12-28 10:52:56

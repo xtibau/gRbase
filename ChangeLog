@@ -1,3 +1,23 @@
+2009-12-27 Søren Højsgaard <sorenh@agrsci.dk>	
+
+	* Functions for finding a minimal triangulation of undirected
+	graph ('minimalTriang' and 'minimalTriangMAT') added. Code kindly
+	provided by Clive Bowsher.
+
+	* Functions for finding maximal prime subgraph decomposition of
+	undirected graph ('mpd' and 'mpdMAT') added. Code kindly
+	provided by Clive Bowsher.
+
+	* Version 1.2.0 uploaded
+
+2009-06-28 Søren Højsgaard <sorenh@agrsci.dk>	
+
+	* First argument to fit is now 'object' rather than 'm'
+
+	* conc2pcor function added.
+	
+	* Version 1.1.3 uploaded
+
 2009-06-28 Søren Højsgaard <sorenh@agrsci.dk>	
 
 	* rip failed when a graph had only one node. Fixed now.

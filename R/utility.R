@@ -29,5 +29,9 @@ cov2pcor <- function(V){
   ans
   }
 
-
+conc2pcor <- function(K){
+  ans <- -cov2cor(K)
+  diag(ans)<-1
+  ans
+}
 

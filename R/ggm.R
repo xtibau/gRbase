@@ -14,10 +14,10 @@ ggm <- function(formula=~.^1, gmData, marginal){
   return(value)
 }
 
-fit.ggm <- function(m, ...){
-  Ydf  <- observations(m$gmData)
+fit.ggm <- function(object, ...){
+  Ydf  <- observations(object$gmData)
   nobs <- nrow(Ydf)
-  gc <- m$numformula
+  gc <- object$numformula
   Ymat <- as.matrix(Ydf)
   Smat   <- cov(Ymat)*(nobs-1)/nobs
   ipsFit <- ips(gc,Smat)
@@ -26,9 +26,9 @@ fit.ggm <- function(m, ...){
   fit$mean <- apply(Ymat,2,mean)
   fit$df   <- length(which(fit$part==0))/2
   fit$iterations <- ipsFit$iterations
-  value<-m
+  value<-object
   value$fit <- fit
-  class(value) <- c("gRfit", "ggm",class(m))
+  class(value) <- c("gRfit", "ggm",class(object))
   return(value)
 }
 

@@ -1,17 +1,23 @@
 \name{cov2pcor}
 \alias{cov2pcor}
+\alias{conc2pcor}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Partial correlation (matrix)}
 \description{
  \code{cov2pcor} calculates the partial correlation matrix from an
- (empirical) covariance matrix
+ (empirical) covariance matrix while \code{conc2pcor} calculates the
+ partial correlation matrix from a concentration matrix (inverse
+ covariance matrix).
 }
 \usage{
 cov2pcor(V)
+conc2pcor(K)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{V}{Covariance matrix}
+  \item{K}{Concentration matrix}
 }
 % \details{
 %   ~~ If necessary, more details than the description above ~~
