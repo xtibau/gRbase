@@ -7,7 +7,7 @@
 ##Status          : Unknown, Use with caution!
 ##
 
-fit <- function(m, ...) UseMethod("fit")
+
 
 "getFit.gRfit" <- function(x){x$fit}
 "getFit" <- function(x) UseMethod("getFit")
