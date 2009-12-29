@@ -6,6 +6,8 @@ cad1                    Coronary artery disease data
 carcass                 lean meat contents of pig carcasses
 chestSim                Simulated data from the Chest Clinic example
 colSumsPrim             Utility functions for gRbase
+combnPrim               Generate All Combinations of n Elements Taken m
+                        at a Time
 cov2pcor                Partial correlation (matrix)
 dietox                  Growth curves of pigs in a 3x3 factorial
                         experiment
