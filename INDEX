@@ -1,5 +1,6 @@
 as.adjMAT               Simple operations on undirected and directed
                         acyclic graphs.
+ashtrees                Crown dieback in ash trees
 breastcancer            Gene expression signatures for p53 mutation
                         status in 250 breast cancer samples
 cad1                    Coronary artery disease data
@@ -8,6 +9,7 @@ chestSim                Simulated data from the Chest Clinic example
 colSumsPrim             Utility functions for gRbase
 combnPrim               Generate All Combinations of n Elements Taken m
                         at a Time
+compile                 Compile and propagate functions
 cov2pcor                Partial correlation (matrix)
 dietox                  Growth curves of pigs in a 3x3 factorial
                         experiment
@@ -21,6 +23,7 @@ mathmark                Mathematics marks for students
 mcs                     More advanced operations on undirected and
                         directed acyclic graphs.
 mildew                  Mildew fungus
+milkcomp                Milk composition data
 minimalTriang           Minimal triangulation of an undirected graph
 mpd                     Maximal prime subgraph decomposition
 newgmData               Class "gmData" graphical meta data

@@ -1,3 +1,21 @@
+2010-02-11 Søren Højsgaard <sorenh@agrsci.dk>	
+
+	* triangulate has been made gereric and a triangulate.graphNEL
+	function has been added.
+
+	*
+	
+	* version 1.3.2 uploaded
+
+2010-01-10 Søren Højsgaard <sorenh@agrsci.dk>	
+
+	* names2pairs reimplemented
+
+	* Datasets milkcomp and ashtrees added
+
+	* version 1.3.1 uploaded
+	
+
 2009-12-29 Søren Højsgaard <sorenh@agrsci.dk>	
 
 	* Function combnPrim (a C version of combn) for finding all m

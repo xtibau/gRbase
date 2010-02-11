@@ -20,8 +20,12 @@
 
 \alias{names2pairs}
 \alias{ellK}
+
 \alias{list2rhsFormula}
 \alias{rhsFormula2list}
+\alias{list2rhsf}
+\alias{rhsf2list}
+
 \alias{which.arr.ind}
 \alias{pairs2num}
 

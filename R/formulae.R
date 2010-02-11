@@ -42,7 +42,7 @@ extract.power<-function(fff){
 ## Turn a right-hand-sided formula into a list
 ##
 ## SHD, July 2008
-rhsFormula2list <- function(f){
+rhsFormula2list <- rhsf2list <- function(f){
   if (inherits(f,"list")){
     return(f)
   } else {
@@ -66,10 +66,35 @@ rhsFormula2list <- function(f){
 ## Turn list into right-hand-sided formula
 ##
 ## SHD, July 2008
-list2rhsFormula <- function(f){
+list2rhsFormula <- list2rhsf <- function(f){
   if (inherits(f,"formula"))
     return(f)
   as.formula(paste("~",paste(unlist(lapply(f,paste, collapse='*')),collapse="+")))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
