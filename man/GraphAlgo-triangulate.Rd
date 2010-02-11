@@ -1,5 +1,6 @@
 \name{triangulate}
 \alias{triangulate}
+\alias{triangulate.graphNEL}
 \alias{triangulateMAT}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Triangulation of an undirected graph}

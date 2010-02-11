@@ -1,4 +1,6 @@
 
+
+
 triangulateMAT <- function(amat, method="mcwh",
                            nLevels=rep(2,ncol(amat))){
 
@@ -31,8 +33,7 @@ triangulateMAT <- function(amat, method="mcwh",
 }
 
 
-
-triangulate <- function(object, method="mcwh",
+triangulate.graphNEL <- function(object, method="mcwh",
                         nLevels=rep(2,length(nodes(object))), matrix=FALSE){
 
   trimethod <- c("mcwh","r")
