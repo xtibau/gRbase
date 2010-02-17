@@ -1,7 +1,16 @@
 
+## triangulate <-
+##   function(object, method="mcwh",
+##            nLevels=rep(2,length(nodes(object))), matrix=FALSE)
+## {
+##   UseMethod("triangulate")
+## }
+
+
+
+
 triangulate <-
-  function(object, method="mcwh",
-           nLevels=rep(2,length(nodes(object))), matrix=FALSE)
+  function(object, ...)
 {
   UseMethod("triangulate")
 }
