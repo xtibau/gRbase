@@ -8,8 +8,9 @@
   This function will triangulate an undirected graph by adding fillins. 
 }
 \usage{
-triangulate(object, method="mcwh",  nLevels = rep(2,length(nodes(object))), matrix=FALSE)
-triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)))
+triangulate(object, ...)
+\method{triangulate}{graphNEL}(object, method="mcwh",  nLevels = rep(2,length(nodes(object))), matrix=FALSE,...)
+triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,6 +25,7 @@ triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)))
     'details'.}
   \item{matrix}{If TRUE the adjacency matrix is returned; if FALSE a
     graphNEL object is returned}
+  \item{...}{Additional arguments, currently not used.}
 }
 \details{
   The triangulation is made so as the total state space is kept low.
