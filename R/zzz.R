@@ -1,9 +1,4 @@
-
- .onLoad <- function(lib, pkg)
-###.First.lib <- function(lib, pkg)
-{
-  library.dynam("gRbase", package = pkg, lib.loc = lib)
+.onLoad <- function(libname, pkgname){
+  library.dynam("gRbase", package = pkgname, lib.loc = libname)
   return(invisible(0))
 }
-
-
