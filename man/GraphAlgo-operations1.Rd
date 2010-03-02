@@ -9,8 +9,6 @@
 \alias{closure}
 
 \alias{vpar}
-\alias{edgeList}
-\alias{nonEdgeList}
 \alias{is.complete}
 \alias{is.decomposition}
 \alias{is.simplicial}
@@ -30,8 +28,6 @@ ancestralGraph(set, object)
 ancestralSet(set, object)
 children(set, object)
 closure(set, object)
-edgeList(object,matrix=FALSE)
-nonEdgeList(object, matrix=FALSE)
 vpar(object)
 is.complete(object, set)
 is.decomposition(set, set2, set3, object)
@@ -42,9 +38,9 @@ simplicialNodes(object)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{set, set2, set3}{Vectors of sets}
-  \item{object}{A graph nel object}
-  \item{matrix}{If TRUE the result is returned as a p x 2 matrix; otherwise as a
-    matrix list. }
+  \item{object}{A graphNEL object}
+  %   \item{matrix}{If TRUE the result is returned as a p x 2 matrix; otherwise as a
+  %     matrix list. }
 }
  \details{
    Notice that as.adjMAT(g) does the same as as(g, "matrix") but
@@ -64,6 +60,9 @@ simplicialNodes(object)
 %  ~Make other sections like Warning with \section{Warning }{....} ~
 % }
 \seealso{
+  \code{\link{edgeList}}
+  \code{\link{nonEdgeList}}
+  %\code{\link{as.adjMAT}}
   \code{\link{mcs}}
   \code{\link{rip}}
   \code{\link{moralize}}

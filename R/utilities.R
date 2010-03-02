@@ -1,4 +1,5 @@
 
+
 ## Returns matrix n x 2 matrix with indices of non-zero 
 ## entries in matrix m
 which.arr.ind <- function(m){
@@ -9,18 +10,6 @@ which.arr.ind <- function(m){
   epp
 }
 
-## Returns edges (pairs of vertices) not in graph object.
-## Based on lower triangular part of adjacency matrix; 
-## hence for directed graphs it has the form (from, to)
-nonEdgeList <- function(object,matrix=FALSE){
-  m <- -1*as.adjMAT(object) + 1
-  m[upper.tri(m, diag=TRUE)] <- 0
-  epp <- which.arr.ind(m)
-  ans <- matrix(colnames(m)[epp],nc=2)
-  if (!matrix)
-    ans<- split(ans,row(ans))
-  ans
-}
 
 ## Codes a p x 2 matrix of characters or a list with pairs
 ## of characters into a vector of numbers. 

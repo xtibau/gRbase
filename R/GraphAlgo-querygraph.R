@@ -210,20 +210,6 @@ closure <- function(set, object){
 
 
 
-## Returns edges (pairs of vertices) of graph object.
-## Based on lower triangular part of adjacency matrix; 
-## hence for directed graphs it has the form (from, to)
-## FIXME: Should check for graphNEL
-edgeList <- function(object,matrix=FALSE){
-  m <- as.adjMAT(object)
-  if (edgemode(object)=="undirected")
-    m[upper.tri(m)] <- 0
-  epp <- which.arr.ind(m)
-  ans <- matrix(colnames(m)[epp],nc=2)
-  if (!matrix)
-    ans<- split(ans,row(ans))
-  ans
-}
 
 
 

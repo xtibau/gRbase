@@ -13,6 +13,7 @@ compile                 Compile and propagate functions
 cov2pcor                Partial correlation (matrix)
 dietox                  Growth curves of pigs in a 3x3 factorial
                         experiment
+edgeList                Find edges in a graph and edges not in a graph.
 gModel                  Class "gModel" - graphical models
 gRbase                  The package 'gRbase': summary information
 gRfit                   Class "gRfit" - fitted graphical models
