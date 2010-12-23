@@ -17,10 +17,6 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
   ans
 }
 
-
-
-
-
 ## Alternative to tableOp
 ##
 tableOp <- function(t1,t2,op="*"){
@@ -35,20 +31,27 @@ tableOp <- function(t1,t2,op="*"){
   dn1 <- dimnames(t1)
   dn2 <- dimnames(t2)
   vn1 <- names(dn1)
-  vn2 <- names(dn2)
+  vn2 <- names(dn2)  
+
+  ## indices of those variables in vn2 which exist in vn1:
+  ##idx <- charmatch(vn2,vn1) ## OLD
+  idx <- .Internal(charmatch(vn2, vn1, NA_integer_))
   
-  idx <- charmatch(vn2,vn1)
-  idx.na <- is.na(idx)
+                                        #print(vn1); print(vn2); print(idx)
+  ## indices of those variables in vn2 which do not exist in vn1:
+  idx.na <- is.na(idx) 
   
   if (any(idx.na)){
-    aug.vn <- vn2[idx.na]
-    aug.di <- di2[idx.na]
-    aug.dn <- dn2[idx.na]
-    
-    pot1   <- rep(as.numeric(t1), prod(aug.di))
-    vn.new <- c(vn1, aug.vn)
-    di.new <- c(di1, aug.di)
-    dn.new <- c(dn1, aug.dn)
+    ## If there are variables in vn2 which are not in vn1
+    aug.vn <- vn2[idx.na] # Find those variables  
+    aug.di <- di2[idx.na] # - and their levels
+    aug.dn <- dn2[idx.na] # - and their dimnames
+
+    ## Create new "augmented" table defined over (vn1, vn2\vn1)
+    pot1      <- rep.int(as.numeric(t1), prod(aug.di))
+    vn.new    <- c(vn1, aug.vn)
+    di.new    <- c(di1, aug.di)
+    dn.new    <- c(dn1, aug.dn)
     dim(pot1) <- di.new
     dimnames(pot1) <- dn.new
   } else {
@@ -58,51 +61,60 @@ tableOp <- function(t1,t2,op="*"){
     dn.new <- dn1
   }
 
-  ii    <-  charmatch(vn2, vn.new)
+  ## Find indices of vn2 in the new "augmented" table
+                                        #ii    <-  charmatch(vn2, vn.new)
+  ii    <- .Internal(charmatch(vn2, vn.new, NA_integer_))
+
+  ## Create perumation indices; first variables in vn2; then the rest
   perm  <-  c(ii, (1:length(vn.new))[-ii])
 
   if (op == "*") {
-    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * 
-      as.numeric(t2)
+    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * as.numeric(t2)
   }
   else {
-    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE)))/as.numeric(t2)
+    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) / as.numeric(t2)
     pot1[!is.finite(pot1)] <- 0
   }
   dim(pot1)      <- di.new[perm]
   dimnames(pot1) <- dn.new[perm]
   return(pot1)
-
 }
 
 
-.tableOp2 <- tableOp2 <- function (t1, t2, op = `*`, restore = FALSE) 
-{
 
+tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE) 
+{
   if (!is.array(t1)) 
     stop("'t1' is not an array")
   if (!is.array(t2)) 
     stop("'t2' is not an array")
 
-  vn1 <- names(dimnames(t1))
-  vn2 <- names(dimnames(t2))
+  vn1  <- names(dimnames(t1))
+  vn2  <- names(dimnames(t2))
   
-  ii <- charmatch(vn2, vn1)
-  perm  <-  c(ii, (1:length(vn1))[-ii])
+  ## indices of vn2 in vn1:
+  ii   <- charmatch(vn2, vn1)
+  ## indices of vn2 in vn1 followed by indicies of remaining variables in vn1,
+  ## so that vn2 varies fastest.
+  perm <- c(ii, (1:length(vn1))[-ii]) 
   
-  pot1 <- if (restore) {
-    zz <- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
-    newvn <- c(vn2, setdiffPrim(vn1, vn2))
-    perm2 <- charmatch(vn1, newvn)
-    .Internal(aperm(zz, perm2, TRUE))
-  }
-  else {
-    op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
-  }
+  pot1 <-
+    if (restore) {
+      zz    <- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+                                        # newvn <- c(vn2, setdiffPrim(vn1, vn2)) ## OLD
+      newvn <- c(vn2, vn1[-ii]) 
+                                        # perm2 <- charmatch(vn1, newvn) ## OLD
+      perm2 <- .Internal(charmatch(vn1, newvn, NA_integer_))
+      .Internal(aperm(zz, perm2, TRUE))
+    }
+    else {
+      op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+    }
   if (identical(op, `/`)) 
     pot1[!is.finite(pot1)] <- 0
   pot1
 }
+
 
 
 
@@ -117,14 +129,17 @@ tableMargin <-  function (x, margin, keep.class=FALSE)
   oc <- oldClass(x)
   if (length(margin)) {
     if (is.character(margin)){
-      marg.idx <- charmatch(margin, vn)
+      marg.idx <- .Internal(charmatch(margin, vn, NA_integer_))
+                                        #marg.idx <- charmatch(margin, vn)
       if (any(is.na(marg.idx)))
         stop("Variable not in table...\n")
     } else {
       marg.idx <- margin
     }
     
-    rest.idx <- (1:length(vn))[-marg.idx]
+                                        #rest.idx <- (1:length(vn))[-marg.idx]
+    rest.idx <- (seq_along(vn))[-marg.idx]
+
     nr <- prod(di[marg.idx])
     nc <- prod(di[rest.idx])
 
@@ -147,23 +162,8 @@ tableMargin <-  function (x, margin, keep.class=FALSE)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 tableSlice <-  function (x, margin, level, impose) 
 {
-
   if(is.null(margin)) return(x)
 
   dn <- dimnames(x)
@@ -187,9 +187,6 @@ tableSlice <-  function (x, margin, level, impose)
   } else {
     level2 <- level
   }
-
-##   print(margin2)
-##   print(level2)
   
   if (!missing(impose) && is.numeric(impose)){  
     d  <- dim(x)
