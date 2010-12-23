@@ -1,3 +1,9 @@
+2010-12-20 Søren Højsgaard <sorenh@agrsci.dk>	
+
+	* Generic iplot function added
+
+	* Version 1.3.5 uploaded
+
 2010-02-24 Søren Højsgaard <sorenh@agrsci.dk>	
 
 	* edgeList and nonEdgeList reimplemented

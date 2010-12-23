@@ -1,7 +1,7 @@
 \name{carcass}
 \alias{carcass}
 \alias{carcassall}
-\title{lean meat contents of pig carcasses}
+\title{Lean meat contents of 344 pig carcasses}
 \usage{
 data(carcass)
 data(carcassall)
@@ -19,19 +19,19 @@ data(carcassall)
     \item{\code{lengthf}}{Length of carcass from back toe to front leg
       (that is, to the shoulder)}
     \item{\code{lengthp}}{Length of carcass from back toe to the pelvic bone}
-    \item{\code{F02, F03, F11, F12, F13, F14, F16}}{Thickness of fat
-      layer at different locations on the back of the carcass (FXX
+    \item{\code{Fat02, Fat03, Fat11, Fat12, Fat13, Fat14, Fat16}}{Thickness of fat
+      layer at different locations on the back of the carcass (FatXX
       refers to thickness at (or rather next to) rib no. XX. Notice that
       02 is closest to the head}
-    \item{\code{M11, M12, M13}}{Thickness of meat layer at different
+    \item{\code{Meat11, Meat12, Meat13}}{Thickness of meat layer at different
       locations on the back of the carcass, see description above}
-    \item{\code{LMP}}{Lean meat percentage determined by dissection}
+    \item{\code{LeanMeat}}{Lean meat percentage determined by dissection}
     \item{\code{slhouse}}{Slaughter house; a factor with levels \code{a} \code{b} \code{c}}
     \item{\code{sex}}{Sex of the pig; a factor with \code{a} \code{b}
       \code{c}. Notice that it is no an error to have three levels; the
       third level refers to castrates}
   }
-  carcass: Contains only the variables  F11, F12, F13, M11, M12, M13, LMP
+  carcass: Contains only the variables  Fat11, Fat12, Fat13, Meat11, Meat12, Meat13, LeanMeat
 }
 
 

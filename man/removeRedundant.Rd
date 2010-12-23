@@ -4,6 +4,9 @@
 \alias{is.subsetof}
 \alias{subsetof}
 \alias{removeRedundant}
+\alias{maximalSets}
+\alias{minimalSets}
+
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Set operations}
@@ -14,6 +17,8 @@
 is.subsetof(x, set)
 is.insetlist(x, setlist, index=FALSE)
 removeRedundant(setlist, maximal = TRUE, index = FALSE)
+maximalSets(setlist,  index = FALSE)
+minimalSets(setlist,  index = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

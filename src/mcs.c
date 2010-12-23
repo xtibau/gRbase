@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <Rdefines.h>
-#include "shd_print.h"
+#include "_utils_print.h"
 
 // Check if S is a complete set in the symmetrical adj. matrix A
 //

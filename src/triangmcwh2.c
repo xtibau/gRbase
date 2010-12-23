@@ -2,35 +2,10 @@
 #include <stdlib.h>
 #include <Rdefines.h>
 
-void printvec(int *x, int *n){
+#include "_utils_print.h"
 
-  for (int i=0; i<*n; i++)
-    Rprintf(" %2i ",x[i]);
-  Rprintf("\n");
-}
-
-//void printmat(int **Avec, int *nvar, char **vnames, int *nlev){
-void printmat(int *Avec, int *nvar, char **vnames, int *nlev){
-  int ii, jj;
-  
-  Rprintf("   ");
-  for (ii=0; ii<*nvar; ii++){
-    Rprintf(" %2s ", vnames[ii]);
-  }
-  Rprintf("\n");
-  for (ii=0; ii<*nvar; ii++){
-    Rprintf(" %s ", vnames[ii]);
-    for (jj=0; jj<*nvar; jj++){
-      Rprintf(" %2i ", Avec[ii + *nvar * jj]);
-    }
-    Rprintf("\n");
-  }
-  Rprintf(" ---------------------------\n");
-}
-
-
-//void nbfun(int **Avec, int *nvar, int varidx, int *active, int *nb, int *nne){
-void nbfun(int *Avec, int *nvar, int varidx, int *active, int *nb, int *nne){
+void C_nbfun(int *Avec, int *nvar, int varidx, int *active, int *nb, int *nne)
+{
   *nne = 0;
   for (int jj=0; jj<*nvar; jj++){
     if (active[jj]==1){
@@ -42,11 +17,11 @@ void nbfun(int *Avec, int *nvar, int varidx, int *active, int *nb, int *nne){
   }
 }
 
-//void nedgesfun (int **Avec, int *nvar, int *nb, int *ans){
-void nedgesfun (int *Avec, int *nvar, int *nb, int *ans){
+void C_nedgesfun (int *Avec, int *nvar, int *nb, int *ans)
+{
   *ans = 0;
   //int tmp;
-  //Rprintf("nedgesfun: ");
+  //Rprintf("C_nedgesfun: ");
   //for (int ii=0; ii<(*nvar-1); ii++){
   //  if (nb[ii]!=0)
   //    Rprintf("%i %i||", ii, nb[ii]);
@@ -65,11 +40,12 @@ void nedgesfun (int *Avec, int *nvar, int *nb, int *ans){
       }
     }
   }
-  //Rprintf("ans (nedgesfun): %i\n", *ans); 
+  //Rprintf("ans (C_nedgesfun): %i\n", *ans); 
 }
 
-//void triangmcwh(int **Avec, int *nvar, char **vnames, int *nlev, int *ans){
-void triangmcwh(int *Avec, int *nvar, char **vnames, int *nlev, int *ans){
+
+void triangmcwh(int *Avec, int *nvar, char **vnames, int *nlev, int *ans)
+{
   int ii, i;
   //int active[*nvar], nb[*nvar];
   int *active, *nb;
@@ -103,9 +79,9 @@ void triangmcwh(int *Avec, int *nvar, char **vnames, int *nlev, int *ans){
       
       if (active[ii]==1){ 
 	//Rprintf("Node %s %f \n", vnames[ii], mincqsize);
-	nbfun(Avec, nvar, ii, active, nb, &nne); // nb: neighbours (in active set), nne: # neighbours (in active set)
+	C_nbfun(Avec, nvar, ii, active, nb, &nne); // nb: neighbours (in active set), nne: # neighbours (in active set)
       	//Rprintf(" ne: "); printvec(nb, nvar);  	
-	nedgesfun(Avec, nvar, nb, &nedges);      // nedges: # edges between vars in nb
+	C_nedgesfun(Avec, nvar, nb, &nedges);      // nedges: # edges between vars in nb
 	
 	cqsize = lognlev[ii];  
 	for (i=0; i<*nvar; i++){
@@ -132,8 +108,8 @@ void triangmcwh(int *Avec, int *nvar, char **vnames, int *nlev, int *ans){
     active[mincqidx] = 0;    
     
     if (minfillin>0){
-      nbfun(Avec, nvar, mincqidx, active, nb, &nne); 
-      nedgesfun(Avec, nvar, nb, &nedges); 
+      C_nbfun(Avec, nvar, mincqidx, active, nb, &nne); 
+      C_nedgesfun(Avec, nvar, nb, &nedges); 
       //Rprintf("Matrix (before fillin) \n"); printmat(Avec, nvar, vnames, nlev);      
       //Rprintf(" NB: %i >>", nne); printvec(nb, nvar);
       
@@ -164,6 +140,32 @@ void triangmcwh(int *Avec, int *nvar, char **vnames, int *nlev, int *ans){
     
   }
 }
+
+/* void printvec(int *x, int *n){ */
+
+/*   for (int i=0; i<*n; i++) */
+/*     Rprintf(" %2i ",x[i]); */
+/*   Rprintf("\n"); */
+/* } */
+
+/* //void printmat(int **Avec, int *nvar, char **vnames, int *nlev){ */
+/* void printmat(int *Avec, int *nvar, char **vnames, int *nlev){ */
+/*   int ii, jj; */
+  
+/*   Rprintf("   "); */
+/*   for (ii=0; ii<*nvar; ii++){ */
+/*     Rprintf(" %2s ", vnames[ii]); */
+/*   } */
+/*   Rprintf("\n"); */
+/*   for (ii=0; ii<*nvar; ii++){ */
+/*     Rprintf(" %s ", vnames[ii]); */
+/*     for (jj=0; jj<*nvar; jj++){ */
+/*       Rprintf(" %2i ", Avec[ii + *nvar * jj]); */
+/*     } */
+/*     Rprintf("\n"); */
+/*   } */
+/*   Rprintf(" ---------------------------\n"); */
+/* } */
 
 
 

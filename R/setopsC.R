@@ -1,3 +1,54 @@
+maximalSets <- function(setlist, index=FALSE){
+ if (length(setlist)<=1){
+    if (index)
+      return(1)
+    else
+      return(setlist)
+  }
+  
+   lenx     <- c(lapply(setlist,length), recursive=TRUE)
+   ooo      <- order(lenx, decreasing=TRUE)
+   setlist2 <- setlist[ooo]
+   ends     <- cumsum(c( lapply(setlist2,length), recursive=TRUE ))
+   iii<-.C("C_maxset",
+            setlist=as.character(c(setlist2, recursive=TRUE)),
+            ends=ends, nset=length(setlist2), ans=integer(length(setlist2))
+           , PACKAGE="gRbase")$ans
+   iii <- iii[order(ooo)]
+   
+  if (index){
+    iii
+  } else {
+    setlist[iii==1]
+  }
+}
+
+minimalSets <- function(setlist, index=FALSE){
+ if (length(setlist)<=1){
+    if (index)
+      return(1)
+    else
+      return(setlist)
+  }
+  
+   lenx     <- c(lapply(setlist,length), recursive=TRUE)
+   ooo      <- order(lenx, decreasing=FALSE)
+   setlist2 <- setlist[ooo]
+   ends     <- cumsum(c( lapply(setlist2,length), recursive=TRUE ))
+   iii<-.C("C_minset",
+            setlist=as.character(c(setlist2, recursive=TRUE)),
+            ends=ends, nset=length(setlist2), ans=integer(length(setlist2))
+           , PACKAGE="gRbase")$ans
+   iii <- iii[order(ooo)]
+   
+  if (index){
+    iii
+  } else {
+    setlist[iii==1]
+  }
+}
+
+
 
 ## A function to remove redundant generators.  If maximal=T, returns
 ## the maximal generators, if =F, the minimal generators.
@@ -5,51 +56,14 @@
 ## Can be speeded up if the as.character part can be avoided...
 
 removeRedundant <- function(setlist, maximal=TRUE, index=FALSE){
-  if (length(setlist)<=1){
-    if (index)
-      return(1)
-    else
-      return(setlist)
-  }
-  lenx  <- c(lapply(setlist,length), recursive=TRUE)
-  if (maximal){
-    o     <- order(lenx, decreasing=TRUE)
-    x2    <- setlist[o]
-
-##     x2    <- lapply(x2, as.character)
-##     ll    <- cumsum(unlistPrim(lapply(x2,length)))
-##     i<-.C("maxset", unlistPrim(x2), ll, length(x2),
-##           ans=integer(length(x2))
-##           , PACKAGE="gRbase"
-##           )$ans
-
-    ll    <- cumsum(c( lapply(x2,length), recursive=TRUE ))
-    iii<-.C("maxset", as.character(c(x2, recursive=TRUE)), ll, length(x2), ans=integer(length(x2))
-          , PACKAGE="gRbase")$ans
-    
-    iii <- iii[order(o)]
-  } else {
-    o     <- order(lenx, decreasing=FALSE)
-    x2    <- setlist[o]
-
-
-##     x2    <- lapply(x2, as.character)
-##     ll    <- cumsum(unlistPrim(lapply(x2,length)))
-##     i<-.C("minset", unlistPrim(x2), ll, length(x2), ans=integer(length(x2))
-##           ,PACKAGE="gRbase")$ans
-
-    ll    <- cumsum(c( lapply(x2,length), recursive=TRUE ))
-    iii<-.C("minset", as.character(c(x2, recursive=TRUE)), ll, length(x2), ans=integer(length(x2))
-          ,PACKAGE="gRbase")$ans
-    
-    iii <- iii[order(o)]  
-  }  
-  if (index){
-    iii
-  } else {
-    setlist[iii==1]
-  }
+  if (maximal)
+    maximalSets(setlist, index)
+  else
+    minimalSets(setlist, index)
 }
+
+
+
 
 ## Is x contained in any vector in setlist; 
 is.insetlist <- function(x, setlist, index=FALSE){
@@ -72,20 +86,14 @@ isin <- function(setlist, x, index=FALSE){
     else
       return(TRUE)
   }
-  
-##   setlist <- lapply(setlist, "as.character")
-##   x <- as.character(x)
-##   ll <- cumsum(unlistPrim(lapply(setlist,length)))
-##   iii<-.C("isin", x, length(x), unlist(setlist), ll , len.setlist,
-##         ans=integer(len.setlist),PACKAGE="gRbase")$ans
-
 
   ll    <- cumsum(c( lapply(setlist,length), recursive=TRUE ))
-  iii<-.C("isin", as.character(x), length(x), as.character(c(setlist,recursive=TRUE)), ll, len.setlist,
-        ans=integer(len.setlist),PACKAGE="gRbase")$ans
+  iii<-.C("C_isin",
+          as.character(x), length(x),
+          as.character(c(setlist,recursive=TRUE)), ll, len.setlist,
+          ans=integer(len.setlist)
+          , PACKAGE="gRbase")$ans
   
-  
-
   if (index) {
     return(iii)
   } else {
@@ -96,8 +104,6 @@ isin <- function(setlist, x, index=FALSE){
 
 ## Faster versions of 'standard R functions'
 ##
-
-
 is.subsetof <- function(x, set){
   all(.Internal(match(x,  set,  NA_integer_,  NULL))>0)
 }
@@ -109,4 +115,46 @@ subsetof <- function(x, y){
 
 ## subsetofList <- function(x,l){ 
 ##   any(unlistPrim(lapply(l, function(y) subsetof(x,y))))
+## }
+
+
+
+
+## removeRedundant <- function(setlist, maximal=TRUE, index=FALSE){
+##   if (length(setlist)<=1){
+##     if (index)
+##       return(1)
+##     else
+##       return(setlist)
+##   }
+
+##   lenx  <- c(lapply(setlist,length), recursive=TRUE)
+
+##   if (maximal){
+##     ooo     <- order(lenx, decreasing=TRUE)
+##     x2    <- setlist[ooo]
+##     ll    <- cumsum(c( lapply(x2,length), recursive=TRUE ))
+##     iii<-.C("C_maxset",
+##             as.character(c(x2, recursive=TRUE)),
+##             ll, length(x2), ans=integer(length(x2))
+##             , PACKAGE="gRbase")$ans
+    
+##     iii <- iii[order(ooo)]
+##   } else {
+##     ooo     <- order(lenx, decreasing=FALSE)
+##     x2    <- setlist[ooo]
+##     ll    <- cumsum(c( lapply(x2,length), recursive=TRUE ))
+##     iii<-.C("C_minset",
+##             as.character(c(x2, recursive=TRUE)),
+##             ll, length(x2), ans=integer(length(x2))
+##             , PACKAGE="gRbase")$ans
+    
+##     iii <- iii[order(ooo)]  
+##   }  
+
+##   if (index){
+##     iii
+##   } else {
+##     setlist[iii==1]
+##   }
 ## }
