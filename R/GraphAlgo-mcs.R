@@ -25,7 +25,9 @@ mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE){
   ##   print(storage.mode(rootNUM))
   
   #ans<-.C("C_mcs", A=as.integer(amat), nc=ncol(amat), root=rootNUM, ans=integer(ncol(amat)))$ans
-  ans<-.C("C_mcs", A=as.integer(amat), nc=ncol(amat), root=rootNUM, ans=integer(ncol(amat)),PACKAGE="gRbase")$ans
+  ans<-.C("C_mcs", A=as.integer(amat), nc=ncol(amat), root=rootNUM, ans=integer(ncol(amat))
+          ,PACKAGE="gRbase"
+          )$ans
 
   ret <- if (ans[1]==-1){
     character(0)

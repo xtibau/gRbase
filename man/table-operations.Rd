@@ -3,6 +3,7 @@
 \alias{tableSlicePrim}
 \alias{tableMargin}
 \alias{tableOp}
+\alias{tableOp2}
 \alias{tablePerm}
 
 %- Also NEED an '\alias' for EACH other topic documented here.

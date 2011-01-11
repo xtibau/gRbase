@@ -1,28 +1,22 @@
 
-## triangulate <-
-##   function(object, method="mcwh",
-##            nLevels=rep(2,length(nodes(object))), matrix=FALSE)
-## {
-##   UseMethod("triangulate")
-## }
+## Generic functions used in gRbase, gRain, gRim
 
+fit <- function(object, ...)
+{
+  UseMethod("fit")
+}
 
-
-
-triangulate <-
-  function(object, ...)
+triangulate <- function(object, ...)
 {
   UseMethod("triangulate")
 }
 
-compile <- 
-function (object, ...) 
+compile <- function (object, ...) 
 {
     UseMethod("compile")
 }
 
-propagate <- 
-function (object, ...) 
+propagate <- function (object, ...) 
 {
     UseMethod("propagate")
 }

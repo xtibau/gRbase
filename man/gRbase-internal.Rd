@@ -1,6 +1,17 @@
 \name{gRbase-internal}
 
-\alias{tableOp2} 
+%% Array operations in C.
+\alias{aperm2}
+\alias{cell2entry}
+\alias{entry2cell}
+\alias{factgrid}
+\alias{getCellNumberC}
+\alias{margcell2entry}
+\alias{nextCell}
+\alias{nextCellMarg}
+\alias{permuteCellEntries}
+
+
 %%%
 %%% Functions comming from the gRain package
 %%%
