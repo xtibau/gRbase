@@ -105,11 +105,13 @@ isin <- function(setlist, x, index=FALSE){
 ## Faster versions of 'standard R functions'
 ##
 is.subsetof <- function(x, set){
-  all(.Internal(match(x,  set,  NA_integer_,  NULL))>0)
+  #all(.Internal(match(x,  set,  NA_integer_,  NULL))>0)
+  all(match(x,set)>0)
 }
 
 subsetof <- function(x, y){
-  all(.Internal(match( x, y, 0, NULL))>0)
+  #all(.Internal(match( x, y, 0, NULL))>0)
+  all(match(x,y)>0)
 }
 
 

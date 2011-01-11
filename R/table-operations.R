@@ -2,7 +2,8 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
   # Like aperm() but perm can be dimnames 
   if (missing(perm)){
     perm <- integer(0)
-    return(.Internal(aperm(a, perm, resize)))
+    #return(.Internal(aperm(a, perm, resize)))
+    return(aperm(a, perm, resize))
   }
   
   if (is.character(perm)){
@@ -10,7 +11,8 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
     if (any(is.na(perm)))
       stop("Invalid permutation...")
   }
-  ans <- .Internal(aperm(a, perm, resize))
+  #ans <- .Internal(aperm(a, perm, resize))
+  ans <- aperm(a, perm, resize)
   if (keep.class){
       class(ans) <- oldClass(a)
   }
@@ -35,9 +37,10 @@ tableOp <- function(t1,t2,op="*"){
 
   ## indices of those variables in vn2 which exist in vn1:
   ##idx <- charmatch(vn2,vn1) ## OLD
-  idx <- .Internal(charmatch(vn2, vn1, NA_integer_))
+  #idx <- .Internal(charmatch(vn2, vn1, NA_integer_))
+  idx <- charmatch(vn2, vn1)
   
-                                        #print(vn1); print(vn2); print(idx)
+  ##print(vn1); print(vn2); print(idx)
   ## indices of those variables in vn2 which do not exist in vn1:
   idx.na <- is.na(idx) 
   
@@ -63,16 +66,20 @@ tableOp <- function(t1,t2,op="*"){
 
   ## Find indices of vn2 in the new "augmented" table
                                         #ii    <-  charmatch(vn2, vn.new)
-  ii    <- .Internal(charmatch(vn2, vn.new, NA_integer_))
+  ##ii    <- .Internal(charmatch(vn2, vn.new, NA_integer_))
+  ii    <- charmatch(vn2, vn.new)
 
   ## Create perumation indices; first variables in vn2; then the rest
   perm  <-  c(ii, (1:length(vn.new))[-ii])
 
   if (op == "*") {
-    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * as.numeric(t2)
+    #pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * as.numeric(t2)
+    pot1 <- as.numeric(aperm(pot1, perm, TRUE)) * as.numeric(t2)
   }
   else {
-    pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) / as.numeric(t2)
+    #pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) / as.numeric(t2)
+    pot1 <- as.numeric(aperm(pot1, perm, TRUE)) / as.numeric(t2)
+
     pot1[!is.finite(pot1)] <- 0
   }
   dim(pot1)      <- di.new[perm]
@@ -100,67 +107,25 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
   
   pot1 <-
     if (restore) {
-      zz    <- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+      ##zz    <- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+      zz    <- op(aperm(t1, perm, TRUE), as.numeric(t2))
                                         # newvn <- c(vn2, setdiffPrim(vn1, vn2)) ## OLD
       newvn <- c(vn2, vn1[-ii]) 
                                         # perm2 <- charmatch(vn1, newvn) ## OLD
-      perm2 <- .Internal(charmatch(vn1, newvn, NA_integer_))
-      .Internal(aperm(zz, perm2, TRUE))
+      ##perm2 <- .Internal(charmatch(vn1, newvn, NA_integer_))
+      perm2 <- charmatch(vn1, newvn)
+      ##.Internal(aperm(zz, perm2, TRUE))
+      aperm(zz, perm2, TRUE)
     }
     else {
-      op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+      ##op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
+      op(aperm(t1, perm, TRUE), as.numeric(t2))
+      
     }
   if (identical(op, `/`)) 
     pot1[!is.finite(pot1)] <- 0
   pot1
 }
-
-
-
-
-tableMargin <-  function (x, margin, keep.class=FALSE) 
-{
-  if (!is.array(x)) 
-    stop("'x' is not an array")
-  
-  di <- dim(x)
-  dn <- dimnames(x)
-  vn <- names(dn)
-  oc <- oldClass(x)
-  if (length(margin)) {
-    if (is.character(margin)){
-      marg.idx <- .Internal(charmatch(margin, vn, NA_integer_))
-                                        #marg.idx <- charmatch(margin, vn)
-      if (any(is.na(marg.idx)))
-        stop("Variable not in table...\n")
-    } else {
-      marg.idx <- margin
-    }
-    
-                                        #rest.idx <- (1:length(vn))[-marg.idx]
-    rest.idx <- (seq_along(vn))[-marg.idx]
-
-    nr <- prod(di[marg.idx])
-    nc <- prod(di[rest.idx])
-
-    z <- .Internal(rowSums(.Internal(matrix(.Internal(aperm(x, c(rest.idx, marg.idx), TRUE)), nr, nc, TRUE, NULL)), nr, nc, FALSE))
-    ## This call is just short for
-    ##     z  <- .Internal(aperm(x, c(rest.idx, marg.idx), TRUE))        
-    ##     z  <- .Internal(matrix(z, nr, nc, TRUE, NULL))    
-    ##     z  <- .Internal(rowSums(z, nr, nc, FALSE))
-
-    dim(z)      <- di[marg.idx]
-    dimnames(z) <- dn[marg.idx]
-  }
-  else
-    return(sum(x))
-  
-  if (keep.class)
-    class(z) <- oc
-  return(z)
-}
-
-
 
 tableSlice <-  function (x, margin, level, impose) 
 {
@@ -177,6 +142,7 @@ tableSlice <-  function (x, margin, level, impose)
     margin2 <- margin
   }
 
+
   if (is.character(level)){
     level2  <- rep(NA, length(level))
     for (kk in seq_along(margin)){
@@ -187,7 +153,7 @@ tableSlice <-  function (x, margin, level, impose)
   } else {
     level2 <- level
   }
-  
+
   if (!missing(impose) && is.numeric(impose)){  
     d  <- dim(x)
     ld <- length(d)
@@ -209,7 +175,9 @@ tableSlice <-  function (x, margin, level, impose)
     idx <- vector("list", length(dim(x)))
     idx[]<-TRUE
     idx[margin2] <- level2
-    .Internal(do.call("[", c(list(x), idx), parent.frame()))
+    #.Internal(do.call("[", c(list(x), idx), parent.frame()))
+    do.call("[", c(list(x), idx))
+
   }
 }
 
@@ -219,8 +187,113 @@ tableSlicePrim <- function(x, margin, level){
   idx <- vector("list", length(dim(x)))
   idx[]<-TRUE
   idx[margin] <- level
-  .Internal(do.call("[", c(list(x), idx), parent.frame()))
+  ##.Internal(do.call("[", c(list(x), idx), parent.frame()))
+  do.call("[", c(list(x), idx), parent.frame())
+  
 }
+
+
+
+tableMargin <- function (x, margin, keep.class = FALSE) 
+{
+    if (!is.array(x)) 
+        stop("'x' is not an array")
+    at <- attributes(x)
+    di <- at[['dim']]
+    dn <- at[['dimnames']]
+    #di <- dim(x)
+    #dn <- dimnames(x)
+    vn <- names(dn)
+    
+    oc <- oldClass(x)
+    if (length(margin)) {
+        if (is.character(margin)) {
+          ##marg.idx <- .Internal(charmatch(margin, vn, NA_integer_))
+          marg.idx <- charmatch(margin, vn)
+          if (any(is.na(marg.idx))) 
+            stop("Variable not in table...\n")
+        }
+        else {
+            marg.idx <- margin
+        }
+        rest.idx <- (seq_along(vn))[-marg.idx]
+        nr <- prod(di[marg.idx])
+        nc <- prod(di[rest.idx])
+##         z <- .Internal(rowSums(.Internal(matrix(.Internal(aperm(x, 
+##             c(rest.idx, marg.idx), TRUE)), nr, nc, TRUE, NULL)), 
+##             nr, nc, FALSE))
+
+##     ## This call is just short for
+##     ##     z  <- .Internal()        
+##     ##     z  <- .Internal(matrix(z, nr, nc, TRUE, NULL))    
+##     ##     z  <- .Internal(rowSums(z, nr, nc, FALSE))
+
+        z <- rowSums(
+                     matrix(
+                            aperm(x, c(rest.idx, marg.idx), TRUE),
+                            nrow=nr, ncol=nc))
+        
+
+        attributes(z) <- list(dim=di[marg.idx], dimnames=dn[marg.idx])
+        #dim(z) <- di[marg.idx]
+        #dimnames(z) <- dn[marg.idx]
+    } else {
+      return(sum(x))
+    }
+    if (keep.class) 
+        class(z) <- oc
+    return(z)
+}
+
+
+
+
+## tableMargin <-  function (x, margin, keep.class=FALSE) 
+## {
+##   if (!is.array(x)) 
+##     stop("'x' is not an array")
+  
+##   di <- dim(x)
+##   dn <- dimnames(x)
+##   vn <- names(dn)
+##   oc <- oldClass(x)
+##   if (length(margin)) {
+##     if (is.character(margin)){
+##       marg.idx <- .Internal(charmatch(margin, vn, NA_integer_))
+##                                         #marg.idx <- charmatch(margin, vn)
+##       if (any(is.na(marg.idx)))
+##         stop("Variable not in table...\n")
+##     } else {
+##       marg.idx <- margin
+##     }
+    
+##                                         #rest.idx <- (1:length(vn))[-marg.idx]
+##     rest.idx <- (seq_along(vn))[-marg.idx]
+
+##     nr <- prod(di[marg.idx])
+##     nc <- prod(di[rest.idx])
+
+##     z <- .Internal(rowSums(.Internal(matrix(.Internal(aperm(x, c(rest.idx, marg.idx), TRUE)), nr, nc, TRUE, NULL)), nr, nc, FALSE))
+##     ## This call is just short for
+##     ##     z  <- .Internal(aperm(x, c(rest.idx, marg.idx), TRUE))        
+##     ##     z  <- .Internal(matrix(z, nr, nc, TRUE, NULL))    
+##     ##     z  <- .Internal(rowSums(z, nr, nc, FALSE))
+
+##     dim(z)      <- di[marg.idx]
+##     dimnames(z) <- dn[marg.idx]
+##   }
+##   else
+##     return(sum(x))
+  
+##   if (keep.class)
+##     class(z) <- oc
+##   return(z)
+## }
+
+
+
+
+
 
 
 

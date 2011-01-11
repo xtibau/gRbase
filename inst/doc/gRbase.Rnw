@@ -82,7 +82,10 @@
   S{\o}ren H{\o}jsgaard\\Aarhus University, Denmark
 }
 
-\title{On the Usage of the  \pkg{gRbase} Package} 
+\title{On the Usage of the  \pkg{gRbase} Package\\ --- \\
+Notice: The functionality described in this note is not being
+maintained / developed further. Graphical modelling facilities are
+provided in the  \pkg{gRim} package} 
 
 
 \begin{document}

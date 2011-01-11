@@ -6,6 +6,24 @@ library('gRbase')
 
 assign(".oldSearch", search(), pos = 'CheckExEnv')
 cleanEx()
+nameEx("DATA-BodyFat")
+### * DATA-BodyFat
+
+flush(stderr()); flush(stdout())
+
+### Name: BodyFat
+### Title: Body Fat Data
+### Aliases: BodyFat
+### Keywords: datasets
+
+### ** Examples
+
+data(BodyFat)
+head(BodyFat)
+
+
+
+cleanEx()
 nameEx("DATA-ashtrees")
 ### * DATA-ashtrees
 
@@ -382,6 +400,143 @@ triangulate(ugr)
 
 
 cleanEx()
+nameEx("ZOLD-gModel")
+### * ZOLD-gModel
+
+flush(stderr()); flush(stdout())
+
+### Name: gModel
+### Title: Class "gModel" - graphical models
+### Aliases: gModel gModel-class formula formula.gModel formula<-
+###   formula<-.gModel gmData gmData<- gmData.gModel gmData<-.gModel
+###   print.gModel
+### Keywords: models
+
+### ** Examples
+
+data(rats)
+rats <- as.gmData(rats)
+
+m1 <- gModel(~.^. , rats)
+m1.form <- formula(m1)
+m1.data <- gmData(m1)
+observations(gmData(m1)) <- observations(rats)[1:10,]
+
+
+
+cleanEx()
+nameEx("ZOLD-gRfit")
+### * ZOLD-gRfit
+
+flush(stderr()); flush(stdout())
+
+### Name: gRfit
+### Title: Class "gRfit" - fitted graphical models
+### Aliases: gRfit getFit getFit<- getFit<-.gRfit getFit.gRfit print.gRfit
+###   summary.gRfit fit
+### Keywords: models
+
+### ** Examples
+
+data(reinis)
+reinis <- as.gmData(reinis)
+
+m1 <- hllm(~.^. , reinis) 
+m1 <- fit(m1,engine="loglm")
+
+
+
+cleanEx()
+nameEx("ZOLD-gmData")
+### * ZOLD-gmData
+
+flush(stderr()); flush(stdout())
+
+### Name: gmData
+### Title: Class "gmData" graphical meta data
+### Aliases: newgmData as.gmData as.gmData.array as.gmData.data.frame
+###   as.gmData.table latent latent.gmData latent<- latent<-.gmData nLevels
+###   nLevels.gmData nLevels<- nLevels<-.gmData description
+###   description.gmData description<- description<-.gmData obs
+###   observations observations.gmData observations<- observations<-.gmData
+###   print.gmData shortNames shortNames.gmData shortNames<-
+###   shortNames<-.gmData summary.gmData valueLabels valueLabels.gmData
+###   valueLabels<- valueLabels<-.gmData varNames varNames.gmData
+###   varNames<- varNames<-.gmData varTypes varTypes.gmData varTypes<-
+###   varTypes<-.gmData dataOrigin dataOrigin.gmData ordinal<-
+###   ordinal<-.gmData ordinal ordinal.gmData nominal<- nominal<-.gmData
+###   nominal nominal.gmData
+### Keywords: models
+
+### ** Examples
+
+
+vn <- c("a","b","c","d")
+z<-newgmData(vn,varTypes=c("dis","dis","con","con"))
+summary(z)
+z<-newgmData(vn,varTypes=c("dis","dis","con","con"),nLevels=c(4,3,NA,NA))
+summary(z)
+z<-newgmData(vn,varTypes=c("dis","dis","con","con"),nLevels=c(4,NA,NA,NA))
+summary(z)
+z<-newgmData(vn,varTypes=c("dis","dis","ord","con"),valueLabels=list("a"=1:2, "b"=1:4))
+summary(z)
+
+ccnames <- c("asia", "smoke", "tub", "lung", "bronc", "either", "xray", "dysp")
+gmd <- newgmData(ccnames,valueLabels=c("yes","no"), description="Chest clinic")
+summary(gmd)
+
+data(mathmark)
+as.gmData(mathmark)
+
+data(HairEyeColor)
+as.gmData(HairEyeColor)
+
+
+
+
+cleanEx()
+nameEx("ZOLD-hllm")
+### * ZOLD-hllm
+
+flush(stderr()); flush(stdout())
+
+### Name: hllm
+### Title: Hierarchical log-linear models
+### Aliases: hllm fit.hllm stepwise.hllm hllm-class
+### Keywords: models
+
+### ** Examples
+
+data(reinis)
+reinis <- as.gmData(reinis)
+m2 <-
+hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein,
+reinis)
+m2 <- fit(m2,engine="loglm")
+## plot(m2)
+
+
+
+cleanEx()
+nameEx("ZOLD-validVarTypes")
+### * ZOLD-validVarTypes
+
+flush(stderr()); flush(stdout())
+
+### Name: validVarTypes
+### Title: Admissible variable types in gmData objects
+### Aliases: validVarTypes
+### Keywords: models
+
+### ** Examples
+
+oldtypes <- validVarTypes()
+validVartypes <- function() c(oldtypes, "MyVarType")
+validVartypes()
+
+
+
+cleanEx()
 nameEx("combnPrim")
 ### * combnPrim
 
@@ -436,31 +591,6 @@ cov2pcor(S)
 
 
 cleanEx()
-nameEx("gModel")
-### * gModel
-
-flush(stderr()); flush(stdout())
-
-### Name: gModel
-### Title: Class "gModel" - graphical models
-### Aliases: gModel gModel-class formula formula.gModel formula<-
-###   formula<-.gModel gmData gmData<- gmData.gModel gmData<-.gModel
-###   print.gModel
-### Keywords: models
-
-### ** Examples
-
-data(rats)
-rats <- as.gmData(rats)
-
-m1 <- gModel(~.^. , rats)
-m1.form <- formula(m1)
-m1.data <- gmData(m1)
-observations(gmData(m1)) <- observations(rats)[1:10,]
-
-
-
-cleanEx()
 nameEx("gRbase-utilities")
 ### * gRbase-utilities
 
@@ -469,7 +599,7 @@ flush(stderr()); flush(stdout())
 ### Name: gRbase-utilities
 ### Title: Utility functions for gRbase
 ### Aliases: colSumsPrim intersectPrim matchPrim outerPrim setdiffPrim
-###   uniquePrim unlistPrim rowSumsPrim
+###   uniquePrim unlistPrim rowSumsPrim colProd
 ### Keywords: utilities
 
 ### ** Examples
@@ -477,99 +607,6 @@ flush(stderr()); flush(stdout())
 uniquePrim(c(1,2,3,2,1,2))
 setdiffPrim(c(1,3,2), c(2,3,4,5))
 unlistPrim(list(c(1,2),c(2,3)))
-
-
-
-cleanEx()
-nameEx("gRfit")
-### * gRfit
-
-flush(stderr()); flush(stdout())
-
-### Name: gRfit
-### Title: Class "gRfit" - fitted graphical models
-### Aliases: gRfit getFit getFit<- getFit<-.gRfit getFit.gRfit print.gRfit
-###   summary.gRfit fit
-### Keywords: models
-
-### ** Examples
-
-data(reinis)
-reinis <- as.gmData(reinis)
-
-m1 <- hllm(~.^. , reinis) 
-m1 <- fit(m1,engine="loglm")
-
-
-
-cleanEx()
-nameEx("gmData")
-### * gmData
-
-flush(stderr()); flush(stdout())
-
-### Name: gmData
-### Title: Class "gmData" graphical meta data
-### Aliases: newgmData as.gmData as.gmData.array as.gmData.data.frame
-###   as.gmData.table latent latent.gmData latent<- latent<-.gmData nLevels
-###   nLevels.gmData nLevels<- nLevels<-.gmData description
-###   description.gmData description<- description<-.gmData obs
-###   observations observations.gmData observations<- observations<-.gmData
-###   print.gmData shortNames shortNames.gmData shortNames<-
-###   shortNames<-.gmData summary.gmData valueLabels valueLabels.gmData
-###   valueLabels<- valueLabels<-.gmData varNames varNames.gmData
-###   varNames<- varNames<-.gmData varTypes varTypes.gmData varTypes<-
-###   varTypes<-.gmData dataOrigin dataOrigin.gmData ordinal<-
-###   ordinal<-.gmData ordinal ordinal.gmData nominal<- nominal<-.gmData
-###   nominal nominal.gmData
-### Keywords: models
-
-### ** Examples
-
-
-vn <- c("a","b","c","d")
-z<-newgmData(vn,varTypes=c("dis","dis","con","con"))
-summary(z)
-z<-newgmData(vn,varTypes=c("dis","dis","con","con"),nLevels=c(4,3,NA,NA))
-summary(z)
-z<-newgmData(vn,varTypes=c("dis","dis","con","con"),nLevels=c(4,NA,NA,NA))
-summary(z)
-z<-newgmData(vn,varTypes=c("dis","dis","ord","con"),valueLabels=list("a"=1:2, "b"=1:4))
-summary(z)
-
-ccnames <- c("asia", "smoke", "tub", "lung", "bronc", "either", "xray", "dysp")
-gmd <- newgmData(ccnames,valueLabels=c("yes","no"), description="Chest clinic")
-summary(gmd)
-
-data(mathmark)
-as.gmData(mathmark)
-
-data(HairEyeColor)
-as.gmData(HairEyeColor)
-
-
-
-
-cleanEx()
-nameEx("hllm")
-### * hllm
-
-flush(stderr()); flush(stdout())
-
-### Name: hllm
-### Title: Hierarchical log-linear models
-### Aliases: hllm fit.hllm stepwise.hllm hllm-class
-### Keywords: models
-
-### ** Examples
-
-data(reinis)
-reinis <- as.gmData(reinis)
-m2 <-
-hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein,
-reinis)
-m2 <- fit(m2,engine="loglm")
-## plot(m2)
 
 
 
@@ -664,7 +701,8 @@ flush(stderr()); flush(stdout())
 
 ### Name: table-operations
 ### Title: Compute table margin or table slice
-### Aliases: tableSlice tableSlicePrim tableMargin tableOp tablePerm
+### Aliases: tableSlice tableSlicePrim tableMargin tableOp tableOp2
+###   tablePerm
 ### Keywords: utilities
 
 ### ** Examples
@@ -746,25 +784,6 @@ dagList(list(~me:ve:al,~ve:al:an))
 
 
 
-
-
-
-cleanEx()
-nameEx("validVarTypes")
-### * validVarTypes
-
-flush(stderr()); flush(stdout())
-
-### Name: validVarTypes
-### Title: Admissible variable types in gmData objects
-### Aliases: validVarTypes
-### Keywords: models
-
-### ** Examples
-
-oldtypes <- validVarTypes()
-validVartypes <- function() c(oldtypes, "MyVarType")
-validVartypes()
 
 
 

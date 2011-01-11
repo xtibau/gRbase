@@ -1,0 +1,461 @@
+%\VignetteIndexEntry{Array Operations}
+%\VignettePackage{gRbase}
+
+\documentclass[12pt]{article}
+
+\usepackage[T1]{fontenc}
+
+\usepackage{boxedminipage,color,a4wide,url}
+
+\def\code#1{\texttt{#1}}
+\def\grain{\texttt{gRain}}
+\def\R{\texttt{R}}
+\def\grbase{\texttt{gRbase}}
+\def\ptab{\code{ptab}}
+
+\SweaveOpts{keep.source=T}
+
+\title{Array operations in the \grbase\ package}
+\author{Søren Højsgaard}
+
+\begin{document}
+\maketitle
+
+\renewenvironment{Schunk}{\linespread{.85}\small}{}
+
+\definecolor{MyGray}{rgb}{0.95,0.95,0.95}
+\makeatletter
+\renewenvironment{Schunk}{
+  \begin{lrbox}{\@tempboxa}
+    \begin{boxedminipage}
+      {\columnwidth}\small}
+    {\end{boxedminipage}
+  \end{lrbox}%
+  \colorbox{MyGray}{\usebox{\@tempboxa}}
+}
+\makeatother
+
+\parindent0pt\parskip5pt
+
+\tableofcontents
+
+@ 
+<<echo=F>>=
+library(gRbase)
+options("width"=100)
+@ %def 
+
+
+\section{Tables}
+%%\label{sec:pot}
+
+
+This note describes various functions in the \grbase\ package for
+operations on tables / arrays in \R.
+Notice that there is a distinction between a \code{table} and an \code{array} in
+\R.  For the purpose of what is described here the concepts can be
+used interchangably. The important point is that we are working on 
+vectors which have a \code{dim} and a \code{dimnames} attribute. (Arrays
+do not need a \code{dimnames} attribute, but \code{dimnames} are essential in
+what follows here).
+
+Consider the \code{lizard} data in \grbase:
+
+@ 
+<<>>=
+data(lizard)
+lizard
+@ %def 
+
+Data is of class \code{table} and has \code{dim} and \code{dimnames} attributes
+
+@ 
+<<>>=
+class(lizard)
+is.array(lizard)
+dim(lizard)
+dimnames(lizard)
+@ %def 
+
+Notice from the output above that the first variable (\code{diam})
+varies fastest.
+
+\section{Notation}
+\label{sec:xxx}
+
+
+A formal description of an array is as follows: Let
+$\Delta=\{\delta_1,\dots, \delta_R\}$ be a set of factors
+where $\delta_r$ has a finite set $I_r$ of levels. Let $|I_r|$ denote
+the number of levels of $\delta_r$ and let $i_r\in I_r$ denote a value
+of $\delta_r$. A configuration of the variables in $\Delta$ is
+$i=i_\Delta=(i_1,\dots,i_R)\in I_1 \times \dots \times I_R=I$.
+The total number of configurations is $|\Delta|=\prod_r |I_r|$. An
+array $T$ is a function which maps $I$ into some domain. 
+
+\section{Algebraic operations on tables}
+
+% To define algebraic operations on tables, let $U$ be a non--empty
+% subsets of $\Delta$ with configurations $I_U$ and let $i_U$ denote a
+% specific configuration.  A table $T_U$ defined on $I_U$ is a function
+% which maps $i_U$ into some domain 
+% for all $i_U \in I_U$.
+
+Let $U$ and $V$ be non--empty subsets of $\Delta$ with configurations
+$I_U$ and $I_V$ and let $T^1_U$ and $T^2_V$ be corresponding
+arrays.
+
+\begin{itemize}
+\item The \emph{product} and \emph{quotient}
+of $T^1_U$ and $T^2_V$ are arrays defined on $U \cup V$ given by
+$$
+T_{U\cup V} (i_{U\cup V}) := T^1_U(i_U) \times T^2_V(i_V) \mbox{ and }
+T_{U\cup V} (i_{U\cup V}):= T^1_U (i_U) / T^2_V(i_V) 
+$$
+respectively, with the convention that $0/0=0$.
+
+
+\item If $W\subset U$ is non--empty\footnote{Marginalization onto an empty
+  set is not implemented.} then \emph{marginalization} of $T^1_U$ onto $W$ is defined
+as 
+$$
+T^1_{W}(i_W) := \sum_{i_{U\setminus W}} T^1_U(i_{U\setminus W}, i_W)
+$$
+
+
+\item If $W\subset U$ is non--empty then a configuration $i^*_W$ defines a
+\emph{slice} of $T^1_U$ as
+$$
+T^1_{U\setminus V}(i_{U\setminus V}) := T^1_U(i_{U\setminus V}, i^*_V)
+$$
+\end{itemize}
+
+In a less abstract setting let $U=\{A,B,C\}$, $V=\{C,D,B\}$ and $W=\{C,B\}$ where
+$(a,b,c)$ denotes a specific configuration of $\{A,B,C\}$ and so on. 
+Then the product and quotient become
+\begin{displaymath}
+  T_{ABCD}(a,b,c,d) = T^1_{ABC}(a,b,c) T^2_{CDB}(c,d,b)
+\end{displaymath}
+
+The marginal  becomes
+\begin{displaymath}
+  T^1_{CB} = \sum_a T^1(a,b,c) \mbox{ and }
+\end{displaymath}
+
+Finally the slice defined by $C=c^*$ and $B=b^*$ becomes
+\begin{displaymath}
+  T^1_A(a) = T^1_{ABC}(a,b^*,c^*)
+\end{displaymath}
+
+To illustrate we find two marginal tables
+
+@ 
+<<print=T>>=
+T1.U <- tableMargin(lizard, c("species","height"))
+T1.V <- tableMargin(lizard, c("diam","species"))
+@ %def 
+
+Multiplication of these is done with
+
+@ 
+<<print=T>>=
+T1.UV<-tableOp(T1.U, T1.V, op = "*")
+@ %def 
+
+A slice of a table is obtained with \code{tableSlice}:
+
+@ 
+<<>>=
+tableSlice(lizard, "species", "anoli")
+@ %def 
+
+A reorganization of the table can be made with \code{tablePerm}:
+
+@ 
+<<>>=
+tablePerm(T1.UV, c("species","height","diam"))
+@ %def 
+
+
+\section{Defining tables / arrays}
+%%\label{sec:xx}
+
+
+As mentioned above, a table can be represented as an array. In general,
+arrays do not need dimnames in \R, but for the functions described
+here, the dimnames are essential. 
+
+
+The examples here relate to the chest clinique example of Lauritzen
+and Spiegelhalter. 
+The following two specifications are equivalent:
+
+@ 
+<<>>=
+yn <- c('y','n')
+T.U <- array(c(5,95,1,99), dim=c(2,2), dimnames=list("tub"=yn, "asia"=yn))
+T.U <- ptable(c("tub","asia"), levels=list(yn, yn), values=c(5,95,1,99))
+@ %def 
+
+
+Using \code{ptable()}, arrays can be normalized in two ways:
+Normalization can be over the first variable for \emph{each}
+configuration of all other variables or over all configurations. 
+We
+illustrate this by defining the probability of tuberculosis given a
+recent visit to Asia and by defining the marginal probability of a
+recent visit to Asia:
+
+
+@ 
+<<print=T>>=
+T.U <- ptable(c("tub","asia"), levels=list(yn, yn), 
+              values=c(5,95,1,99), normalize="first")
+T.V <- ptable("asia", list(yn), values=c(1,99), 
+              normalize="all")
+@ %def 
+
+\section{Calculations with probability tables}
+\label{sec:xxx}
+
+
+The joint distributions is 
+
+@ 
+<<print=T>>=
+T.all <- tableOp(T.U, T.V, op="*")
+@ %def 
+
+The marginal distribution of \code{"tub"} is
+
+@ 
+<<print=T>>=
+T.W <- tableMargin(T.all, "tub")
+@ %def 
+
+The conditional distribution of \code{"asia"} given \code{"tub"} is
+
+@ 
+<<>>=
+tableOp(T.all, T.W, op="/")
+@ %def 
+
+
+
+
+
+
+% \subsection{Implementation of potentials}
+% \label{sec:imptable}
+
+% Potentials are represented by \ptab{} objects which are defined as
+% part of the \grain\ package. \ptab{} objects are essentially arrays,
+% and the only reason for not simply working with arrays implementing a
+% special class is a pure technicality: Two--dimensional arrays are
+% (correctly) in some respects regarded as matrices while
+% one--dimensional arrays are (correctly) in some respects regarded as
+% vectors. For our purpose we need a class of objects which are
+% regarded as being of the same type irrespectively  of their
+% dimension. However we may for all practical purposes think of \ptab{}
+% objects as arrays.
+
+% \subsection{Examples} 
+% \label{sec:tabex}
+
+% \ptab{} objects can be created as:
+
+% <<print=T>>=
+% yn <- c('y','n')
+% a.1 <- ptable("asia",list(yn), values=c(1,99))
+% t.a.1 <- ptable(c("tub","asia"),list(yn,yn), values=c(5,95,1,99))
+% @ 
+% %%Note that the first index varies fastest.
+
+% Tables can be normalized in two ways: Either the values are
+% normalized over all configurations to sum to one as
+
+% @ 
+% <<print=T>>=
+% a.2 <- ptable("asia", list(yn), values=c(1,99), normalize="all")
+% @ %def 
+
+% Alternatively normalization can be over the first variable for \emph{each}
+% configuration of all other variables as
+
+% @ 
+% <<print=T>>=
+% t.a.2 <- ptable(c("tub","asia"),list(yn,yn), values=c(5,95,1,99),normalize="first") 
+% @ %def 
+
+
+% \subsection{Operations on potentials}
+% \label{sec:xxx}
+
+% Multiplication and division of potentials is implented as follows. 
+% Consider multiplication of $\phi_U$ and $\psi_V$. 
+
+% The vectors, say $T_U$ and $T_V$, containing the values of the
+% potentials are given a dimension attribute, i.e.\ are turned into
+% arrays. 
+
+% Assume first that $V\subset U$. Then we reorder the elements
+% of $T_U$ to match with those of $T$, symbolically as $(V, U\setminus
+% V)$ so that we have tables $T_V$ into $T_{V, U\setminus V}$ accordingly. This
+% operation is fast with the \code{aperm()} function which is
+% implemented in C. We can then form the product $T_{V, U\setminus V}
+% T_V$ directly because the elements of $T_V$ are 
+% recycled to match the length of $T_{V, U\setminus
+%   V}$. If $V$ is not a subset of $U$ then we expand the domain of
+% $T_U$ into $T_{V,U\setminus V}$ by first permuting the array with
+% \code{aperm()} and then repeating the entries a suitable number of
+% times and then carry out the multiplications as above.
+
+% Marginalization is similarly based on using \code{apply()} where
+% summation is over a specific set of dimensions.
+
+% \subsection{Examples}
+% \label{sec:xxx}
+
+% Hence we can calculate the joint, the marginal and the conditional
+% distributions as
+
+% <<>>=
+% ta.1 <- arrayop(t.a.1,a.1, op="*")
+% ta.1
+% arraymarg(ta.1, "tub")
+% arrayop(ta.1, arraymarg(ta.1, "tub"), op="/")
+% @ 
+
+% The \ptab\ function takes a \code{smooth} argument which by default is
+% 0. A non-zero value of \code{smooth} implies that zeros in
+% \code{values} are replaced by the value of smooth -- before any
+% normalization is made, e.g. 
+
+% @ 
+% <<>>=
+% ptab(c("tub","asia"),list(c('y','n'),c('y','n')),
+% values=c(0,95,0,99),normalize="first",smooth=1) 
+% @ %def 
+
+% It is possible to take out a sub--array defined by specific dimensions
+% being at specific levels. This corresponds finding a specific slice of
+% a multidimensional array: To find the 1--dimensional array defined by
+% asia (variable 1) being ``no'' (at level 2) do:
+
+% @ 
+% <<>>=
+% ta.1
+% subarray(ta.1, margin=1, index=2)
+% @ %def 
+
+
+
+% \subsection{Coercion}
+% \label{sec:coercion}
+
+% Coercion to to \ptab\ is done by \code{as.ptab}. For example:
+
+
+% @ 
+% <<>>=
+% v <- 1:4
+% as.ptab(v)
+% names(v) <-c("a1","a2","a3","a4")
+% as.ptab(v)
+% @ %def 
+
+
+% @ 
+% <<>>=
+% v <- array(1:4, c(4))
+% as.ptab(v)
+% v <- array(1:4, c(4), dimnames=list(a=c("a1","a2","a3","a4")))
+% as.ptab(v)
+% @ %def 
+
+
+% @ 
+% <<>>=
+% v <- array(1:4, c(2,2))
+% as.ptab(v)
+% v <- array(1:4, c(2,2), dimnames=list(a=c("a1","a2"),b=c("b1","b2")))
+% as.ptab(v)
+% @ %def 
+
+% @ 
+% <<>>=
+% v <- array(1:8, c(2,2,2))
+% as.ptab(v)
+% v <- array(1:4, c(2,2,2), dimnames=list(a=c("a1","a2"),b=c("b1","b2"),c=c("c1","c2")))
+% as.ptab(v)
+% @ %def 
+
+
+
+
+
+% \paragraph{Implementation}
+
+% Consider two potentials $\phi_U$ and $\psi_V$ which are to be
+% multiplied. If $V\subset U$ then the tree is manipulated such that the
+% variables $V$ (in the same order) are closest to the roots (i.e.\
+% varies slowest) in both $\phi_U$ and $\psi_V$. 
+
+% A potential is implemented by turning the representation mentioned
+% above into a dataframe using
+% \code{expand.grid}. Multiplication/division of potentials is based on
+% using \code{merge} for merging the dataframe representation of the
+% potentials. Marginalization is implemented by using \code{xtabs}. 
+
+
+
+% \paragraph{Multiplication/division}
+
+% Multiplication/division of two potentials $\phi_U$ and $\phi_V$ is implemented
+% as follows: First the set $W=U\cup V$ is formed. Then for each
+% configuration $w$ of $W$ the corresponding implied configurations 
+% $u$ and $v$ of $U$ and $V$ are found and the multiplication is
+% performed. 
+
+
+% \paragraph{Marginalization}
+
+% Marginalization is currently implemented by turning the potential into
+% a dataframe and then performing the summation using \code{xtabs}
+% whereafer the result is turned back into a potential.\footnote{There
+%   has to be a more direct way of doing this.} 
+
+
+
+
+% The implementation of potentials is as follows:  A configuration $u\in
+% U$ is mapped to an integer $i\in\{1,\dots,I_U\}$ as
+% $$
+% i = 1 + (v_1-1) + |v_1|(v_2-1) + |v_1||v_2|(v_3-1) + \dots 
+% $$
+% or more generally as
+% $
+% i=1+ \sum_{j=1}^{S} f_j (v_j-1)
+% $
+% where $f_j = |v_{j-1}|f_{j-1}$ and $f_1\equiv 1$. Note that this
+% operation can be vectorized. 
+
+% Going the other way, an 
+% integer $i$ is mapped to a configuration $u$ as follows: Start with
+% $v_S$ and work
+% backwards through $U$ as follows: For $v_S$ we get
+% $$
+% i-1 =  [\sum_{j=1}^{S-1} f_j (v_j-1)] + f_S(v_S-1) = r + f_S(v_S-1)
+% $$
+% Hence the division $(i-1)/f_S$ gives $v_S-1$ and $r$ as the
+% remainder which can be used for finding $v_{S-1}$ and so
+% on.\footnote{There has to be a more efficient way of doing this.}
+
+
+\end{document}
+
+\RecustomVerbatimEnvironment{Sinput}{Verbatim}%
+{fontsize=\scriptsize,frame=single,framerule=1pt,
+  rulecolor=\color{red},   fillcolor=\color{yellow} }
+\RecustomVerbatimEnvironment{Soutput}{Verbatim}%
+{fontsize=\scriptsize, frame=single,framerule=0.1pt}

@@ -1,3 +1,15 @@
+/* *******************************************************
+
+Code for graph triangulation
+
+Code is used in the gRbase package
+
+* triangmcwh is the main function.
+
+Søren Højsgaard
+
+** ******************************************************/
+
 #include <string.h>
 #include <stdlib.h>
 #include <Rdefines.h>

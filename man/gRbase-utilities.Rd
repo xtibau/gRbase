@@ -8,6 +8,7 @@
 \alias{uniquePrim}
 \alias{unlistPrim}
 \alias{rowSumsPrim}
+\alias{colProd}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Utility functions for gRbase}

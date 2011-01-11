@@ -1,3 +1,14 @@
+/* ***************************************************
+
+C code for finding all possible combinations with p 
+elements from a set with n elements (where p<=n).
+
+Based on Fortran code found somewhere on the web.
+
+Søren Højsgaard
+
+** ***************************************************/
+
 #include <Rdefines.h>
 #include <R.h>
 #include "_utils_print.h"

@@ -1,9 +1,39 @@
+/* **********************************************************
+
+Code is used in gRbase
+
+Functions for set operations, most notably maxset and minset
+
+* maxset: Finds the maximal elements of a set, i.e. elements
+contained in other elements are discarded are marked with a 0,
+elements not contained in other sets are marked with a 1.
+
+* minset: Does the opposite of maxset
+
+* maxset and minset are used in removeRedundant in R
+
+* isin checks if an element (a vector) is contained in a set 
+(a list)
+
+* the subsetof-functions are internal.
+
+Søren Højsgaard
+
+** **********************************************************/
+
+
+
 #include <string.h>
 #include <Rdefines.h>
 
 
 void C_subsetof1(char **setxsety, int *sx, int *ex, int *sy, int *ey, int *ans);
+void C_subsetof2(char **qset, int *len_qset, 
+		 char **setlist, int *start_set, int *end_set, int *ans);
+void C_maxset(char **setlist, int *ends, int *nset, int *keepvec);
+void C_minset(char **setlist, int *ends, int *nset, int *keepvec);
 
+void C_isin(char **qset, int *len_qset, char **setlist, int *ends, int *len_setlist, int *keepvec);
 
 /*
   Returns vector with entries 0 meaning that the elements are
@@ -114,8 +144,6 @@ void C_subsetof1(char **setxsety, int *sx, int *ex, int *sy, int *ey, int *ans)
 
 
 
-void C_subsetof2(char **qset, int *len_qset, 
-		 char **setlist, int *start_set, int *end_set, int *ans);
 
 /* C_subsetof2:
    Returns 1 if qset (queryset) is contained in the subset of setlist defined by
@@ -152,7 +180,8 @@ void C_subsetof2(char **qset, int *len_qset,
 /* ************************************************************ */
 
 
-void C_isin(char **qset, int *len_qset, char **setlist, int *ends, int *len_setlist, int *keepvec){
+void C_isin(char **qset, int *len_qset, char **setlist, int *ends, int *len_setlist, int *keepvec)
+{
   
   int ii, ans, starts[*len_setlist];
 

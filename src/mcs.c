@@ -1,28 +1,20 @@
+/* **************************************************** 
+
+ C-code for Maximum Cardinality Search (mcs) 
+
+ Code is used in the gRbase package 
+
+ Søren Højsgaard 
+
+** **************************************************** */
+
 #include <string.h>
 #include <stdlib.h>
 #include <Rdefines.h>
 #include "_utils_print.h"
 
-// Check if S is a complete set in the symmetrical adj. matrix A
-//
-void C_isCompleteSet(int *Amat, int *ncA, int *S, int *lenS, int *ans){
+void C_isCompleteSet(int *Amat, int *ncA, int *S, int *lenS, int *ans);
 
-  //printmati(Amat, ncA, ncA);
-  //printveci(S, lenS);
-  int ii,jj;
-  *ans = 1;
-  for (ii=0;ii<(*lenS-1);ii++){
-    //Rprintf("ii : %i S[ii] : %i \n", ii, S[ii]);
-    for (jj=ii+1; jj<*lenS;jj++){
-      //Rprintf("  jj : %i S[jj] : %i\n", jj, S[jj]);
-      if (Amat[ (int) (S[ii] + *ncA * S[jj])] == 0){
- 	*ans = 0; 
- 	break; 
-      }
-    } 
-  }
-} 
-  
 
 void C_mcs(int *Avec, int *nvar,  int *root, int *ans){
   int ii, kk;
@@ -143,11 +135,29 @@ void C_mcs(int *Avec, int *nvar,  int *root, int *ans){
   } else {
     ans[0] = -1;
   }
-
-
 }
 
 
+// Check if S is a complete set in the symmetrical adj. matrix A
+//
+void C_isCompleteSet(int *Amat, int *ncA, int *S, int *lenS, int *ans)
+{
+  //printmati(Amat, ncA, ncA);
+  //printveci(S, lenS);
+  int ii,jj;
+  *ans = 1;
+  for (ii=0;ii<(*lenS-1);ii++){
+    //Rprintf("ii : %i S[ii] : %i \n", ii, S[ii]);
+    for (jj=ii+1; jj<*lenS;jj++){
+      //Rprintf("  jj : %i S[jj] : %i\n", jj, S[jj]);
+      if (Amat[ (int) (S[ii] + *ncA * S[jj])] == 0){
+ 	*ans = 0; 
+ 	break; 
+      }
+    } 
+  }
+} 
+  
 
 
 
