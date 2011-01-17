@@ -7,46 +7,39 @@
 ##
 ptable <- function(varNames, levels, values=1, normalize=c("none","first","all"), smooth=0){
 
-  varNames <- rhsFormula2list(varNames)[[1]]
+  normalize <- match.arg(normalize, choices=c("none","first","all"))
 
-##   print(varNames)
-##   print(levels)
+  varNames <- rhsFormula2list(varNames)[[1]]
   
   if (is.list(levels)){
-    #print("hhhhh")
-    dimnames = levels
+    dimnames        <- levels
     names(dimnames) <- varNames
-    levels  = sapply(dimnames, length)
-
-    
+    levels          <- sapply(dimnames, length)  
   } else {
-
-    dimnames=makeDimNames(varNames, levels)
+    dimnames <- makeDimNames(varNames, levels)
   }
-
-  normalize <- match.arg(normalize, choices=c("none","first","all"))
 
   if (smooth>0){
     values <- values + smooth
   }
 
   ans <- array(values, dim=levels, dimnames=dimnames)
+
+  ## Normalize if requested
   switch(normalize,
          "first"={
            if (length(dim(ans))>1){
              marg  <- 2:length(dim(ans))
-                                        #ma    <- apply(ans, marg, sum)
-                                        #ans   <- sweep(ans, marg, ma, "/")        
-
-             ma2 <- tableMargin(ans, marg)
-             ans <- tablePerm(.tableOp2(ans, ma2, op=`/`), names(dimnames(ans)))        
+             ma2   <- tableMargin(ans, marg)
+             ans   <- tablePerm(.tableOp2(ans, ma2, op=`/`), names(dimnames(ans)))        
            } else {
              ans <- ans / sum(ans)
            }
          },
          "all"={ans <- ans / sum(ans)
               },
-         "none"={}
+         "none"={
+         }
          )
   
   class(ans) <- "ptable"
@@ -65,16 +58,11 @@ varNames.ptable    <- function(x) names(attr(x,"dimnames"))
 nLevels.ptable     <- function(x) dim(x)
 valueLabels.ptable <- function(x) attr(x,"dimnames")
 
-
-
-
-
 print.ptable  <- function(x,...){
   class(x)<-NULL
   print(x)
   invisible(x)
 }
-
 
 ## Create list with dimension names
 ##
@@ -86,9 +74,8 @@ makeDimNames <- function(varNames, levels, sep=''){
 }
 
 
-
 as.ptable  <- function(values, normalize=c("none","first","all"), smooth=0){
-  ##values <- x
+  
   normalize <- match.arg(normalize, choices=c("none","first","all"))
 
   if (!inherits(values, c("array","matrix","integer","double","table"))){
@@ -98,7 +85,7 @@ as.ptable  <- function(values, normalize=c("none","first","all"), smooth=0){
   if (smooth>0){
     values <- values + smooth
   }
-
+  
   if (is.null(dimnames(values))){
     if (!is.null(dim(values)))
       nLevels <- dim(values)
