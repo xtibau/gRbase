@@ -36,11 +36,8 @@ tableOp <- function(t1,t2,op="*"){
   vn2 <- names(dn2)  
 
   ## indices of those variables in vn2 which exist in vn1:
-  ##idx <- charmatch(vn2,vn1) ## OLD
-  #idx <- .Internal(charmatch(vn2, vn1, NA_integer_))
   idx <- charmatch(vn2, vn1)
   
-  ##print(vn1); print(vn2); print(idx)
   ## indices of those variables in vn2 which do not exist in vn1:
   idx.na <- is.na(idx) 
   
@@ -65,21 +62,16 @@ tableOp <- function(t1,t2,op="*"){
   }
 
   ## Find indices of vn2 in the new "augmented" table
-                                        #ii    <-  charmatch(vn2, vn.new)
-  ##ii    <- .Internal(charmatch(vn2, vn.new, NA_integer_))
   ii    <- charmatch(vn2, vn.new)
 
   ## Create perumation indices; first variables in vn2; then the rest
   perm  <-  c(ii, (1:length(vn.new))[-ii])
 
   if (op == "*") {
-    #pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) * as.numeric(t2)
     pot1 <- as.numeric(aperm(pot1, perm, TRUE)) * as.numeric(t2)
   }
   else {
-    #pot1 <- as.numeric(.Internal(aperm(pot1, perm, TRUE))) / as.numeric(t2)
     pot1 <- as.numeric(aperm(pot1, perm, TRUE)) / as.numeric(t2)
-
     pot1[!is.finite(pot1)] <- 0
   }
   dim(pot1)      <- di.new[perm]
@@ -107,20 +99,12 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
   
   pot1 <-
     if (restore) {
-      ##zz    <- op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
       zz    <- op(aperm(t1, perm, TRUE), as.numeric(t2))
-                                        # newvn <- c(vn2, setdiffPrim(vn1, vn2)) ## OLD
       newvn <- c(vn2, vn1[-ii]) 
-                                        # perm2 <- charmatch(vn1, newvn) ## OLD
-      ##perm2 <- .Internal(charmatch(vn1, newvn, NA_integer_))
       perm2 <- charmatch(vn1, newvn)
-      ##.Internal(aperm(zz, perm2, TRUE))
       aperm(zz, perm2, TRUE)
-    }
-    else {
-      ##op(.Internal(aperm(t1, perm, TRUE)), as.numeric(t2))
-      op(aperm(t1, perm, TRUE), as.numeric(t2))
-      
+    } else {
+      op(aperm(t1, perm, TRUE), as.numeric(t2))      
     }
   if (identical(op, `/`)) 
     pot1[!is.finite(pot1)] <- 0
@@ -131,17 +115,16 @@ tableSlice <-  function (x, margin, level, impose)
 {
   if(is.null(margin)) return(x)
 
-  dn <- dimnames(x)
-  varnames <- names(dn)
+  dn    <- dimnames(x)
+  vn    <- names(dn)
 
   if (is.character(margin)){
-    margin2 <- charmatch(margin, varnames)
+    margin2 <- charmatch(margin, vn)
     if (any(is.na(margin2)))
       stop("Variables: ", margin[is.na(margin2)], " do not exist in table...")
   } else {
     margin2 <- margin
   }
-
 
   if (is.character(level)){
     level2  <- rep(NA, length(level))
@@ -155,39 +138,35 @@ tableSlice <-  function (x, margin, level, impose)
   }
 
   if (!missing(impose) && is.numeric(impose)){  
-    d  <- dim(x)
-    ld <- length(d)
-    z  <- rep(TRUE,length(x))
-    a  <- c(1,cumprod(d))
+    di     <- dim(x)
+    ld     <- length(di)
+    zz     <- rep(TRUE,length(x))
+    aprod  <- c(1,cumprod(di))
     
-    for(i in 1:length(margin)) 
+    for(ii in 1:length(margin)) 
       {
-        si  <-margin2[i]; ##print(si); print(d[si])
-        idx2 <- rep(1:d[si],each=a[si],times=length(x)/(d[si]*a[si]))
-        z <- z & level2[i]==idx2
+        si   <- margin2[ii]; 
+        idx2 <- rep(1:di[si], each=aprod[si], times=length(x)/(di[si]*aprod[si]))
+        zz   <- zz & level2[ii]==idx2
       }
     
-    dr<-d[(1:ld)[-margin2]]
+    dr<-di[(1:ld)[-margin2]]
   
-    x[!z] <- impose
+    x[!zz] <- impose
     return(x)
   } else {
-    idx <- vector("list", length(dim(x)))
-    idx[]<-TRUE
+    idx          <- vector("list", length(dim(x)))
+    idx[]        <-TRUE
     idx[margin2] <- level2
-    #.Internal(do.call("[", c(list(x), idx), parent.frame()))
     do.call("[", c(list(x), idx))
-
   }
 }
 
-
 ## tableSlicePrim: Works only with margin and level being indices
 tableSlicePrim <- function(x, margin, level){
-  idx <- vector("list", length(dim(x)))
-  idx[]<-TRUE
+  idx         <- vector("list", length(dim(x)))
+  idx[]       <-TRUE
   idx[margin] <- level
-  ##.Internal(do.call("[", c(list(x), idx), parent.frame()))
   do.call("[", c(list(x), idx), parent.frame())
   
 }
@@ -196,54 +175,72 @@ tableSlicePrim <- function(x, margin, level){
 
 tableMargin <- function (x, margin, keep.class = FALSE) 
 {
-    if (!is.array(x)) 
-        stop("'x' is not an array")
-    at <- attributes(x)
-    di <- at[['dim']]
-    dn <- at[['dimnames']]
-    #di <- dim(x)
-    #dn <- dimnames(x)
-    vn <- names(dn)
+##   cat("===== tableMargin =====\n")
+##   print(as.data.frame.table(x))
+##   print(margin)
+
+  if (!is.array(x)) 
+    stop("'x' is not an array")
+
+  at <- attributes(x)
+  di <- at[['dim']]
+  dn <- at[['dimnames']]
+
+  vn <- names(dn)    
+  oc <- oldClass(x)
+  if (length(margin)) {
+    if (is.character(margin)) {
+      marg.idx <- charmatch(margin, vn)
+      if (any(is.na(marg.idx))) 
+        stop("Variable not in table...\n")
+    }
+    else {
+      marg.idx <- margin
+    }
+    rest.idx <- (seq_along(vn))[-marg.idx]
+    nr <- prod(di[marg.idx])
+    nc <- prod(di[rest.idx])
     
-    oc <- oldClass(x)
-    if (length(margin)) {
-        if (is.character(margin)) {
-          ##marg.idx <- .Internal(charmatch(margin, vn, NA_integer_))
-          marg.idx <- charmatch(margin, vn)
-          if (any(is.na(marg.idx))) 
-            stop("Variable not in table...\n")
-        }
-        else {
-            marg.idx <- margin
-        }
-        rest.idx <- (seq_along(vn))[-marg.idx]
-        nr <- prod(di[marg.idx])
-        nc <- prod(di[rest.idx])
+    z <- rowSumsPrim(
+                     matrix(
+                            aperm(x, c(rest.idx, marg.idx), TRUE),
+                            nrow=nr, ncol=nc, byrow=TRUE))
+    attributes(z) <- list(dim=di[marg.idx], dimnames=dn[marg.idx])
+    
+  } else {
+    return(sum(x))
+  }
+  if (keep.class) 
+        class(z) <- oc
+  
+  return(z)
+}
+
+
+
+  
+##   di <- dim(x)
+##   dn <- dimnames(x)
+
 ##         z <- .Internal(rowSums(.Internal(matrix(.Internal(aperm(x, 
 ##             c(rest.idx, marg.idx), TRUE)), nr, nc, TRUE, NULL)), 
 ##             nr, nc, FALSE))
 
-##     ## This call is just short for
-##     ##     z  <- .Internal()        
-##     ##     z  <- .Internal(matrix(z, nr, nc, TRUE, NULL))    
-##     ##     z  <- .Internal(rowSums(z, nr, nc, FALSE))
+##         zold <- z
+## This call is just short for
+##          z  <- .Internal(aperm(x, c(rest.idx, marg.idx), TRUE))        
+##          z  <- .Internal(matrix(z, nr, nc, TRUE, NULL))    
+##          z  <- .Internal(rowSums(z, nr, nc, FALSE))
 
-        z <- rowSums(
-                     matrix(
-                            aperm(x, c(rest.idx, marg.idx), TRUE),
-                            nrow=nr, ncol=nc))
-        
 
-        attributes(z) <- list(dim=di[marg.idx], dimnames=dn[marg.idx])
-        #dim(z) <- di[marg.idx]
-        #dimnames(z) <- dn[marg.idx]
-    } else {
-      return(sum(x))
-    }
-    if (keep.class) 
-        class(z) <- oc
-    return(z)
-}
+##         znew <- z
+##         print(zold)
+##         print(znew)
+
+##dim(z) <- di[marg.idx]
+##dimnames(z) <- dn[marg.idx]
+
+
 
 
 

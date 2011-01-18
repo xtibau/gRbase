@@ -111,7 +111,7 @@ is.subsetof <- function(x, set){
 
 subsetof <- function(x, y){
   #all(.Internal(match( x, y, 0, NULL))>0)
-  all(match(x,y)>0)
+  all(match(x,y,0)>0)
 }
 
 
