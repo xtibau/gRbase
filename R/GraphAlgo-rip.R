@@ -1,14 +1,42 @@
 
 ##
 ## Works only on triangulated graph
-##
-## Based on Algorithm 4.11 in Steffen et all (the yellow book)
-##
+##################################################################
+####
+#### Find RIP-ordering of cliques of chordal (triangulated)
+#### undirected graph
+####
+#### Based on Algorithm 4.11 in Steffen et all (the yellow book)
+####
+##################################################################
 
 rip <- function(object, root=NULL, nLevels=NULL){
-  amat <- as.adjMAT(object)
-  ripMAT(amat, root=root, nLevels=nLevels)
+  UseMethod("rip")
 }
+
+rip.graphNEL <- function(object, root=NULL, nLevels=NULL){
+  if (edgemode(object)=="directed"){
+    stop("Graph must be undirected")
+  }
+  ripMAT(as.adjMAT(object), root=root, nLevels=nLevels)
+}
+
+rip.igraph <- function(object, root=NULL, nLevels=NULL){
+  if (is.directed(object)){
+    stop("Graph must be undirected")
+  }
+  ripMAT(get.adjacency(object), root=root, nLevels=nLevels)
+}
+
+rip.matrix <- function(object, root=NULL, nLevels=NULL){
+  ripMAT(object, root=root, nLevels=nLevels)
+}
+
+
+## rip <- function(object, root=NULL, nLevels=NULL){
+##   amat <- as.adjMAT(object)
+##   ripMAT(amat, root=root, nLevels=nLevels)
+## }
 
 ripMAT <- function(amat, root=NULL, nLevels=NULL){
   
@@ -84,7 +112,6 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
       pa <- 0
     }
 
-    
   rip2 <-
     structure(list(nodes      = vn[mcidx],               
                    cliques    = cq,
@@ -94,10 +121,7 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
                    nLevels    = nLevels
                    ),
               class="ripOrder")
-  
   return(rip2)
-
-
 }
 
 

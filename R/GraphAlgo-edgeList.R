@@ -24,7 +24,8 @@ edgeListMAT <- function(adjmat, matrix=FALSE, edgemode="undirected"){
   epp <- which.arr.ind(adjmat)
   ans <- matrix(colnames(adjmat)[epp], nc = 2)
   if (!matrix) 
-    ans <- split(ans, row(ans))
+    ans <- rowmat2list(ans)
+ #   ans <- split(ans, row(ans))
   ans
 }
 
@@ -48,7 +49,8 @@ nonEdgeListMAT <- function(adjmat,matrix=FALSE){
   epp <- which.arr.ind(m)
   ans <- matrix(colnames(m)[epp],nc=2)
   if (!matrix)
-    ans<- split(ans,row(ans))
+    ans <- rowmat2list(ans)
+  ##ans<- split(ans,row(ans))
   ans
 }
 

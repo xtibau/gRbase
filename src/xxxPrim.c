@@ -66,7 +66,7 @@ SEXP R_colSums(SEXP X)
   return(ans);
 }
 
-SEXP R_colProd(SEXP V, SEXP X)
+SEXP R_colwiseProd(SEXP V, SEXP X)
 {
 
   int    *xdims, nrx, ncx, ii, jj, kk, len_V;

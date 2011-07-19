@@ -42,22 +42,11 @@
 <<echo=F>>=
 library(gRbase)
 library(Rgraphviz)
-#lprint <- function(x) cat(paste(x),"\n")
-#print.character <- function(x) cat(paste(x, collapse=' '),"\n")
-#print.list <- function(a) {names(a)<-NULL; 
-#  lapply(lapply(a,paste, collapse=' '),cat, "\n")
-#}
 @ 
 
 \tableofcontents
 
 \parindent0pt\parskip5pt
-
-
-% This  note  describes a simple the ``graph system''
-% used in the \grain\ package.  We refer to these this graph system as
-% \grash.  Thus \grash\ is not an R package but a part of an \R\
-% package.
 
 \section{Introduction}
 \label{sec:intro}
@@ -70,30 +59,18 @@ tools to these  fine packages. The most important tools are:
 \begin{enumerate}
 \item Undirected and directed acyclic graphs can be specified using
   formulae or an adjacency list using the functions \code{ug()} and
-  \code{dag()}. This gives graphs represented as \graphnel\ objects,
-  which is one of the graph representations available in the \graph\
-  package.  (The \code{'NEL'} in \graphnel\ stands for
-  ``node--edge--list'').
-  
-\item Similarly, graphs represented as adjacency matrices can be
-  specified as formula or an adjacency list using \code{ugMAT()} and
-  \code{dagMAT()}. 
-
+  \code{dag()}. This gives graphs represented as \graphnel\ objects
+  (the default), as \code{igraphs} or as adjacency matrices.
+ 
 \item Some graph algorithms are implemented in \grbase. These can be
   applied to graphs represented as \graphnel s or as matrices. 
   
   The
   most important algorithms are:
-  \code{mcs()},
-  \code{mcsMAT()} (maximum cardinality search) 
-  \code{moralize()},
-  \code{moralizeMAT()} (moralization of directed acyclic graph),
-  \code{rip()},
-  \code{ripMAT()} (RIP ordering of cliques of triangulated undirected graph),
-  \code{triangulate()},
-  \code{triangulateMAT()} (triangulate undirected graph).
-  For example \code{mcs()} can be applied to a \graphnel\ object
-  whereas \code{mcsMAT} is to be applied to an adjacency matrix.
+  \code{mcs()},(maximum cardinality search) 
+  \code{moralize()}, (moralization of directed acyclic graph),
+  \code{rip()}, (RIP ordering of cliques of triangulated undirected graph),
+  \code{triangulate()}, (triangulate undirected graph).
   
   Furthermore corresponding to some of the functions in the \graph\
   and \rbgl\ packages there are corresponding matrix versions of these
@@ -105,66 +82,172 @@ tools to these  fine packages. The most important tools are:
 \section{Graphs}
 \label{sec:xxx}
 
-An undirected graph represented as a \graphnel\ object is created by the \code{ug()} function. The
-graph can be specified by a formula, a list of formulas or a list of vectors. Thus the
-following two forms are equivalent: 
+Undirected graphs can be created by the \code{ug()} function and
+directed acyclic graphs (DAGs) by the \code{dag()} function.
+
+The graphs can be specified either using formulae or a list of
+vectors; see examples below.
+
+The
+representation of a graph can be as a \code{graphNEL} object, as an
+\code{igraph} object or as an adjacency matrix. 
+
+
+\subsection{Undirected graphs}
+
+An undirected graph is created by the \code{ug()} function. 
+
+
+\paragraph{As \code{graphNEL}:}
+The
+following specifications are equivalent:
 
 @ 
 <<print=F>>=
-ug11 <- ug(~a*b*c, ~c*d, ~d*e, ~e*a, ~f*g)
-ug12 <- ug(~a*b*c + c*d + d*e + a*e + f*g)
-ug13 <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"))
-ug13
+ug11 <- ug(~a*b*c + c*d + d*e + a*e + f*g)
+ug12 <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"))
+ug13 <- ug(~a*b*c, ~c*d, ~d*e + a*e + f*g)
 @ %def 
 
 Notice that a ``\code{:}'' can be used instead of ``\code{*}'' 
 in the formula specifications above.
 
+@ 
+<<>>=
+ug11
+@ %def 
+
+
+
+\paragraph{As \code{igraph}:}
+A  representation as an \code{igraph} object can be
+obtained with one of the following equivalent specifications:
+
+@ 
+<<print=F>>=
+ug11i <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="igraph")
+ug12i <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
+            result="igraph")
+@ %def 
+
+@ 
+<<>>=
+ug11i
+@ %def 
+
+
+\paragraph{As adjacency matrix:}
 A  representation as an adjacency matrix can be
 obtained with one of the following equivalent specifications:
 
 @ 
 <<print=F>>=
-ug11m <- ugMAT(~a*b*c, ~c*d, ~d*e, ~e*a, ~f*g)
-ug12m <- ugMAT(~a*b*c + c*d + d*e + a*e + f*g)
-ug13m <- ugMAT(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"))
-ug13m
+ug11m <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="matrix")
+ug12m <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
+            result="matrix")
 @ %def 
 
-A directed acyclic graph can be specified as a collection of formulas
-or as a list of vectors 
+@ 
+<<>>=
+ug11m
+@ %def 
+
+
+\subsection{Directed acyclic graphs (DAGs)}
+
+A directed acyclic graph is created by the \code{dag()} function. 
+
+
+\paragraph{As \code{graphNEL}:}
+The
+following specifications are equivalent:
 
 <<print=F>>=
-dag11 <- dag(~a, ~b*a,  ~c*a*b, ~d*c*e, ~e*a, ~g*f)
+dag11 <- dag(~a + b*a + c*a*b + d*c*e + e*a + g*f)
 dag12 <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
              c("e","a"),c("g","f"))
-dag12
+dag13 <- dag(~a, ~b*a,  ~c*a*b, ~d*c*e, ~e*a, ~g*f)
 @
+
+@ 
+<<>>=
+dag11
+@ %def 
 
 Here \texttt{\~{ }a} means that ``a'' has no parents while 
 \texttt{\~{ }d*b*c} means that ``d'' has parents ``b'' and
 ``c''. Notice that a ``\code{:}'' can be used instead of ``\code{*}'' the
 specification.  
 
+
+\paragraph{As \code{igraph}:}
+A  representation as an \code{igraph} object can be
+obtained with
+
+<<print=F>>=
+dag11i <- dag(~a + b*a + c*a*b + d*c*e + e*a + g*f, result="igraph")
+dag12i <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
+             c("e","a"),c("g","f"), result="igraph")
+@
+
+
+\paragraph{As adjacency matrix:}
 A  representation as an adjacency matrix can be
 obtained with
 
 <<print=F>>=
-dag11m <- dagMAT(~a, ~b*a,  ~c*a*b, ~d*c*e, ~e*a, ~g*f)
-dag12m <- dagMAT("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
-                 c("e","a"),c("g","f"))
-dag12m
+dag11m <- dag(~a + b*a + c*a*b + d*c*e + e*a + g*f, result="matrix")
+dag12m <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
+             c("e","a"),c("g","f"), result="matrix")
 @
+
+
+
+\section{Graph coercion}
+\label{sec:xxx}
+
+Graphs can be coerced between differente representations using
+\code{as()}; for example
+
+@ 
+<<>>=
+as(ug11,"igraph")
+as(as(ug11,"igraph"),"matrix")
+as(as(as(ug11,"igraph"),"matrix"),"graphNEL")
+@ %def 
+
+
+
 
 \section{Plotting graphs}
 \label{sec:xxx}
 
+\paragraph{Graphs represented as \code{graphNEL}:}
 
 Graphs (represented as \code{graphNEL} objects) are displayed with
-\code{plot()}, but this requires that the 
-\code{Rgraphviz} package is installed. There is also an \code{iplot}
-function for graphs and this function does not require any additional
-software to be installed.
+\code{plot()}, but this requires that 1) the \code{Rgraphviz} package is
+installed and also 2) that the \code{Graphviz} program is installed.
+
+There is also an \code{iplot()} function which converts a graphNEL to
+an igraph and plots this. To use \code{iplot()}, no additional
+software must be installed. There is a lot of room for improvement of
+the \code{iplot()} function. 
+
+\paragraph{Graphs represented as \code{igraph}:}
+
+Graphs (represented as \code{igraph} objects) are displayed with
+\code{plot()}.
+
+\paragraph{Graphs represented as adjacency matrices:}
+
+There is no plot method for graphs represented as adjacency matrices.
+
+@ 
+<<fig=T>>=
+par(mfrow=c(1,2))
+iplot(ug11)
+iplot(dag11)
+@ %def 
 
 \section{Graph queries}
 
@@ -173,7 +256,16 @@ The \graph\ and \rbgl\ packages implement various graph operations for
 The \grbase\ implements a few additional functions, see
 Section~\ref{sec:intro}. An additional function in \grbase\ for graph
 operations is \code{querygraph()}. This function is intended as a wrapper for the
-various graph operations available in \grbase, \graph\ and \rbgl. 
+various graph operations available in \grbase, \graph\ and
+\rbgl. There are two main virtues of \code{querygraph()}: 1)
+\code{querygraph()} operates on any of the three graph representations
+described above and 2) \code{querygraph()} provides a unified
+interface to the graph operations. The general syntax is
+@ 
+<<>>=
+args(querygraph)
+@ %def 
+
 
 
 
@@ -184,8 +276,16 @@ A moralized directed acyclic graph is obtained with
 
 @ 
 <<>>=
-moralize(dag11)
+dag11.mor <- moralize(dag11)
 @ %def 
+
+@ 
+<<fig=T>>=
+par(mfrow=c(1,2))
+iplot(dag11)
+iplot(dag11.mor)
+@ %def 
+
 
 
 Testing for whether a graph is triangulated is based on Maximum
@@ -201,39 +301,26 @@ mcs(ug11)
 Triangulate an undirected graph by adding extra edges to the graph:
 
 <<print=T>>=
-tug1<-triangulate(ug11)
+tug11<-triangulate(ug11)
 @ 
+
+@ 
+<<fig=T>>=
+par(mfrow=c(1,2))
+iplot(ug11)
+iplot(tug11)
+@ %def 
+
 
 A RIP ordering of the cliques of a triangulated graph can be obtained as:
 
 @ 
 <<>>=
-r <- rip(tug1)
+r <- rip(tug11)
 r
 @ %def 
 
-For graphs represented as matrices, the corresponding functions are \code{moralizeMAT()}, \code{mcsMAT()},
-\code{triangulateMAT()} and  \code{ripMAT()}. 
 
-
-\section{Coercion}
-\label{sec:xxx}
-
-Coercion between representations as a \code{graphNEL} object and an
-adjacency matrix can be done with the \code{as()} method from the
-\graph\ package:
-
-@ 
-<<>>=
-as(ug11, "matrix")
-as(ug11m, "graphNEL")
-@ %def 
-
-@ 
-<<>>=
-as(dag11,"matrix")
-as(dag11m, "graphNEL")
-@ %def 
 
 \section{Time and space considerations}
 \label{sec:xxx}

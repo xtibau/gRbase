@@ -1,27 +1,28 @@
+#######################################################################
+####
+#### querygraph provides unified interface to graph operations.
+####
+#### Works on graphNEL objects, igraph objects, and adjacency matrices
+####
+#### Notice: when a graph is returned it is always a graphNEL object
+####
+#######################################################################
 
-## Works on graphNEL objects
-##
-querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
-
-  if (!is(object,"graphNEL"))
-    stop("queryg2 needs a graphNEL object\n")
+querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
   
-  type=match.arg(type,
-    choices=c( 
-      ## From graph / RBGL packages
-      ##
-      "maxClique", 
+  ## From graph / RBGL packages
+  graph.RBGL <-
+    c("maxClique", 
       "connectedComp",
       "separates",
       "adj", 
       "is.triangulated", 
       "subgraph",
       "nodes",
-      "edges",                          
-      
-      ## SHD functions
-      ##
-      "ancestors", 
+      "edges")
+  ## From gRbase
+  gRbase <-
+    c("ancestors", 
       "ancestralGraph",
       "ancestralSet",
       "children",  
@@ -32,133 +33,74 @@ querygraph <-function(object, type, set=NULL, set2=NULL, set3=NULL){
       "is.simplicial",
       "parents", 
       "simplicialNodes",
-      "vpar"
-      ))
+      "vpar")
   
-##  nelobject <- .grash2nel(object)
+  op=match.arg(op, choices=c(graph.RBGL, gRbase))
 
-  switch(type,
+  object <- coerceGraph(object, "graphNEL")
+  
+  switch(op,
          ## Functions from graph/RBGL package here.
-         ##
-
-         "maxClique"={
-           maxClique(object)$maxCliques
-         },
-
-         "connectedComp"={
-           connectedComp(object)
-         },
-
-         "separates"={
-           separates(set, set2, set3, object)
-         },
-
-         "adj"={
-           adj(object, set)
-         },
-                  
-         "is.triangulated"={
-           is.triangulated(object)
-         },
-         
-         "subgraph"={
-           subGraph(set, object)
-         },         
-
-         "nodes"={
-           nodes(object)
-         },
-         "edges"={
-           edges(object)
-         },
-
-         ## !!
-
-         
-         ## SHD graph functions here
-         "ancestors"=,"an"={
-           ancestors(set, object)
-         },
-
-         "ancestralGraph"={
-           ancestralGraph(set, object)
-           ##subGraph(.ancestral_set(object, set), object)
-         },         
-         "ancestralSet"={
-           ancestralSet(set, object)
-         },
-                  
-         "children"={
-           children(set, object)
-           ##ch <- structure(unlist(edges(object)[set]), names=NULL)
-           ##if (length(ch)) ch else NULL
-         },
-
-         
-         "closure"={
-           closure(set, object)
-           ##unique(c(set, unlist(adj(object, set))))
-         },
-
-         "edgeList"={
-           edgeList(object)
-         },
-         
-         "is.decomposition"={
-           is.decomposition(set, set2, set3, object)
-           ## vn <- uniquePrim(c(set, set2, set3))
-           ##            sg <- subGraph(vn, object)
-           ##            separates(set, set2, set3, sg) & .is_complete(sg, set3)
-         },
-
-         "is.complete"={
-           is.complete(object, set)
-         },
-         
-         "is.simplicial"={
-           is.simplicial(set, object)
-         },
-         
-         "parents"={
-           parents(set, object)
-         },
-
-         "simplicialNodes"={
-           simplicialNodes(object)
-         },
-
-         "vpar"={
-           vpar(object)
-         }
+         "maxClique"=        { maxClique(object)$maxCliques              },
+         "connectedComp"=    { connectedComp(object)                     },
+         "separates"=        { separates(set, set2, set3, object)        },
+         "adj"=              { adj(object, set)                          },    
+         "is.triangulated"=  { is.triangulated(object)                   },         
+         "subgraph"=         { subGraph(set, object)                     },         
+         "nodes"=            { nodes(object)                             },
+         "edges"=            { edges(object)                             },         
+         ## gRbase functions
+         "ancestors"=,"an"=  { ancestors(set, object)		         },
+         "ancestralGraph"=   { ancestralGraph(set, object)	         },
+         "ancestralSet"=     { ancestralSet(set, object)                 },
+         "children"=         { children(set, object)         	         },
+         "closure"=          { closure(set, object)          	         },
+         "edgeList"=         { edgeList(object)	       		         },
+         "is.decomposition"= { is.decomposition(set, set2, set3, object) },
+         "is.complete"=      { is.complete(object, set)         	 },
+         "is.simplicial"=    { is.simplicial(set, object)         	 },
+         "parents"=          { parents(set, object)         		 },
+         "simplicialNodes"=  { simplicialNodes(object)         	         },
+         "vpar"=             { vpar(object)         			 }
          )  
 }
 
 
+########################################################################
+###
+### Functions which return vectors
+###
+########################################################################
 
+## adjmat based
 ancestors <- function(set, object){
+  amat  <- as.adjMAT(object)
+  if (isUndirectedMAT(amat))
+    return(NULL)
+  
   An <- setorig <- set
-  x <- as.adjMAT(object)
-  x <- x[-charmatch(set, rownames(x)),]
+  amat  <- amat[-charmatch(set, rownames(amat)),]
   
   repeat{
-    set2 <- rowSums(x[,set, drop=FALSE])
-    set <- names(which(set2>0))
+    set2 <- rowSums(amat[,set, drop=FALSE])
+    set  <- names(which(set2>0))
     if (!length(set))
       break()
     An <- c(An, set)
-    x <- x[set2 == 0,,drop=FALSE]
+    amat  <- amat[set2 == 0,,drop=FALSE]
   }
   setdiff(An, setorig)
 }
 
-ancestralGraph <- function(set, object){
-  subGraph(ancestralSet(set, object), object)
-}
-
+## adjmat based
 ancestralSet <- function(set, object){
+
+  amat  <- as.adjMAT(object)
+  if (isUndirectedMAT(amat))
+    return(NULL)
+
   if (missing(set))
     stop("'set' must be given..\n")
-  amat <- as.adjMAT(object)
   vn   <- colnames(amat)
   an   <- rep(0, length(vn))
   names(an) <- vn
@@ -171,47 +113,79 @@ ancestralSet <- function(set, object){
     if (!length(B))
       break()
     an[B] <- 1
-    idx  <- charmatch(A0, colnames(amat))
-    amat <- amat[-idx,-idx,drop=FALSE]
-    vn   <- colnames(amat)
-    A0   <- intersect(B,vn)
+    idx   <- charmatch(A0, colnames(amat))
+    amat  <- amat[-idx,-idx,drop=FALSE]
+    vn    <- colnames(amat)
+    A0    <- intersect(B,vn)
     if (!length(A0))
       break()
   }
   names(an[an>0])
 }
 
+## adjmat based
+parents <- function(set, object){
+  amat  <- as.adjMAT(object)
+  if (isUndirectedMAT(amat))
+    return(NULL)
 
+  pa   <- names(which(amat[,set]>0))
+  pa   <- setdiff(pa,set)
+  if (length(pa)) pa else NULL
+}
+
+## adjmat based
+vpar <- function(object){
+  if (edgemode(object)=="undirected")
+    stop("Graph is undirected; (v,pa(v)) does not exist...\n")
+  amat <- as.adjMAT(object)
+  vn   <- rownames(amat) 
+  ans  <- vector("list", length(vn))
+  for (ii in seq_along(vn)){
+    ans[[ii]] <- c(vn[ii], vn[amat[,ii]>0])
+  }
+  names(ans) <- vn
+  return(ans)
+}
+
+## graphNEL based
 children <- function(set, object){
+  if (edgemode(object)=="undirected")
+    return(NULL)
   ch <- structure(unlist(edges(object)[set]), names=NULL)
   if (length(ch)) ch else NULL
 }
 
-
+## graphNEL based
 closure <- function(set, object){
   uniquePrim(c(set, unlist(adj(object, set))))
 }
 
-## Should be declared as a method for graphNEL's
-##
-## edgePairs <- function(object){
-##   if(!is(object, "graphNEL"))
-##     stop("Must be a graphNEL object...")
-  
-##   ed  <- edges(object)
-##   ed  <- ed[lapply(ed,length)>0]
-##   ed2 <- mapply(function(a,b)names2pairs(a,b,sort=FALSE), ed,names(ed),SIMPLIFY=FALSE)
-##   ed2 <- structure(unlist(ed2, recursive=FALSE), names=NULL)
-##   ed2 <- remove.redundant(ed2)
-##   if(length(ed2)==0)
-##     return(NULL)
-##   ed2
-## }
+## graphNEL based
+simplicialNodes <- function(object){
+  nodes <- nodes(object)
+  b     <- unlistPrim(lapply(nodes, function(s) is.simplicial(s, object)))
+  sim   <- nodes[b]
+  return(sim)
+}
 
 
 
+########################################################################
+###
+### Functions which return graphs
+###
+########################################################################
 
+ancestralGraph <- function(set, object){
+  subGraph(ancestralSet(set, object), object)
+}
 
+########################################################################
+###
+### Boolan graph funcions (is.something)
+###
+########################################################################
 
 is.complete <- function(object, set=NULL){  
   if (is.null(set))
@@ -224,50 +198,13 @@ is.complete <- function(object, set=NULL){
 is.decomposition <- function(set, set2, set3, object){
   vn <- uniquePrim(c(set, set2, set3))
   if (setequal(vn, nodes(object))){
-    #sg <- subGraph(vn, object)
-    #separates(set, set2, set3, sg) & is.complete(sg, set3)
     separates(set, set2, set3, object) & is.complete(object, set3)
   } else {
     FALSE
   }
 }
 
-
 is.simplicial <- function(set, object){
   x <- unlist(adj(object,set))
   is.complete(subGraph(x, object), x)
 }
-
-parents <- function(set, object){
-  amat <- as.adjMAT(object)
-  pa <- names(which(amat[,set]>0))
-  pa <- setdiff(pa,set)
-  if (length(pa)) pa else NULL
-}
-
-
-
-simplicialNodes <- function(object){
-  nodes <- nodes(object)
-  b     <- unlistPrim(lapply(nodes, function(s) is.simplicial(s, object)))
-  sim   <- nodes[b]
-  return(sim)
-}
-
-
-vpar <- function(object){
-  if (edgemode(object)=="undirected")
-    stop("Graph is undirected; (v,pa(v)) does not exist...\n")
-  amat <- as.adjMAT(object)
-  vn <- rownames(amat) 
-  ans <- vector("list", length(vn))
-  for (ii in seq_along(vn)){
-    ans[[ii]] <- c(vn[ii], vn[amat[,ii]>0])
-  }
-  names(ans) <- vn
-  return(ans)
-}
-
-
-
-

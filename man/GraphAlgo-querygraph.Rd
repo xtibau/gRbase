@@ -7,17 +7,17 @@
   specifically graphs as created with \code{newug} and \code{newdag}.  
 }
 \usage{
-querygraph(object, type, set = NULL, set2 = NULL, set3 = NULL)
+querygraph(object, op, set = NULL, set2 = NULL, set3 = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{A graph object; i.e. either an unidrected graph (ugsh)
     or a directed acyclic graph (dagsh)}
-  \item{type}{Query type, see 'details' below.}
+  \item{op}{The query operation, see 'details' below.}
   \item{set,set2,set3}{Possible arguments to a graph query of type \code{type}}
 }
 \details{
-  The \code{type} can be:
+  The \code{op} can be:
   \itemize{
     \item {adj:} Nodes adjacant to \code{set}
     \item {an:} Ancestors of \code{set}

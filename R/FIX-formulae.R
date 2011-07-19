@@ -1,4 +1,41 @@
-  
+## Turn a right-hand-sided formula into a list
+##
+## January 2011
+
+rhsFormula2list <- rhsf2list <- function(f){
+
+  if (is.character(f)){
+    return(list(f))
+  } else {
+    if (is.numeric(f)){
+      return(lapply(list(f), "as.character"))
+    } else {
+      if (is.list(f)){
+        return(lapply(f, "as.character"))
+      } else {
+        .xxx. <- f[[2]]
+        f1 <- unlist(strsplit(paste(deparse(.xxx.), collapse="")," *\\+ *"))
+        f2 <- unlist(lapply(f1, strsplit, " *\\* *| *: *| *\\| *"),rec=FALSE)
+        return(f2)
+      }
+    }
+  }
+}
+
+
+
+## Turn list into right-hand-sided formula
+##
+## July 2008
+list2rhsFormula <- list2rhsf <- function(f){
+  if (inherits(f,"formula"))
+    return(f)
+  as.formula(paste("~",paste(unlist(lapply(f,paste, collapse='*')),collapse="+")),
+             .GlobalEnv)
+}
+
+
+#### FIXME: THis is a bad implementation.......
 all.subsets <- function(x,g.sep="+"){
   if (length(x)==1)
     return(x)
@@ -39,37 +76,6 @@ extract.power<-function(fff){
 
 
 
-## Turn a right-hand-sided formula into a list
-##
-## SHD, July 2008
-rhsFormula2list <- rhsf2list <- function(f){
-  if (inherits(f,"list")){
-    return(f)
-  } else {
-    if (inherits(f,"character")){
-      return(list(f))
-    }
-  }
-##   rhs <- paste(f)[2]
-##   f1 <- strsplit(rhs,"\\+")[[1]]
-  .xxx. <- f[[2]]
-  f1 <- unlist(strsplit(paste(deparse(.xxx.), collapse="")," *\\+ *"))
-  f2 <- unlist(lapply(f1, strsplit, "\\*|:"),rec=FALSE)
-  f2 <- lapply(f2, function(x) gsub(" +","",x))
-  f2
-}
-
-
-
-
-
-## Turn list into right-hand-sided formula
-##
-## SHD, July 2008
-list2rhsFormula <- list2rhsf <- function(f){
-  if (inherits(f,"formula"))
-    return(f)
-  as.formula(paste("~",paste(unlist(lapply(f,paste, collapse='*')),collapse="+")))
 
 
 
@@ -86,19 +92,23 @@ list2rhsFormula <- list2rhsf <- function(f){
 
 
 
-
-
-
-
-
-
-
-
-
-}
-
-
-
+## ## SHD, July 2008
+## rhsFormula2list <- rhsf2list <- function(f){
+##   if (inherits(f,"list")){
+##     return(f)
+##   } else {
+##     if (inherits(f,"character")){
+##       return(list(f))
+##     }
+##   }
+## ##   rhs <- paste(f)[2]
+## ##   f1 <- strsplit(rhs,"\\+")[[1]]
+##   .xxx. <- f[[2]]
+##   f1 <- unlist(strsplit(paste(deparse(.xxx.), collapse="")," *\\+ *"))
+##   f2 <- unlist(lapply(f1, strsplit, "\\*|:"),rec=FALSE)
+##   f2 <- lapply(f2, function(x) gsub(" +","",x))
+##   f2
+## }
 
 
 # Notes, functions and examples for generator lists (model formulae

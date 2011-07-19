@@ -67,7 +67,7 @@ g2 <- ug(~a:b:e:f+b:c:d:e)
 x<-minimalTriang(g1, TuG=g2)
 
 ## An adjacency matrix
-g1m <- ugMAT(~a:b+b:c+c:d+d:e+e:f+a:f+b:e)
+g1m <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e, result="matrix")
 x<-minimalTriangMAT(g1m)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -3,8 +3,6 @@ iplot <- function(x,...){
   UseMethod("iplot")
 }
 
-
-
 iplot.graphNEL <- function(x,...){
   ig <- igraph.from.graphNEL(x)
   V(ig)$label <- V(ig)$name
@@ -15,6 +13,7 @@ iplot.graphNEL <- function(x,...){
   ig$layout <- layout.lgl
   plot(ig,
        vertex.label.family="Helvetica",
-       edge.label.family="Helvetica", vertex.label.cex=2,
+       edge.label.family="Helvetica",
+       vertex.label.cex=2,
        edge.label.cex=2)
 }

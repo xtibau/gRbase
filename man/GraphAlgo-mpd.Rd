@@ -52,7 +52,7 @@ x <- mpd(g1)
 
 
 ## An adjacency matrix
-g1m <- ugMAT(~a:b+b:c+c:d+d:e+e:f+a:f+b:e)
+g1m <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e, result="matrix")
 x <- mpdMAT(g1m)
 
 

@@ -1,7 +1,5 @@
 \name{graph-operations1}
 
-\alias{as.adjMAT}
-
 \alias{ancestors}
 \alias{ancestralGraph}
 \alias{ancestralSet}
@@ -14,15 +12,18 @@
 \alias{is.simplicial}
 \alias{parents}
 \alias{simplicialNodes}
-  
+
+\alias{as.adjMAT}
+\alias{maxCliqueMAT}
+
 \title{Simple operations on undirected and directed acyclic graphs.}
 \description{
-  Make operations on undirected and directed acyclic graphs.
+  Make operations on undirected and directed acyclic graphs (which are
+  represented as \code{graphNEL} objects.
 }
 
 
 \usage{
-as.adjMAT(object)
 ancestors(set, object)
 ancestralGraph(set, object)
 ancestralSet(set, object)
@@ -34,6 +35,9 @@ is.decomposition(set, set2, set3, object)
 is.simplicial(set, object)
 parents(set, object)
 simplicialNodes(object)
+as.adjMAT(object)
+
+maxCliqueMAT(amat)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -41,10 +45,16 @@ simplicialNodes(object)
   \item{object}{A graphNEL object}
   %   \item{matrix}{If TRUE the result is returned as a p x 2 matrix; otherwise as a
   %     matrix list. }
+  \item{amat}{Adjacency matrix}
 }
  \details{
-   Notice that as.adjMAT(g) does the same as as(g, "matrix") but
-   as.adjMAT() is considerably faster.
+   Notice: as.adjMAT(g) does the same as as(g, "matrix") but
+   as.adjMAT is considerably faster.
+
+   maxCliqueMAT applied to an adjacency matrix does the same as
+   maxClique applied to a graphNEL; but maxCliqueMAT is is considerably faster.
+
+  
  }
 % \value{
 %   ~Describe the value returned
@@ -69,8 +79,13 @@ simplicialNodes(object)
   \code{\link{jTree}}
 }
 \examples{
-ugr <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
-closure("me", ugr)
+uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+closure("me", uG)
+
+maxClique(uG)
+amat <- as.adjMAT(uG)
+maxCliqueMAT(amat)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
