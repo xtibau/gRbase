@@ -1,5 +1,15 @@
 \name{gRbase-internal}
 
+%% Needs .Rd
+\alias{coerceGraph}
+\alias{coerceGraph.graphNEL}
+\alias{coerceGraph.igraph}
+\alias{coerceGraph.matrix}
+\alias{isGSD_glist}
+\alias{properties_glist}
+\alias{isAcyclicMAT}
+\alias{isUndirectedMAT}
+
 %% Array operations in C.
 \alias{aperm2}
 \alias{cell2entry}
@@ -23,13 +33,16 @@
 \alias{triangR}
 \alias{triangRMAT}
 
-
+\alias{igraph-class}
 
 %%%
 %%% SHD stuff
 %%%
 
 \alias{names2pairs}
+\alias{rowmat2list}
+\alias{colmat2list}
+\alias{matrix2list}
 \alias{ellK}
 
 \alias{list2rhsFormula}
@@ -39,10 +52,6 @@
 
 \alias{which.arr.ind}
 \alias{pairs2num}
-
-
-
-
 %% !!
 
 %% DED stuff
@@ -54,7 +63,6 @@
 \alias{in.list}
 \alias{is.cont}
 \alias{contains}
-
 \alias{is.graphical}
 \alias{dual.rep}
 %% !!
@@ -66,7 +74,6 @@
 \alias{outfun}
 \alias{ell}
 %% !!
-
 
 \alias{addEdge}
 \alias{dropEdge}
@@ -81,9 +88,6 @@
 \alias{extract.power}
 \alias{selectOrder}
 \alias{processFormula}
-
-
-
 \alias{partial.corr.matrix}
 
 \alias{update.gModel}

@@ -1,16 +1,14 @@
 \name{ug}
 
 \alias{ug}
-\alias{ugList}
-
-\alias{ugMAT}
-\alias{ugListMAT}
-
 \alias{dag}
-\alias{dagMAT}
-
+\alias{ugList}
 \alias{dagList}
-\alias{dagListMAT}
+
+% \alias{ugMAT}
+% \alias{ugListMAT}
+% \alias{dagMAT}
+% \alias{dagListMAT}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Create undirected and directed graphs}
@@ -19,15 +17,19 @@
   graphNEL objects in the \code{graph} package.
 }
 \usage{
-ug(...)
-dag(...)
-ugList(x)
-dagList(x)
+ug(..., result="NEL")
+dag(..., result="NEL")
+ugList(x, result="NEL")
+dagList(x, result="NEL")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{\dots}{A generating class for a graph, see examples below}
-  \item{x}{A list containing a generating class for a graph, see examples below}
+  \item{x}{A list containing a generating class for a graph, see
+    examples below}
+  \item{result}{The format of the graph. The possible choices are "NEL"
+    (for a graphNEL object), "matrix" (for an adjacency matrix),
+    "igraph" (for an igraph object).}
 }
 % \details{
 %   Functions dag() and ug() were originally called newDAG() and
@@ -35,9 +37,9 @@ dagList(x)
 %   compatibility, but they will be removed at some point of time in the future. 
 % }
 \value{
-  Functions ug(), dag(), ugList() and dagList() return a 'graphNEL' object.
-
-  Functions ugMAT() and ugListMAT() return an adjacency matrix. 
+  Functions ug(), dag(), ugList() and dagList() return a 'graphNEL'
+  object, an adjacency matrix or an 'igraph' object.
+  %Functions ugMAT() and ugListMAT() return an adjacency matrix. 
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, sorenh at agrsci.dk}

@@ -1,49 +1,34 @@
 uniquePrim <- function(x){
-  #.Internal(unique(x, FALSE, FALSE))
-  unique(x)
+    ##.Internal(unique(x, FALSE, FALSE))
+    x[!duplicated.default(x)]
 }
 
-setdiffPrim <- function (x, y) 
+setdiffPrim <- function (x, y)
 {
-  setdiff(x,y)
-##   x <- as.vector(x)
-##     y <- as.vector(y)
-##     uniquePrim(
-##                if (length(x) || length(y)) { 
-##                  x[.Internal(match( x, y, 0, NULL)) == 0]
-##                } else
-##                {x}
-##                )
-    
+    x <- as.vector(x)
+    y <- as.vector(y)
+    uniquePrim(if (length(x) || length(y))
+           x[match(x, y, 0L) == 0L]
+    else x)
 }
 
-intersectPrim <- function (x, y) 
+intersectPrim <- function (x, y)
 {
 ##   y <- as.vector(y)
 ##   .Internal(unique( y[  .Internal(match( as.vector(x), y, 0, NULL))    ], FALSE, FALSE))
-  intersect(x,y)
+  #intersect(x,y)
+  y <- as.vector(y)
+  uniquePrim(y[match(as.vector(x), y, 0L)])
+
 }
 
 
-unlistPrim <- function(l, recursive=TRUE, use.names=TRUE){
+unlistPrim <- function(l){
   #.Internal(unlist(l, recursive, use.names))
-  unlist(l, recursive, use.names)
+  #unlist(l, recursive, use.names)
+  c(l, recursive=TRUE)
 }
-  
 
-## colSumsPrim <- function(x){  
-##   ##   n <- dim(x)[1]
-##   ##   dn <- dim(x)[2]
-##   ##   .Internal(colSums(x, n, prod(dn), FALSE))
-##   colSums(x)
-## }
-
-## rowSumsPrim <- function(x){
-## ##   dn <- dim(x)[1]
-## ##   p  <- dim(x)[2]
-## ##   .Internal(rowSums(x, prod(dn), p, FALSE))
-##   rowSums(x)
-## }
 
 outerPrim <- function(X,Y){
   nX <- length(X)

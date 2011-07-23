@@ -3,12 +3,11 @@
 
 \documentclass{article}
 \usepackage{a4wide}
-\usepackage[T1]{fontenc}
-
+%\usepackage[T1]{fontenc}
+\usepackage{inputenx}
 \usepackage{boxedminipage,color}
 \title{Primitive array operations in the \texttt{gRbase} package}
-\author{Søren Højsgaard}
-
+\author{S{\o}ren H{\o}jsgaard}
 \SweaveOpts{keep.source=T}
 
 \begin{document}
@@ -37,16 +36,22 @@
 
 %%% Text goes here...
 
-% @ 
+% @
 % <<echo=F>>=
 % source("arrayops-prim.R")
 % dyn.load("arrayops-prim.dll")
-% @ %def 
+% @ %def
 
-@ 
+@
+<<echo=F,results=hide>>=
+options(useFancyQuotes="UTF-8")
+@ %def
+
+
+@
 <<>>=
 library(gRbase)
-@ %def 
+@ %def
 
 \section{Introduction}
 
@@ -63,9 +68,9 @@ The documentation of \R\ states the following about arrays:
   An array in R can have one, two or more dimensions. It is simply a
   vector which is stored with additional attributes giving the
   dimensions (attribute "dim") and optionally names for those
-  dimensions (attribute "dimnames").  
+  dimensions (attribute "dimnames").
 
-  A two-dimensional array is the same thing as a matrix.  
+  A two-dimensional array is the same thing as a matrix.
 
   One-dimensional arrays often look like vectors, but may be handled
   differently by some functions.
@@ -73,7 +78,7 @@ The documentation of \R\ states the following about arrays:
 
 Hence the defining characterstic of an array is that it is a vector
 with a dim attribute. For example
-@ 
+@
 <<>>=
 ## 1-dimensional array
 ##
@@ -97,7 +102,7 @@ x3 <- array(1:8, dim=c(2,2,2))
 x3
 is.array(x3)
 is.matrix(x3)
-@ %def 
+@ %def
 
 
 \subsection{Terminology}
@@ -108,7 +113,7 @@ factors where the factor $\delta_k$ has levels
 $I_k$. The cross product $I=I_1 \times \dots \times I_K$ defines an
 array where $i=(i_1, \dots, i_K) \in I$ is a cell. It is the
 convention here that the first factor varies fastest. To each cell $i\in
-I$ there is often a value $f(i)$. 
+I$ there is often a value $f(i)$.
 
 As shown above, an array is implemented as a vector $x$ of length
 $L=|I|$, that is $x \equiv (f(i), i\in I)$. In practice $x$ is indexed
@@ -117,52 +122,52 @@ by an entry $e$ as $x[e]$ for $e=1,\dots, L$.
 The factor levels $(I_1, \dots, I_K)$ are denoted \verb'flevels' in
 the code below. As an example we take the following:
 
-@ 
+@
 <<>>=
 flevels <- c(2,3,2,4)
-@ %def 
+@ %def
 
 \section{\code{cell2entry()} and \code{entry2cell()}}
 
 
 The map from a cell to the corresponding
 entry is provided by \code{cell2entry()}. The reverse operation, going
-from an entry to a cell (which is much less needed) is provided by 
-\code {entry2cell()}. 
+from an entry to a cell (which is much less needed) is provided by
+\code {entry2cell()}.
 
-@ 
+@
 <<>>=
-cell2entry(c(1,1,1,1), flevels) 
+cell2entry(c(1,1,1,1), flevels)
 entry2cell(1, flevels)
-cell2entry(c(2,1,2,1), flevels) 
+cell2entry(c(2,1,2,1), flevels)
 entry2cell(8, flevels)
-@ %def 
+@ %def
 
 
-@ 
+@
 <<eval=F,echo=F>>=
-cell2entry2(c(2,1,2,1), flevels) 
-cell2entryR(c(2,1,2,1), flevels) 
-@ %def 
+cell2entry2(c(2,1,2,1), flevels)
+cell2entryR(c(2,1,2,1), flevels)
+@ %def
 
 
 %% \paragraph{Timings} :
 
 % These functions are implemented in R, although there is also a
 % C--version of \verb'cell2entry()' (which is not as fast because of
-% coercion to integers). 
+% coercion to integers).
 
 % \verb'cell2entry()' is implemented in C (although there is also a
 % corresponding R--version), whereas \verb'entry2cell()' purely
-% R--based. 
+% R--based.
 
-@ 
+@
 <<eval=F,echo=F>>=
 system.time(for (kk in 1:20000){cell2entry(c(2,1,2,1),flevels)})
 system.time(for (kk in 1:20000){cell2entry2(c(2,1,2,1),flevels)})
 system.time(for (kk in 1:20000){cell2entryR(c(2,1,2,1),flevels)})
 system.time(for (kk in 1:20000){entry2cellR(6,flevels)})
-@ %def 
+@ %def
 
 
 \section{\code{nextCell()} and \code{nextCellMarg()}}
@@ -174,19 +179,19 @@ fastest, that is $(2,1,2,1)$. This is provided by
 \code{nextCell()}. Notice the result of finding the next cell to the
 final cell.
 
-@ 
+@
 <<>>=
 nextCell(c(1,1,2,1), flevels)
 nextCell(c(2,3,2,4), flevels)
-@ %def 
+@ %def
 
-% \paragraph{Timings} : 
+% \paragraph{Timings} :
 
-% @ 
+% @
 % <<>>=
 % system.time(for (kk in 1:100000){nextCell(c(2,1,1,2), flevels)})
 % system.time(for (kk in 1:100000){nextCellR(c(2,1,1,2), flevels)})
-% @ %def 
+% @ %def
 
 
 Given $A\subset \Delta$ and a cell $i_A \in I_A$ consider the cells
@@ -196,26 +201,26 @@ want to find the next cell also satisfying this constraint following
 the convention that the first factor varies fastest, that is
 $(1,1,2,2)$. This is provided by \code{nextCellMarg()}.
 
-@ 
+@
 <<>>=
 nextCellMarg(c(1,3,2,1),    margset=c(2,3), flevels)
 nextCellMarg(c(2,3,2,1),    margset=c(2,3), flevels)
-@ %def 
+@ %def
 
-% @ 
+% @
 % <<>>=
 % nextCellMargR(c(1,3,2,1),   margset=c(2,3), flevels)
 % nextCellMargR(c(2,3,2,1),   margset=c(2,3), flevels)
-% @ %def 
+% @ %def
 
 
 % \paragraph{Timings} :
 
-% @ 
+% @
 % <<>>=
 % system.time(for (kk in 1:100000){nextCellMarg(c(2,1,1,2),  margset=3, flevels)})
 % system.time(for (kk in 1:100000){nextCellMargR(c(2,1,1,2), margset=3, flevels)})
-% @ %def 
+% @ %def
 
 
 \section{\code{margcell2entry()}}
@@ -223,16 +228,16 @@ nextCellMarg(c(2,3,2,1),    margset=c(2,3), flevels)
 
 Given $A\subset \Delta$ and a cell $i_A \in I_A$. This cell defines a
 slice of the original array, namely the cells
-$I(i_A)=\{j\in I|j_A = i_A\}$. 
+$I(i_A)=\{j\in I|j_A = i_A\}$.
 We often want to find the entries in
 $x$ for the cells $I(i_A)$. This is provided by
 \code{margcell2entry()}. To be specific, we may want the entries for
 the cells $(*,1,2,*)$ or $(2,2,*,*)$:
-@ 
+@
 <<>>=
 margcell2entry(margcell=c(1,2), margset=c(2,3), flevels)
 margcell2entry(margcell=c(2,2), margset=c(1,2), flevels)
-@ %def 
+@ %def
 
 
 % #.margcell2entry1R(margcell=2, margset=3, flevels)
@@ -240,12 +245,12 @@ margcell2entry(margcell=c(2,2), margset=c(1,2), flevels)
 
 % \paragraph{Timings}:
 
-% @ 
+% @
 % <<>>=
 % system.time(for (kk in 1:10000){margcell2entry(margcell=2, margset=3, flevels)})
 % #system.time(for (kk in 1:10000){.margcell2entry1R(margcell=2, margset=3, flevels)})
 % #system.time(for (kk in 1:10000){.margcell2entry2R(margcell=2, margset=3, flevels)})
-% @ %def 
+% @ %def
 
 
 
@@ -255,7 +260,7 @@ margcell2entry(margcell=c(2,2), margset=c(1,2), flevels)
 Using the operations above we can obtain the combinations of the
 factors as a matrix:
 
-@ 
+@
 <<>>=
 ff <- factgrid(flevels)
 head(ff)
@@ -263,14 +268,14 @@ tail(ff)
 
 ff <- factgrid(flevels, margcell=c(1,2), margset=c(2,3))
 ff
-@ %def 
+@ %def
 
 
 %%% Text ends here...
 
-% @ 
+% @
 % <<echo=F>>=
 % dyn.unload("arrayops-prim.dll")
-% @ %def 
+% @ %def
 
 \end{document}

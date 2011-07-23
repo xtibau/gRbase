@@ -1,77 +1,56 @@
 
+triangulate.graphNEL <- function(object, method="mcwh",
+                        nLevels=rep(2,length(nodes(object))), result="graphNEL",...){
+  triangulateMAT(as.adjMAT(object),
+                 method=method, nLevels=nLevels, result=result, ...) 
+}
+
+
+triangulate.igraph <- function(object, method="mcwh",
+                               nLevels=rep(2,length(V(object))), result="igraph",...){
+  triangulateMAT(get.adjacency(object),
+                 method=method, nLevels=nLevels, result=result, ...) 
+}
+
+triangulate.matrix <- function(object, method="mcwh",
+                           nLevels=rep(2,ncol(object)), result="matrix", ...){
+  triangulateMAT(object,
+                 method=method, nLevels=nLevels, result="matrix", ...)
+}
 
 
 triangulateMAT <- function(amat, method="mcwh",
-                           nLevels=rep(2,ncol(amat)),...){
-
+                           nLevels=rep(2,ncol(amat)), result="matrix", ...){
+  ## Based on an adjacency matrix
   trimethod <- c("mcwh","r")
   method <- match.arg(tolower(method),trimethod)
 
   ##cat("triangulate - method:", method,"\n")
   switch(method,
-         "r"={ ## Pure R implementations
+         "mcwh"={
+           nc  <-  ncol(amat)
+           vn  <-  colnames(amat)
+           i   <- .C("triangmcwh", Av=as.integer(amat), nc, vn,
+                     as.integer(nLevels), ans=integer(1), PACKAGE="gRbase")$Av
+           ans           <- matrix(i, nc=nc, nr=nc)           
+           dimnames(ans) <- dimnames(amat)
+           ans           <- abs(ans)   ## FIXME: Do this in C
+           diag(ans)     <- 0L         ## FIXME: Do this in C  
+         },         
+         "r"={ ## Pure R implementation
+           ## FIXME: Dette virker ikke...
            ans <- triangR(amat, nLevels=nLevels)
-           if (matrix)
-             ans <- as(ans,"matrix")
-         },
-         "mcwh"={
-           A  <- amat
-           Av <- as.numeric(A)
-           nc <- ncol(A)
-           vn <- colnames(A)
-           i  <-.C("triangmcwh", Av=as.integer(Av), nc, vn,
-                   as.integer(nLevels), ans=integer(1), PACKAGE="gRbase")$Av
-           ans  <-matrix(i, nc=nc,nr=nc)
+         })
 
-           dimnames(ans)<-dimnames(A)
-           ans <- abs(ans)
-           diag(ans) <- 0L           
-         }
+  switch(result,
+         "matrix"  ={return(ans)},
+         "graphNEL"={return(as(ans, "graphNEL"))},
+         "igraph"  ={return(graph.adjacency(ans, mode="undirected"))}
          )
-
-  return(ans)
-}
-
-
-triangulate.graphNEL <- function(object, method="mcwh",
-                        nLevels=rep(2,length(nodes(object))), matrix=FALSE,...){
-
-  trimethod <- c("mcwh","r")
-  method <- match.arg(tolower(method),trimethod)
-
-  ##cat("triangulate - method:", method,"\n")
-  switch(method,
-         "r"={ ## Pure R implementations
-           ans <- triangR(object, nLevels=nLevels)
-         },
-         "mcwh"={
-           A  <- as.adjMAT(object)
-           Av <- as.numeric(A)
-           nc <- ncol(A)
-           vn <- colnames(A)
-           i  <-.C("triangmcwh", Av=as.integer(Av), nc, vn,
-                   as.integer(nLevels), ans=integer(1), PACKAGE="gRbase")$Av
-           ans  <-matrix(i, nc=nc,nr=nc)
-
-           dimnames(ans)<-dimnames(A)
-           if (!matrix){
-             ans <- abs(ans)
-             diag(ans) <- 0
-             ans <- as(ans,"graphNEL")
-           }
-         }
-         )
-
-  return(ans)
 }
 
 
 
-
-
-
-## Sørens triangulation
-##
 
 
 triangR <- function(object, vn=nodes(object), nLevels=rep(2, length(vn))){
@@ -133,84 +112,195 @@ triangR <- function(object, vn=nodes(object), nLevels=rep(2, length(vn))){
       break()
                                         #    amat   <- amat[anodes, anodes]
   }
-
-  as(amat2, "graphNEL")
+  return(amat2)
+  #as(amat2, "graphNEL")
 }
 
 
+## triangulateMAT <- function(object, method="mcwh",
+##                            nLevels=rep(2,ncol(object)), result="matrix", ...){
 
+##   cat("NOTICE: triangulateMAT will be deprecated...\n")
+##   trimethod <- c("mcwh","r")
+##   method <- match.arg(tolower(method),trimethod)
+##   ## FIXME: there is an issue about the return format
+##   ## FIXME: argument matrix should be 'result'
+##   object.ans <- triangulate.matrix(object=object,
+##                                  method=method, nLevels=nLevels, result=result, ...) 
+##   return(object.ans)
+## }
+
+
+
+
+
+
+## triangulate.matrix <- function(object, method="mcwh",
+##                                nLevels=rep(2,ncol(object)), matrix=FALSE,...){
+  
+##   amat.ans <- .triangulate_internal(amat=object,
+##                                     method=method, nLevels=nLevels, ...) 
+##   return(amat.ans)
+## }
+
+
+
+
+
+
+
+
+
+
+
+
+## triangulateMAT <- function(amat, method="mcwh",
+##                            nLevels=rep(2,ncol(amat)),...){
+
+##   trimethod <- c("mcwh","r")
+##   method <- match.arg(tolower(method),trimethod)
+
+##   ##cat("triangulate - method:", method,"\n")
+##   switch(method,
+##          "r"={ ## Pure R implementations
+##            ans <- triangR(amat, nLevels=nLevels)
+##            if (matrix)
+##              ans <- as(ans,"matrix")
+##          },
+##          "mcwh"={
+##            A  <- amat
+##            Av <- as.numeric(A)
+##            nc <- ncol(A)
+##            vn <- colnames(A)
+##            i  <-.C("triangmcwh", Av=as.integer(Av), nc, vn,
+##                    as.integer(nLevels), ans=integer(1), PACKAGE="gRbase")$Av
+##            ans  <-matrix(i, nc=nc,nr=nc)
+           
+##            dimnames(ans)<-dimnames(A)
+##            ans <- abs(ans)
+##            diag(ans) <- 0L           
+##          }
+##          )
+
+##   return(ans)
+## }
+
+
+## triangulate.graphNEL <- function(object, method="mcwh",
+##                         nLevels=rep(2,length(nodes(object))), matrix=FALSE,...){
+
+##   trimethod <- c("mcwh","r")
+##   method <- match.arg(tolower(method),trimethod)
+
+##   ##cat("triangulate - method:", method,"\n")
+##   switch(method,
+##          "r"={ ## Pure R implementations
+##            ans <- triangR(object, nLevels=nLevels)
+##          },
+##          "mcwh"={
+##            A  <- as.adjMAT(object)
+##            Av <- as.numeric(A)
+##            nc <- ncol(A)
+##            vn <- colnames(A)
+##            i  <-.C("triangmcwh", Av=as.integer(Av), nc, vn,
+##                    as.integer(nLevels), ans=integer(1), PACKAGE="gRbase")$Av
+##            ans  <-matrix(i, nc=nc,nr=nc)
+
+##            dimnames(ans)<-dimnames(A)
+##            if (!matrix){
+##              ans <- abs(ans)
+##              diag(ans) <- 0
+##              ans <- as(ans,"graphNEL")
+##            }
+##          }
+##          )
+
+##   return(ans)
+## }
+
+
+##
+## Purely R-based triangulation
+##
+## Notice: input is graphNEL; output is amat.
+## FIXME: Make input and output consistent...
+
+
+
+
+
+
+
+
+
+
+
+
+
+### ##################################################
+###
+### OLD STUFF BELOW HERE
+###  
+### ##################################################
+
+
+
+##
 ## Triangulation based on an adjacency matrix
 ##
-triangRMAT <- function(amat, vn=colnames(amat), nLevels=rep(2, ncol(amat))){
+## This function is not used in the package but can probably be used
+## as a benchmark for the C-implementation.
+##
+## triangRMAT <- function(amat, vn=colnames(amat), nLevels=rep(2, ncol(amat))){
   
-  amat2       <- amat 
+##   amat2       <- amat 
 
-  anodes     <- vn     
-  activeList <- gnodes <- rep(1, length(vn))
-  wgt        <- rep(NA,length(vn))
+##   anodes     <- vn     
+##   activeList <- gnodes <- rep(1, length(vn))
+##   wgt        <- rep(NA,length(vn))
   
-  names(activeList) <- names(gnodes) <- names(nLevels) <- names(wgt) <- vn
+##   names(activeList) <- names(gnodes) <- names(nLevels) <- names(wgt) <- vn
 
-  repeat{
-    for (ii in 1:length(anodes)){
-      cn <- anodes[ii]
-      if (activeList[cn]==1){
-        nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
-        w  <-  prod(nLevels[c(cn,nb)])
-        wgt[cn] <- w 
-        ##   cat("cn:", cn, "nb:", paste(nb, collapse=' '), "wgt:", w, "\n")
-        activeList[cn] <- 0
-      }
-    }
-    ##    print(wgt)
-    id    <- which.min(wgt)
-    wgt[id] <- Inf    
-    ##    print(id)
-    cn <- vn[id]
-    nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
-    activeList[cn] <- -1
-    activeList[nb] <-  1
+##   repeat{
+##     for (ii in 1:length(anodes)){
+##       cn <- anodes[ii]
+##       if (activeList[cn]==1){
+##         nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
+##         w  <-  prod(nLevels[c(cn,nb)])
+##         wgt[cn] <- w 
+##         ##   cat("cn:", cn, "nb:", paste(nb, collapse=' '), "wgt:", w, "\n")
+##         activeList[cn] <- 0
+##       }
+##     }
+##     ##    print(wgt)
+##     id    <- which.min(wgt)
+##     wgt[id] <- Inf    
+##     ##    print(id)
+##     cn <- vn[id]
+##     nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
+##     activeList[cn] <- -1
+##     activeList[nb] <-  1
     
-    ##   cat("completing bd for node:", cn, "nb:", paste(nb, collapse=' '), "\n")
+##     ##   cat("completing bd for node:", cn, "nb:", paste(nb, collapse=' '), "\n")
     
-    if (length(nb)>1){
-      for (i in 1:(length(nb)-1)){
-        for (j in (i+1):length(nb)){
-          amat2[nb[i],nb[j]] <- amat2[nb[j],nb[i]] <- TRUE
-          amat [nb[i],nb[j]] <- amat [nb[j],nb[i]] <- TRUE
-        }
-      }
-    }
+##     if (length(nb)>1){
+##       for (i in 1:(length(nb)-1)){
+##         for (j in (i+1):length(nb)){
+##           amat2[nb[i],nb[j]] <- amat2[nb[j],nb[i]] <- TRUE
+##           amat [nb[i],nb[j]] <- amat [nb[j],nb[i]] <- TRUE
+##         }
+##       }
+##     }
 
-    gnodes[id] <- 0
-    #print(anodes)
-    anodes <- setdiff(anodes,cn)
-    if (length(anodes)==1) 
-      break()
-                                        #    amat   <- amat[anodes, anodes]
-  }
-  return(amat2)
-}
-
-
-
-jTree <- function(object,
-                  method  = "mcwh",
-                  nLevels = rep(2,length(nodes(object))),
-                  control = list()){
-  method <- match.arg(tolower(method),c("mcwh","r"))
-
-  tug        <- triangulate(object, method=method, nLevels=nLevels)
-  val        <- rip(tug,nLevels=nLevels)
-  val$tug    <- tug
-  return(val)
-}
-
-
-###
-### JUNK BELOW HERE...
-###  
-
+##     gnodes[id] <- 0
+##     #print(anodes)
+##     anodes <- setdiff(anodes,cn)
+##     if (length(anodes)==1) 
+##       break()
+##                                         #    amat   <- amat[anodes, anodes]
+##   }
+##   return(amat2)
+## }
 
 
 ## Original with PG's code
@@ -244,14 +334,6 @@ jTree <- function(object,
 ##          }         
 ##          )
 ## }
-
-
-
-
-
-
-
-
 
 ## triangR <- function(ug, vn=nodes(ug), nLevels=rep(2, length(vn))){
   

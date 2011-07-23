@@ -3,6 +3,8 @@
 \alias{tableSlicePrim}
 \alias{tableMargin}
 \alias{tableOp}
+\alias{tableMult}
+\alias{tableDiv}
 \alias{tableOp2}
 \alias{tablePerm}
 
@@ -14,7 +16,9 @@
   the table defined by specific margins being at a specific level.
 }
 \usage{
-tableOp(t1, t2, op = "*") 
+tableOp(t1, t2, op = "*")
+tableMult(t1, t2)
+tableDiv(t1, t2) 
 tableMargin(x, margin, keep.class=FALSE)
 tableSlice(x, margin, level, impose)
 tablePerm(a, perm, resize = TRUE, keep.class=FALSE) 
@@ -51,8 +55,11 @@ tablePerm(a, perm, resize = TRUE, keep.class=FALSE)
   in the right place and the U=1-slice consisting of 1000 in each cell.
   
   \code{tableOp}: If t1 has dimnames A and B and t2 has dimnames B and C then
-  tableOp(t1,t2) will return a table (an array) with dimnames A, B and C
+  \code{tableOp(t1,t2)} will return a table (an array) with dimnames A, B and C
   containing the product.
+
+  \code{tableMult(t1,t2)} is a wrapper for \code{tableOp(t1,t2, op="*")}
+  and \code{tableMult(t1,t2)} is a wrapper for \code{tableDiv(t1,t2, op="/")}
 
   \code{tablePerm}: A wrapper for aperm, but tablePerm accepts dimnames in
   addition to indices. 

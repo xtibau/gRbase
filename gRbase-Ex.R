@@ -24,6 +24,23 @@ head(BodyFat)
 
 
 cleanEx()
+nameEx("DATA-Nutrimouse")
+### * DATA-Nutrimouse
+
+flush(stderr()); flush(stdout())
+
+### Name: Nutrimouse
+### Title: The Nutrimouse Dataset
+### Aliases: Nutrimouse
+### Keywords: datasets
+
+### ** Examples
+
+data(Nutrimouse)
+
+
+
+cleanEx()
 nameEx("DATA-ashtrees")
 ### * DATA-ashtrees
 
@@ -115,6 +132,24 @@ data(dietox)
 
 
 cleanEx()
+nameEx("DATA-dumping")
+### * DATA-dumping
+
+flush(stderr()); flush(stdout())
+
+### Name: dumping
+### Title: Gastric Dumping
+### Aliases: dumping
+### Keywords: datasets
+
+### ** Examples
+
+data(dumping) 
+plot(dumping) 
+
+
+
+cleanEx()
 nameEx("DATA-lizard")
 ### * DATA-lizard
 
@@ -122,13 +157,22 @@ flush(stderr()); flush(stdout())
 
 ### Name: lizard
 ### Title: Lizard behaviour
-### Aliases: lizard
+### Aliases: lizard lizardRAW lizardAGG
 ### Keywords: datasets
 
 ### ** Examples
 
 data(lizard)
-## maybe str(lizard) ; plot(lizard) ...
+
+# Datasets lizardRAW and lizardDF are generated with the following code
+#lizardAGG <- as.data.frame(lizard)
+#f   <- lizardAGG$Freq
+#idx <- unlist(mapply(function(i,n) rep(i,n),1:8,f))
+#set.seed(0805)
+#idx <- sample(idx)
+#lizardRAW <- as.data.frame(lizardAGG[idx,1:3])
+#rownames(lizardRAW) <- 1:NROW(lizardRAW)
+
 
 
 
@@ -186,6 +230,24 @@ data(milkcomp)
 
 
 cleanEx()
+nameEx("DATA-wine")
+### * DATA-wine
+
+flush(stderr()); flush(stdout())
+
+### Name: wine
+### Title: Chemical composition of wine
+### Aliases: wine
+### Keywords: datasets
+
+### ** Examples
+
+data(wine)
+## maybe str(wine) ; plot(wine) ...
+
+
+
+cleanEx()
 nameEx("GraphAlgo-edgeList")
 ### * GraphAlgo-edgeList
 
@@ -234,6 +296,56 @@ nonEdgeListMAT(gm)
 
 
 cleanEx()
+nameEx("GraphAlgo-glist2adjMAT")
+### * GraphAlgo-glist2adjMAT
+
+flush(stderr()); flush(stdout())
+
+### Name: glist2adjMAT
+### Title: Creates adjacency matrix for a graph from a list of generators
+### Aliases: glist2adjMAT
+### Keywords: utilities
+
+### ** Examples
+
+glist <- list(1:3,2:4,4:5)
+am <- glist2adjMAT(glist)
+## plot(coerceGraph(am, "igraph"))
+
+
+
+cleanEx()
+nameEx("GraphAlgo-mcs")
+### * GraphAlgo-mcs
+
+flush(stderr()); flush(stdout())
+
+### Name: mcs
+### Title: Maximum cardinality search on undirected graph.
+### Aliases: mcs mcs.graphNEL mcs.igraph mcs.matrix mcsMAT mcsmarked
+###   mcsmarked.graphNEL mcsmarked.igraph mcsmarked.matrix mcsmarkedMAT
+### Keywords: utilities
+
+### ** Examples
+
+uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
+mcs(uG)
+mcsMAT(as.adjMAT(uG))
+## Same as
+uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st,result="matrix")
+mcsMAT(uG)
+
+## Marked graphs
+uG1 <- ug(~a:b+b:c+c:d)
+uG2 <- ug(~a:b+a:d+c:d)
+## Not strongly decomposable:
+mcsmarked(uG1, discrete=c("a","d"))
+## Strongly decomposable:
+mcsmarked(uG2, discrete=c("a","d"))
+
+
+
+cleanEx()
 nameEx("GraphAlgo-minimalTriang")
 ### * GraphAlgo-minimalTriang
 
@@ -255,8 +367,31 @@ g2 <- ug(~a:b:e:f+b:c:d:e)
 x<-minimalTriang(g1, TuG=g2)
 
 ## An adjacency matrix
-g1m <- ugMAT(~a:b+b:c+c:d+d:e+e:f+a:f+b:e)
+g1m <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e, result="matrix")
 x<-minimalTriangMAT(g1m)
+
+
+
+cleanEx()
+nameEx("GraphAlgo-moralize")
+### * GraphAlgo-moralize
+
+flush(stderr()); flush(stdout())
+
+### Name: moralize
+### Title: Moralize a directed acyclic graph
+### Aliases: moralize moralize.graphNEL moralize.igraph moralize.matrix
+###   moralizeMAT
+### Keywords: utilities
+
+### ** Examples
+
+daG <- dag(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
+moralize(daG)
+
+daG <- dag(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="matrix")
+moralizeMAT(daG)
+
 
 
 
@@ -279,7 +414,7 @@ x <- mpd(g1)
 
 
 ## An adjacency matrix
-g1m <- ugMAT(~a:b+b:c+c:d+d:e+e:f+a:f+b:e)
+g1m <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e, result="matrix")
 x <- mpdMAT(g1m)
 
 
@@ -294,54 +429,20 @@ flush(stderr()); flush(stdout())
 
 ### Name: graph-operations1
 ### Title: Simple operations on undirected and directed acyclic graphs.
-### Aliases: as.adjMAT ancestors ancestralGraph ancestralSet children
-###   closure vpar is.complete is.decomposition is.simplicial parents
-###   simplicialNodes
+### Aliases: ancestors ancestralGraph ancestralSet children closure vpar
+###   is.complete is.decomposition is.simplicial parents simplicialNodes
+###   as.adjMAT maxCliqueMAT
 ### Keywords: utilities
 
 ### ** Examples
 
-ugr <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
-closure("me", ugr)
+uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+closure("me", uG)
 
+maxClique(uG)
+amat <- as.adjMAT(uG)
+maxCliqueMAT(amat)
 
-
-cleanEx()
-nameEx("GraphAlgo-operations2")
-### * GraphAlgo-operations2
-
-flush(stderr()); flush(stdout())
-
-### Name: graph-operations2
-### Title: More advanced operations on undirected and directed acyclic
-###   graphs.
-### Aliases: mcs mcsMAT rip ripMAT moralize moralizeMAT maxCliqueMAT jTree
-###   print.ripOrder
-### Keywords: utilities
-
-### ** Examples
-
-
-## Undirected graphs
-##
-ugr <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
-ugm <- as.adjMAT(ugr)
-edges(ugr)
-nodes(ugr)
-mcs(ugr)
-mcsMAT(ugm)
-rip(ugr)
-ripMAT(ugm)
-
-maxClique(ugr)
-maxCliqueMAT(ugm)
-
-## Directed graphs
-##
-dagr <- dag(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
-edges(dagr)
-nodes(dagr)
-moralize(dagr)
 
 
 
@@ -382,6 +483,35 @@ querygraph(ug0, "is.decomposition", "a","d",c("b","c"))
 
 
 cleanEx()
+nameEx("GraphAlgo-rip")
+### * GraphAlgo-rip
+
+flush(stderr()); flush(stdout())
+
+### Name: rip
+### Title: RIP ordering and junction tree.
+### Aliases: rip rip.graphNEL rip.igraph rip.matrix ripMAT print.ripOrder
+###   jTree jTree.graphNEL jTree.igraph jTree.matrix
+### Keywords: utilities
+
+### ** Examples
+
+## graphNEL
+uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
+rip(uG)
+
+## igraph
+uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="igraph")
+rip(uG)
+
+## adjacency matrix
+uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="matrix")
+rip(uG)
+
+
+
+
+cleanEx()
 nameEx("GraphAlgo-triangulate")
 ### * GraphAlgo-triangulate
 
@@ -389,13 +519,23 @@ flush(stderr()); flush(stdout())
 
 ### Name: triangulate
 ### Title: Triangulation of an undirected graph
-### Aliases: triangulate triangulate.graphNEL triangulateMAT
+### Aliases: triangulate triangulate.graphNEL triangulate.igraph
+###   triangulate.matrix triangulateMAT
 ### Keywords: utilities
 
 ### ** Examples
 
-ugr <- ug(~a:b+b:c+c:d+d:e+e:f+f:a)
-triangulate(ugr)
+## graphNEL
+uG1 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a)
+tuG1 <- triangulate(uG1)
+
+## adjacency matrix
+uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="matrix")
+tuG2 <- triangulate(uG2)
+
+## igraph
+uG3 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="igraph")
+tuG3 <- triangulate(uG3)
 
 
 
@@ -537,6 +677,47 @@ validVartypes()
 
 
 cleanEx()
+nameEx("arrayCombine")
+### * arrayCombine
+
+flush(stderr()); flush(stdout())
+
+### Name: arrayCombine
+### Title: Combine arrays
+### Aliases: arrayCombine arrayExtendDomain
+### Keywords: utilities
+
+### ** Examples
+
+## Case 1: t1 and t2 are arrays defined over identical sets of variables:
+t1 <- parray(c("y","x1"), c(2,2), 1:4)
+t2 <- parray(c("y","x1"), c(2,2), c(-11,12,-13,14))
+tc <- arrayCombine(list(t1,t2), aux=list(Z=c(1,2)))
+as.data.frame.table(tc)
+## The "auxilary" variable Z adds a new dimension to the table
+
+## Case 2: t1 and t2 are arrays defined over non-identical sets of variables:
+t1 <- parray(c("y","x1"), c(2,2), 1:4)
+t2 <- parray(c("y","x2"), c(2,2), c(-11,12,-13,14))
+tc <- arrayCombine(list(t1,t2), aux=list(Z=c(1,2)))
+as.data.frame.table(tc)
+## The "auxilary" variable Z adds a new dimension to the table
+## When Z=Z1, tc is constant as a function of x2
+## When Z=Z2, tc is constant as a function of x1
+
+## Case 3: t1 and t2 are arrays defined over non-identical sets of variables,
+## but the variables for t1 is a subset of the variables for t2:
+t1 <- parray(c("y","x1"), c(2,2), 1:4)
+t2 <- parray(c("y","x1","x2"), c(2,2,2), 11:18)
+tc <- arrayCombine(list(t1,t2), aux=list(Z=c(1,2)))
+as.data.frame.table(tc)
+## The "auxilary" variable Z adds a new dimension to the table
+## When Z=Z1, tc is constant as a function of x2
+
+
+
+
+cleanEx()
 nameEx("combnPrim")
 ### * combnPrim
 
@@ -599,7 +780,7 @@ flush(stderr()); flush(stdout())
 ### Name: gRbase-utilities
 ### Title: Utility functions for gRbase
 ### Aliases: colSumsPrim intersectPrim matchPrim outerPrim setdiffPrim
-###   uniquePrim unlistPrim rowSumsPrim colProd
+###   uniquePrim unlistPrim rowSumsPrim colwiseProd
 ### Keywords: utilities
 
 ### ** Examples
@@ -607,6 +788,16 @@ flush(stderr()); flush(stdout())
 uniquePrim(c(1,2,3,2,1,2))
 setdiffPrim(c(1,3,2), c(2,3,4,5))
 unlistPrim(list(c(1,2),c(2,3)))
+
+## colwiseProd
+M <- matrix(1:16, nrow=4)
+v <- 1:4
+
+t(v*t(M))
+colwiseProd(v,M)
+
+system.time(for (ii in 1:100000)  t(v*t(M)))
+system.time(for (ii in 1:100000)  colwiseProd(v,M))
 
 
 
@@ -629,30 +820,26 @@ iplot(UG)
 
 
 cleanEx()
-nameEx("ptable")
-### * ptable
+nameEx("parray")
+### * parray
 
 flush(stderr()); flush(stdout())
 
-### Name: ptable
+### Name: parray
 ### Title: Representation of and operations on multidimensional tables
-### Aliases: ptable as.ptable varNames.ptable nLevels.ptable
-###   valueLabels.ptable varNames.array nLevels.array valueLabels.array
-###   print.ptable tableMarginPrim
+### Aliases: parray as.parray varNames.parray nLevels.parray
+###   valueLabels.parray varNames.array nLevels.array valueLabels.array
+###   print.parray tableMarginPrim
 ### Keywords: utilities
 
 ### ** Examples
 
-t1 <- ptable(c("gender","answer"),list(c('male','female'),c('yes','no')), values=1:4)
-t1 <- ptable(~gender+answer,list(c('male','female'),c('yes','no')), values=1:4)
-t1 <- ptable(~gender+answer,c(2,2), values=1:4)
+t1 <- parray(c("gender","answer"),list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- parray(~gender:answer,list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- parray(~gender:answer,c(2,2), values=1:4)
 
-t2 <- ptable(c("answer","category"), list(c('yes','no'),c(1,2)), values=1:4+10)
-t3 <- ptable(c("category","foo"), c(2,2), values=1:4+100)
-
-
-
-
+t2 <- parray(c("answer","category"), list(c('yes','no'),c(1,2)), values=1:4+10)
+t3 <- parray(c("category","foo"), c(2,2), values=1:4+100)
 
 varNames(t1)
 nLevels(t1)
@@ -701,8 +888,8 @@ flush(stderr()); flush(stdout())
 
 ### Name: table-operations
 ### Title: Compute table margin or table slice
-### Aliases: tableSlice tableSlicePrim tableMargin tableOp tableOp2
-###   tablePerm
+### Aliases: tableSlice tableSlicePrim tableMargin tableOp tableMult
+###   tableDiv tableOp2 tablePerm
 ### Keywords: utilities
 
 ### ** Examples
@@ -751,7 +938,7 @@ flush(stderr()); flush(stdout())
 
 ### Name: ug
 ### Title: Create undirected and directed graphs
-### Aliases: ug ugList ugMAT ugListMAT dag dagMAT dagList dagListMAT
+### Aliases: ug dag ugList dagList
 ### Keywords: utilities
 
 ### ** Examples

@@ -1,17 +1,17 @@
-\name{ptable}
+\name{parray}
 
-\alias{ptable}
-\alias{as.ptable}
+\alias{parray}
+\alias{as.parray}
 
-\alias{varNames.ptable}
-\alias{nLevels.ptable}
-\alias{valueLabels.ptable}
+\alias{varNames.parray}
+\alias{nLevels.parray}
+\alias{valueLabels.parray}
 
 \alias{varNames.array}
 \alias{nLevels.array}
 \alias{valueLabels.array}
 
-\alias{print.ptable}
+\alias{print.parray}
 \alias{tableMarginPrim}
 
 
@@ -19,19 +19,15 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Representation of and operations on multidimensional tables}
 \description{General representation of multidimensional 
-  tables (by \code{ptable} objects).
-  %Operations on these include multiplication, division and
-  %marginalization.
+  tables (by \code{parray} objects).
 }
 
 \usage{
-ptable(varNames, levels, values = 1, normalize = c("none", "first", "all"), smooth = 0)
-as.ptable  <- function(values, normalize=c("none","first","all"), smooth=0)
-tableMarginPrim(t1, margin, normalize=FALSE)
-
-\method{varNames}{ptable}(x)
-\method{nLevels}{ptable}(x)
-\method{valueLabels}{ptable}(x)
+parray(varNames, levels, values = 1, normalize = c("none", "first", "all"), smooth = 0)
+as.parray(values, normalize=c("none","first","all"), smooth=0)
+\method{varNames}{parray}(x)
+\method{nLevels}{parray}(x)
+\method{valueLabels}{parray}(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -40,15 +36,12 @@ tableMarginPrim(t1, margin, normalize=FALSE)
     varNames or list vith specification of the levels of the factors in
     varNames. See 'examples' below.}
   \item{values}{Table values}
-  \item{x}{Objects of class "ptable"}
-  \item{t1}{Objects of class "ptable"}
-  %\item{op}{Operation to perform. Either "*" or "/" (where 0/0=0)}
-  \item{margin}{Set of nodes to marginalize onto}
+  \item{x}{Objects of class "parray"}
   \item{normalize}{Should result be normalized, see 'Details' below.}
   \item{smooth}{Should values be smoothed, see 'Details' below.}
 }
 \details{
-  A ptable object represents a table defined by a set of variables and
+  A parray object represents a table defined by a set of variables and
   their levels, together with the values of the table. E.g. f(a,b,c) can
   be a table with a,b,c representing levels of binary variable
   
@@ -61,12 +54,12 @@ tableMarginPrim(t1, margin, normalize=FALSE)
   If \code{smooth} is positive then \code{smooth} is added to 
   \code{values}  before normalization takes place.
 
-  \code{as.ptable} can be used for coercing a an array to a ptable
+  \code{as.parray} can be used for coercing a an array to a parray
   object.
 
 }
 \value{
-  An object of class \code{ptable}.
+  An object of class \code{parray}.
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, sorenh@agrsci.dk}
@@ -83,16 +76,12 @@ tableMarginPrim(t1, margin, normalize=FALSE)
 % }
 
 \examples{
-t1 <- ptable(c("gender","answer"),list(c('male','female'),c('yes','no')), values=1:4)
-t1 <- ptable(~gender+answer,list(c('male','female'),c('yes','no')), values=1:4)
-t1 <- ptable(~gender+answer,c(2,2), values=1:4)
+t1 <- parray(c("gender","answer"),list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- parray(~gender:answer,list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- parray(~gender:answer,c(2,2), values=1:4)
 
-t2 <- ptable(c("answer","category"), list(c('yes','no'),c(1,2)), values=1:4+10)
-t3 <- ptable(c("category","foo"), c(2,2), values=1:4+100)
-
-
-
-
+t2 <- parray(c("answer","category"), list(c('yes','no'),c(1,2)), values=1:4+10)
+t3 <- parray(c("category","foo"), c(2,2), values=1:4+100)
 
 varNames(t1)
 nLevels(t1)

@@ -20,3 +20,8 @@ propagate <- function (object, ...)
 {
     UseMethod("propagate")
 }
+
+compareModels <- function (object, object2, ...) 
+{
+    UseMethod("compareModels")
+}
