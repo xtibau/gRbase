@@ -79,7 +79,7 @@ ancestors <- function(set, object){
     return(NULL)
   
   An <- setorig <- set
-  amat  <- amat[-charmatch(set, rownames(amat)),]
+  amat  <- amat[-match(set, rownames(amat)),]
   
   repeat{
     set2 <- rowSums(amat[,set, drop=FALSE])
@@ -113,7 +113,7 @@ ancestralSet <- function(set, object){
     if (!length(B))
       break()
     an[B] <- 1
-    idx   <- charmatch(A0, colnames(amat))
+    idx   <- match(A0, colnames(amat))
     amat  <- amat[-idx,-idx,drop=FALSE]
     vn    <- colnames(amat)
     A0    <- intersect(B,vn)

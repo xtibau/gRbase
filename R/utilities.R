@@ -116,7 +116,7 @@ pairs2num <- function(x, vn, sort=TRUE){
                       x[cbind(seq_along(c1),c1)],
                       x[cbind(seq_along(c2),c2)])
       }
-      ans       <- charmatch(x,vn)
+      ans       <- match(x,vn)
       dim(ans)  <- dim(x)
       ans       <- colSumsPrim(t(ans) * c(100000,1))
       ans

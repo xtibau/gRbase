@@ -7,7 +7,7 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
   }
 
   if (is.character(perm)){
-    perm <- charmatch(perm,names(dimnames(a)))
+    perm <- match(perm,names(dimnames(a)))
     if (any(is.na(perm)))
       stop("Invalid permutation...")
   }
@@ -44,7 +44,7 @@ tableOp <- function(t1,t2,op="*"){
   vn2 <- names(dn2)
 
   ## indices of those variables in vn2 which exist in vn1:
-  idx <- charmatch(vn2, vn1)
+  idx <- match(vn2, vn1)
 
   ## indices of those variables in vn2 which do not exist in vn1:
   idx.na <- is.na(idx)
@@ -70,7 +70,7 @@ tableOp <- function(t1,t2,op="*"){
   }
 
   ## Find indices of vn2 in the new "augmented" table
-  ii    <- charmatch(vn2, vn.new)
+  ii    <- match(vn2, vn.new)
 
   ## Create perumation indices; first variables in vn2; then the rest
   perm  <-  c(ii, (1:length(vn.new))[-ii])
@@ -102,7 +102,7 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
   vn2  <- names(dimnames(t2))
 
   ## indices of vn2 in vn1:
-  ii   <- charmatch(vn2, vn1)
+  ii   <- match(vn2, vn1)
   ## indices of vn2 in vn1 followed by indicies of remaining variables in vn1,
   ## so that vn2 varies fastest.
   perm <- c(ii, (1:length(vn1))[-ii])
@@ -111,7 +111,7 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
     if (restore) {
       zz    <- op(aperm(t1, perm, TRUE), as.numeric(t2))
       newvn <- c(vn2, vn1[-ii])
-      perm2 <- charmatch(vn1, newvn)
+      perm2 <- match(vn1, newvn)
       aperm(zz, perm2, TRUE)
     } else {
       op(aperm(t1, perm, TRUE), as.numeric(t2))
@@ -133,7 +133,7 @@ tableSlice <-  function (x, margin, level, impose)
     vn    <- names(dn)
 
     if (is.character(margin)){
-        margin2 <- charmatch(margin, vn)
+        margin2 <- match(margin, vn)
         if (any(is.na(margin2)))
             stop("Variables: ", margin[is.na(margin2)], " do not exist in table...")
     } else {
@@ -205,7 +205,7 @@ tableMargin <- function (x, margin, keep.class = FALSE)
     oc <- oldClass(x)
     if (length(margin)) {
         if (is.character(margin)) {
-            marg.idx <- charmatch(margin, vn)
+            marg.idx <- match(margin, vn)
             if (any(is.na(marg.idx)))
                 stop("Variable not in table...\n")
         }
