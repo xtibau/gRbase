@@ -68,7 +68,7 @@ dataOrigin   <- function(x)UseMethod("dataOrigin")
 "ordinal.gmData" <- function(tmp)attr(tmp,"ordinal")
 
 "ordinal<-.gmData" <- function(tmp,value){
-  varTypes(tmp)[charmatch(value, varNames(tmp))]<-"Ordinal"
+  varTypes(tmp)[match(value, varNames(tmp))]<-"Ordinal"
   return(tmp)}
 
 "nominal"           <- function(tmp) UseMethod("nominal")
@@ -80,7 +80,7 @@ dataOrigin   <- function(x)UseMethod("dataOrigin")
 }
 
 "nominal<-.gmData" <- function(tmp,value){
-  varTypes(tmp)[charmatch(value, varNames(tmp))]<-"Discrete"
+  varTypes(tmp)[match(value, varNames(tmp))]<-"Discrete"
   return(tmp)}
 
 

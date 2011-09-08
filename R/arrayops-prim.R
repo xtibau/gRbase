@@ -262,7 +262,7 @@ aperm2 <- function(a, permvec){
     if (is.null(tab)){
       stop("x is char and tab is NULL; can not proceed")
     } else {
-      charmatch(x, tab)
+      match(x, tab)
     }
   }
 }  

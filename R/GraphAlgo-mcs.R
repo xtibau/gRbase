@@ -27,7 +27,7 @@ mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE){
     rootNUM <- 0:(length(vn)-1)
   } else {
     root    <- c(root, setdiffPrim(vn, root))
-    rootNUM <- charmatch(root, vn)-1L
+    rootNUM <- match(root, vn)-1L
   }
   
   ans<-.C("C_mcs", A=as.integer(amat), nc=ncol(amat), root=rootNUM,
