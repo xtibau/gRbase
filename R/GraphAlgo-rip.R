@@ -121,6 +121,7 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
                    nLevels    = nLevels
                    ),
               class="ripOrder")
+  rip2$createGraph <- .createJTreeGraph
   return(rip2)
 }
 
@@ -140,3 +141,26 @@ print.ripOrder <- function(x, ...){
 #  mapply(function(xx,ii) cat(" ",ii,paste(xx, collapse=' '),"\n"), x$ch, idx)
 }
 
+
+
+.createJTreeGraph <- function(rip){
+  if (length(rip$cliques)>1){
+    ft <-cbind(rip$parents, 1:length(rip$parents))
+    ft <- ft[ft[,1]!=0,, drop=FALSE]
+    V <- seq_along(rip$parents)
+    if (nrow(ft)==0){
+      jt <- new("graphNEL", nodes = as.character(V), edgemode = "undirected")
+    } else {
+      jt <- ftM2graphNEL(ft, V=as.character(V), edgemode="undirected")
+    }
+  } else {
+    jt <- new("graphNEL", nodes = "1", edgemode = "undirected")
+  }
+  return(jt)
+}
+
+
+
+plot.ripOrder <- function(x,...){
+  plot(x$createGraph(x))
+}

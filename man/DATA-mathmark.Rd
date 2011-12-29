@@ -14,7 +14,7 @@ The \code{mathmark} data frame has 88 rows and 5 columns.
 
 \references{ David Edwards, An Introduction to Graphical Modelling,
   Second Edition, Springer Verlag, 2000}
-\author{Søren Højsgaard, sorenh@agrsci.dk}
+\author{Søren Højsgaard, sorenh at mail dot dk}
 \examples{
 data(mathmark)
 }

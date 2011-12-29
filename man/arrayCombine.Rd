@@ -36,7 +36,7 @@ arrayExtendDomain(aa, bb)
 %% ~put references to the literature/web site here ~
 %}
 \author{
-Søren Højsgaard <sorenh at agrsci dot dk>
+Søren Højsgaard <sorenh at mail dot dk>
 }
 \note{
   For two arrays with a common variable, it is not checked that the
