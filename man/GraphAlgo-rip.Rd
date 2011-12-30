@@ -5,6 +5,7 @@
 \alias{rip.matrix}
 \alias{ripMAT}
 \alias{print.ripOrder}
+\alias{plot.ripOrder}
 
 \alias{jTree}
 \alias{jTree.graphNEL}
@@ -71,7 +72,7 @@ jTree(object, ...)
 %\references{
 %% ~put references to the literature/web site here ~
 %}
-\author{Søren Højsgaard, sorenh@agrsci.dk}
+\author{Søren Højsgaard, sorenh at mail dot dk}
 
 \note{
   The workhorse is the \code{ripMAT} function.

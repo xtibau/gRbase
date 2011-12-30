@@ -1,9 +1,17 @@
 2011-09-07 Søren Højsgaard <sorenh@agrsci.dk>	
 
+	* Plot method for junction tree (rip ordering) added.
+
+	* E-mail address changed
+
+	* Version 1.4.2 uploaded
+	
+2011-09-07 Søren Højsgaard <sorenh@agrsci.dk>	
+
 	* Smaller issue regarding charmatch vs match
 	
 	* Version 1.4.1 uploaded	
-
+	
 2011-07-20 Søren Højsgaard <sorenh@agrsci.dk>	
 
 	* as methods for graph coercion added

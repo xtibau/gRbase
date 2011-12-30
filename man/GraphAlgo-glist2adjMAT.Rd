@@ -30,7 +30,7 @@ glist2adjMAT(glist, vn = uniquePrim(c(glist, recursive = TRUE)))
 %% ~put references to the literature/web site here ~
 %}
 \author{
-  Søren Højsgaard, sorenh@agrsci.dk
+  Søren Højsgaard, sorenh at mail dot dk
 }
 %\note{
 %%  ~~further notes~~

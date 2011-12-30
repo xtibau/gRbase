@@ -491,7 +491,7 @@ flush(stderr()); flush(stdout())
 ### Name: rip
 ### Title: RIP ordering and junction tree.
 ### Aliases: rip rip.graphNEL rip.igraph rip.matrix ripMAT print.ripOrder
-###   jTree jTree.graphNEL jTree.igraph jTree.matrix
+###   plot.ripOrder jTree jTree.graphNEL jTree.igraph jTree.matrix
 ### Keywords: utilities
 
 ### ** Examples

@@ -39,7 +39,7 @@ unlistPrim(l)
   A vector or a logical.
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, sorenh@agrsci.dk}
+\author{Søren Højsgaard, sorenh at mail dot dk}
 \note{
   Use the xxxxPrim functions with caution!
 

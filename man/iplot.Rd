@@ -38,7 +38,7 @@ iplot(x, ...)
 % %% ~put references to the literature/web site here ~
 % }
 \author{
-Søren Højsgaard, <sorenh@agrsci.dk>
+Søren Højsgaard, <sorenh at mail dot dk>
 }
 %\note{
 %%  ~~further notes~~

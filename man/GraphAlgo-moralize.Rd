@@ -44,7 +44,7 @@ moralizeMAT(amat, result="matrix")
 %\references{
 %% ~put references to the literature/web site here ~
 %}
-\author{Søren Højsgaard, sorenh@agrsci.dk}
+\author{Søren Højsgaard, sorenh at mail dot dk}
 \note{
   The workhorse is the \code{moralizeMAT} function.
 }

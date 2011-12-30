@@ -36,7 +36,8 @@ mpdMAT(uGmat, TuGmat = minimalTriangMAT(uGmat, details = 0), details = 0)
   CYBERNETICS, VOL. 32, NO. 1, FEBRUARY 2002
 }
 
-\author{Clive Bowsher <C.Bowsher@statslab.cam.ac.uk> with modifications by Søren Højsgaard <sorenh@agrsci.dk> }
+\author{Clive Bowsher <C.Bowsher@statslab.cam.ac.uk> with modifications
+  by Søren Højsgaard, sorenh at mail dot dk }
 %\note{ ~~further notes~~ 
 %
 % ~Make other sections like Warning with \section{Warning }{....} ~
