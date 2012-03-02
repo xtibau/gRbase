@@ -158,7 +158,7 @@ factgrid <- function( flevels , margcell=NULL, margset=NULL){
 
   nr <- prod(flevels)
   nc <- length(flevels)
-  mm <- matrix(NA, nr=nr, nc=nc)
+  mm <- matrix(NA, nrow=nr, ncol=nc)
   
   cell    <- rep(1, nc)
                                         #print(cell)
@@ -176,7 +176,7 @@ factgrid <- function( flevels , margcell=NULL, margset=NULL){
 
   nr <- prod(flevels[-margset])
   nc <- length(flevels)
-  mm <- matrix(NA, nr=nr, nc=nc)
+  mm <- matrix(NA, nrow=nr, ncol=nc)
 
   cell    <- rep(1, nc)
   cell[margset] <- margcell

@@ -32,7 +32,7 @@ triangulateMAT <- function(amat, method="mcwh",
            vn  <-  colnames(amat)
            i   <- .C("triangmcwh", Av=as.integer(amat), nc, vn,
                      as.integer(nLevels), ans=integer(1), PACKAGE="gRbase")$Av
-           ans           <- matrix(i, nc=nc, nr=nc)           
+           ans           <- matrix(i, ncol=nc, nrow=nc)           
            dimnames(ans) <- dimnames(amat)
            ans           <- abs(ans)   ## FIXME: Do this in C
            diag(ans)     <- 0L         ## FIXME: Do this in C  

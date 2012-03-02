@@ -28,7 +28,7 @@ arrayCombine <- function(aa.list, aux){
   dn.list<-lapply(aa.list, function(zz) dimnames(zz))
 
   com.vn  <- unique(unlist(vn.list))
-  com.dn  <- unlist(dn.list, rec=FALSE)[com.vn]
+  com.dn  <- unlist(dn.list, recursive=FALSE)[com.vn]
   #str(com.vn)
   aa.list.com <-
     lapply(1:length(aa.list),

@@ -1,5 +1,5 @@
 Package: gRbase
-Version: 1.4.4
+Version: 1.5-0
 Title: A package for graphical modelling in R
 Author: Søren Højsgaard <sorenh@mail.dk> with contributions from Claus
         Dethlefsen <cld@rn.dk> and Clive Bowsher
@@ -13,10 +13,10 @@ Description: The gRbase package provides certain general constructs
         illustrates how hierarchical log-linear models (hllm) may be
         implemented.
 License: GPL (>= 2)
-URL: http://people.math.aau.dk/~sorenh/software/gRbase/
+URL: http://people.math.aau.dk/~sorenh/software/gR/
 Depends: R (>= 2.10), MASS, graph, RBGL, igraph, methods
 Suggests: Rgraphviz
 Encoding: latin1
-Packaged: 2012-01-18 21:56:36 UTC; sorenh
+Packaged: 2012-03-02 22:57:50 UTC; sorenh
 Repository: CRAN
-Date/Publication: 2012-01-19 08:00:14
+Date/Publication: 2012-03-03 07:03:36

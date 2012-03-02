@@ -15,7 +15,7 @@ rhsFormula2list <- rhsf2list <- function(f){
       } else {
         .xxx. <- f[[2]]
         f1 <- unlist(strsplit(paste(deparse(.xxx.), collapse="")," *\\+ *"))
-        f2 <- unlist(lapply(f1, strsplit, " *\\* *| *: *| *\\| *"),rec=FALSE)
+        f2 <- unlist(lapply(f1, strsplit, " *\\* *| *: *| *\\| *"),recursive=FALSE)
         return(f2)
       }
     }
