@@ -30,7 +30,7 @@
 glist2adjMAT <- function(glist, vn=uniquePrim(c(glist, recursive=TRUE))){
 
   nr <- length(vn)
-  amat  <- matrix(0L, nc=nr, nr=nr, dimnames=list(vn,vn))
+  amat  <- matrix(0L, ncol=nr, nrow=nr, dimnames=list(vn,vn))
   
   if(length(glist)>0){
     for (ii in 1:length(glist)){

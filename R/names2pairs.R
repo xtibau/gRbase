@@ -15,7 +15,7 @@ names2pairs <- function(x, y=NULL, sort=TRUE, result="list"){
   if (leny==0){
     if (lenx==1){
       if (result=="matrix")
-        return(matrix(nr=0,nc=2))
+        return(matrix(nrow=0,ncol=2))
       else 
         return(list())
     } else {

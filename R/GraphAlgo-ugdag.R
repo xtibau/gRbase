@@ -156,7 +156,7 @@ as.adjMAT <- function(object){
   
   ed    <- edges(object)
   vn    <- nodes(object)
-  amat  <- matrix(0L, nc=length(vn), nr=length(vn), dimnames=list(vn,vn))
+  amat  <- matrix(0L, ncol=length(vn), nrow=length(vn), dimnames=list(vn,vn))
   
   if(length(ed)>0){
     for (ii in 1:length(ed)){
