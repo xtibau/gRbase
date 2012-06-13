@@ -1,5 +1,5 @@
 Package: gRbase
-Version: 1.5-0
+Version: 1.5-1
 Title: A package for graphical modelling in R
 Author: Søren Højsgaard <sorenh@mail.dk> with contributions from Claus
         Dethlefsen <cld@rn.dk> and Clive Bowsher
@@ -14,9 +14,9 @@ Description: The gRbase package provides certain general constructs
         implemented.
 License: GPL (>= 2)
 URL: http://people.math.aau.dk/~sorenh/software/gR/
-Depends: R (>= 2.10), MASS, graph, RBGL, igraph, methods
+Depends: R (>= 2.10), MASS, graph, RBGL, igraph0, methods
 Suggests: Rgraphviz
 Encoding: latin1
-Packaged: 2012-03-02 22:57:50 UTC; sorenh
+Packaged: 2012-06-13 12:08:31 UTC; sorenh
 Repository: CRAN
-Date/Publication: 2012-03-03 07:03:36
+Date/Publication: 2012-08-01 07:38:31
