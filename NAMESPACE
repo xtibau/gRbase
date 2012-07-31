@@ -1,2 +1,4 @@
 #import(methods)
-exportPattern("^[^\\.]")
+useDynLib(gRbase)
+exportPattern("^[[:alpha:]]+")
+#exportPattern("^[^\\.]")
