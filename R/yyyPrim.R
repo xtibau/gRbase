@@ -14,8 +14,8 @@ setdiffPrim <- function (x, y)
 
 intersectPrim <- function (x, y)
 {
-##   y <- as.vector(y)
-##   .Internal(unique( y[  .Internal(match( as.vector(x), y, 0, NULL))    ], FALSE, FALSE))
+  ##   y <- as.vector(y)
+  ##  .Internal(unique( y[  .Internal(match( as.vector(x), y, 0, NULL)) ], FALSE, FALSE))
   #intersect(x,y)
   y <- as.vector(y)
   uniquePrim(y[match(as.vector(x), y, 0L)])
@@ -24,8 +24,8 @@ intersectPrim <- function (x, y)
 
 
 unlistPrim <- function(l){
-  #.Internal(unlist(l, recursive, use.names))
-  #unlist(l, recursive, use.names)
+  ##.Internal(unlist(l, recursive, use.names))
+  ##unlist(l, recursive, use.names)
   c(l, recursive=TRUE)
 }
 

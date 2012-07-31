@@ -1,6 +1,41 @@
 \name{gRbase-internal}
 
+
+%% Needs .Rd - New Cpp implementations
+\alias{sp_getXi}
+\alias{sp_getXj}
+\alias{sp_getXij}
+\alias{sp_getXtf}
+\alias{sp_getXM}
+\alias{sp_setXij1}
+\alias{sp_setXtf1}
+\alias{sp_setXM1}
+\alias{sp_moralize}
+\alias{sp_topoSort}
+\alias{sp_fromto}
+\alias{st_fromto}
+
+\alias{ripMAT2}
+\alias{triangulate_stR}
+\alias{triangulateMAT_stC}
+\alias{triangulateMAT_spR}
+\alias{moralizeMAT_stR}
+\alias{moralizeMAT_spC}
+\alias{moralMAT}
+\alias{mcsMAT_stR}
+\alias{mcsMAT_stC}
+\alias{mcsMAT_spR}
+\alias{lapplyV2I}
+\alias{lapplyI2V}
+\alias{lapplyMatch}
+
+
 %% Needs .Rd
+
+\alias{mcsMATR}
+\alias{topoSort}
+\alias{triang2R}
+\alias{vparlist2tf}
 \alias{coerceGraph}
 \alias{coerceGraph.graphNEL}
 \alias{coerceGraph.igraph}
@@ -14,11 +49,11 @@
 \alias{aperm2}
 \alias{cell2entry}
 \alias{entry2cell}
-\alias{factgrid}
+\alias{factGrid}
 \alias{getCellNumberC}
-\alias{margcell2entry}
+\alias{slice2entry}
 \alias{nextCell}
-\alias{nextCellMarg}
+\alias{nextCellSlice}
 \alias{permuteCellEntries}
 
 

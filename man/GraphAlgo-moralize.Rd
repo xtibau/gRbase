@@ -19,7 +19,7 @@ moralize(object, ...)
 \method{moralize}{graphNEL}(object, result="graphNEL", ...)
 \method{moralize}{igraph}(object, result="igraph", ...)
 \method{moralize}{matrix}(object, result="matrix", ...)
-moralizeMAT(amat, result="matrix")
+moralizeMAT(amat, result=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,7 +28,9 @@ moralizeMAT(amat, result="matrix")
     an 'igraph'.
     %%     ~~Describe \code{object} here~~
   }
-  \item{result}{The representation of the moralized graph} 
+  \item{result}{The representation of the moralized graph.
+    When NULL the representation will be the same as the input object.
+  } 
   \item{\dots}{
     Additional arguments, currently not used
   }
