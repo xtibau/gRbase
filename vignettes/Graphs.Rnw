@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{gRbase-graphs: Graphs in the gRbase package}
+% \VignetteIndexEntry{Graphs in the gRbase package}
 % \VignetteDepends{gRbase}
 % \VignetteKeyword{graphs}
 
@@ -38,13 +38,6 @@
 }
 \makeatother
 
-@
-<<echo=FALSE>>=
-dir.create("fig")
-oopt <- options()
-options("digits"=4, "width"=80, "prompt"=" ", "continue"="  ")
-options(useFancyQuotes="UTF-8")
-@ %def
 
 <<echo=F>>=
 library(gRbase)

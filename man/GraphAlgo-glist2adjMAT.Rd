@@ -1,8 +1,5 @@
 \name{glist2adjMAT}
 \alias{glist2adjMAT}
-\alias{vpaL2adjMAT}
-\alias{vpaL2tfM}
-
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
   Creates adjacency matrix for a graph from a list of generators
@@ -12,23 +9,17 @@
   graph is assumed to be undirected.
 }
 \usage{
-glist2adjMAT(glist, vn = uniquePrim(c(glist, recursive = TRUE)), result="matrix")
-vpaL2adjMAT(vpaL, vn=uniquePrim(c(vpaL, recursive=TRUE)), result="matrix")
+glist2adjMAT(glist, vn = uniquePrim(c(glist, recursive = TRUE)))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{glist}{
-    A list of generators for an undirected graph.
-  }
-  \item{vpaL}{
-    A list of the form (v,pa(v)) specifying a directed acyclic graph. 
-  }  
+    A list of generators.
+}
   \item{vn}{
     The names of the vertices in the graphs. These will be the row and
     column names of the matrix
-  }
-  \item{result}{Either \code{"matrix"} or \code{"Matrix"} (for a sparse
-    matrix representation)}
+}
 }
 %\details{  
 %}
@@ -53,10 +44,8 @@ vpaL2adjMAT(vpaL, vn=uniquePrim(c(vpaL, recursive=TRUE)), result="matrix")
 }
 \examples{
 glist <- list(1:3,2:4,4:5)
-am1 <- glist2adjMAT(glist)
-am2 <- vpaL2adjMAT(glist)
-## plot(coerceGraph(am1, "igraph"))
-## plot(coerceGraph(am2, "igraph"))
+am <- glist2adjMAT(glist)
+## plot(coerceGraph(am, "igraph"))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

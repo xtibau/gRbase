@@ -14,7 +14,7 @@ triangulate(object, ...)
 \method{triangulate}{graphNEL}(object, method="mcwh",  nLevels = rep(2,length(nodes(object))), result="graphNEL",...)
 \method{triangulate}{igraph}(object, method="mcwh",  nLevels = rep(2,length(V(object))), result="igraph",...)
 \method{triangulate}{matrix}(object, method="mcwh",  nLevels = rep(2,ncol(object)), result="matrix",...)
-triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
+triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result="matrix", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,10 +29,8 @@ triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
     triangulation using a "minimum clique weight heuristic". See section
     'details'.}
   \item{result}{The type (representation) of the result. Possible values
-    are 'graphNEL', 'matrix', 'Matrix' and 'igraph'. Default is the same type as
-    the input graph.
-  
-  }
+    are 'graphNEL', 'matrix' and 'igraph'. Default is the same type as
+    the input graph. }
   \item{...}{Additional arguments, currently not used.}
   \item{amat}{Adjacency matrix}
 }

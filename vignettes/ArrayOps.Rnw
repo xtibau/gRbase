@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{gRbase-arrayops2: Advanced array operations in gRbase}
+%\VignetteIndexEntry{Array operations in the gRbase package}
 %\VignettePackage{gRbase}
 
 \documentclass[12pt]{article}
@@ -15,7 +15,7 @@
 
 \SweaveOpts{keep.source=T}
 
-\title{Advanced array operations in the \grbase\ package}
+\title{Array operations in the \grbase\ package}
 \author{S{\o}ren H{\o}jsgaard}
 
 \begin{document}

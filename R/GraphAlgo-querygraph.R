@@ -47,8 +47,8 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
          "adj"=              { adj(object, set)                          },    
          "is.triangulated"=  { is.triangulated(object)                   },         
          "subgraph"=         { subGraph(set, object)                     },         
-         "nodes"=            { graph::nodes(object)                             },
-         "edges"=            { graph::edges(object)                             },         
+         "nodes"=            { nodes(object)                             },
+         "edges"=            { edges(object)                             },         
          ## gRbase functions
          "ancestors"=,"an"=  { ancestors(set, object)		         },
          "ancestralGraph"=   { ancestralGraph(set, object)	         },
@@ -93,7 +93,6 @@ ancestors <- function(set, object){
 }
 
 ## adjmat based
-## Must be very slow !!!
 ancestralSet <- function(set, object){
 
   amat  <- as.adjMAT(object)
@@ -135,11 +134,25 @@ parents <- function(set, object){
   if (length(pa)) pa else NULL
 }
 
+## adjmat based
+vpar <- function(object){
+  if (edgemode(object)=="undirected")
+    stop("Graph is undirected; (v,pa(v)) does not exist...\n")
+  amat <- as.adjMAT(object)
+  vn   <- rownames(amat) 
+  ans  <- vector("list", length(vn))
+  for (ii in seq_along(vn)){
+    ans[[ii]] <- c(vn[ii], vn[amat[,ii]>0])
+  }
+  names(ans) <- vn
+  return(ans)
+}
+
 ## graphNEL based
 children <- function(set, object){
   if (edgemode(object)=="undirected")
     return(NULL)
-  ch <- structure(unlist(graph::edges(object)[set]), names=NULL)
+  ch <- structure(unlist(edges(object)[set]), names=NULL)
   if (length(ch)) ch else NULL
 }
 

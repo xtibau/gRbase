@@ -14,7 +14,6 @@
 \alias{simplicialNodes}
 
 \alias{as.adjMAT}
-\alias{graphNEL2ftM}
 \alias{maxCliqueMAT}
 
 \title{Simple operations on undirected and directed acyclic graphs.}
@@ -30,14 +29,14 @@ ancestralGraph(set, object)
 ancestralSet(set, object)
 children(set, object)
 closure(set, object)
-vpar(object, forceCheck=TRUE)
+vpar(object)
 is.complete(object, set)
 is.decomposition(set, set2, set3, object)
 is.simplicial(set, object)
 parents(set, object)
 simplicialNodes(object)
-as.adjMAT(object, result="matrix")
-graphNEL2ftM(object)
+as.adjMAT(object)
+
 maxCliqueMAT(amat)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -46,21 +45,15 @@ maxCliqueMAT(amat)
   \item{object}{A graphNEL object}
   %   \item{matrix}{If TRUE the result is returned as a p x 2 matrix; otherwise as a
   %     matrix list. }
-  \item{forceCheck}{Logical indicating if it should be checked that the
-    object is a DAG}
-  \item{result}{Either \code{"matrix"} of \code{"Matrix"} (for a sparse
-    matrix representation).}
   \item{amat}{Adjacency matrix}
 }
  \details{
-   Notice: \code{as.adjMAT(g)} does the same as \code{as(g, "matrix")} but
-   considerably faster.
+   Notice: as.adjMAT(g) does the same as as(g, "matrix") but
+   as.adjMAT is considerably faster.
 
-   \code{maxCliqueMAT} applied to an adjacency matrix does the same as
-   \code{maxClique} applied to a graphNEL; but maxCliqueMAT is is
-   considerably faster. If the matrix is sparse, it will be coerced to a
-   non-sparse matrix.
-   
+   maxCliqueMAT applied to an adjacency matrix does the same as
+   maxClique applied to a graphNEL; but maxCliqueMAT is is considerably faster.
+
   
  }
 % \value{
@@ -90,11 +83,8 @@ uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 closure("me", uG)
 
 maxClique(uG)
-amat1 <- as.adjMAT(uG)
-maxCliqueMAT(amat1)
-
-amat1 <- as.adjMAT(uG, result="Matrix")
-maxCliqueMAT(amat1)
+amat <- as.adjMAT(uG)
+maxCliqueMAT(amat)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

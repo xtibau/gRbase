@@ -18,20 +18,18 @@
 }
 \usage{
 ug(..., result="NEL")
-dag(..., result="NEL", forceCheck=FALSE)
+dag(..., result="NEL")
 ugList(x, result="NEL")
-dagList(x, result="NEL", forceCheck=FALSE)
+dagList(x, result="NEL")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{\dots}{A generating class for a graph, see examples below}
   \item{x}{A list containing a generating class for a graph, see
     examples below}
-  \item{forceCheck}{Logical determining if it should be checked if the
-    graph is acyclical}
   \item{result}{The format of the graph. The possible choices are "NEL"
     (for a graphNEL object), "matrix" (for an adjacency matrix),
-    "igraph" (for an igraph object), "Matrix" (for a sparse matrix).}
+    "igraph" (for an igraph object).}
 }
 % \details{
 %   Functions dag() and ug() were originally called newDAG() and

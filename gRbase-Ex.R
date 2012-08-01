@@ -303,16 +303,14 @@ flush(stderr()); flush(stdout())
 
 ### Name: glist2adjMAT
 ### Title: Creates adjacency matrix for a graph from a list of generators
-### Aliases: glist2adjMAT vpaL2adjMAT vpaL2tfM
+### Aliases: glist2adjMAT
 ### Keywords: utilities
 
 ### ** Examples
 
 glist <- list(1:3,2:4,4:5)
-am1 <- glist2adjMAT(glist)
-am2 <- vpaL2adjMAT(glist)
-## plot(coerceGraph(am1, "igraph"))
-## plot(coerceGraph(am2, "igraph"))
+am <- glist2adjMAT(glist)
+## plot(coerceGraph(am, "igraph"))
 
 
 
@@ -433,7 +431,7 @@ flush(stderr()); flush(stdout())
 ### Title: Simple operations on undirected and directed acyclic graphs.
 ### Aliases: ancestors ancestralGraph ancestralSet children closure vpar
 ###   is.complete is.decomposition is.simplicial parents simplicialNodes
-###   as.adjMAT graphNEL2ftM maxCliqueMAT
+###   as.adjMAT maxCliqueMAT
 ### Keywords: utilities
 
 ### ** Examples
@@ -442,11 +440,8 @@ uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 closure("me", uG)
 
 maxClique(uG)
-amat1 <- as.adjMAT(uG)
-maxCliqueMAT(amat1)
-
-amat1 <- as.adjMAT(uG, result="Matrix")
-maxCliqueMAT(amat1)
+amat <- as.adjMAT(uG)
+maxCliqueMAT(amat)
 
 
 

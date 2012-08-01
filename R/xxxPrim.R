@@ -1,4 +1,4 @@
-rowSumsPrim <- function(x){
+ rowSumsPrim <- function(x){
 	.Call("R_rowSums", x
 	,PACKAGE="gRbase"
 	)
