@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{A Common Platform for Graphical Models}
+% \VignetteIndexEntry{gRbase: A Common Platform for Graphical Models (deprecated)}
 % \VignetteDepends{gRbase}
 % \VignetteKeyword{Graphical Models}
 % \VignetteKeyword{Graphical Models}
@@ -79,7 +79,7 @@
 \author{
   Claus Dethlefsen\\Aalborg Hospital, Aarhus University Hospital, Denmark
 \and 
-  S{\o}ren H{\o}jsgaard\\Aarhus University, Denmark
+  S{\o}ren H{\o}jsgaard\\Aalborg University, Denmark
 }
 
 \title{On the Usage of the  \pkg{gRbase} Package\\ --- \\

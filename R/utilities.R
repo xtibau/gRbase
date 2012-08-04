@@ -1,3 +1,13 @@
+.dgCMatrix <- function(data=NA, nrow=1, ncol=1, byrow=FALSE, dimnames=NULL,
+                      sparse = TRUE, doDiag = TRUE, forceCheck = FALSE){
+  as(Matrix(data=data, nrow=nrow, ncol=ncol, dimnames=dimnames, sparse=TRUE),"dgCMatrix")
+}
+
+.asdgCMatrix <- function(x){
+  as(Matrix(x, sparse=TRUE),"dgCMatrix")
+}
+
+
 ### rowmat2list and colmat2list:
 ### ----------------------------
 ## Turns a matrix into a list, either by row or by column.
@@ -37,6 +47,61 @@ matrix2list <- function(x, byrow=TRUE){
 # system.time({for(ii in 1:1000) rowmat2list(unique(mm))})
 # system.time({for(ii in 1:1000) unique(rowmat2list(mm))})
 ## The latter is much faster...
+
+
+## lapplyMatch: same as but much faster than
+## lapply(xlist, function(gg) match(gg, set))
+## 
+lapplyV2I <- lapplyMatch <- function(xlist, set){lapply(xlist, function(gg) match(gg, set))}
+## lapplyV2I <- function(xlist, set){
+## mm <- match(unlist(xlist), set)
+## ll <- unlist(lapply(xlist, length))  
+## bb <- rep.int(0L, length(xlist))  
+## ee <- cumsum(ll)
+## gtz <- ll>0
+## #ee[ll==0L] <- 0 # Not necessary
+## zz <- ll[gtz]
+## bb[gtz] <- cumsum(c(1, zz[-length(zz)]))
+## ans <- vector("list", length(xlist))
+## for (ii in 1:length(xlist)){
+## if(gtz[ii]>0L){
+## 	ans[[ii]] <- mm[bb[ii]:ee[ii]]
+## } else {
+## 	ans[[ii]] <- integer(0)
+## }
+## }
+## ans
+## }
+
+
+## lapplyI2C: same as but faster than
+## lapply(xlist, function(x) set[x])
+lapplyI2V <- function (xlist, set) {lapply(xlist, function(xx) set[xx])}
+
+## mm <- unlist(xlist)
+## ll <- unlist(lapply(xlist, length))  
+## bb <- rep.int(0L, length(xlist))  
+## ee <- cumsum(ll)
+## gtz <- ll>0
+## #ee[ll==0L] <- 0 # Not necessary
+## zz <- ll[gtz]
+## bb[gtz] <- cumsum(c(1, zz[-length(zz)]))
+## ans <- vector("list", length(xlist))
+## for (ii in 1:length(xlist)){
+## if(gtz[ii]>0L){
+## 	ans[[ii]] <- set[mm[bb[ii]:ee[ii]]]
+## } else {
+## 	ans[[ii]] <- character(0)
+## }
+## }
+## ans
+## }
+
+
+
+
+
+
 
 
 ##
@@ -80,13 +145,24 @@ conc2pcor <- function(K){
 
 ## Returns matrix n x 2 matrix with indices of non-zero
 ## entries in matrix m
-which.arr.ind <- function(m){
-  d <- nrow(m)
-  rr<-rep(1:d, d)
-  cc<-rep(1:d, each=d)
-  epp<- cbind(rr[m!=0], cc[m!=0])
-  epp
+## which.arr.ind <- function(m){
+##   d <- nrow(m)
+##   rr<-rep(1:d, d)
+##   cc<-rep(1:d, each=d)
+##   epp<- cbind(rr[m!=0], cc[m!=0])
+##   epp
+## }
+
+## Fails on sparse matrices!!
+which.arr.ind<-function(m){
+  nr  <- nrow(m)
+  nc  <- ncol(m)
+  rr <- rep.int(1:nr, nc)
+  cc <- rep(1:nc, each=nr)
+  cbind(rr[m!=0L], cc[m!=0L])
 }
+
+
 
 
 ## Codes a p x 2 matrix of characters or a list with pairs

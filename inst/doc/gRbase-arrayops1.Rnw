@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Primitive array operations in the gRbase package}
+%\VignetteIndexEntry{gRbase-arrayops: Primitive array operations in gRbase}
 %\VignettePackage{gRbase}
 
 \documentclass{article}
@@ -13,6 +13,7 @@
 \begin{document}
 
 \definecolor{myGray}{rgb}{0.95,0.95,0.95}
+
 \makeatletter
 \renewenvironment{Schunk}{
   \begin{lrbox}{\@tempboxa}
@@ -34,14 +35,6 @@
 \def\code#1{{\texttt{#1}}}
 \def\R{\texttt{R}}
 
-%%% Text goes here...
-
-% @
-% <<echo=F>>=
-% source("arrayops-prim.R")
-% dyn.load("arrayops-prim.dll")
-% @ %def
-
 @
 <<echo=F,results=hide>>=
 options(useFancyQuotes="UTF-8")
@@ -49,7 +42,7 @@ options(useFancyQuotes="UTF-8")
 
 
 @
-<<>>=
+<<echo=FALSE>>=
 library(gRbase)
 @ %def
 
@@ -65,6 +58,7 @@ and Bayesian networks in R.
 The documentation of \R\ states the following about arrays:
 
 \begin{quote}
+  \em
   An array in R can have one, two or more dimensions. It is simply a
   vector which is stored with additional attributes giving the
   dimensions (attribute "dim") and optionally names for those
@@ -85,23 +79,20 @@ with a dim attribute. For example
 x1 <- 1:8
 dim(x1) <- 8
 x1
-is.array(x1)
-is.matrix(x1)
+c(is.array(x1), is.matrix(x1))
 
 ## 2-dimensional array (matrix)
 ##
 x2 <- 1:8
 dim(x2) <- c(2,4)
 x2
-is.array(x2)
-is.matrix(x2)
+c(is.array(x2), is.matrix(x2))
 
 ## 3-dimensional array
 ##
 x3 <- array(1:8, dim=c(2,2,2))
 x3
-is.array(x3)
-is.matrix(x3)
+c(is.array(x3), is.matrix(x3))
 @ %def
 
 
@@ -110,7 +101,7 @@ is.matrix(x3)
 
 Consider a set  $\Delta=\{\delta_1, \dots, \delta_K\}$ of $|\Delta|=K$
 factors where the factor $\delta_k$ has levels
-$I_k$. The cross product $I=I_1 \times \dots \times I_K$ defines an
+$I_k=\{1,\dots,L_k\}$. The cross product $I=I_1 \times \dots \times I_K$ defines an
 array where $i=(i_1, \dots, i_K) \in I$ is a cell. It is the
 convention here that the first factor varies fastest. To each cell $i\in
 I$ there is often a value $f(i)$.
@@ -119,12 +110,13 @@ As shown above, an array is implemented as a vector $x$ of length
 $L=|I|$, that is $x \equiv (f(i), i\in I)$. In practice $x$ is indexed
 by an entry $e$ as $x[e]$ for $e=1,\dots, L$.
 
-The factor levels $(I_1, \dots, I_K)$ are denoted \verb'flevels' in
+The factor levels $(I_1, \dots, I_K)$ are denoted \verb'adim' in
 the code below. As an example we take the following:
 
 @
 <<>>=
-flevels <- c(2,3,2,4)
+adim2222 <- c(2,2,2,2)
+adim2323 <- c(2,3,2,3)
 @ %def
 
 \section{\code{cell2entry()} and \code{entry2cell()}}
@@ -137,18 +129,158 @@ from an entry to a cell (which is much less needed) is provided by
 
 @
 <<>>=
-cell2entry(c(1,1,1,1), flevels)
-entry2cell(1, flevels)
-cell2entry(c(2,1,2,1), flevels)
-entry2cell(8, flevels)
+cell2entry(c(1,1,1,1), adim2222)
+entry2cell(1, adim2222)
+cell2entry(c(2,1,2,1), adim2222)
+entry2cell(6, adim2222)
 @ %def
 
+
+
+
+
+% @
+% <<eval=F,echo=F>>=
+% cell2entry2(c(2,1,2,1), adim)
+% cell2entryR(c(2,1,2,1), adim)
+% @ %def
+
+
+
+
+\section{\code{nextCell()} and \code{nextCellSlice()}}
+%\label{sec:x}
+
+Given a cell, say $i=(1,1,2,1)$ we often want to find the next cell in
+the table following the convention that the first factor varies
+fastest, that is $(2,1,2,1)$. This is provided by
+\code{nextCell()}. 
 
 @
-<<eval=F,echo=F>>=
-cell2entry2(c(2,1,2,1), flevels)
-cell2entryR(c(2,1,2,1), flevels)
+<<>>=
+nextCell(c(1,1,2,1), adim2222)
+nextCell(c(2,2,2,1), adim2222)
 @ %def
+
+
+Given $A\subset \Delta$ and a cell $i_A \in I_A$ consider the cells
+$I(i_A)=\{j\in I|j_A = i_A\}$. For example, the cells satisfying that
+factor $2$ is at level $1$. Given such a cell, say $(2,1,1,2)$ we often
+want to find the next cell also satisfying this constraint following
+the convention that the first factor varies fastest, that is
+$(1,1,2,2)$. This is provided by \code{nextCellSlice()}.
+
+@
+<<>>=
+nextCellSlice(c(2,1,1,2),  sliceset=c(2), adim2323)
+nextCellSlice(c(1,3,2,1),  sliceset=c(2,3), adim2323)
+@ %def
+
+
+
+
+\section{\code{slice2entry()}}
+%\label{sec:x}
+
+Given $A\subset \Delta$ and a cell $i_A \in I_A$. This cell defines a
+slice of the original array, namely the cells
+$I(i_A)=\{j\in I|j_A = i_A\}$.
+We often want to find the entries in
+$x$ for the cells $I(i_A)$. This is provided by
+\code{slice2entry()}. For example, we may want the entries for
+the cells $(*,1,2,*)$ or $(2,2,*,*)$:
+
+@
+<<>>=
+(r1<-slice2entry(slicecell=c(1,2), sliceset=c(2,3), adim2222))
+@ %def
+
+To verify that we indeed get the right cells:
+
+@ 
+<<>>=
+do.call(rbind, lapply(r1, entry2cell, adim2222))
+@ %def 
+
+
+
+\section{\code{permuteCellEntries()}}
+
+In a $2\times 3$ table, entries $1,\dots,6$ correspond to combinations
+$(1,1),(2,1),(1,2),(2,2),(1,3),(2,3)$. If we permute the table to a $3
+\times 2$ table the entries become as follows:
+
+@ 
+<<>>=
+(p<-permuteCellEntries(perm=c(2,1), adim=c(2,3)))
+@ %def 
+
+So for example,
+
+@ 
+<<>>=
+(A <- array(11:16, dim=c(2,3)))
+Ap <- A[p]
+dim(Ap) <- c(3,2)
+Ap
+@ %def 
+
+This corresponds to
+
+@ 
+<<>>=
+aperm(A, c(2,1))
+@ %def 
+
+
+% \section{\code{aperm()}}
+
+
+
+
+
+\section{\code{factGrid()} -- Factorial grid}
+\label{sec:factgrid}
+
+Using the operations above we can obtain the combinations of the
+factors as a matrix:
+
+@
+<<>>=
+ff <- factGrid(adim2222)
+head(ff)
+tail(ff)
+@ %def
+
+This is the same as (but faster)
+
+@ 
+<<>>=
+aa <- expand.grid(list(1:2,1:2,1:2,1:2))
+head(aa)
+@ %def 
+
+There is a slice version as well:
+
+@ 
+<<>>=
+factGrid(adim2222, slicecell=c(1,2), sliceset=c(2,3))
+@ %def 
+
+
+
+%%% Text ends here...
+
+% @
+% <<echo=F>>=
+% dyn.unload("arrayops-prim.dll")
+% @ %def
+
+\end{document}
+
+
+
+
 
 
 %% \paragraph{Timings} :
@@ -161,56 +293,27 @@ cell2entryR(c(2,1,2,1), flevels)
 % corresponding R--version), whereas \verb'entry2cell()' purely
 % R--based.
 
-@
-<<eval=F,echo=F>>=
-system.time(for (kk in 1:20000){cell2entry(c(2,1,2,1),flevels)})
-system.time(for (kk in 1:20000){cell2entry2(c(2,1,2,1),flevels)})
-system.time(for (kk in 1:20000){cell2entryR(c(2,1,2,1),flevels)})
-system.time(for (kk in 1:20000){entry2cellR(6,flevels)})
-@ %def
-
-
-\section{\code{nextCell()} and \code{nextCellMarg()}}
-\label{sec:x}
-
-Given a cell, say $i=(1,1,2,1)$ we often want to find the next cell in
-the table following the convention that the first factor varies
-fastest, that is $(2,1,2,1)$. This is provided by
-\code{nextCell()}. Notice the result of finding the next cell to the
-final cell.
-
-@
-<<>>=
-nextCell(c(1,1,2,1), flevels)
-nextCell(c(2,3,2,4), flevels)
-@ %def
+% @
+% <<eval=F,echo=F>>=
+% system.time(for (kk in 1:20000){cell2entry(c(2,1,2,1),adim)})
+% system.time(for (kk in 1:20000){cell2entry2(c(2,1,2,1),adim)})
+% system.time(for (kk in 1:20000){cell2entryR(c(2,1,2,1),adim)})
+% system.time(for (kk in 1:20000){entry2cellR(6,adim)})
+% @ %def
 
 % \paragraph{Timings} :
 
 % @
 % <<>>=
-% system.time(for (kk in 1:100000){nextCell(c(2,1,1,2), flevels)})
-% system.time(for (kk in 1:100000){nextCellR(c(2,1,1,2), flevels)})
+% system.time(for (kk in 1:100000){nextCell(c(2,1,1,2), adim)})
+% system.time(for (kk in 1:100000){nextCellR(c(2,1,1,2), adim)})
 % @ %def
 
 
-Given $A\subset \Delta$ and a cell $i_A \in I_A$ consider the cells
-$I(i_A)=\{j\in I|j_A = i_A\}$. For example, the cells satisfying that
-factor $2$ is at level $1$. Given such a cell, say $(2,1,1,2)$ we often
-want to find the next cell also satisfying this constraint following
-the convention that the first factor varies fastest, that is
-$(1,1,2,2)$. This is provided by \code{nextCellMarg()}.
-
-@
-<<>>=
-nextCellMarg(c(1,3,2,1),    margset=c(2,3), flevels)
-nextCellMarg(c(2,3,2,1),    margset=c(2,3), flevels)
-@ %def
-
 % @
 % <<>>=
-% nextCellMargR(c(1,3,2,1),   margset=c(2,3), flevels)
-% nextCellMargR(c(2,3,2,1),   margset=c(2,3), flevels)
+% nextCellSliceR(c(1,3,2,1),   sliceset=c(2,3), adim)
+% nextCellSliceR(c(2,3,2,1),   sliceset=c(2,3), adim)
 % @ %def
 
 
@@ -218,64 +321,21 @@ nextCellMarg(c(2,3,2,1),    margset=c(2,3), flevels)
 
 % @
 % <<>>=
-% system.time(for (kk in 1:100000){nextCellMarg(c(2,1,1,2),  margset=3, flevels)})
-% system.time(for (kk in 1:100000){nextCellMargR(c(2,1,1,2), margset=3, flevels)})
+% system.time(for (kk in 1:100000){nextCellSlice(c(2,1,1,2),  sliceset=3, adim)})
+% system.time(for (kk in 1:100000){nextCellSliceR(c(2,1,1,2), sliceset=3, adim)})
 % @ %def
 
-
-\section{\code{margcell2entry()}}
-\label{sec:x}
-
-Given $A\subset \Delta$ and a cell $i_A \in I_A$. This cell defines a
-slice of the original array, namely the cells
-$I(i_A)=\{j\in I|j_A = i_A\}$.
-We often want to find the entries in
-$x$ for the cells $I(i_A)$. This is provided by
-\code{margcell2entry()}. To be specific, we may want the entries for
-the cells $(*,1,2,*)$ or $(2,2,*,*)$:
-@
-<<>>=
-margcell2entry(margcell=c(1,2), margset=c(2,3), flevels)
-margcell2entry(margcell=c(2,2), margset=c(1,2), flevels)
-@ %def
-
-
-% #.margcell2entry1R(margcell=2, margset=3, flevels)
-% #.margcell2entry2R(margcell=2, margset=3, flevels)
+% #.slice2entry1R(slicecell=2, sliceset=3, adim)
+% #.slice2entry2R(slicecell=2, sliceset=3, adim)
 
 % \paragraph{Timings}:
 
 % @
 % <<>>=
-% system.time(for (kk in 1:10000){margcell2entry(margcell=2, margset=3, flevels)})
-% #system.time(for (kk in 1:10000){.margcell2entry1R(margcell=2, margset=3, flevels)})
-% #system.time(for (kk in 1:10000){.margcell2entry2R(margcell=2, margset=3, flevels)})
+% system.time(for (kk in 1:10000){slice2entry(slicecell=2, sliceset=3, adim)})
+% #system.time(for (kk in 1:10000){.slice2entry1R(slicecell=2, sliceset=3, adim)})
+% #system.time(for (kk in 1:10000){.slice2entry2R(slicecell=2, sliceset=3, adim)})
 % @ %def
 
 
 
-\section{Factorial grids}
-\label{sec:factgrid}
-
-Using the operations above we can obtain the combinations of the
-factors as a matrix:
-
-@
-<<>>=
-ff <- factgrid(flevels)
-head(ff)
-tail(ff)
-
-ff <- factgrid(flevels, margcell=c(1,2), margset=c(2,3))
-ff
-@ %def
-
-
-%%% Text ends here...
-
-% @
-% <<echo=F>>=
-% dyn.unload("arrayops-prim.dll")
-% @ %def
-
-\end{document}
