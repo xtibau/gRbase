@@ -53,7 +53,7 @@ nonEdgeListMAT(adjmat, matrix = FALSE)
   A list or a matrix with edges.
 }
 \author{
-  Søren Højsgaard, sorenh at mail dot dk
+  Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
   
 

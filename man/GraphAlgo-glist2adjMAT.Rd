@@ -39,7 +39,7 @@ vpaL2adjMAT(vpaL, vn=uniquePrim(c(vpaL, recursive=TRUE)), result="matrix")
 %% ~put references to the literature/web site here ~
 %}
 \author{
-  Søren Højsgaard, sorenh at mail dot dk
+  Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 %\note{
 %%  ~~further notes~~

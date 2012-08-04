@@ -45,7 +45,7 @@ triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
   an 'igraph'.
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, sorenh at mail dot dk}
+\author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
 \note{
   The workhorse is the \code{triangulateMAT} function.  
 }

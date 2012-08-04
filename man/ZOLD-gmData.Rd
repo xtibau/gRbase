@@ -112,7 +112,7 @@ newgmData(varNames,
 \value{An object of class \code{gmData} holds information about the data
   and can be retrieved and changed by accessor functions.}
 
-\author{Søren Højsgaard, \email{sorenh at mail dot dk}, \cr Claus Dethlefsen, \email{dethlef@math.aau.dk}}
+\author{Søren Højsgaard, \email{sorenh@math.aau.dk}, \cr Claus Dethlefsen, \email{dethlef@math.aau.dk}}
 %\note{ ~~further notes~~ }
 
 % ~Make other sections like Warning with \section{Warning }{....} ~

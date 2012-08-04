@@ -1,10 +1,10 @@
 Package: gRbase
-Version: 1.6-0
+Version: 1.6-1
 Title: A package for graphical modelling in R
-Author: Søren Højsgaard <sorenh@mail.dk> with contributions from Claus
-        Dethlefsen <cld@rn.dk> and Clive Bowsher
+Author: Søren Højsgaard <sorenh@math.aau.dk> with contributions from
+        Claus Dethlefsen <cld@rn.dk> and Clive Bowsher
         <C.Bowsher@statslab.cam.ac.uk>
-Maintainer: Søren Højsgaard <sorenh@mail.dk>
+Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
 Description: The gRbase package provides certain general constructs
         which are used by other graphical modelling packages. This
         includes 1) the concept of gmData (graphical meta data), 2)
@@ -19,6 +19,6 @@ Depends: R (>= 2.10), MASS, graph, RBGL, igraph, methods, Matrix, Rcpp,
 Suggests: Rgraphviz
 Encoding: latin1
 LinkingTo: Rcpp,RcppEigen
-Packaged: 2012-07-31 00:29:48 UTC; sorenh
+Packaged: 2012-08-04 03:54:14 UTC; sorenh
 Repository: CRAN
-Date/Publication: 2012-07-31 07:59:57
+Date/Publication: 2012-08-04 13:22:19
