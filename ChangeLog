@@ -1,3 +1,9 @@
+2012-08-05 Søren Højsgaard <sorenh@math.aau.dk>	
+
+	* Change of Makevars file to pass checks on linux
+
+	* Version 1.6-2 uploaded				
+
 2012-08-04 Søren Højsgaard <sorenh@math.aau.dk>	
 
 	* Smaller changes to documentation, including proper markup of
