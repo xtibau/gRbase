@@ -1,6 +1,7 @@
 uniquePrim <- function(x){
-    ##.Internal(unique(x, FALSE, FALSE))
-    x[!duplicated.default(x)]
+  ##.Internal(unique(x, FALSE, FALSE))
+  #x[!duplicated.default(x)]
+  unique.default(x)
 }
 
 setdiffPrim <- function (x, y)

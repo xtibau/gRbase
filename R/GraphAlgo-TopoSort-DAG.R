@@ -3,12 +3,11 @@
 # which each node comes before all nodes to which it has outbound edges. 
 # Every DAG has one or more topological sorts. If such ordering can 
 # not be found then the graph has cycles
-
+#
 # Input:  list of vectors of the form (v,pa(v))
 # Output: vector with ordering
-
+#
 # should perhaps be called dagTopoSort
-
 
 
 topoSort <- function(vpaL){
@@ -38,8 +37,7 @@ topoSort <- function(vpaL){
   is.acyc <- TRUE
   
   repeat{
-    ## FIXME: Remove:
-    if (cnt %% 1000 == 0) cat(sprintf("topoSort of graph; node number=%5i\n", cnt))
+    ## if (cnt %% 1000 == 0) cat(sprintf("topoSort of graph; node number=%5i\n", cnt))
     ## vvv <- setdiffPrim(Vset[activeNodes],eMat[activeEdges,1])
     zzz <- sdp(Iset, activeNodes, iMat[activeEdges,1])
     vvv <- Vset[zzz]
@@ -48,11 +46,12 @@ topoSort <- function(vpaL){
       is.acyc <- FALSE
       break
     }
-    orph <- vvv[1]  ## FIXME: We can do more vertices at the time
+    ## FIXME: topoSort: We can speed up by removing more vertices at the time
+    orph  <- vvv[1]  
     orphI <- zzz[1]
     LL[cnt] <- orph
     activeEdges[eMat[,2]==orph] <- FALSE
-    ## FIXME: above can be  activeEdges[iMat[,2]==orphI] <- FALSE
+    ## FIXME: topoSort: above can be  activeEdges[iMat[,2]==orphI] <- FALSE
     activeNodes[orphI] <- FALSE
     if (sum(activeEdges)==0)
       break

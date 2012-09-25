@@ -12,6 +12,11 @@
 \alias{jTree.igraph}
 \alias{jTree.matrix}
 
+\alias{junctionTree}
+\alias{junctionTree.graphNEL}
+\alias{junctionTree.igraph}
+\alias{junctionTree.matrix}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
   RIP ordering and junction tree.

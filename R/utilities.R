@@ -141,19 +141,9 @@ conc2pcor <- function(K){
   ans
 }
 
-
-
 ## Returns matrix n x 2 matrix with indices of non-zero
 ## entries in matrix m
-## which.arr.ind <- function(m){
-##   d <- nrow(m)
-##   rr<-rep(1:d, d)
-##   cc<-rep(1:d, each=d)
-##   epp<- cbind(rr[m!=0], cc[m!=0])
-##   epp
-## }
-
-## Fails on sparse matrices!!
+## FIXME: which.arr.ind: Fails on sparse matrices!!
 which.arr.ind<-function(m){
   nr  <- nrow(m)
   nc  <- ncol(m)
@@ -163,38 +153,40 @@ which.arr.ind<-function(m){
 }
 
 
-
-
 ## Codes a p x 2 matrix of characters or a list with pairs
 ## of characters into a vector of numbers.
+
 pairs2num <- function(x, vn, sort=TRUE){
-  if (is.null(x))
-    return(NULL)
+  if (class(x)!="matrix"){
+    if (is.null(x))
+      return(NULL)
 
-  if (inherits(x,"list"))
-    x <- do.call(rbind,x)
-  else {
-    if (inherits(x,"character"))
-      x <- matrix(x,nrow=1)
+    if (inherits(x,"list"))
+      x <- do.call(rbind,x)
+    else {
+      if (inherits(x,"character"))
+        x <- matrix(x,nrow=1)
+    }
   }
-
   # From here x should be a p x 2 matrix
 
   dd <- dim(x)
-  if (dd[1]==0){
+  if (dd[1L]==0){
       return(numeric(0))
   } else {
       if (sort){
-          i     <- x[,2]< x[,1]
-          c1    <- i+1
-          c2    <- -1*(i-1) + 1
+          i     <- x[,2L]< x[,1L]
+          c1    <- i+1L
+          c2    <- -1L*(i-1L) + 1L
           x  <- cbind(
                       x[cbind(seq_along(c1),c1)],
-                      x[cbind(seq_along(c2),c2)])
-      }
+                      x[cbind(seq_along(c2),c2)])          
+        }
       ans       <- match(x,vn)
       dim(ans)  <- dim(x)
-      ans       <- colSumsPrim(t(ans) * c(100000,1))
-      ans
-  }
+      colSumsPrim(t.default(ans) * c(100000,1))
+      ## ans[,1L] <- ans[,1L] * 100000L
+##       rowSumsPrim(ans)
+    }
 }
+

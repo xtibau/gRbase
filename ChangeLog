@@ -1,3 +1,14 @@
+2012-09-25 Søren Højsgaard <sorenh@math.aau.dk>	
+
+	* Bug in C code for mcs (maximum cardinality search)
+	detected. Problem solved be using R version of mcs.
+	
+	* mcsmarkedMAT speeded up
+
+	* update of DESCRIPTION file
+	
+	* Version 1.6-3 uploaded				
+	
 2012-08-05 Søren Højsgaard <sorenh@math.aau.dk>	
 
 	* Change of Makevars file to pass checks on linux
