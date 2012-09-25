@@ -1,8 +1,14 @@
-combnPrim <- function(x,m,simplify=TRUE){
+combnPrim <- function(x, m, simplify=TRUE){
+  ## FIXME: combnPrim: Could take a FUN argument.
   if (length(x)==1 && is.numeric(x))
     x <- seq(x)
   if (length(x) < m)
     stop("Error in combnPrim: n < m\n")
+
+##   nofun <- is.null(FUN)
+##   if (!nofun && !is.function(FUN)) 
+##     stop("'FUN' must be a function or NULL")
+  
   NCAND <- length(x)
   NSEL  <- as.integer(m)
   NSET <- as.integer(choose(NCAND,NSEL))
@@ -16,8 +22,6 @@ combnPrim <- function(x,m,simplify=TRUE){
   } else {
     res <- matrix(x[res], nrow=NSEL, ncol=NSET)
     res <- split(res, col(res))
-    ## FIXME: This is *very* inefficient
-    ## FIXME  - use colmat2list or something like that instead
     names(res) <- NULL
     res
   }

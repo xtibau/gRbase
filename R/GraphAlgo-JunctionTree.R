@@ -30,5 +30,9 @@ jTree.matrix <- function(object, method  = "mcwh",
   return(val)
 }
 
+junctionTree <- jTree
+junctionTree.graphNEL <- jTree.graphNEL
+junctionTree.igraph   <- jTree.igraph
+junctionTree.matrix   <- jTree.matrix
 
 
