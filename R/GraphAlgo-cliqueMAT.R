@@ -31,11 +31,20 @@ maxCliqueMAT <- function(amat)
   }
   
   ne <- ncol(em)
+
+##   print(nv)
+##   print(ne)
+##   print(em)
+
+  ans2 <- maxClique(nodes=vn, edgeMat=em)
+##   print(ans2)
   
-  ans <- .Call("maxClique", 
-               as.integer(nv), as.integer(ne), as.integer(em-1), 
-               PACKAGE="RBGL")
+##   ans <- .Call("maxClique", 
+##                as.integer(nv), as.integer(ne), as.integer(em-1), 
+##                PACKAGE="RBGL")
   
-  ans_names <- lapply(ans, function(x) { vn[x] }) ## FIXME: An index argument could control this
-  list("maxCliques"=ans_names) ## FIXME: Must the result really be a list of lists?
+##   ans_names <- lapply(ans, function(x) { vn[x] }) ## FIXME: An index argument could control this
+##   list("maxCliques"=ans_names) ## FIXME: Must the result really be a list of lists?
+
+  ans2
 }
