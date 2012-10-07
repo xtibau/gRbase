@@ -1,5 +1,5 @@
-5e354dc2207b376f23e7aba60480e30c *ChangeLog
-37babddc9ecad19ce1bc29a482fae5d3 *DESCRIPTION
+1dd09b652e94af63331227ccf9873d85 *ChangeLog
+f5f0577a88d09e691b8b9ceba95c54c1 *DESCRIPTION
 80d5f21689c04ed286211a3af437e86e *NAMESPACE
 c8f4303603559e044bbfc1bea859d36d *R/AddDropEdges.R
 29cc96e2fa4fc1e060295d0e37792152 *R/FIX-formulae.R
@@ -8,7 +8,7 @@ d4ec6095ea536d8e93b342a640cabe4f *R/Generics.R
 ca3fb382f758351c0d40805903b42ff4 *R/GraphAlgo-JunctionTree.R
 9b6d96700f38b629da0ea4f08970872c *R/GraphAlgo-MPD.R
 59da68ad8a0b2c540271219907fd1c21 *R/GraphAlgo-TopoSort-DAG.R
-01b2048cb351fa01f7cc19fadc97df54 *R/GraphAlgo-cliqueMAT.R
+62e74c566bb35d2d675df1debf2b373a *R/GraphAlgo-cliqueMAT.R
 50f7ad5d79e3fc5fc907b87fe706e12a *R/GraphAlgo-coerce.R
 01ab9a6ad5f9ce5b043424cc1dd86e90 *R/GraphAlgo-edgeList.R
 ac41deee08ea4853bad168caf5f06348 *R/GraphAlgo-isGSD.R
@@ -83,13 +83,13 @@ d22303b741e32cffaeb8bc65b76bb8be *demo/cadcomplete.R
 8fc07a549e908bbe0f0aba44480f1e0a *inst/CITATION
 f40eab83695bc43d5b17499dc9d29e56 *inst/doc/fulldef.bib
 95115c49f5d01626865efc1d0544b590 *inst/doc/gRbase-arrayops1.Rnw
-4234a3a49bf23ba441481039a0e6a649 *inst/doc/gRbase-arrayops1.pdf
+a87a0c5db623fca856ec2b74b58516c6 *inst/doc/gRbase-arrayops1.pdf
 982d88562f1c1ead149d42076e65c3fb *inst/doc/gRbase-arrayops2.Rnw
-9b2fd1b00a0ecce7d3dc95a36b574154 *inst/doc/gRbase-arrayops2.pdf
+0423cdfde6f26b55ed083d96138a159b *inst/doc/gRbase-arrayops2.pdf
 5687004a4c87686a508c730ceca98eb4 *inst/doc/gRbase-graphs.Rnw
-60e2a0486ee0e9bc342d98f661ca5d46 *inst/doc/gRbase-graphs.pdf
+064098b15aa5ada0066823ee2b6c9263 *inst/doc/gRbase-graphs.pdf
 0231a7e0d8d94626b28f3f8625c03bcc *inst/doc/gRbase-zzz.Rnw
-4924adfceb6a129c19ccb3f9b250f82c *inst/doc/gRbase-zzz.pdf
+2afabe528e3a9143e680fd6c1647eb60 *inst/doc/gRbase-zzz.pdf
 57d9a3fb3704556b1c3b5de5f359c52d *inst/doc/gRbase.bib
 2f915db8906e6be203c273dae729fbd7 *man/DATA-BodyFat.Rd
 aca276ab7e989b8ded104a1e5d855b93 *man/DATA-Nutrimouse.Rd
