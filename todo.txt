@@ -1,0 +1,9 @@
+* There seems to be a bug in the C implmentation of mcs. Need to
+  reimplement this for sparse and standard adjacency matrices.
+
+* is.DAG, is.UG, is.TUG: not yet implemented for igraph's
+
+* mcsmarked and jTree: not yet implemented for Matrix.
+
+* all .Matrix methods should be .dgCMatrix methods.
+

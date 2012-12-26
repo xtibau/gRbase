@@ -5,7 +5,6 @@
 ##
 ## Søren Højsgaard, July, 2012
 ## Known issues: None
-## FIXME: Add tests, .Rd files and vignette
 ## #######################################
 
 sp_getXij <- function(XX_, ii_, jj_){

@@ -3,6 +3,7 @@
 \alias{mcs.graphNEL}
 \alias{mcs.igraph}
 \alias{mcs.matrix}
+\alias{mcs.Matrix}
 \alias{mcsMAT}
 
 \alias{mcsmarked}

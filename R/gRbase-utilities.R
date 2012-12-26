@@ -1,18 +1,7 @@
-.dgCMatrix <- function(data=NA, nrow=1, ncol=1, byrow=FALSE, dimnames=NULL,
-                      sparse = TRUE, doDiag = TRUE, forceCheck = FALSE){
-  as(Matrix(data=data, nrow=nrow, ncol=ncol, dimnames=dimnames, sparse=TRUE),"dgCMatrix")
-}
-
-.asdgCMatrix <- function(x){
-  as(Matrix(x, sparse=TRUE),"dgCMatrix")
-}
-
-
 ### rowmat2list and colmat2list:
 ### ----------------------------
 ## Turns a matrix into a list, either by row or by column.
-## Notice: finding unique rows in a matrix can be speeded up
-## this way.
+## Notice: finding unique rows in a matrix can be speeded up this way.
 rowmat2list <- function(ans){
   if (nrow(ans)==0)
     return(list())

@@ -42,12 +42,12 @@ getFit(x)
 
 \seealso{\code{\link{gModel}}.}
 
-\examples{
-data(reinis)
-reinis <- as.gmData(reinis)
+% \examples{
+% data(reinis)
+% reinis <- as.gmData(reinis)
 
-m1 <- hllm(~.^. , reinis) 
-m1 <- fit(m1,engine="loglm")
-}
+% m1 <- hllm(~.^. , reinis) 
+% m1 <- fit(m1,engine="loglm")
+% }
 \keyword{models}% at least one, from doc/KEYWORDS
 

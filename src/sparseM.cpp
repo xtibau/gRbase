@@ -138,39 +138,86 @@ RcppExport SEXP C_getXj ( SEXP XX_, SEXP jj_){
   return(wrap(ans));
 }
 
+// RcppExport SEXP C_moralizeM ( SEXP XX_){
+//   using Eigen::Map;
+//   using Eigen::MatrixXi;
+//   using namespace Rcpp;
+//   typedef Eigen::MappedSparseMatrix<double> MSpMat;
+//   typedef Eigen::SparseMatrix<double> SpMat;
+//   MSpMat   X(as<MSpMat>(XX_));
+//   SpMat   X2(X.rows(), X.cols());
+//   SpMat   TMP(X.rows(), X.cols());
+//   SpMat   ANS(X.rows(), X.cols());
+//   X2 = X;
+//   int nrX(X.rows());
+//   Eigen::VectorXi bb(nrX);
+//   int kk, ll, jj;
+//   for (jj=0;jj<nrX;jj++){
+//     bb = X.col(jj);
+//     for (kk=0;kk<nrX;kk++){
+//       if (X.coeff(kk,jj) != 0){
+// 	for (ll=kk+1;ll<nrX; ll++){
+// 	  if (X.coeff(ll,jj) != 0){
+// 	    if (X2.coeff(kk,ll)==0){
+// 	      X2.insert(kk,ll) = 1;
+// 	      X2.insert(ll,kk) = 1;
+// 	    }
+// 	  }
+// 	}
+//       }
+//     }
+//   }
+//   TMP = (X2.adjoint() + X.adjoint())/2 ;
+//   ANS = TMP + (X2 + X)/2;
+//   ANS.makeCompressed();
+//   return(wrap(ANS));
+// }
+
+
+
 RcppExport SEXP C_moralizeM ( SEXP XX_){
   using Eigen::Map;
-  using Eigen::MatrixXi;
   using namespace Rcpp;
   typedef Eigen::MappedSparseMatrix<double> MSpMat;
   typedef Eigen::SparseMatrix<double> SpMat;
-  MSpMat   X(as<MSpMat>(XX_));
-  SpMat   X2(X.rows(), X.cols());
-  SpMat   TMP(X.rows(), X.cols());
-  SpMat   ANS(X.rows(), X.cols());
-  X2 = X;
+  SpMat   X(as<MSpMat>(XX_));
+  
+  typedef Eigen::Triplet<double> T;
+  std::vector<T> triplets;
+  triplets.reserve(X.nonZeros() * 2);
+  
   int nrX(X.rows());
-  Eigen::VectorXi bb(nrX);
-  int kk, ll, jj;
-  for (jj=0;jj<nrX;jj++){
-    bb = X.col(jj);
-    for (kk=0;kk<nrX;kk++){
-      if (X.coeff(kk,jj) != 0){
-	for (ll=kk+1;ll<nrX; ll++){
-	  if (X.coeff(ll,jj) != 0){
-	    if (X2.coeff(kk,ll)==0){
-	      X2.insert(kk,ll) = 1;
-	      X2.insert(ll,kk) = 1;
+  int kk, ll, vv;
+  for (vv=0; vv<nrX; vv++){ /* consider vertex vv */
+    for (kk=0; kk<nrX; kk++){
+      if (X.coeff(kk, vv) != 0){     /* yes, kk->vv */
+	for (ll=kk+1; ll<nrX; ll++){
+	  if (X.coeff(ll, vv) != 0){ /* yes, ll->vv */
+	    if ((X.coeff(kk, ll)==0) && (X.coeff(ll, kk)==0)){ /* kk not~ ll */
+	      triplets.push_back(T(kk, ll, 1));
+	      triplets.push_back(T(ll, kk, 1));
 	    }
 	  }
 	}
       }
     }
   }
-  TMP = (X2.adjoint() + X.adjoint())/2 ;
-  ANS = TMP + (X2 + X)/2;
-  ANS.makeCompressed();
-  return(wrap(ANS));
+  
+  SpMat ans(X.rows(), X.cols());
+  ans.setFromTriplets(triplets.begin(), triplets.end());
+  SpMat Xt(X.transpose());
+  ans = ans + Xt + X;
+  
+  for (kk=0; kk<nrX; kk++){
+    for (ll=kk+1; ll<nrX; ll++){
+      if (ans.coeff(kk,ll)!=0){
+	ans.coeffRef(kk,ll)=1;
+	ans.coeffRef(ll,kk)=1;
+      }
+    }
+  }
+  ans.makeCompressed();
+  return(wrap(ans));
 }
 
 RcppExport SEXP C_topoSortM ( SEXP XX_){
@@ -236,7 +283,8 @@ RcppExport SEXP C_fromtoM ( SEXP XX_ ){
   int ncX(X.cols());
   for (ii=0;ii<nrX;ii++){
     for (jj=0;jj<ncX;jj++){
-      sum += X.coeff(ii,jj);
+      if (X.coeff(ii,jj))
+	sum++;
     }
   }
   MatrixXi ans(sum,2);
@@ -263,7 +311,8 @@ RcppExport SEXP C_fromtoS ( SEXP XX_ ){
   int ncX(X.cols());
   for (ii=0;ii<nrX;ii++){
     for (jj=0;jj<ncX;jj++){
-      sum += X.coeff(ii,jj);
+      if (X.coeff(ii,jj))
+	sum++;
     }
   }
   MatrixXi ans(sum,2);

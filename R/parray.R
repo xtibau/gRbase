@@ -36,6 +36,9 @@ parray <- function(varNames, levels, values=1, normalize=c("none","first","all")
 }
 
 
+
+
+
 makeDimNames <- function(varNames, levels, sep=''){
   if (missing(varNames) || is.null(varNames))
     return(lapply(levels, seq))

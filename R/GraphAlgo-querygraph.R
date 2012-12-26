@@ -75,7 +75,8 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
 ## adjmat based
 ancestors <- function(set, object){
   amat  <- as.adjMAT(object)
-  if (isUndirectedMAT(amat))
+  ##if (isUndirectedMAT(amat))
+  if (is.UG.matrix(amat))
     return(NULL)
   
   An <- setorig <- set
@@ -97,7 +98,8 @@ ancestors <- function(set, object){
 ancestralSet <- function(set, object){
 
   amat  <- as.adjMAT(object)
-  if (isUndirectedMAT(amat))
+  ##if (isUndirectedMAT(amat))
+  if (is.UG.matrix(amat))
     return(NULL)
 
   if (missing(set))
@@ -127,7 +129,8 @@ ancestralSet <- function(set, object){
 ## adjmat based
 parents <- function(set, object){
   amat  <- as.adjMAT(object)
-  if (isUndirectedMAT(amat))
+  ##if (isUndirectedMAT(amat))
+  if (is.UG.matrix(amat))
     return(NULL)
 
   pa   <- names(which(amat[,set]>0))

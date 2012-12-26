@@ -32,7 +32,7 @@ coerceGraph.igraph <- function(object, result){
   switch(result,
          "graphNEL"={igraph.to.graphNEL(object)},
          "igraph"  ={object},
-         "matrix"  ={get.adjacency(object)},
+         "matrix"  ={as(get.adjacency(object),"matrix")},
          #"Matrix"  ={Matrix(get.adjacency(object),sparse=TRUE)}
          "Matrix"  ={.asdgCMatrix(get.adjacency(object))}
          )
@@ -89,12 +89,8 @@ setAs("Matrix", "igraph",
         gg
       })
 
-
-
-setAs("igraph", "matrix",   function(from) get.adjacency(from))
-setAs("igraph", "graphNEL", function(from) igraph.to.graphNEL(from))
-setAs("igraph", "Matrix",   function(from) .asdgCMatrix(get.adjacency(from)))
-
-
+setAs("igraph",   "matrix",   function(from) as(get.adjacency(from),"matrix"))
+setAs("igraph",   "graphNEL", function(from) igraph.to.graphNEL(from))
+setAs("igraph",   "Matrix",   function(from) .asdgCMatrix(get.adjacency(from)))
 setAs("graphNEL", "matrix",   function(from) as.adjMAT(from, result="matrix"))
 setAs("graphNEL", "Matrix",   function(from) as.adjMAT(from, result="Matrix"))

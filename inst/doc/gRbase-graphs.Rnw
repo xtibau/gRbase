@@ -8,12 +8,15 @@
 \usepackage[latin1]{inputenc}
 
 \usepackage{boxedminipage,color,a4wide,url}
-\def\grbase{\texttt{gRbase}}
+\def\code#1{\texttt{#1}}
+\def\pkg#1{{\bf #1}}
+\def\grbase{\pkg{gRbase}}
 \def\graph{\texttt{graph}}
 \def\rbgl{\texttt{RBGL}}
 \def\R{\texttt{R}}
-\def\code#1{\texttt{#1}}
 \def\graphnel{\texttt{graphNEL}}
+\def\igraph{\texttt{igraph}}
+
 
 \title{Graphs in the \grbase\ package}
 \author{Søren Højsgaard}
@@ -21,7 +24,7 @@
 
 \maketitle
 
-\SweaveOpts{prefix.string=fig/graph,keep.source=T} %sæt dir til "fig" og prefix til "bar" for figurer
+\SweaveOpts{prefix.string=fig/graph,keep.source=T,height=4} %sæt dir til "fig" og prefix til "bar" for figurer
 \setkeys{Gin}{width=0.6\textwidth} %sæt figurstørrelse i Sweave
 
 %%\renewenvironment{Schunk}{\linespread{.85}\small}{}
@@ -48,7 +51,6 @@ options(useFancyQuotes="UTF-8")
 
 <<echo=F>>=
 library(gRbase)
-library(Rgraphviz)
 @ 
 
 \tableofcontents
@@ -61,25 +63,37 @@ library(Rgraphviz)
 For the \R\ community, the packages \code{igraph}, \code{graph}, \code{RBGL}
 and \code{Rgraphviz} are extremely useful tools for graph operations,
 manipulation and layout. The \grbase\ package adds some additional
-tools to these  fine packages. The most important tools are:
+tools to these fine packages. The most important tools are:
 
 \begin{enumerate}
 \item Undirected and directed acyclic graphs can be specified using
   formulae or an adjacency list using the functions \code{ug()} and
-  \code{dag()}. This gives graphs represented as \graphnel\ objects
-  (the default), as \code{igraphs} or as adjacency matrices.
+  \code{dag()}. This gives graphs represented in one of the following
+  four forms:
+  \begin{itemize}
+  \item \graphnel\ objects (the default),
+  \item adjacency matrices. There are two type of adjacency matrices
+    in this context: A ``standard'' matrix in \R\ and a sparse matrix
+    (or to be precise: a \code{dgCMatrix} in the \code{Matrix}
+    package). 
+  \item \code{igraphs}
+  \end{itemize}
  
 \item Some graph algorithms are implemented in \grbase. These can be
-  applied to graphs represented as \graphnel s or as matrices. 
+  applied to graphs represented as \graphnel s and matrices. Some can
+  also be applied to \igraph s but we are not consistent with respect
+  to this.  The most
+  important algorithms are:
+  \begin{itemize}
+  \item \code{mcs()},(maximum cardinality search) 
+  \item \code{moralize()}, (moralization of directed acyclic graph),
+  \item \code{rip()}, (RIP ordering of cliques of triangulated undirected graph),
+  \item \code{triangulate()}, (triangulate undirected graph).
+
+  \end{itemize}
   
-  The
-  most important algorithms are:
-  \code{mcs()},(maximum cardinality search) 
-  \code{moralize()}, (moralization of directed acyclic graph),
-  \code{rip()}, (RIP ordering of cliques of triangulated undirected graph),
-  \code{triangulate()}, (triangulate undirected graph).
-  
-  Furthermore corresponding to some of the functions in the \graph\
+
+\item Furthermore corresponding to some of the functions in the \graph\
   and \rbgl\ packages there are corresponding matrix versions of these
   implemented in \grbase. These are: \code{maxCliqueMAT()}.
 
@@ -95,52 +109,28 @@ directed acyclic graphs (DAGs) by the \code{dag()} function.
 The graphs can be specified either using formulae or a list of
 vectors; see examples below.
 
-The
-representation of a graph can be as a \code{graphNEL} object, as an
-\code{igraph} object or as an adjacency matrix. 
-
-
 \subsection{Undirected graphs}
 
 An undirected graph is created by the \code{ug()} function. 
 
-
 \paragraph{As \code{graphNEL}:}
-The
-following specifications are equivalent:
+The following specifications are equivalent (notice that ``\code{:}''
+and ``\code{*}'' can be used interchangably):
 
 @ 
 <<print=F>>=
+ug11 <- ug(~a:b:c + c:d + d:e + a:e + f:g)
 ug11 <- ug(~a*b*c + c*d + d*e + a*e + f*g)
 ug12 <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"))
+ug13 <- ug(~a:b:c, ~c:d, ~d:e + a:e + f:g)
 ug13 <- ug(~a*b*c, ~c*d, ~d*e + a*e + f*g)
 @ %def 
-
-Notice that a ``\code{:}'' can be used instead of ``\code{*}'' 
-in the formula specifications above.
 
 @ 
 <<>>=
 ug11
 @ %def 
 
-
-
-\paragraph{As \code{igraph}:}
-A  representation as an \code{igraph} object can be
-obtained with one of the following equivalent specifications:
-
-@ 
-<<print=F>>=
-ug11i <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="igraph")
-ug12i <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
-            result="igraph")
-@ %def 
-
-@ 
-<<>>=
-ug11i
-@ %def 
 
 
 \paragraph{As adjacency matrix:}
@@ -160,6 +150,38 @@ ug11m
 @ %def 
 
 
+@ 
+<<print=F>>=
+ug11M <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="Matrix")
+ug12M <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
+            result="Matrix")
+@ %def 
+
+@ 
+<<>>=
+ug11M
+@ %def 
+
+
+\paragraph{As \code{igraph}:}
+A  representation as an \code{igraph} object can be
+obtained with one of the following equivalent specifications:
+
+@ 
+<<print=F>>=
+ug11i <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="igraph")
+ug12i <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
+            result="igraph")
+@ %def 
+
+@ 
+<<>>=
+ug11i
+@ %def 
+
+
+
+
 \subsection{Directed acyclic graphs (DAGs)}
 
 A directed acyclic graph is created by the \code{dag()} function. 
@@ -167,12 +189,15 @@ A directed acyclic graph is created by the \code{dag()} function.
 
 \paragraph{As \code{graphNEL}:}
 The
-following specifications are equivalent:
+following specifications are equivalent (notice that ``\code{:}''
+and ``\code{*}'' can be used interchangably):
 
 <<print=F>>=
+dag11 <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f)
 dag11 <- dag(~a + b*a + c*a*b + d*c*e + e*a + g*f)
 dag12 <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
              c("e","a"),c("g","f"))
+dag13 <- dag(~a, ~b:a,  ~c:a:b, ~d:c:e, ~e:a, ~g:f)
 dag13 <- dag(~a, ~b*a,  ~c*a*b, ~d*c*e, ~e*a, ~g*f)
 @
 
@@ -182,20 +207,8 @@ dag11
 @ %def 
 
 Here \texttt{\~{ }a} means that ``a'' has no parents while 
-\texttt{\~{ }d*b*c} means that ``d'' has parents ``b'' and
-``c''. Notice that a ``\code{:}'' can be used instead of ``\code{*}'' the
-specification.  
-
-
-\paragraph{As \code{igraph}:}
-A  representation as an \code{igraph} object can be
-obtained with
-
-<<print=F>>=
-dag11i <- dag(~a + b*a + c*a*b + d*c*e + e*a + g*f, result="igraph")
-dag12i <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
-             c("e","a"),c("g","f"), result="igraph")
-@
+\texttt{\~{ }d:b:c} means that ``d'' has parents ``b'' and
+``c''. 
 
 
 \paragraph{As adjacency matrix:}
@@ -203,10 +216,37 @@ A  representation as an adjacency matrix can be
 obtained with
 
 <<print=F>>=
-dag11m <- dag(~a + b*a + c*a*b + d*c*e + e*a + g*f, result="matrix")
+dag11m <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="matrix")
 dag12m <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
              c("e","a"),c("g","f"), result="matrix")
 @
+
+@ 
+<<>>=
+dag11m
+@ %def 
+
+<<print=F>>=
+dag11M <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="Matrix")
+dag12M <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
+             c("e","a"),c("g","f"), result="Matrix")
+@
+
+@ 
+<<>>=
+dag11M
+@ %def 
+
+\paragraph{As \code{igraph}:}
+A  representation as an \code{igraph} object can be
+obtained with
+
+<<print=F>>=
+dag11i <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="igraph")
+dag12i <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
+             c("e","a"),c("g","f"), result="igraph")
+@
+
 
 
 
@@ -221,6 +261,7 @@ Graphs can be coerced between differente representations using
 as(ug11,"igraph")
 as(as(ug11,"igraph"),"matrix")
 as(as(as(ug11,"igraph"),"matrix"),"graphNEL")
+as(as(as(as(ug11,"igraph"),"matrix"),"graphNEL"),"Matrix")
 @ %def 
 
 
@@ -229,32 +270,35 @@ as(as(as(ug11,"igraph"),"matrix"),"graphNEL")
 \section{Plotting graphs}
 \label{sec:xxx}
 
-\paragraph{Graphs represented as \code{graphNEL}:}
+\paragraph{Graphs represented as \graphnel s and \igraph s:}
 
-Graphs (represented as \code{graphNEL} objects) are displayed with
-\code{plot()}, but this requires that 1) the \code{Rgraphviz} package is
-installed and also 2) that the \code{Graphviz} program is installed.
-
-There is also an \code{iplot()} function which converts a graphNEL to
-an igraph and plots this. To use \code{iplot()}, no additional
-software must be installed. There is a lot of room for improvement of
-the \code{iplot()} function. 
-
-\paragraph{Graphs represented as \code{igraph}:}
-
-Graphs (represented as \code{igraph} objects) are displayed with
+Graphs represented as \graphnel\ objects and \igraph\ objects are displayed with
 \code{plot()}.
 
-\paragraph{Graphs represented as adjacency matrices:}
-
-There is no plot method for graphs represented as adjacency matrices.
 
 @ 
 <<fig=T>>=
 par(mfrow=c(1,2))
-iplot(ug11)
-iplot(dag11)
+plot(ug11)
+plot(ug11i)
 @ %def 
+
+
+\paragraph{Graphs represented as adjacency matrices:}
+
+There is no plot method for graphs represented as adjacency matrices
+in \grbase\ but the \code{gplot()} function in the \pkg{sna} package
+has these facilities:
+
+@ 
+<<eval=F>>=
+par(mfrow=c(1,2))
+library(sna)
+gplot(ug11m, label=colnames(ug11m),gmode="graph")
+gplot(dag11m, label=colnames(dag11m))
+@ %def 
+
+
 
 \section{Graph queries}
 
@@ -266,7 +310,8 @@ operations is \code{querygraph()}. This function is intended as a wrapper for th
 various graph operations available in \grbase, \graph\ and
 \rbgl. There are two main virtues of \code{querygraph()}: 1)
 \code{querygraph()} operates on any of the three graph representations
-described above and 2) \code{querygraph()} provides a unified
+described above\footnote{Actually not quite yet, but it will be so in
+  the future.}  and 2) \code{querygraph()} provides a unified
 interface to the graph operations. The general syntax is
 @ 
 <<>>=
@@ -276,8 +321,17 @@ args(querygraph)
 
 
 
-\section{More advanced graph operations}
-\label{sec:xxx}
+\section{Advanced graph operations}
+\label{sec:advanc-graph-oper}
+
+\subsection{Moralization}
+\label{sec:moralization}
+
+@ 
+<<>>=
+apropos("^moralize\\.")
+@ %def 
+
 
 A moralized directed acyclic graph is obtained with
 
@@ -289,10 +343,27 @@ dag11.mor <- moralize(dag11)
 @ 
 <<fig=T>>=
 par(mfrow=c(1,2))
-iplot(dag11)
-iplot(dag11.mor)
+plot(dag11)
+plot(dag11.mor)
 @ %def 
 
+For the alternative representations
+
+@ 
+<<>>=
+moralize(dag11m)
+moralize(dag11M) 
+moralize(dag11i)
+@ %def 
+
+
+\subsection{Maximum cardinality search}
+\label{sec:maxim-card-search}
+
+@ 
+<<>>=
+apropos("^mcs\\.")
+@ %def 
 
 
 Testing for whether a graph is triangulated is based on Maximum
@@ -302,74 +373,120 @@ triangulated. Otherwise a linear ordering of the nodes is returned.
 @ 
 <<print=F>>=
 mcs(ug11)
+mcs(ug11m)
+mcs(ug11M)
+mcs(ug11i)
+@ %def 
+
+
+@ 
+<<>>=
+mcs(dag11.mor)
+mcs(as(dag11.mor,"matrix"))
+mcs(as(dag11.mor,"Matrix")) 
+mcs(as(dag11.mor,"igraph")) 
+mcs(dag11) 
+@ %def 
+
+\subsection{Triangulation}
+\label{sec:triangulation}
+
+@ 
+<<>>=
+apropos("^triangulate\\.")
 @ %def 
 
 
 Triangulate an undirected graph by adding extra edges to the graph:
 
 <<print=T>>=
-tug11<-triangulate(ug11)
+(tug11<-triangulate(ug11))
+(tug11m<-triangulate(ug11m))
+(tug11M<-triangulate(ug11M))
+(tug11i<-triangulate(ug11i))
 @ 
 
 @ 
 <<fig=T>>=
 par(mfrow=c(1,2))
-iplot(ug11)
-iplot(tug11)
+plot(ug11)
+plot(tug11)
 @ %def 
 
 
-A RIP ordering of the cliques of a triangulated graph can be obtained as:
+\subsection{RIP ordering / junction tree}
+\label{sec:rip-ordering-}
 
 @ 
 <<>>=
-r <- rip(tug11)
-r
+apropos("^rip\\.")
 @ %def 
 
+A RIP ordering of the cliques of a triangulated graph can be obtained as:
+
+
+
+@ 
+<<>>=
+rr <- rip(tug11)
+rr
+rr <- rip(tug11m)
+rr <- rip(tug11M) 
+@ %def 
+
+@ 
+<<fig=T>>=
+plot(rr)
+@ %def 
 
 
 \section{Time and space considerations}
 \label{sec:xxx}
 
-\subsection{Space}
+\subsection{Time}
 \label{sec:xxx}
 
 
 It is worth noticing that working with graphs representated as
 \code{graphNEL} objects is somewhat slower working with graphs
-represented as adjacency matrices. On the other hand, graph
-
-Consider for example coerction from
-a \code{graphNEL} object. This can be obtained with \code{as()} as
-shown above or by using \code{as.adjMAT()} from \grbase. The timings are:
-
-@ 
-<<>>=
-system.time({for (ii in 1:200) as(ug11, "matrix")})
-system.time({for (ii in 1:200) as.adjMAT(ug11)})
-@ %def 
-
-
-Similarly, consider finding the cliques of an undirected graph
+represented as adjacency matrices. 
+Consider finding the cliques of an undirected graph
 represented as a \graphnel\ object or as a matrix:
 
 @ 
 <<>>=
-system.time({for (ii in 1:200) maxClique(ug11)})
-system.time({for (ii in 1:200) maxCliqueMAT(ug11m)})
+system.time({for (ii in 1:200) maxClique(ug11)})     ## in RBGL
+system.time({for (ii in 1:200) maxCliqueMAT(ug11m)}) ## in gRbase
 @ %def 
+
+Working with sparse matrices rather than standard matrices slows
+indexing down:
+
+@ 
+<<>>=
+system.time({for (ii in 1:2000) ug11m[2,]})
+system.time({for (ii in 1:2000) ug11M[2,]})
+@ %def 
+
+However, \grbase\ has some functionality for indexing sparse matrices
+quickly: 
+
+@ 
+<<>>=
+system.time({for (ii in 1:2000) sp_getXj(ug11M,2)})
+@ %def 
+
 
 \subsection{Space}
 \label{sec:xxx}
 
 
-On the other hand, the \graphnel\ representation is -- at least -- in
+The \graphnel\ representation is -- at least -- in
 principle more economic in terms of space requirements than the
 adjacency matrix representation (because the adjacency matrix
-representation uses a $0$ to represent a ``missing edge''. 
-However, in practice the picture is not so clear. Consider the
-following examples
+representation uses a $0$ to represent a ``missing edge''. The sparse
+matrix representation is clearly only superior to the standard matrix
+representation if the graph is sparse:
 
 @ 
 <<>>=
@@ -381,20 +498,15 @@ g1 <- randomGraph(V, M, 0.05)
 length(edgeList(g1))
 object.size(g1)
 object.size(as.adjMAT(g1))
+object.size(as.adjMAT(g1, "Matrix"))
 
 ## More dense graph 
-##
-g1 <- randomGraph(V, M, 0.2)
-length(edgeList(g1))
-object.size(g1)
-object.size(as.adjMAT(g1))
-
-## Even more dense graph 
 ##
 g1 <- randomGraph(V, M, 0.5)
 length(edgeList(g1))
 object.size(g1)
 object.size(as.adjMAT(g1))
+object.size(as.adjMAT(g1, "Matrix"))
 @ %def 
 
 

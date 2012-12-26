@@ -1,4 +1,4 @@
-\name{graph-operations1}
+\name{graph-operations}
 
 \alias{ancestors}
 \alias{ancestralGraph}
@@ -6,7 +6,6 @@
 \alias{children}
 \alias{closure}
 
-\alias{vpar}
 \alias{is.complete}
 \alias{is.decomposition}
 \alias{is.simplicial}
@@ -30,7 +29,6 @@ ancestralGraph(set, object)
 ancestralSet(set, object)
 children(set, object)
 closure(set, object)
-vpar(object, forceCheck=TRUE)
 is.complete(object, set)
 is.decomposition(set, set2, set3, object)
 is.simplicial(set, object)
@@ -46,8 +44,6 @@ maxCliqueMAT(amat)
   \item{object}{A graphNEL object}
   %   \item{matrix}{If TRUE the result is returned as a p x 2 matrix; otherwise as a
   %     matrix list. }
-  \item{forceCheck}{Logical indicating if it should be checked that the
-    object is a DAG}
   \item{result}{Either \code{"matrix"} of \code{"Matrix"} (for a sparse
     matrix representation).}
   \item{amat}{Adjacency matrix}
@@ -71,7 +67,7 @@ maxCliqueMAT(amat)
 %   ...
 % }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, sorenh at mail dot dk}
+\author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
 % \note{ ~~further notes~~ 
 
 %  ~Make other sections like Warning with \section{Warning }{....} ~

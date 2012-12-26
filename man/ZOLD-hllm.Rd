@@ -6,6 +6,9 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Hierarchical log-linear models}
 \description{
+  NOTICE: THIS FUNCTION IS DEFUNCT. PLEASE USE THE gRim PACKAGE FOR
+  HIERARCHICAL LOG LINEAR MODELS.
+  
   An implementation of hierarchical log-linear models using the
   framework of \code{\link{gRbase}}. A model object is defined using
   \code{hllm}, fitted using \code{fit} (which calls \code{\link[MASS]{loglm}})
@@ -43,14 +46,14 @@ hllm(formula = ~.^1, gmData, marginal)
 
 \seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{ggm}}
 }
-\examples{
-data(reinis)
-reinis <- as.gmData(reinis)
-m2 <-
-hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein,
-reinis)
-m2 <- fit(m2,engine="loglm")
-## plot(m2)
-}
+% \examples{
+% data(reinis)
+% reinis <- as.gmData(reinis)
+% m2 <-
+% hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein,
+% reinis)
+% m2 <- fit(m2,engine="loglm")
+% ## plot(m2)
+% }
 \keyword{models}% at least one, from doc/KEYWORDS
 

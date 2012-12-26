@@ -6,7 +6,7 @@ moralize.graphNEL <- function(object, result="graphNEL", ...){
   if (edgemode(object)=="undirected"){
     stop("Graph must be directed")
   }
-  moralizeMAT(as.adjMAT(object), result=result)
+  moralizeMAT(as.adjMAT(object, "Matrix"), result=result)
 }
 
 moralize.igraph <- function(object, result="igraph", ...){
@@ -17,6 +17,10 @@ moralize.igraph <- function(object, result="igraph", ...){
 }
 
 moralize.matrix <- function(object, result="matrix", ...){
+  moralizeMAT(object, result=result)
+}
+
+moralize.Matrix <- function(object, result="Matrix", ...){
   moralizeMAT(object, result=result)
 }
 
@@ -59,7 +63,7 @@ moralizeMAT_stR <- function(amat){
 }
 
 moralizeMAT_spC <- function(amat){
-  ans <- sp_moralize(amat)
+  ans           <- sp_moralize(amat)
   dimnames(ans) <- dimnames(amat)
   ans
 }
