@@ -1,11 +1,3 @@
-##ggm.R --- 
-##Author          : Claus Dethlefsen
-##Created On      : Mon May 02 09:35:07 2005
-##Last Modified By: 
-##Last Modified On: 
-##Update Count    : 0
-##Status          : Unknown, Use with caution!
-##
 
 ggm <- function(formula=~.^1, gmData, marginal){
   value <- processFormula(formula,gmData, marginal,"Continuous")
@@ -32,10 +24,6 @@ fit.ggm <- function(object, ...){
   return(value)
 }
 
-
-
-
-
 ## Partial correlation matrix ##
 ## computes partial correlation matrix for covariance matrix ##
 partial.corr.matrix <- function(S){
@@ -45,7 +33,6 @@ partial.corr.matrix <- function(S){
   diag(temp) <- 1
   return(temp)
 }
-
 
 ## Output function ##
 outfun <- function(Sigma, S, n){

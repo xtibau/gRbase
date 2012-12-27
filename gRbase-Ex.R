@@ -1,7 +1,6 @@
 pkgname <- "gRbase"
 source(file.path(R.home("share"), "R", "examples-header.R"))
 options(warn = 1)
-options(pager = "console")
 library('gRbase')
 
 assign(".oldSearch", search(), pos = 'CheckExEnv')
@@ -317,6 +316,78 @@ am2 <- vpaL2adjMAT(glist)
 
 
 cleanEx()
+nameEx("GraphAlgo-is-graph")
+### * GraphAlgo-is-graph
+
+flush(stderr()); flush(stdout())
+
+### Name: is.DAG
+### Title: Check properties of graphs.
+### Aliases: is.DAG is.DAG.matrix is.DAG.Matrix is.DAGMAT is.DAG.graphNEL
+###   is.UG is.UG.matrix is.UG.Matrix is.UGMAT is.UG.graphNEL is.TUG
+###   is.TUG.matrix is.TUG.Matrix is.TUGMAT is.TUG.graphNEL is.adjMAT
+### Keywords: utilities
+
+### ** Examples
+
+
+## DAGs
+dagNEL  <- dag(~a:b:c+c:d:e, result="NEL")
+dagMAT  <- dag(~a:b:c+c:d:e, result="matrix")
+dagMATS <- dag(~a:b:c+c:d:e, result="Matrix")
+
+## Undirected graphs
+ugNEL  <- ug(~a:b:c+c:d:e, result="NEL")
+ugMAT  <- ug(~a:b:c+c:d:e, result="matrix")
+ugMATS <- ug(~a:b:c+c:d:e, result="Matrix")
+
+## Is it a DAG?
+is.DAG(dagNEL)
+is.DAG(dagMAT)
+is.DAG(dagMATS)
+
+is.DAG(ugNEL)
+is.DAG(ugMAT)
+is.DAG(ugMATS)
+
+## Is it an undirected graph
+is.UG(dagNEL)
+is.UG(dagMAT)
+is.UG(dagMATS)
+
+is.UG(ugNEL)
+is.UG(ugMAT)
+is.UG(ugMATS)
+
+## Is it a triangulated (i.e. chordal)  undirected graph
+is.TUG(dagNEL)
+is.TUG(dagMAT)
+is.TUG(dagMATS)
+
+is.TUG(ugNEL)
+is.TUG(ugMAT)
+is.TUG(ugMATS)
+
+## Example where the graph is not triangulated
+ug2NEL  <- ug(~a:b+b:c+c:d+d:a, result="NEL")
+ug2MAT  <- ug(~a:b+b:c+c:d+d:a, result="matrix")
+ug2MATS <- ug(~a:b+b:c+c:d+d:a, result="Matrix")
+
+is.TUG(ug2NEL)
+is.TUG(ug2MAT)
+is.TUG(ug2MATS)
+
+## Bidirected graphs
+edgemode(ugNEL)
+edgemode(ugNEL) <- "directed"
+edgemode(ugNEL)
+is.DAG(ugNEL)
+is.UG(ugNEL)
+
+
+
+
+cleanEx()
 nameEx("GraphAlgo-mcs")
 ### * GraphAlgo-mcs
 
@@ -324,8 +395,9 @@ flush(stderr()); flush(stdout())
 
 ### Name: mcs
 ### Title: Maximum cardinality search on undirected graph.
-### Aliases: mcs mcs.graphNEL mcs.igraph mcs.matrix mcsMAT mcsmarked
-###   mcsmarked.graphNEL mcsmarked.igraph mcsmarked.matrix mcsmarkedMAT
+### Aliases: mcs mcs.graphNEL mcs.igraph mcs.matrix mcs.Matrix mcsMAT
+###   mcsmarked mcsmarked.graphNEL mcsmarked.igraph mcsmarked.matrix
+###   mcsmarkedMAT
 ### Keywords: utilities
 
 ### ** Examples
@@ -383,7 +455,7 @@ flush(stderr()); flush(stdout())
 ### Name: moralize
 ### Title: Moralize a directed acyclic graph
 ### Aliases: moralize moralize.graphNEL moralize.igraph moralize.matrix
-###   moralizeMAT
+###   moralize.Matrix moralizeMAT
 ### Keywords: utilities
 
 ### ** Examples
@@ -429,9 +501,9 @@ nameEx("GraphAlgo-operations1")
 
 flush(stderr()); flush(stdout())
 
-### Name: graph-operations1
+### Name: graph-operations
 ### Title: Simple operations on undirected and directed acyclic graphs.
-### Aliases: ancestors ancestralGraph ancestralSet children closure vpar
+### Aliases: ancestors ancestralGraph ancestralSet children closure
 ###   is.complete is.decomposition is.simplicial parents simplicialNodes
 ###   as.adjMAT graphNEL2ftM maxCliqueMAT
 ### Keywords: utilities
@@ -495,9 +567,9 @@ flush(stderr()); flush(stdout())
 
 ### Name: rip
 ### Title: RIP ordering and junction tree.
-### Aliases: rip rip.graphNEL rip.igraph rip.matrix ripMAT print.ripOrder
-###   plot.ripOrder jTree jTree.graphNEL jTree.igraph jTree.matrix
-###   junctionTree junctionTree.graphNEL junctionTree.igraph
+### Aliases: rip rip.graphNEL rip.igraph rip.matrix rip.Matrix ripMAT
+###   print.ripOrder plot.ripOrder jTree jTree.graphNEL jTree.igraph
+###   jTree.matrix junctionTree junctionTree.graphNEL junctionTree.igraph
 ###   junctionTree.matrix
 ### Keywords: utilities
 
@@ -519,6 +591,30 @@ rip(uG)
 
 
 cleanEx()
+nameEx("GraphAlgo-topoSort")
+### * GraphAlgo-topoSort
+
+flush(stderr()); flush(stdout())
+
+### Name: topoSort
+### Title: Topological sort of vertices in directed
+### Aliases: topoSort topoSort.graphNEL topoSort.matrix topoSort.Matrix
+###   topoSortMAT topoSort_sp topoSort_st topoSort_vparList
+### Keywords: utilities
+
+### ** Examples
+
+dagMAT  <- dag(~a:b:c+c:d:e, result="matrix")
+dagMATS <- as(dagMAT, "Matrix")
+dagNEL  <- dag(~a:b:c+c:d:e, result="NEL")
+
+topoSort(dagMAT)
+topoSort(dagMATS)
+topoSort(dagNEL)
+
+
+
+cleanEx()
 nameEx("GraphAlgo-triangulate")
 ### * GraphAlgo-triangulate
 
@@ -526,8 +622,8 @@ flush(stderr()); flush(stdout())
 
 ### Name: triangulate
 ### Title: Triangulation of an undirected graph
-### Aliases: triangulate triangulate.graphNEL triangulate.igraph
-###   triangulate.matrix triangulateMAT
+### Aliases: triangulate triangulate.graphNEL triangulate.matrix
+###   triangulate.Matrix triangulate.igraph triangulateMAT
 ### Keywords: utilities
 
 ### ** Examples
@@ -540,9 +636,61 @@ tuG1 <- triangulate(uG1)
 uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="matrix")
 tuG2 <- triangulate(uG2)
 
+## adjacency matrix (sparse)
+uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="Matrix")
+tuG2 <- triangulate(uG2)
+
 ## igraph
 uG3 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="igraph")
 tuG3 <- triangulate(uG3)
+
+
+
+cleanEx()
+nameEx("GraphAlgo-vpar")
+### * GraphAlgo-vpar
+
+flush(stderr()); flush(stdout())
+
+### Name: vpar
+### Title: List of vertices and their parents for graph.
+### Aliases: vpar vpar.matrix vpar.Matrix vpar.graphNEL vparMAT
+### Keywords: utilities
+
+### ** Examples
+
+
+## DAGs
+dagMAT <- dag(~a:b:c+c:d:e, result="matrix")
+dagNEL <- dag(~a:b:c+c:d:e, result="NEL")
+
+vpar(dagMAT)
+vpar(dagNEL)
+vpar(dagMAT, getv=FALSE)
+vpar(dagNEL, getv=FALSE)
+
+## Undirected graphs
+ugMAT <- ug(~a:b:c+c:d:e, result="matrix")
+ugNEL <- ug(~a:b:c+c:d:e, result="NEL")
+
+## Not run: 
+##D ## This will fail because the adjacency matrix is symmetric and the
+##D ## graphNEL has undirected edges
+##D vpar(ugMAT)
+##D vpar(ugNEL)
+## End(Not run)
+
+## When forceCheck is FALSE, it will not be detected that the graphs are undirected.
+vpar(ugMAT, forceCheck=FALSE)
+vpar(ugNEL, forceCheck=FALSE)
+
+## Bidirected graphs
+## This is, for graphNEL's, the same as working with bidirected edges:
+edgemode(ugNEL)
+edgemode(ugNEL) <- "directed"
+edgemode(ugNEL)
+vpar(ugNEL,FALSE)
+
 
 
 
@@ -568,28 +716,6 @@ m1 <- gModel(~.^. , rats)
 m1.form <- formula(m1)
 m1.data <- gmData(m1)
 observations(gmData(m1)) <- observations(rats)[1:10,]
-
-
-
-cleanEx()
-nameEx("ZOLD-gRfit")
-### * ZOLD-gRfit
-
-flush(stderr()); flush(stdout())
-
-### Name: gRfit
-### Title: Class "gRfit" - fitted graphical models
-### Aliases: gRfit getFit getFit<- getFit<-.gRfit getFit.gRfit print.gRfit
-###   summary.gRfit fit
-### Keywords: models
-
-### ** Examples
-
-data(reinis)
-reinis <- as.gmData(reinis)
-
-m1 <- hllm(~.^. , reinis) 
-m1 <- fit(m1,engine="loglm")
 
 
 
@@ -638,29 +764,6 @@ as.gmData(mathmark)
 data(HairEyeColor)
 as.gmData(HairEyeColor)
 
-
-
-
-cleanEx()
-nameEx("ZOLD-hllm")
-### * ZOLD-hllm
-
-flush(stderr()); flush(stdout())
-
-### Name: hllm
-### Title: Hierarchical log-linear models
-### Aliases: hllm fit.hllm stepwise.hllm hllm-class
-### Keywords: models
-
-### ** Examples
-
-data(reinis)
-reinis <- as.gmData(reinis)
-m2 <-
-hllm(~smoke*phys*protein+mental*phys+mental*family+smoke*systol*protein,
-reinis)
-m2 <- fit(m2,engine="loglm")
-## plot(m2)
 
 
 
@@ -851,6 +954,31 @@ t3 <- parray(c("category","foo"), c(2,2), values=1:4+100)
 varNames(t1)
 nLevels(t1)
 valueLabels(t1)
+
+
+
+
+cleanEx()
+nameEx("randomDag")
+### * randomDag
+
+flush(stderr()); flush(stdout())
+
+### Name: random_dag
+### Title: Random directed acyclic graph
+### Aliases: random_dag
+### Keywords: utilities
+
+### ** Examples
+
+dg   <- random_dag(1:1000, maxpar=5, wgt=.9)
+table(sapply(vpar(dg),length))
+
+dg   <- random_dag(1:1000, maxpar=5, wgt=.5)
+table(sapply(vpar(dg),length))
+
+dg   <- random_dag(1:1000, maxpar=5, wgt=.1)
+table(sapply(vpar(dg),length))
 
 
 

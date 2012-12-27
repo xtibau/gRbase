@@ -3,6 +3,7 @@
 \alias{rip.graphNEL}
 \alias{rip.igraph}
 \alias{rip.matrix}
+\alias{rip.Matrix}
 \alias{ripMAT}
 \alias{print.ripOrder}
 \alias{plot.ripOrder}
@@ -30,6 +31,7 @@ rip(object, root = NULL, nLevels = NULL)
 \method{rip}{graphNEL}(object, root = NULL, nLevels = NULL)
 \method{rip}{igraph}(object, root = NULL, nLevels = NULL)
 \method{rip}{matrix}(object, root = NULL, nLevels = NULL)
+\method{rip}{Matrix}(object, root = NULL, nLevels = NULL)
 ripMAT(amat, root = NULL, nLevels = NULL) 
 
 jTree(object, ...)

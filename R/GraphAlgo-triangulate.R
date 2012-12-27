@@ -15,7 +15,13 @@ triangulate.igraph <- function(object, method="mcwh",
 triangulate.matrix <- function(object, method="mcwh",
                            nLevels=rep(2,ncol(object)), result="matrix", ...){
   triangulateMAT(object,
-                 method=method, nLevels=nLevels, result="matrix", ...)
+                 method=method, nLevels=nLevels, result=result, ...)
+}
+
+triangulate.Matrix <- function(object, method="mcwh",
+                           nLevels=rep(2,ncol(object)), result="Matrix", ...){
+  triangulateMAT(object,
+                 method=method, nLevels=nLevels, result=result, ...)
 }
 
 
@@ -61,7 +67,7 @@ triangulateMAT_spR<- function(amat, vn=colnames(amat), nLevels=rep(2, length(vn)
   
   nvar    <- length(vn)
   lognlev <- log(nLevels)
-  active  <- rep.int(1L,nvar)
+  active  <- rep.int(1L, nvar)
   goon    <- 0L
 
   #cat(sprintf("initializing...\n"))
@@ -72,19 +78,18 @@ triangulateMAT_spR<- function(amat, vn=colnames(amat), nLevels=rep(2, length(vn)
   while(goon<nvar){
     goon <- goon + 1L
     vii  <- which.min(cqsize)
-    ne   <- (active==1) * sp_getXi(amat,vii)>0
+    ne   <- (active==1) * sp_getXi(amat, vii) > 0
     nne  <- sum(ne)
     if (goon %% 1000 == 0)
-      cat(sprintf("goon=%6i node=%7s nne=%5i\n",  goon, vn[vii], nne))
-    if (nne>1){
-      neii <- which(ne)
-      tf   <- names2pairs(neii, sort=FALSE, result="matrix")        
-      vv   <- sp_getXtf(amat, tf)
-      nedges <- sum(vv)
-      nfillin    <- ((nne-1)*nne / 2) - nedges
+      cat(sprintf("triangulate: node number=%6i node=%7s nne=%5i\n",  goon, vn[vii], nne))
+    if (nne > 1){
+      neii    <- which(ne)
+      tf      <- names2pairs(neii, sort=FALSE, result="matrix")        
+      vv      <- sp_getXtf(amat, tf)
+      nedges  <- sum(vv)
+      nfillin <- ((nne-1)*nne / 2) - nedges
       if (nfillin>0){
         amat <- sp_setXM1(amat, rbind(tf, tf[,2:1,drop=FALSE]))
-        #clii <- c(vii,neii)
         zz   <- unlist(lapply(neii, function(ii) .cqsize(amat,ii,lognlev)))
         cqsize[neii] <- zz
       }
@@ -95,9 +100,6 @@ triangulateMAT_spR<- function(amat, vn=colnames(amat), nLevels=rep(2, length(vn)
   dimnames(amat) <- list(vn,vn)
   amat  
 }
-
-
-
 
 ## FIXME: Fra kommentarer ovenfor ser det ud som om dette ikke virker
 triangulate_stR <- function(object, vn=nodes(object), nLevels=rep(2, length(vn))){

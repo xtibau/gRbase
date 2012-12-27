@@ -1,8 +1,9 @@
 \name{triangulate}
 \alias{triangulate}
 \alias{triangulate.graphNEL}
-\alias{triangulate.igraph}
 \alias{triangulate.matrix}
+\alias{triangulate.Matrix}
+\alias{triangulate.igraph}
 \alias{triangulateMAT}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Triangulation of an undirected graph}
@@ -14,6 +15,7 @@ triangulate(object, ...)
 \method{triangulate}{graphNEL}(object, method="mcwh",  nLevels = rep(2,length(nodes(object))), result="graphNEL",...)
 \method{triangulate}{igraph}(object, method="mcwh",  nLevels = rep(2,length(V(object))), result="igraph",...)
 \method{triangulate}{matrix}(object, method="mcwh",  nLevels = rep(2,ncol(object)), result="matrix",...)
+\method{triangulate}{Matrix}(object, method="mcwh",  nLevels = rep(2,ncol(object)), result="Matrix",...)
 triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -63,6 +65,10 @@ tuG1 <- triangulate(uG1)
 
 ## adjacency matrix
 uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="matrix")
+tuG2 <- triangulate(uG2)
+
+## adjacency matrix (sparse)
+uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="Matrix")
 tuG2 <- triangulate(uG2)
 
 ## igraph

@@ -9,15 +9,27 @@ mcs <- function(object, root=NULL, index=FALSE){
 }
 
 mcs.graphNEL <- function(object, root=NULL, index=FALSE){
-  mcsMAT(as.adjMAT(object), root=root, index=index)
+  if (is.UG(object)){
+    mcsMAT(as.adjMAT(object), root=root, index=index)
+  } else {
+    character(0)
+  }
 }
 
 mcs.igraph <- function(object, root=NULL, index=FALSE){
-  mcsMAT(get.adjacency(object),root=root, index=index)
+  if (!is.dag(object)){
+    mcsMAT(get.adjacency(object),root=root, index=index)
+  } else {
+    character(0)
+  }
 }
 
-mcs.matrix <- function(object, root=NULL, index=FALSE){
-  mcsMAT(object, root=root, index=index)
+mcs.matrix <- mcs.Matrix <- function(object, root=NULL, index=FALSE){
+  if (is.UG(object)){  
+    mcsMAT(object, root=root, index=index)
+  } else {
+    character(0)
+  }
 }
 
 mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE){
@@ -88,7 +100,7 @@ mcsMAT_spR <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
     nbidx          <- which((nb*active)==1) 
     len            <- length(nbidx)
     if (kk %% 1000==0)
-      cat(sprintf("kk=%5i cnode=%6s, length(nbidx)=%s\n", kk, cnode, length(nbidx)))
+      cat(sprintf("mcs: kk=%5i cnode=%6s, length(nbidx)=%s\n", kk, cnode, length(nbidx)))
     if (len>1){
       tf <- names2pairs(nbidx, sort=FALSE, result="matrix")
       vv <- sp_getXtf(amat, tf)
@@ -193,6 +205,106 @@ mcsMAT_stR <- function(amat, vn=colnames(amat), root=NULL, index=FALSE){
     }
   
 }
+
+
+
+##
+## New implementation; somewhat more elegant but not faster
+##
+.mcsMAT2 <- function (amat, vn = colnames(amat), root = NULL, index = FALSE){
+
+  .wmo <- function(x,o=seq_along(x)){o[which.max(x[o])]}
+  #.wmo <- function(x,o=seq_along(x)){which.max(x)}
+
+  NN  <- nrow(amat)
+
+  if (!is.null(root)){
+    zz <- c(root, setdiffPrim(vn, root))
+    oo <- match(zz, colnames(amat))
+  } else {
+    oo <- seq_along(vn)
+  }
+  
+  pp  <- rep(0L,  NN)   ## passive nodes
+  aa  <- rep(1L,  NN)   ## active nodes
+  res <- rep(-1L, NN)   ## result
+  ok  <- TRUE
+  ss  <- rep.int(0L, NN)
+  idxvec <- 1:NN
+  
+  ii     <- oo[1]
+  res[1] <- ii
+  pp[ii] <- 1L
+  aa[ii] <- 0L
+
+  if (NN>1){
+    for(kk in 2:NN){
+      ss <- as.numeric(amat %*% pp)
+      ii <- .wmo(ss*aa, oo)
+      rr <- amat[ii,] * pp ## indicator of passive neighbours
+      bb <- idxvec[rr!=0]
+      n.nb <- length(bb) ## number of passive neighbours
+
+      if (n.nb>1){
+        ## For sparse matrices:
+        ##       tf <- names2pairs(bb, sort=FALSE, result="matrix")
+        ##       vv <- amat[tf]
+        ##       if (any(vv==0)){
+        ##         ok <- FALSE
+        ##         break
+        ##       }
+
+        ## For standard matrices:
+        if(sum(amat[bb, bb]) != (n.nb-1)*n.nb){
+          ok <- FALSE
+          break
+        }
+      }
+      res[kk] <- ii
+      pp[ii] <- 1L
+      aa[ii] <- 0L
+    }
+  }
+  
+  if (ok){
+    if (index)
+      res
+    else
+      vn[res]
+  } else {
+    character(0)
+  } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

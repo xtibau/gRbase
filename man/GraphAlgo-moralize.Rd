@@ -3,6 +3,7 @@
 \alias{moralize.graphNEL}
 \alias{moralize.igraph}
 \alias{moralize.matrix}
+\alias{moralize.Matrix}
 \alias{moralizeMAT}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -19,6 +20,7 @@ moralize(object, ...)
 \method{moralize}{graphNEL}(object, result="graphNEL", ...)
 \method{moralize}{igraph}(object, result="igraph", ...)
 \method{moralize}{matrix}(object, result="matrix", ...)
+\method{moralize}{Matrix}(object, result="Matrix", ...)
 moralizeMAT(amat, result=NULL)
 }
 %- maybe also 'usage' for other objects documented here.

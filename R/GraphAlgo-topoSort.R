@@ -10,7 +10,22 @@
 # should perhaps be called dagTopoSort
 
 
-topoSort <- function(vpaL){
+topoSort <- function(object, index=FALSE){
+  UseMethod("topoSort")
+}
+
+##FIXME : Should be "Matrix" for large graphs...
+topoSort.graphNEL <- function(object, index=FALSE){
+  topoSortMAT(as(object,"matrix"), index=index)
+}
+
+topoSort.matrix <- topoSort.Matrix <- function(object, index=FALSE){
+  topoSortMAT(object, index=index)
+}
+
+
+
+topoSort_vparList<- function(vpaL){
 
   ## sdp: same as setdiff(A[x],A[unique(y)]); x: logical; y integers
   ## faster than setdiff

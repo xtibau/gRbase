@@ -32,11 +32,12 @@ rip.matrix <- function(object, root=NULL, nLevels=NULL){
   ripMAT(object, root=root, nLevels=nLevels)
 }
 
+## FIXME: rip.Matrix 
+rip.Matrix <- function(object, root=NULL, nLevels=NULL){
+  ripMAT(object, root=root, nLevels=nLevels)
+ ## ripMAT(as(object,"matrix"), root=root, nLevels=nLevels)
+}
 
-## rip <- function(object, root=NULL, nLevels=NULL){
-##   amat <- as.adjMAT(object)
-##   ripMAT(amat, root=root, nLevels=nLevels)
-## }
 
 ripMAT <- function(amat, root=NULL, nLevels=NULL){
   
@@ -207,10 +208,33 @@ ripMAT2 <- function(amat, root=NULL, nLevels=NULL){
     }	
   }
   sp <- lapplyI2V(sp, vn)
+
   
   ans <- list(nodes=vn, cliques=cq, separators=sp, parents=pa, children=ch,
               nLevels    = nLevels, createGraph= .createJTreeGraph
               )
+
+  ans$childList<-lapply(graph::edges(.rip2dag(ans)), as.integer) ## FIXME: Not elegant!!
+
+
   class(ans) <- "ripOrder"
   ans
+}
+
+
+
+.rip2dag<-function (rip) {
+  if (length(rip$cliques) > 1) {
+    ft <- cbind(rip$parents, 1:length(rip$parents))
+    ft <- ft[ft[, 1] != 0, , drop = FALSE]
+    V  <- seq_along(rip$parents)
+    if (nrow(ft) == 0) {
+      jt <- new("graphNEL", nodes = as.character(V), edgemode = "directed")
+    } else {
+      jt <- ftM2graphNEL(ft, V = as.character(V), edgemode = "directed")
+    }
+  } else {
+    jt <- new("graphNEL", nodes = "1", edgemode = "directed")
+  }
+  return(jt)
 }

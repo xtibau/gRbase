@@ -3,7 +3,7 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
   if (missing(perm)){
     perm <- integer(0)
     #return(.Internal(aperm(a, perm, resize)))
-    return(aperm(a, perm, resize))
+    return(aperm.default(a, perm, resize))
   }
 
   if (is.character(perm)){
@@ -12,7 +12,7 @@ tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
       stop("Invalid permutation...")
   }
   #ans <- .Internal(aperm(a, perm, resize))
-  ans <- aperm(a, perm, resize)
+  ans <- aperm.default(a, perm, resize)
   if (keep.class){
       class(ans) <- oldClass(a)
   }
@@ -44,7 +44,7 @@ tableOp <- function(t1,t2,op="*"){
   vn2 <- names(dn2)
 
   ## indices of those variables in vn2 which exist in vn1:
-  idx <- match(vn2, vn1)
+  idx <- fmatch(vn2, vn1)
 
   ## indices of those variables in vn2 which do not exist in vn1:
   idx.na <- is.na(idx)
@@ -70,16 +70,16 @@ tableOp <- function(t1,t2,op="*"){
   }
 
   ## Find indices of vn2 in the new "augmented" table
-  ii    <- match(vn2, vn.new)
+  ii    <- fmatch(vn2, vn.new)
 
   ## Create perumation indices; first variables in vn2; then the rest
   perm  <-  c(ii, (1:length(vn.new))[-ii])
 
   if (op == "*") {
-    pot1 <- as.numeric(aperm(pot1, perm, TRUE)) * as.numeric(t2)
+    pot1 <- as.numeric(aperm.default(pot1, perm, TRUE)) * as.numeric(t2)
   }
   else {
-    pot1 <- as.numeric(aperm(pot1, perm, TRUE)) / as.numeric(t2)
+    pot1 <- as.numeric(aperm.default(pot1, perm, TRUE)) / as.numeric(t2)
     pot1[!is.finite(pot1)] <- 0
   }
   dim(pot1)      <- di.new[perm]
@@ -102,19 +102,19 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
   vn2  <- names(dimnames(t2))
 
   ## indices of vn2 in vn1:
-  ii   <- match(vn2, vn1)
+  ii   <- fmatch(vn2, vn1)
   ## indices of vn2 in vn1 followed by indicies of remaining variables in vn1,
   ## so that vn2 varies fastest.
   perm <- c(ii, (1:length(vn1))[-ii])
 
   pot1 <-
     if (restore) {
-      zz    <- op(aperm(t1, perm, TRUE), as.numeric(t2))
+      zz    <- op(aperm.default(t1, perm, TRUE), as.numeric(t2))
       newvn <- c(vn2, vn1[-ii])
-      perm2 <- match(vn1, newvn)
-      aperm(zz, perm2, TRUE)
+      perm2 <- fmatch(vn1, newvn)
+      aperm.default(zz, perm2, TRUE)
     } else {
-      op(aperm(t1, perm, TRUE), as.numeric(t2))
+      op(aperm.default(t1, perm, TRUE), as.numeric(t2))
     }
   if (identical(op, `/`))
     pot1[!is.finite(pot1)] <- 0
@@ -133,7 +133,7 @@ tableSlice <-  function (x, margin, level, impose)
     vn    <- names(dn)
 
     if (is.character(margin)){
-        margin2 <- match(margin, vn)
+        margin2 <- fmatch(margin, vn)
         if (any(is.na(margin2)))
             stop("Variables: ", margin[is.na(margin2)], " do not exist in table...")
     } else {
@@ -143,7 +143,7 @@ tableSlice <-  function (x, margin, level, impose)
     if (is.character(level)){
         level2  <- rep(NA, length(level))
         for (kk in seq_along(margin)){
-            level2[kk] <- match(level[kk],dn[[margin2[kk]]])
+            level2[kk] <- fmatch(level[kk],dn[[margin2[kk]]])
         }
         if (any(is.na(level2)))
             stop("Level: ", level[is.na(level2)], " do not exist in table...")
@@ -161,7 +161,7 @@ tableSlice <-  function (x, margin, level, impose)
         {
             si   <- margin2[ii];
             idx2 <- rep(1:di[si], each=aprod[si], times=length(x)/(di[si]*aprod[si]))
-            zz   <- zz & level2[ii]==idx2
+            zz   <- zz & level2[ii] == idx2
         }
 
         dr<-di[(1:ld)[-margin2]]
@@ -205,25 +205,26 @@ tableMargin <- function (x, margin, keep.class = FALSE)
     oc <- oldClass(x)
     if (length(margin)) {
         if (is.character(margin)) {
-            marg.idx <- match(margin, vn)
-            if (any(is.na(marg.idx)))
-                stop("Variable not in table...\n")
+          marg.idx <- fmatch(margin, vn)
+          if (any(is.na(marg.idx)))
+            stop("Variable not in table...\n")
         }
         else {
-            marg.idx <- margin
+          marg.idx <- margin
         }
         rest.idx <- (seq_along(vn))[-marg.idx]
         nr <- prod(di[marg.idx])
         nc <- prod(di[rest.idx])
-
+        
         z <- rowSumsPrim(
                          matrix(
-                                aperm(x, c(rest.idx, marg.idx), TRUE),
+                                aperm.default(x, c(rest.idx, marg.idx), TRUE),
                                 nrow=nr, ncol=nc, byrow=TRUE))
         attributes(z) <- list(dim=di[marg.idx], dimnames=dn[marg.idx])
 
     } else {
-        return(sum(x))
+      z <- sum(x)
+      #dim(z) <- 1
     }
     if (keep.class)
         class(z) <- oc

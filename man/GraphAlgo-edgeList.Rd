@@ -52,9 +52,7 @@ nonEdgeListMAT(adjmat, matrix = FALSE)
 \value{
   A list or a matrix with edges.
 }
-\author{
-  Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
+\author{  Søren Højsgaard, \email{sorenh@math.aau.dk} }
   
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

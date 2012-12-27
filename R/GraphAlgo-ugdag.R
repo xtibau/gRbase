@@ -58,7 +58,7 @@ ugList <- function(x, result="NEL"){
 ###########################
 
 dag <- function(...,result="NEL", forceCheck=FALSE){
-  result <- match.arg(result, c("NEL","matrix","igraph"))
+  result <- match.arg(result, c("NEL","matrix","Matrix","igraph"))
   dagList(list(...), result=result)
 }
   
@@ -113,27 +113,6 @@ dagList <- function(x, result="NEL", forceCheck=FALSE){
   value
 }
   
-  
-isAcyclicMAT <- function(amat){
-  is.acyc <- TRUE
-  elorder <- NULL
-  active  <- rep(TRUE, nrow(amat))
-  
-  for (ii in 1:nrow(amat)){
-    idx <- rowSums(amat[,active,drop=FALSE])==0
-    if (sum(idx)==0){
-      is.acyc <- FALSE
-      break()
-    }
-    active[idx] <- FALSE
-  }
-  is.acyc
-}
-
-
-isUndirectedMAT <- function(amat){
-  isSymmetric.matrix(amat)
-}
 
 
 
