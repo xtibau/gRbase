@@ -1,6 +1,7 @@
 pkgname <- "gRbase"
 source(file.path(R.home("share"), "R", "examples-header.R"))
 options(warn = 1)
+options(pager = "console")
 library('gRbase')
 
 assign(".oldSearch", search(), pos = 'CheckExEnv')
@@ -599,7 +600,7 @@ flush(stderr()); flush(stdout())
 ### Name: topoSort
 ### Title: Topological sort of vertices in directed
 ### Aliases: topoSort topoSort.graphNEL topoSort.matrix topoSort.Matrix
-###   topoSortMAT topoSort_sp topoSort_st topoSort_vparList
+###   topoSortMAT topoSort_vparList
 ### Keywords: utilities
 
 ### ** Examples

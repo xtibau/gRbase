@@ -24,6 +24,32 @@ topoSort.matrix <- topoSort.Matrix <- function(object, index=FALSE){
 }
 
 
+topoSortMAT <- function(XX_, index=FALSE){
+  if (inherits(XX_, "Matrix")){
+    ans <- .Call("C_topoSort_sp", XX_ ,package="gRbase")
+  } else {
+    if (inherits(XX_, "matrix")){
+      ans <- .Call("C_topoSort_st", XX_ ,package="gRbase")
+    } else {
+      stop("'XX_' must be a matrix or a sparse matrix (a 'dgCMatrix')")
+    }
+  }
+  if (index){
+    if (ans[1]!=-1){
+      ans
+    } else {
+      -1L
+    }
+  } else {
+    if (ans[1]!=-1){
+      colnames(XX_)[ans]
+    } else {
+      character(0)
+    }
+  }
+}
+
+
 
 topoSort_vparList<- function(vpaL){
 

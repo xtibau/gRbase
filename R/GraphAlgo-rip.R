@@ -110,53 +110,13 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
 
   rip2 <-
     structure(list(nodes      = vn[mcidx],               
-                   cliques    = cq,
-                   separators = sp,
-                   parents    = pa,
-                   children   = child,
-                   nLevels    = nLevels
+                   cliques    = cq, separators = sp, parents = pa, children = child,
+                   nLevels    = nLevels, createGraph= .createJTreeGraph,
+                   childList = lapply(graph::edges(.rip2dag(list(cliques=cq, parents=pa))), as.integer)                   
                    ),
               class="ripOrder")
-  rip2$createGraph <- .createJTreeGraph
+
   return(rip2)
-}
-
-
-print.ripOrder <- function(x, ...){
-  idx <- 1:length(x$cliques)
-  cat("cliques\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$cliques, idx)
-  
-  cat("separators\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$separators, idx)
-  
-  cat("parents\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$pa, idx)
-  
-#  cat("Children\n")
-#  mapply(function(xx,ii) cat(" ",ii,paste(xx, collapse=' '),"\n"), x$ch, idx)
-}
-
-.createJTreeGraph <- function(rip){
-  if (length(rip$cliques)>1){
-    ft <-cbind(rip$parents, 1:length(rip$parents))
-    ft <- ft[ft[,1]!=0,, drop=FALSE]
-    V <- seq_along(rip$parents)
-    if (nrow(ft)==0){
-      jt <- new("graphNEL", nodes = as.character(V), edgemode = "undirected")
-    } else {
-      jt <- ftM2graphNEL(ft, V=as.character(V), edgemode="undirected")
-    }
-  } else {
-    jt <- new("graphNEL", nodes = "1", edgemode = "undirected")
-  }
-  return(jt)
-}
-
-
-
-plot.ripOrder <- function(x,...){
-  plot(x$createGraph(x))
 }
 
 ## FIXME: Check issues: A graph with one clique only; a graph with one node only!
@@ -209,17 +169,54 @@ ripMAT2 <- function(amat, root=NULL, nLevels=NULL){
   }
   sp <- lapplyI2V(sp, vn)
 
-  
-  ans <- list(nodes=vn, cliques=cq, separators=sp, parents=pa, children=ch,
-              nLevels    = nLevels, createGraph= .createJTreeGraph
+  ans <- list(nodes=vn,
+              cliques=cq, separators=sp, parents=pa, children=ch,
+              nLevels    = nLevels, createGraph= .createJTreeGraph,
+              childList = lapply(graph::edges(.rip2dag(list(cliques=cq, parents=pa))), as.integer) 
               )
-
-  ans$childList<-lapply(graph::edges(.rip2dag(ans)), as.integer) ## FIXME: Not elegant!!
-
-
   class(ans) <- "ripOrder"
   ans
 }
+
+
+
+print.ripOrder <- function(x, ...){
+  idx <- 1:length(x$cliques)
+  cat("cliques\n")
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$cliques, idx)
+  
+  cat("separators\n")
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$separators, idx)
+  
+  cat("parents\n")
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$pa, idx)
+  
+#  cat("Children\n")
+#  mapply(function(xx,ii) cat(" ",ii,paste(xx, collapse=' '),"\n"), x$ch, idx)
+}
+
+.createJTreeGraph <- function(rip){
+  if (length(rip$cliques)>1){
+    ft <-cbind(rip$parents, 1:length(rip$parents))
+    ft <- ft[ft[,1]!=0,, drop=FALSE]
+    V <- seq_along(rip$parents)
+    if (nrow(ft)==0){
+      jt <- new("graphNEL", nodes = as.character(V), edgemode = "undirected")
+    } else {
+      jt <- ftM2graphNEL(ft, V=as.character(V), edgemode="undirected")
+    }
+  } else {
+    jt <- new("graphNEL", nodes = "1", edgemode = "undirected")
+  }
+  return(jt)
+}
+
+
+
+plot.ripOrder <- function(x,...){
+  plot(x$createGraph(x))
+}
+
 
 
 

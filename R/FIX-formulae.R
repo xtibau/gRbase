@@ -113,7 +113,7 @@ extract.power<-function(fff){
 
 # Notes, functions and examples for generator lists (model formulae
 # for hierarchical loglinear models) in R. 
-# Includes functions dual.rep, add.edge, delete.edge and is.graphical.
+# Includes functions dual.rep, add.edge, delete.edge and ..is.graphical.
 # I havent tried to optimise the functions in any way, merely to get
 # versions which work. 
 # David Edwards, 12.5.2004.
@@ -162,7 +162,7 @@ extract.power<-function(fff){
 
 # A function to write a generator as a string:
 #
-showg <- function(g, v.sep="*") {
+..showg <- function(g, v.sep="*") {
   if (length(g)==0)
     s<-'<empty>'
   else {s <- g[1];
@@ -175,12 +175,12 @@ showg <- function(g, v.sep="*") {
 
 # Sometimes we may need the empty set
 #g5 <- vector()
-#showg(g5)
+#..showg(g5)
 
 # A function to read a generator as a string. 
 # nb: s is a character (vector), but must have length one.
 #
-readg <- function(s, v.sep="*") {
+..readg <- function(s, v.sep="*") {
   g <- character(0)
   s <- paste(s, v.sep, sep="") # add a separator
   s <- gsub(" ","",s) # strip spaces
@@ -204,10 +204,10 @@ readg <- function(s, v.sep="*") {
 # Function to write a generator list as a formula
 showf <- function(f, g.sep="+", v.sep="*") {
    if (length(f)==0) s <- '<empty formula>' else {
-   s <- showg(f[[1]])
+   s <- ..showg(f[[1]])
    if (length(f)>1)
      for (i in 2:length(f))
-       s <- paste(s, showg(f[[i]],v.sep), sep=g.sep)}
+       s <- paste(s, ..showg(f[[i]],v.sep), sep=g.sep)}
    s
 }
 
@@ -215,9 +215,9 @@ showf <- function(f, g.sep="+", v.sep="*") {
 # nb: length of string must be one
 
 readf <- function(s, v.sep="*", g.sep="+") {
-  gens <- readg(s, g.sep) 
+  gens <- ..readg(s, g.sep) 
   l <- list(length(gens))
-  for (i in 1:length(gens)) l[[i]] <- readg(gens[i], v.sep)
+  for (i in 1:length(gens)) l[[i]] <- ..readg(gens[i], v.sep)
   l
 }
 
@@ -226,12 +226,12 @@ readf <- function(s, v.sep="*", g.sep="+") {
 
 # To get the union of all generators i a list l:
 
-varset <- function(f) unique(unlist(f))
+..varset <- function(f) unique(unlist(f))
 
 # To find out whether a generator g is contained in (is a subset of
 # some element of) a list l: 
 
-in.list <- function(g, l)
+..in.list <- function(g, l)
   any(unlist(lapply(l, function(xx) all(is.element(g, xx)))))
 
 # To find out whether a generator g contains an element of a list l:
@@ -241,7 +241,7 @@ in.list <- function(g, l)
 # A function to find out whether the k.th generator in a list 
 # is contained in any of the others: 
 
-is.cont <- function(k, l) {
+..is.cont <- function(k, l) {
   g <- l[[k]]
   a <- sapply(l, function(xx) all(is.element(g, xx)))
   a[k] <- FALSE
@@ -251,7 +251,7 @@ is.cont <- function(k, l) {
 # A function to find out whether the k.th generator in a list
 # contains any of the others 
 
-contains <- function(k, l) {
+..contains <- function(k, l) {
   g <- l[[k]]
   a <- unlist(lapply(l, function(xx) all(is.element(xx, g))))
   a[k] <- FALSE
@@ -288,14 +288,14 @@ contains <- function(k, l) {
 
 #m1 <- readf('A.B+A.C')
 #showf(m1)
-#showf(dual.rep(m1, varset(m1)))
+#showf(dual.rep(m1, ..varset(m1)))
 
 #m2 <- readf('B.D+A.D+C.D')
 #showf(m2)
-#showf(dual.rep(m2, varset(m2)))
+#showf(dual.rep(m2, ..varset(m2)))
 
 # The dual of the dual should be the same as the original
-#showf(dual.rep(dual.rep(m2, varset(m2)), varset(m2), F))
+#showf(dual.rep(dual.rep(m2, ..varset(m2)), ..varset(m2), F))
 
 # Function to delete 'edge' from a generator list, by (i) converting
 # generator list to dual representation, 
@@ -304,7 +304,7 @@ contains <- function(k, l) {
 # it can also have length >2, ie. be a higher-order interaction.
 
 .delete.edge <- function(m, edge) {
-  S <- varset(m)
+  S <- ..varset(m)
   dr <- dual.rep(m, S)
   dr <- c(dr, list(edge))
   removeRedundant(dual.rep(dr, S, FALSE)) 
@@ -324,7 +324,7 @@ contains <- function(k, l) {
 # it can also have length >2, ie. be a higher-order interaction.
 
 .add.edge <- function(m, edge) {
-  S <- varset(m)
+  S <- ..varset(m)
   dr <- dual.rep(m, S)
   k <- length(dr)
   if (k>0) {for (i in 1:k) if (setequal(dr[[i]], edge)) dr[[i]] <- vector()} 
@@ -351,15 +351,15 @@ contains <- function(k, l) {
 # generators have length 2, 
 # we get a neat function for graphicalness:
  
-is.graphical <- function(m) {
-   dr <- dual.rep(m, varset(m))
+..is.graphical <- function(m) {
+   dr <- dual.rep(m, ..varset(m))
    lengths <- lapply(dr, length)
    all(lengths==2)
 }
 
-#is.graphical(readf('A.B+A.C+B.C'))
-#is.graphical(readf('A.B.C'))
-#is.graphical(readf('A.B+B.C'))
+#..is.graphical(readf('A.B+A.C+B.C'))
+#..is.graphical(readf('A.B.C'))
+#..is.graphical(readf('A.B+B.C'))
 
 
 

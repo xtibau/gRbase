@@ -5,10 +5,14 @@
 \alias{triangulate.Matrix}
 \alias{triangulate.igraph}
 \alias{triangulateMAT}
+
+
+
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Triangulation of an undirected graph}
 \description{
-  This function will triangulate an undirected graph by adding fillins. 
+  This function will triangulate an undirected graph by adding fill-ins. 
 }
 \usage{
 triangulate(object, ...)
@@ -20,31 +24,44 @@ triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{object}{An undirected graph represented either as a 'graphNEL', a 'matrix' or
-    an 'igraph'.}
-%  \item{amat}{An adjacency matrix (symmetrical)}
-  \item{method}{Triangulation method. Either "mcwh" (minimum clique
-    weight heuristic) which is implemented in C or "r" (an experimental
-    R version)}
-  \item{nLevels}{Typically, the number of levels of the variables
-    (nodes) when these are discrete. Used in determining the
+  \item{object}{An undirected graph represented either as a \code{graphNEL},
+    a (dense) \code{matrix}, a (sparse) \code{dgCMatrix} or an \code{igraph}.}
+  % \item{amat}{An adjacency matrix (symmetrical)}
+
+  \item{method}{Triangulation method. Only valid option is "mcwh" (minimum clique
+    weight heuristic). See section   'details'.}
+
+  \item{nLevels}{Typically, the number of levels of the
+    variables (nodes) when these are discrete. Used in determining the
     triangulation using a "minimum clique weight heuristic". See section
     'details'.}
-  \item{result}{The type (representation) of the result. Possible values
-    are 'graphNEL', 'matrix', 'Matrix' and 'igraph'. Default is the same type as
-    the input graph.
-  
-  }
+
+  \item{result}{The type (representation) of the result. Same possible
+    representations as the input graph, and default is the same type as
+    the input graph.  }
+
   \item{...}{Additional arguments, currently not used.}
-  \item{amat}{Adjacency matrix}
+
+  \item{amat}{Adjacency matrix; a (dense) \code{matrix}, or a (sparse)
+    \code{dgCMatrix}. } 
 }
-\details{
-  The triangulation is made so as the total state space is kept low by
-  applying a minimum clique weight heuristic. 
+
+
+\details{ The triangulation is made so as the total state space is kept
+  low by applying a minimum clique weight heuristic: When a fill-in is
+  necessary, the algorithm will search for an edge to add such that the
+  complete set to be formed will have as small a state-space as
+  possible. 
+
+  If \code{nLevels}
+  is the same for all nodes then the heuristic aims at keeping the
+  clique sizes small.
 }
-\value{
-  A triangulated graph represented either as a 'graphNEL', a 'matrix' or
-  an 'igraph'.
+
+\value{ A
+  triangulated graph represented either as a \code{graphNEL}, a (dense)
+  \code{matrix}, a (sparse) \code{dgCMatrix} or an \code{igraph}.
+
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
@@ -54,9 +71,9 @@ triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
 \seealso{
   \code{\link{ug}}
   \code{\link{dag}}
-  \code{\link{mcs}}
-  \code{\link{rip}}
-  \code{\link{moralize}}
+  \code{\link{mcs}},   \code{\link{mcsMAT}}
+  \code{\link{rip}},   \code{\link{ripMAT}},
+  \code{\link{moralize}},   \code{\link{moralizeMAT}}
 }
 \examples{
 ## graphNEL
