@@ -1,8 +1,35 @@
 \name{gRbase-internal}
 
-\alias{solveSPD} %% FIXME: Inverse of symmetric pos. def. matrix; needs .Rd
+%% Various R/C/C++ implementations; 
+%% --------------------------------
+%% no need to document further
+\alias{topoSort_sp}
+\alias{topoSort_st}
+
+\alias{triangulateMAT_stC}
+\alias{triangulateMAT_spR}
+\alias{triangulateMAT_spCpp} %% RcppEigen
+\alias{triangulateMAT_stCpp} %% Wrapper to Eigen version
+
+\alias{mcsMAT_stR}
+\alias{mcsMAT_stC}
+\alias{mcsMAT_spR}
+
+\alias{moralizeMAT_stR}
+\alias{moralizeMAT_spC}
+
+\alias{sp_topoSort} %% FIXME: Delete when new version of gRain is on CRAN. 
+
+%% Fast coercion of "matrix" to "dgCMatrix"
+\alias{asdgCMatrix}         
+\alias{asdgCMatrix.matrix}
+\alias{asdgCMatrix.Matrix}
+
+\alias{igraph-class}
 
 %% Needs .Rd - New Cpp implementations
+%% -----------------------------------
+%% Undocumented utilities
 \alias{sp_getXi}
 \alias{sp_getXj}
 \alias{sp_getXij}
@@ -16,20 +43,13 @@
 \alias{st_fromto}
 
 \alias{ripMAT2}
-\alias{triangulate_stR}
-\alias{triangulateMAT_stC}
-\alias{triangulateMAT_spR}
-\alias{moralizeMAT_stR}
-\alias{moralizeMAT_spC}
 \alias{moralMAT}
-\alias{mcsMAT_stR}
-\alias{mcsMAT_stC}
-\alias{mcsMAT_spR}
 \alias{lapplyV2I}
 \alias{lapplyI2V}
 \alias{lapplyMatch}
 
-\alias{sp_topoSort} %% FIXME: Delete when new version of gRain is on CRAN. 
+\alias{solveSPD} %% FIXME: Inverse of symmetric pos. def. matrix; needs .Rd
+
 
 %% Needs .Rd
 
@@ -43,7 +63,10 @@
 \alias{isGSD_glist}
 \alias{properties_glist}
 
-%% Array operations in C.
+%% Array operations in C
+%% ---------------------
+%% Examples of the usage of these functions are given in
+%% vignette
 \alias{aperm2}
 \alias{cell2entry}
 \alias{entry2cell}
@@ -55,21 +78,10 @@
 \alias{permuteCellEntries}
 
 %%%
-%%% Functions comming from the gRain package
-%%%
-
-\alias{mcwhSH}
-\alias{makeDimNames}
-\alias{ripOrderGreen}
-\alias{triangPG}
-\alias{triangR}
-\alias{triangRMAT}
-\alias{igraph-class}
-
-%%%
 %%% SHD stuff
 %%%
 
+\alias{makeDimNames}
 \alias{names2pairs}
 \alias{rowmat2list}
 \alias{colmat2list}
@@ -86,15 +98,10 @@
 %% !!
 
 %% DED stuff
-\alias{showg}
-\alias{readg}
-\alias{showf}
-\alias{readf}
-\alias{varset}
-\alias{in.list}
-\alias{is.cont}
-\alias{contains}
-\alias{is.graphical}
+\alias{showf}  % used in old gRbase stuff; delete later
+\alias{readf}  % used in old gRbase stuff; delete later
+
+
 \alias{dual.rep}
 %% !!
 
@@ -112,8 +119,6 @@
 \alias{dropEdge.gModel}
 
 
-
-%%\alias{fun}
 
 \alias{all.subsets}
 \alias{extract.power}
@@ -135,3 +140,10 @@
 }
 \keyword{internal}
 
+%%\alias{showg}
+%%\alias{readg}
+%%\alias{varset}
+%%\alias{in.list}
+%%\alias{is.cont}
+%%\alias{contains}
+%%\alias{is.graphical}

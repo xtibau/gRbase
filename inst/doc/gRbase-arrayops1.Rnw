@@ -1,8 +1,8 @@
-%\VignetteIndexEntry{gRbase-arrayops: Primitive array operations in gRbase}
+%\VignetteIndexEntry{gRbase-arrayops1: Primitive array operations in gRbase}
 %\VignettePackage{gRbase}
 
-\documentclass[a4paper]{article}
-%\usepackage{a4wide}
+\documentclass{article}
+\usepackage{a4wide}
 %\usepackage[T1]{fontenc}
 \usepackage{inputenx}
 \usepackage{boxedminipage,color}

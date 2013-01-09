@@ -1,23 +1,12 @@
 ## Find max cliques from adjacency matrix
 ##
+## FIXME: Some check of input in maxCliqueMAT is needed...
+##
 maxCliqueMAT <- function(amat)
 {
-  ## Notice: No checks are made for whether the graph is undirected
-##   which.arr.ind2<-function(m){
-##     nr  <- nrow(m)
-##     nc  <- ncol(m)
-##     rr <- rep.int(1:nr, nc)
-##     cc <- rep(1:nc, each=nr)
-##     rbind(rr[m!=0L], cc[m!=0L])
-##   }
-  
-  #vn <- colnames(amat)
   vn <- dimnames(amat)[[2L]]
-  nv <- ncol(amat)
-
-##   print(class(amat))
-##   print(amat)
-##   print(amat !=0)
+  ##   nv <- ncol(amat)
+  ##   ne   <- ncol(em)
 
   if(class(amat)=="dgCMatrix"){
     ##em <- t(which((amat!=0), arr.ind=TRUE))
@@ -30,21 +19,8 @@ maxCliqueMAT <- function(amat)
     em <- t.default(st_fromto(amat)) ## FIXME: Should be possible to transpose on cpp side
   }
   
-  ne <- ncol(em)
-
-##   print(nv)
-##   print(ne)
-##   print(em)
-
   ans2 <- maxClique(nodes=vn, edgeMat=em)
-##   print(ans2)
-  
-##   ans <- .Call("maxClique", 
-##                as.integer(nv), as.integer(ne), as.integer(em-1), 
-##                PACKAGE="RBGL")
-  
-##   ans_names <- lapply(ans, function(x) { vn[x] }) ## FIXME: An index argument could control this
-##   list("maxCliques"=ans_names) ## FIXME: Must the result really be a list of lists?
-
   ans2
 }
+
+

@@ -4,8 +4,8 @@
 \alias{topoSort.matrix}
 \alias{topoSort.Matrix}
 \alias{topoSortMAT}
-\alias{topoSort_sp}
-\alias{topoSort_st}
+
+
 \alias{topoSort_vparList}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{

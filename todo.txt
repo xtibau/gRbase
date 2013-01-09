@@ -1,9 +1,10 @@
-* There seems to be a bug in the C implmentation of mcs. Need to
-  reimplement this for sparse and standard adjacency matrices.
+* C++ version of mcs for dgCMatrices needed
 
-* is.DAG, is.UG, is.TUG: not yet implemented for igraph's
+* C++ version of ripMAT for dgCMatrices needed
 
 * mcsmarked and jTree: not yet implemented for Matrix.
 
-* all .Matrix methods should be .dgCMatrix methods.
+* Perhaphs all .igraph methods should be removed
+
+
 

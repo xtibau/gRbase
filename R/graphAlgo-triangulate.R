@@ -38,10 +38,15 @@ triangulateMAT <- function(amat, method="mcwh",
     result <- match.arg(result, c("matrix","graphNEL","igraph", "Matrix"))
   }
 
+##   if (cls =="dgCMatrix"){
+##     ans <- triangulateMAT_spR(amat)
+##   } else {
+##     ans <- triangulateMAT_stC(amat)
+##   }
   if (cls =="dgCMatrix"){
-    ans <- triangulateMAT_spR(amat)
+    ans <- triangulateMAT_spCpp(amat, nLevels)
   } else {
-    ans <- triangulateMAT_stC(amat)
+    ans <- triangulateMAT_stCpp(amat, nLevels)
   }
   as(ans, result)
 }
@@ -102,108 +107,67 @@ triangulateMAT_spR<- function(amat, vn=colnames(amat), nLevels=rep(2, length(vn)
 }
 
 ## FIXME: Fra kommentarer ovenfor ser det ud som om dette ikke virker
-triangulate_stR <- function(object, vn=nodes(object), nLevels=rep(2, length(vn))){
+## .triangulate_stR <- function(object, vn=nodes(object), nLevels=rep(2, length(vn))){
   
-  amat       <- amat2 <- as.adjMAT(object)
+##   amat       <- amat2 <- as.adjMAT(object)
 
-  anodes     <- vn     
-  activeList <- gnodes <- rep(1, length(vn))
-  wgt        <- rep(NA,length(vn))
+##   anodes     <- vn     
+##   activeList <- gnodes <- rep(1, length(vn))
+##   wgt        <- rep(NA,length(vn))
   
-  names(activeList) <- names(gnodes) <- names(nLevels) <- names(wgt) <- vn
+##   names(activeList) <- names(gnodes) <- names(nLevels) <- names(wgt) <- vn
 
-  repeat{
-    ##cat("RUN\n")
-    ##cat("activeList:", paste(vn[activeList==1], collapse=' '),"\n")
-    ##print(activeList)
-    ##print(gnodes)
-    for (ii in 1:length(anodes)){
-      cn <- anodes[ii]
-      if (activeList[cn]==1){
-        ##nb <-  intersect(anodes, names(which(amat[cn,]==1)))
-        ##print(as.numeric(amat[cn,]))
-        ##print(as.numeric(amat[cn,])* gnodes)
-        ##print((as.numeric(amat[cn,])* gnodes)==1)
-        nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
-        ##nb <-  names((as.numeric(amat[cn,]) * gnodes)==1)
-        w  <-  prod(nLevels[c(cn,nb)])
-        wgt[cn] <- w 
-        ##   cat("cn:", cn, "nb:", paste(nb, collapse=' '), "wgt:", w, "\n")
-        activeList[cn] <- 0
-      }
-    }
-    ##    print(wgt)
-    id    <- which.min(wgt)
-    wgt[id] <- Inf
+##   repeat{
+##     ##cat("RUN\n")
+##     ##cat("activeList:", paste(vn[activeList==1], collapse=' '),"\n")
+##     ##print(activeList)
+##     ##print(gnodes)
+##     for (ii in 1:length(anodes)){
+##       cn <- anodes[ii]
+##       if (activeList[cn]==1){
+##         ##nb <-  intersect(anodes, names(which(amat[cn,]==1)))
+##         ##print(as.numeric(amat[cn,]))
+##         ##print(as.numeric(amat[cn,])* gnodes)
+##         ##print((as.numeric(amat[cn,])* gnodes)==1)
+##         nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
+##         ##nb <-  names((as.numeric(amat[cn,]) * gnodes)==1)
+##         w  <-  prod(nLevels[c(cn,nb)])
+##         wgt[cn] <- w 
+##         ##   cat("cn:", cn, "nb:", paste(nb, collapse=' '), "wgt:", w, "\n")
+##         activeList[cn] <- 0
+##       }
+##     }
+##     ##    print(wgt)
+##     id    <- which.min(wgt)
+##     wgt[id] <- Inf
     
-    ##    print(id)
-    cn <- vn[id]
-    nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
-    ## nb <- intersect(anodes, names(which(amat[cn,]==1)))
-    activeList[cn] <- -1
-    activeList[nb] <-  1
+##     ##    print(id)
+##     cn <- vn[id]
+##     nb <- (vn[(as.numeric(amat[cn,])* gnodes)==1])
+##     ## nb <- intersect(anodes, names(which(amat[cn,]==1)))
+##     activeList[cn] <- -1
+##     activeList[nb] <-  1
     
-    ##   cat("completing bd for node:", cn, "nb:", paste(nb, collapse=' '), "\n")
+##     ##   cat("completing bd for node:", cn, "nb:", paste(nb, collapse=' '), "\n")
     
-    if (length(nb)>1){
-      for (i in 1:(length(nb)-1)){
-        for (j in (i+1):length(nb)){
-          amat2[nb[i],nb[j]] <- amat2[nb[j],nb[i]] <- TRUE
-          amat [nb[i],nb[j]] <- amat [nb[j],nb[i]] <- TRUE
-        }
-      }
-    }
+##     if (length(nb)>1){
+##       for (i in 1:(length(nb)-1)){
+##         for (j in (i+1):length(nb)){
+##           amat2[nb[i],nb[j]] <- amat2[nb[j],nb[i]] <- TRUE
+##           amat [nb[i],nb[j]] <- amat [nb[j],nb[i]] <- TRUE
+##         }
+##       }
+##     }
 
-    gnodes[id] <- 0
-    #print(anodes)
-    anodes <- setdiff(anodes,cn)
-    if (length(anodes)==1) 
-      break()
-                                        #    amat   <- amat[anodes, anodes]
-  }
-  return(amat2)
-  #as(amat2, "graphNEL")
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+##     gnodes[id] <- 0
+##     #print(anodes)
+##     anodes <- setdiff(anodes,cn)
+##     if (length(anodes)==1) 
+##       break()
+##                                         #    amat   <- amat[anodes, anodes]
+##   }
+##   return(amat2)
+##   #as(amat2, "graphNEL")
+## }
 
 
