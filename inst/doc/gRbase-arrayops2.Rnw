@@ -23,17 +23,17 @@
 
 \renewenvironment{Schunk}{\linespread{.85}\small}{}
 
-\definecolor{MyGray}{rgb}{0.95,0.95,0.95}
-\makeatletter
-\renewenvironment{Schunk}{
-  \begin{lrbox}{\@tempboxa}
-    \begin{boxedminipage}
-      {\columnwidth}\small}
-    {\end{boxedminipage}
-  \end{lrbox}%
-  \colorbox{MyGray}{\usebox{\@tempboxa}}
-}
-\makeatother
+% \definecolor{MyGray}{rgb}{0.95,0.95,0.95}
+% \makeatletter
+% \renewenvironment{Schunk}{
+%   \begin{lrbox}{\@tempboxa}
+%     \begin{boxedminipage}
+%       {\columnwidth}\small}
+%     {\end{boxedminipage}
+%   \end{lrbox}%
+%   \colorbox{MyGray}{\usebox{\@tempboxa}}
+% }
+% \makeatother
 
 \parindent0pt\parskip5pt
 

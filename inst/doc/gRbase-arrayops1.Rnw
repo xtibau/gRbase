@@ -14,18 +14,18 @@
 
 \definecolor{myGray}{rgb}{0.95,0.95,0.95}
 
-\makeatletter
-\renewenvironment{Schunk}{
-  \begin{lrbox}{\@tempboxa}
-    \begin{boxedminipage}
-      {\columnwidth}\small}
-    {\end{boxedminipage}
-  \end{lrbox}%
-  \colorbox{myGray}{\usebox{\@tempboxa}}
-}
-\makeatother
+% \makeatletter
+% \renewenvironment{Schunk}{
+%   \begin{lrbox}{\@tempboxa}
+%     \begin{boxedminipage}
+%       {\columnwidth}\small}
+%     {\end{boxedminipage}
+%   \end{lrbox}%
+%   \colorbox{myGray}{\usebox{\@tempboxa}}
+% }
+% \makeatother
 
-%\renewenvironment{Schunk}{\linespread{.85}\small}{}
+\renewenvironment{Schunk}{\linespread{.85}\small}{}
 
 \maketitle
 
@@ -37,6 +37,7 @@
 
 @
 <<echo=F,results=hide>>=
+options(prompt="R> ")
 options(useFancyQuotes="UTF-8")
 @ %def
 

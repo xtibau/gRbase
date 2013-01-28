@@ -11,13 +11,18 @@
 
 using namespace Rcpp;
 
-// sparse matrix
 RcppExport SEXP C_asdgCMatrix_st ( SEXP XX_ ){
   typedef Eigen::SparseMatrix<double> SpMat;
   typedef Eigen::Map<Eigen::MatrixXd> MapMatd;
   MapMatd X(Rcpp::as<MapMatd>(XX_));
-  SpMat ans = X.sparseView();
-  return(wrap(ans));
+  SpMat Xsparse = X.sparseView();
+  S4 Xout(wrap(Xsparse));
+  NumericMatrix Xin(XX_);
+  List dn = clone(List(Xin.attr("dimnames")));
+  if (dn.length()>0){
+    Xout.slot("Dimnames") = dn;
+  }
+  return(Xout);
 }
 
 

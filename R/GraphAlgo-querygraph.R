@@ -10,13 +10,14 @@
 
 querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
   
-  ## From graph / RBGL packages
+  ## From RBGL / graph packages
   graph.RBGL <-
     c("maxClique", 
       "connectedComp",
       "separates",
+      "is.triangulated",
+      
       "adj", 
-      "is.triangulated", 
       "subgraph",
       "nodes",
       "edges")
@@ -35,33 +36,33 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
       "simplicialNodes",
       "vpar")
   
-  op=match.arg(op, choices=c(graph.RBGL, gRbase))
-
+  op <- match.arg(op, choices=c(graph.RBGL, gRbase))
   object <- coerceGraph(object, "graphNEL")
   
   switch(op,
          ## Functions from graph/RBGL package here.
-         "maxClique"=        { maxClique(object)$maxCliques              },
-         "connectedComp"=    { connectedComp(object)                     },
-         "separates"=        { separates(set, set2, set3, object)        },
-         "adj"=              { adj(object, set)                          },    
-         "is.triangulated"=  { is.triangulated(object)                   },         
-         "subgraph"=         { subGraph(set, object)                     },         
+         "maxClique"=        { RBGL::maxClique(object)$maxCliques               },
+         "connectedComp"=    { RBGL::connectedComp(object)                      },
+         "separates"=        { RBGL::separates(set, set2, set3, object)         },
+         "is.triangulated"=  { RBGL::is.triangulated(object)                    },
+         
+         "adj"=              { graph::adj(object, set)                          },    
+         "subgraph"=         { graph::subGraph(set, object)                     },         
          "nodes"=            { graph::nodes(object)                             },
          "edges"=            { graph::edges(object)                             },         
          ## gRbase functions
-         "ancestors"=,"an"=  { ancestors(set, object)		         },
-         "ancestralGraph"=   { ancestralGraph(set, object)	         },
-         "ancestralSet"=     { ancestralSet(set, object)                 },
-         "children"=         { children(set, object)         	         },
-         "closure"=          { closure(set, object)          	         },
-         "edgeList"=         { edgeList(object)	       		         },
-         "is.decomposition"= { is.decomposition(set, set2, set3, object) },
-         "is.complete"=      { is.complete(object, set)         	 },
-         "is.simplicial"=    { is.simplicial(set, object)         	 },
-         "parents"=          { parents(set, object)         		 },
-         "simplicialNodes"=  { simplicialNodes(object)         	         },
-         "vpar"=             { vpar(object)         			 }
+         "ancestors"=,"an"=  { gRbase::ancestors(set, object)		         },
+         "ancestralGraph"=   { gRbase::ancestralGraph(set, object)	         },
+         "ancestralSet"=     { gRbase::ancestralSet(set, object)                 },
+         "children"=         { gRbase::children(set, object)         	         },
+         "closure"=          { gRbase::closure(set, object)          	         },
+         "edgeList"=         { gRbase::edgeList(object)	       		         },
+         "is.decomposition"= { gRbase::is.decomposition(set, set2, set3, object) },
+         "is.complete"=      { gRbase::is.complete(object, set)         	 },
+         "is.simplicial"=    { gRbase::is.simplicial(set, object)         	 },
+         "parents"=          { gRbase::parents(set, object)         		 },
+         "simplicialNodes"=  { gRbase::simplicialNodes(object)         	         },
+         "vpar"=             { gRbase::vpar(object)         			 }
          )  
 }
 
@@ -93,8 +94,7 @@ ancestors <- function(set, object){
   setdiff(An, setorig)
 }
 
-## adjmat based
-## Must be very slow !!!
+## adjmat based -- Must be very slow !!!
 ancestralSet <- function(set, object){
 
   amat  <- as.adjMAT(object)

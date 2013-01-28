@@ -1,6 +1,22 @@
+2013-01-29 Søren Højsgaard <sorenh@math.aau.dk>	
+
+	* mcsMAT now implemented via Rcpp for sparse (dgCMatrix)
+	and dense matrices.
+
+	* ripMAT re-implemented in R. Much faster now, but a C
+	implementation is on the todo-list.
+
+	* bug fixed in asdgCMatrix.
+
+	* getCliques implemented.
+
+	* Vignettes are improved.
+	
+	* Version 1.6-7 uploaded.	
+	
 2013-01-08 Søren Højsgaard <sorenh@math.aau.dk>	
 
-	* triangulateMAT now implemented in Rcpp for sparse (dgCMatrix)
+	* triangulateMAT now implemented via Rcpp for sparse (dgCMatrix)
 	and dense matrices.
 
 	* asdgCMatrix function added. Fast coercion from dense to

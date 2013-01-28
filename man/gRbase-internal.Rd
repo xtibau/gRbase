@@ -3,8 +3,8 @@
 %% Various R/C/C++ implementations; 
 %% --------------------------------
 %% no need to document further
-\alias{topoSort_sp}
-\alias{topoSort_st}
+\alias{topoSortMAT_spCpp}
+\alias{topoSortMAT_stCpp}
 
 \alias{triangulateMAT_stC}
 \alias{triangulateMAT_spR}
@@ -14,6 +14,8 @@
 \alias{mcsMAT_stR}
 \alias{mcsMAT_stC}
 \alias{mcsMAT_spR}
+\alias{mcsMAT_spCpp}
+\alias{mcsMAT_stCpp}
 
 \alias{moralizeMAT_stR}
 \alias{moralizeMAT_spC}
@@ -26,6 +28,32 @@
 \alias{asdgCMatrix.Matrix}
 
 \alias{igraph-class}
+
+%% Some methods which need not be in the proper .Rd files (to shorten
+%% the listing)
+
+
+\alias{varNames.parray}
+\alias{nLevels.parray}
+\alias{valueLabels.parray}
+
+\alias{varNames.array}
+\alias{nLevels.array}
+\alias{valueLabels.array}
+\alias{print.parray}
+
+
+
+
+
+%% Some igraph stuff. Should be removed one day
+\alias{mcs.igraph}
+\alias{mcsmarked.igraph}
+\alias{junctionTree.igraph}
+\alias{jTree.igraph}
+\alias{rip.igraph}
+\alias{moralize.igraph}
+\alias{triangulate.igraph}
 
 %% Needs .Rd - New Cpp implementations
 %% -----------------------------------

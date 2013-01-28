@@ -49,7 +49,7 @@ topoSort(object, index = FALSE)
   }
 \section{Warning }{
   Do not use \code{index=TRUE} when the input is a \code{graphNEL}
-  object; the result is unpredictable. 
+  object; the result is unpredictable.
 } 
 
 \seealso{

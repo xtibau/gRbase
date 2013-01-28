@@ -296,6 +296,34 @@ nonEdgeListMAT(gm)
 
 
 cleanEx()
+nameEx("GraphAlgo-getClique")
+### * GraphAlgo-getClique
+
+flush(stderr()); flush(stdout())
+
+### Name: getCliques
+### Title: Get cliques of an undirected graph
+### Aliases: getCliques getCliques.graphNEL getCliques.default maxCliqueMAT
+### Keywords: utilities
+
+### ** Examples
+
+## graphNEL
+uG1 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a)
+getCliques(uG1)
+
+## adjacency matrix
+uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="matrix")
+getCliques(uG2)
+
+## adjacency matrix (sparse)
+uG3 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="Matrix")
+getCliques(uG3)
+
+
+
+
+cleanEx()
 nameEx("GraphAlgo-glist2adjMAT")
 ### * GraphAlgo-glist2adjMAT
 
@@ -311,8 +339,10 @@ flush(stderr()); flush(stdout())
 glist <- list(1:3,2:4,4:5)
 am1 <- glist2adjMAT(glist)
 am2 <- vpaL2adjMAT(glist)
-## plot(coerceGraph(am1, "igraph"))
-## plot(coerceGraph(am2, "igraph"))
+if (interactive()){
+ plot(as(am1, "graphNEL"))
+ plot(as(am2, "graphNEL"))
+}
 
 
 
@@ -396,9 +426,8 @@ flush(stderr()); flush(stdout())
 
 ### Name: mcs
 ### Title: Maximum cardinality search on undirected graph.
-### Aliases: mcs mcs.graphNEL mcs.igraph mcs.matrix mcs.Matrix mcsMAT
-###   mcsmarked mcsmarked.graphNEL mcsmarked.igraph mcsmarked.matrix
-###   mcsmarkedMAT
+### Aliases: mcs mcs.graphNEL mcs.matrix mcs.Matrix mcsMAT mcsmarked
+###   mcsmarked.graphNEL mcsmarked.matrix mcsmarkedMAT
 ### Keywords: utilities
 
 ### ** Examples
@@ -455,8 +484,8 @@ flush(stderr()); flush(stdout())
 
 ### Name: moralize
 ### Title: Moralize a directed acyclic graph
-### Aliases: moralize moralize.graphNEL moralize.igraph moralize.matrix
-###   moralize.Matrix moralizeMAT
+### Aliases: moralize moralize.graphNEL moralize.matrix moralize.Matrix
+###   moralizeMAT
 ### Keywords: utilities
 
 ### ** Examples
@@ -483,13 +512,14 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-## A graphNEL object
+## Maximal prime subgraph decomposition - a graphNEL object
 g1 <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e)
+if (interactive()) plot(g1)
 x <- mpd(g1)
 
-
-## An adjacency matrix
+## Maximal prime subgraph decomposition - an adjacency matrix
 g1m <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e, result="matrix")
+if (interactive()) plot(as(g1m, "graphNEL"))
 x <- mpdMAT(g1m)
 
 
@@ -506,7 +536,7 @@ flush(stderr()); flush(stdout())
 ### Title: Simple operations on undirected and directed acyclic graphs.
 ### Aliases: ancestors ancestralGraph ancestralSet children closure
 ###   is.complete is.decomposition is.simplicial parents simplicialNodes
-###   as.adjMAT graphNEL2ftM maxCliqueMAT
+###   as.adjMAT graphNEL2ftM
 ### Keywords: utilities
 
 ### ** Examples
@@ -568,10 +598,10 @@ flush(stderr()); flush(stdout())
 
 ### Name: rip
 ### Title: RIP ordering and junction tree.
-### Aliases: rip rip.graphNEL rip.igraph rip.matrix rip.Matrix ripMAT
-###   print.ripOrder plot.ripOrder jTree jTree.graphNEL jTree.igraph
-###   jTree.matrix junctionTree junctionTree.graphNEL junctionTree.igraph
-###   junctionTree.matrix
+### Aliases: rip rip.graphNEL rip.matrix rip.Matrix ripMAT print.ripOrder
+###   plot.ripOrder jTree jTree.graphNEL jTree.matrix jTree.Matrix
+###   junctionTree junctionTree.graphNEL junctionTree.matrix
+###   junctionTree.Matrix
 ### Keywords: utilities
 
 ### ** Examples
@@ -580,14 +610,13 @@ flush(stderr()); flush(stdout())
 uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
 rip(uG)
 
-## igraph
-uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="igraph")
-rip(uG)
-
 ## adjacency matrix
 uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="matrix")
 rip(uG)
 
+## Sparse matrix
+uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="Matrix")
+rip(uG)
 
 
 
@@ -624,7 +653,7 @@ flush(stderr()); flush(stdout())
 ### Name: triangulate
 ### Title: Triangulation of an undirected graph
 ### Aliases: triangulate triangulate.graphNEL triangulate.matrix
-###   triangulate.Matrix triangulate.igraph triangulateMAT
+###   triangulate.Matrix triangulateMAT
 ### Keywords: utilities
 
 ### ** Examples
@@ -640,10 +669,6 @@ tuG2 <- triangulate(uG2)
 ## adjacency matrix (sparse)
 uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="Matrix")
 tuG2 <- triangulate(uG2)
-
-## igraph
-uG3 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="igraph")
-tuG3 <- triangulate(uG3)
 
 
 
@@ -938,16 +963,15 @@ flush(stderr()); flush(stdout())
 
 ### Name: parray
 ### Title: Representation of and operations on multidimensional tables
-### Aliases: parray as.parray varNames.parray nLevels.parray
-###   valueLabels.parray varNames.array nLevels.array valueLabels.array
-###   print.parray tableMarginPrim
+### Aliases: parray as.parray data2parray
 ### Keywords: utilities
 
 ### ** Examples
 
-t1 <- parray(c("gender","answer"),list(c('male','female'),c('yes','no')), values=1:4)
-t1 <- parray(~gender:answer,list(c('male','female'),c('yes','no')), values=1:4)
-t1 <- parray(~gender:answer,c(2,2), values=1:4)
+
+t1 <- parray(c("gender","answer"), list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- parray(~gender:answer, list(c('male','female'),c('yes','no')), values=1:4)
+t1 <- parray(~gender:answer, c(2,2), values=1:4)
 
 t2 <- parray(c("answer","category"), list(c('yes','no'),c(1,2)), values=1:4+10)
 t3 <- parray(c("category","foo"), c(2,2), values=1:4+100)
@@ -956,6 +980,27 @@ varNames(t1)
 nLevels(t1)
 valueLabels(t1)
 
+
+## Create 1-dimensional vector with dim and dimnames
+x1 <- 1:5
+as.parray(x1)
+x2 <- parray("x", levels=length(x1), values=x1)
+dim(x2)
+dimnames(x2)
+
+## Matrix
+x1 <- matrix(1:6, nrow=2)
+as.parray(x1)
+parray(~a:b, levels=dim(x1), values=x1)
+
+## Extract parrays from data
+## 1) a dataframe
+data(cad1) 
+data2parray(cad1, ~Sex:AngPec:AMI)
+data2parray(cad1, c("Sex","AngPec","AMI"))
+data2parray(cad1, c(1,2,3))
+## 2) a table
+data2parray(UCBAdmissions,c(1,2), normalize="first")
 
 
 

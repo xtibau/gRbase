@@ -5,72 +5,39 @@
 ####
 ######################################################
 
-parray <- function(varNames, levels, values=1, normalize=c("none","first","all"), smooth=0){
 
-  varNames  <- rhsFormula2list(varNames)[[1]]
-  normalize <- match.arg(normalize, choices=c("none","first","all"))
-  varNames  <- rhsFormula2list(varNames)[[1]]
 
+parray <- function(varNames, levels, values=1, normalize="none", smooth=0){
+
+  normalize <- match.arg(normalize, choices=c("none","first","all"))  
+  varNames  <- rhsFormula2list(varNames)[[1]]
   if (smooth>0){
     values <- values + smooth
   }
 
   dn   <- makeDimNames(varNames, levels)
   nlev <- unlist(lapply(dn, length))
-  ans <- array(values, dim=nlev, dimnames=dn)
+  ans  <- array(values, dim=nlev, dimnames=dn)
 
   ## Normalize if requested
   switch(normalize,
          "first" = {
            if (length(nlev)>1){
-             tmp   <- matrix(ans, ncol=dim(ans)[1],byrow=T)
+             tmp   <- matrix(ans, ncol=dim(ans)[1], byrow=TRUE)
              tmp   <- t.default(tmp/rowSumsPrim(tmp))
              ans[] <- tmp             
            } else {
              ans <- ans / sum(ans)
            }},
-         "all"  = {ans <- ans / sum(ans) },
+         "all"  = {
+           ans <- ans / sum(ans)
+         },
          "none" = { } )
   class(ans) <- c("parray","array")
   return(ans)
 }
 
-
-
-
-
-makeDimNames <- function(varNames, levels, sep=''){
-  if (missing(varNames) || is.null(varNames))
-    return(lapply(levels, seq))
-  mapply(function(vv,ll){
-    if (!is.character(ll)){
-      if (length(ll)==1){
-        ll <- 1:ll
-      }
-      ll <- paste(vv,ll,sep="")
-    }
-    ll
-  }, varNames, levels, SIMPLIFY=FALSE)
-}
-
-varNames.array     <- function(x) names(attr(x,"dimnames"))
-nLevels.array      <- function(x) dim(x)
-valueLabels.array  <- function(x) attr(x,"dimnames")
-
-varNames.parray    <- function(x) names(attr(x,"dimnames"))
-nLevels.parray     <- function(x) dim(x)
-valueLabels.parray <- function(x) attr(x,"dimnames")
-
-print.parray  <- function(x,...){
-  class(x)<-NULL
-  print(x)
-  invisible(x)
-}
-
-
-
-
-as.parray  <- function(values, normalize=c("none","first","all"), smooth=0){
+as.parray  <- function(values, normalize="none", smooth=0){
   
   normalize <- match.arg(normalize, choices=c("none","first","all"))
 
@@ -113,6 +80,72 @@ as.parray  <- function(values, normalize=c("none","first","all"), smooth=0){
 
   return(ans)
 }  
+
+data2parray <- function(data, varNames=NULL, normalize="none", smooth=0){
+  cls <- match(class(data), c("data.frame","table", "xtabs", "matrix"))[1]
+  if (is.na(cls)){
+    stop("'data' must be one of  dataframe, table, xtabs, matrix")
+  }
+  
+  .set.varNames <- function(varNames, dataNames){
+    if (is.null(varNames)){
+      if (is.null(dataNames))
+        stop("'data' has no variable names")
+      varNames <- dataNames 
+    } else {
+      if (class(varNames) %in% c("formula", "character")){
+        varNames <- rhsf2list(varNames)[[1]]
+      }
+    }
+    varNames
+  }
+  
+  switch(as.character(cls),
+         "1"={
+           dataNames <- names(data)
+           varNames <- .set.varNames(varNames, dataNames)
+           val  <- xtabs(~., data = data[, varNames, drop = FALSE])
+         },
+         "2"=, "3"=, "4"={
+           dataNames <- names(dimnames(data))
+           varNames <- .set.varNames(varNames, dataNames)           
+           val  <- tableMargin(data, varNames)
+         }
+         )
+  attr(val, "call") <- NULL
+  res <- as.parray(val, normalize = normalize, smooth = smooth)
+  res
+}
+
+
+
+makeDimNames <- function(varNames, levels, sep=''){
+  if (missing(varNames) || is.null(varNames))
+    return(lapply(levels, seq))
+  mapply(function(vv,ll){
+    if (!is.character(ll)){
+      if (length(ll)==1){
+        ll <- 1:ll
+      }
+      ll <- paste(vv,ll,sep="")
+    }
+    ll
+  }, varNames, levels, SIMPLIFY=FALSE)
+}
+
+varNames.array     <- function(x) names(attr(x,"dimnames"))
+nLevels.array      <- function(x) dim(x)
+valueLabels.array  <- function(x) attr(x,"dimnames")
+
+varNames.parray    <- function(x) names(attr(x,"dimnames"))
+nLevels.parray     <- function(x) dim(x)
+valueLabels.parray <- function(x) attr(x,"dimnames")
+
+print.parray  <- function(x,...){
+  class(x)<-NULL
+  print(x)
+  invisible(x)
+}
 
 
 

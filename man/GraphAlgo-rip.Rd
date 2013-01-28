@@ -1,7 +1,6 @@
 \name{rip}
 \alias{rip}
 \alias{rip.graphNEL}
-\alias{rip.igraph}
 \alias{rip.matrix}
 \alias{rip.Matrix}
 \alias{ripMAT}
@@ -10,13 +9,13 @@
 
 \alias{jTree}
 \alias{jTree.graphNEL}
-\alias{jTree.igraph}
 \alias{jTree.matrix}
+\alias{jTree.Matrix}
 
 \alias{junctionTree}
 \alias{junctionTree.graphNEL}
-\alias{junctionTree.igraph}
 \alias{junctionTree.matrix}
+\alias{junctionTree.Matrix}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -29,21 +28,20 @@
 \usage{
 rip(object, root = NULL, nLevels = NULL)
 \method{rip}{graphNEL}(object, root = NULL, nLevels = NULL)
-\method{rip}{igraph}(object, root = NULL, nLevels = NULL)
 \method{rip}{matrix}(object, root = NULL, nLevels = NULL)
 \method{rip}{Matrix}(object, root = NULL, nLevels = NULL)
 ripMAT(amat, root = NULL, nLevels = NULL) 
 
 jTree(object, ...)
 \method{jTree}{graphNEL}(object, method="mcwh",nLevels=rep(2,length(nodes(object))),...)
-\method{jTree}{igraph}(object, method="mcwh",nLevels=rep(2,length(V(object))),...)
 \method{jTree}{matrix}(object, method="mcwh",nLevels=rep(2,ncol(object)),...)
+\method{jTree}{Matrix}(object, method="mcwh",nLevels=rep(2,ncol(object)),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-    An undirected graph represented either as a 'graphNEL', a 'matrix' or
-    an 'igraph'.
+    An undirected graph represented either as a 'graphNEL', a 'matrix'
+    or a sparse 'dgCMatrix'
 }
   \item{root}{
     A vector of variables. The first variable in the perfect ordering
@@ -101,14 +99,13 @@ jTree(object, ...)
 uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
 rip(uG)
 
-## igraph
-uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="igraph")
-rip(uG)
-
 ## adjacency matrix
 uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="matrix")
 rip(uG)
 
+## Sparse matrix
+uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="Matrix")
+rip(uG)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

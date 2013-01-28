@@ -6,17 +6,17 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
-
 \usepackage{boxedminipage,color,a4wide,url}
+
 \def\code#1{\texttt{#1}}
 \def\pkg#1{{\bf #1}}
 \def\grbase{\pkg{gRbase}}
-\def\graph{\texttt{graph}}
-\def\rbgl{\texttt{RBGL}}
-\def\R{\texttt{R}}
 \def\graphnel{\texttt{graphNEL}}
+\def\R{\texttt{R}}
+\def\graph{\texttt{graph}}
+\def\rgraphviz{\texttt{Rgraphviz}}
+\def\rbgl{\texttt{RBGL}}
 \def\igraph{\texttt{igraph}}
-
 
 \title{Graphs in the \grbase\ package}
 \author{Søren Højsgaard}
@@ -24,28 +24,28 @@
 
 \maketitle
 
-\SweaveOpts{prefix.string=fig/graph,keep.source=T,height=4} %sæt dir til "fig" og prefix til "bar" for figurer
-\setkeys{Gin}{width=0.6\textwidth} %sæt figurstørrelse i Sweave
+\SweaveOpts{prefix.string=fig/graph,keep.source=T,height=4} 
+\setkeys{Gin}{width=0.6\textwidth} 
 
-%%\renewenvironment{Schunk}{\linespread{.85}\small}{}
+% \definecolor{MyGray}{rgb}{0.95,0.95,0.95}
+% \makeatletter
+% \renewenvironment{Schunk}{
+%   \begin{lrbox}{\@tempboxa}
+%     \begin{boxedminipage}
+%       {\columnwidth}\small}
+%     {\end{boxedminipage}
+%   \end{lrbox}%
+%   \colorbox{MyGray}{\usebox{\@tempboxa}}
+% }
+% \makeatother
 
-\definecolor{MyGray}{rgb}{0.95,0.95,0.95}
-\makeatletter
-\renewenvironment{Schunk}{
-  \begin{lrbox}{\@tempboxa}
-    \begin{boxedminipage}
-      {\columnwidth}\small}
-    {\end{boxedminipage}
-  \end{lrbox}%
-  \colorbox{MyGray}{\usebox{\@tempboxa}}
-}
-\makeatother
+\renewenvironment{Schunk}{\linespread{.85}\small}{}
 
 @
 <<echo=FALSE>>=
 dir.create("fig")
 oopt <- options()
-options("digits"=4, "width"=80, "prompt"=" ", "continue"="  ")
+options("digits"=4, "width"=80, "prompt"="R> ", "continue"="  ")
 options(useFancyQuotes="UTF-8")
 @ %def
 
@@ -60,44 +60,49 @@ library(gRbase)
 \section{Introduction}
 \label{sec:intro}
 
-For the \R\ community, the packages \code{igraph}, \code{graph}, \code{RBGL}
-and \code{Rgraphviz} are extremely useful tools for graph operations,
-manipulation and layout. The \grbase\ package adds some additional
-tools to these fine packages. The most important tools are:
+For the \R\ community, the packages \graph, \rbgl, \rgraphviz\ and
+\igraph\ are extremely useful tools for graph operations, manipulation
+and layout. The \grbase\ package adds some additional tools to these
+fine packages. The most important tools are:
 
 \begin{enumerate}
 \item Undirected and directed acyclic graphs can be specified using
   formulae or an adjacency list using the functions \code{ug()} and
   \code{dag()}. This gives graphs represented in one of the following
-  four forms:
+  forms:\footnote{There is a fourth form: \igraph\ objects. These,
+    however, will probably not be supported in the future.}
   \begin{itemize}
-  \item \graphnel\ objects (the default),
-  \item adjacency matrices. There are two type of adjacency matrices
-    in this context: A ``standard'' matrix in \R\ and a sparse matrix
-    (or to be precise: a \code{dgCMatrix} in the \code{Matrix}
-    package). 
-  \item \code{igraphs}
+  \item A \graphnel\ object (the default),
+  \item A dense adjacency matrix. By this we mean a ``standard''
+    matrix in \R. 
+
+  \item A sparse adjacency matrix. By this we mean a \code{dgCMatrix} 
+    from the \code{Matrix} package.
   \end{itemize}
  
 \item Some graph algorithms are implemented in \grbase. These can be
-  applied to graphs represented as \graphnel s and matrices. Some can
-  also be applied to \igraph s but we are not consistent with respect
-  to this.  The most
+  applied to graphs represented as \graphnel s and matrices. The most
   important algorithms are:
   \begin{itemize}
-  \item \code{mcs()},(maximum cardinality search) 
-  \item \code{moralize()}, (moralization of directed acyclic graph),
-  \item \code{rip()}, (RIP ordering of cliques of triangulated undirected graph),
-  \item \code{triangulate()}, (triangulate undirected graph).
-
+  \item \code{moralize()}, (moralize a directed acyclic graph)
+  \item \code{mcs()},(maximum cardinality search for undirected graph) 
+  \item \code{triangulate()}, (triangulate undirected graph)
+  \item \code{rip()}, (RIP ordering of cliques of triangulated undirected graph)
+  \item \code{getCliques()}, (get the (maximal) cliques of an undirected graph)
+  \item \code{minimalTriang()} (minimal triangulation of undirected
+    graph)\footnote{Needs more work}
+  \item \code{mpd()} (maximal prime subgraph decomposition of
+    undirected graph)\footnote{Needs more work} 
   \end{itemize}
-  
 
-\item Furthermore corresponding to some of the functions in the \graph\
-  and \rbgl\ packages there are corresponding matrix versions of these
-  implemented in \grbase. These are: \code{maxCliqueMAT()}.
+  The general scheme is the following: There is a \code{mcs()}
+  function and \code{mcs()} methods for \graphnel s and for the two
+  matrix types. The workhorse is the function \code{mcsMAT()} and the
+  various methods coerces the graph to a (sparse) matrix and invokes
+  \code{mcsMAT()}. 
 
 \end{enumerate}
+
 
 
 \section{Graphs}
@@ -163,21 +168,6 @@ ug11M
 @ %def 
 
 
-\paragraph{As \code{igraph}:}
-A  representation as an \code{igraph} object can be
-obtained with one of the following equivalent specifications:
-
-@ 
-<<print=F>>=
-ug11i <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="igraph")
-ug12i <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
-            result="igraph")
-@ %def 
-
-@ 
-<<>>=
-ug11i
-@ %def 
 
 
 
@@ -237,58 +227,69 @@ dag12M <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"),
 dag11M
 @ %def 
 
-\paragraph{As \code{igraph}:}
-A  representation as an \code{igraph} object can be
-obtained with
-
-<<print=F>>=
-dag11i <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="igraph")
-dag12i <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
-             c("e","a"),c("g","f"), result="igraph")
-@
 
 
 
+\subsection{Graph coercion}
+\label{sec:graph-coercion}
 
-\section{Graph coercion}
-\label{sec:xxx}
 
 Graphs can be coerced between differente representations using
 \code{as()}; for example
 
 @ 
 <<>>=
-as(ug11,"igraph")
-as(as(ug11,"igraph"),"matrix")
-as(as(as(ug11,"igraph"),"matrix"),"graphNEL")
-as(as(as(as(ug11,"igraph"),"matrix"),"graphNEL"),"Matrix")
+as(ug11,"matrix")
+as(as(ug11,"matrix"),"dgCMatrix")
+as(as(as(ug11,"matrix"),"dgCMatrix"),"graphNEL")
+as(as(as(as(ug11,"matrix"),"Matrix"),"graphNEL"),"igraph")
+@ %def 
+
+\paragraph{NOTICE!}
+\label{sec:notice}
+There is one thing to notice when coercing a dense matrix to a sparse
+matrix. Consider this
+
+@ 
+<<>>=
+m <- matrix(1:4,nrow=2)
+as(m, "Matrix")
+as(m, "dgCMatrix")
+@ %def 
+
+In the first case, the matrix coercion method will, based on
+properties of the matrix, impose a specific type on the result. The
+graph algorithms in \grbase\ are based on the \code{dgCMatrix} form
+and hence the latter case is more safe. Coercion to a \code{dgCMatrix}
+can be made much faster with the following function from \grbase:
+
+@ 
+<<>>=
+asdgCMatrix(m)
 @ %def 
 
 
 
 
-\section{Plotting graphs}
-\label{sec:xxx}
 
-\paragraph{Graphs represented as \graphnel s and \igraph s:}
 
-Graphs represented as \graphnel\ objects and \igraph\ objects are displayed with
-\code{plot()}.
+\subsection{Plotting graphs}
+\label{sec:plotting-graphs}
 
+
+Graphs represented as \graphnel\ objects  are displayed with
+\code{plot()}. There is no \code{plot()} method for graphs represented
+as adjacency matrices, so here coercion is one option:
 
 @ 
 <<fig=T>>=
 par(mfrow=c(1,2))
 plot(ug11)
-plot(ug11i)
+plot(as(ug11m,"graphNEL"))
 @ %def 
 
-
-\paragraph{Graphs represented as adjacency matrices:}
-
-There is no plot method for graphs represented as adjacency matrices
-in \grbase\ but the \code{gplot()} function in the \pkg{sna} package
-has these facilities:
+An alternative for adjacency matrices is the \code{gplot()} function
+in the \pkg{sna} package:
 
 @ 
 <<eval=F>>=
@@ -298,25 +299,6 @@ gplot(ug11m, label=colnames(ug11m),gmode="graph")
 gplot(dag11m, label=colnames(dag11m))
 @ %def 
 
-
-
-\section{Graph queries}
-
-The \graph\ and \rbgl\ packages implement various graph operations for
-\code{graphNEL} objects. See the documentation for these packages.
-The \grbase\ implements a few additional functions, see
-Section~\ref{sec:intro}. An additional function in \grbase\ for graph
-operations is \code{querygraph()}. This function is intended as a wrapper for the
-various graph operations available in \grbase, \graph\ and
-\rbgl. There are two main virtues of \code{querygraph()}: 1)
-\code{querygraph()} operates on any of the three graph representations
-described above\footnote{Actually not quite yet, but it will be so in
-  the future.}  and 2) \code{querygraph()} provides a unified
-interface to the graph operations. The general syntax is
-@ 
-<<>>=
-args(querygraph)
-@ %def 
 
 
 
@@ -353,9 +335,54 @@ For the alternative representations
 <<>>=
 moralize(dag11m)
 moralize(dag11M) 
-moralize(dag11i)
 @ %def 
 
+
+\subsection{Topological sort}
+\label{sec:topological-sort}
+
+A topological ordering of a directed graph is a linear ordering of its
+vertices such that, for every edge (u->v), u comes before v in the
+ordering. A topological ordering is possible if and only if the graph
+has no directed cycles, that is, if it is a directed acyclic graph
+(DAG). Any DAG has at least one topological ordering.  
+
+
+@ 
+<<>>=
+topoSort(dag11)
+topoSort(dag11m)
+topoSort(dag11M)
+@ %def 
+
+The \code{dag()} function actually allows specification of a directed
+graph with cycles (a check can be imposed with
+\code{forceCheck=TRUE}). Below is a directed graph with a cycle
+
+@ 
+<<>>=
+topoSort(dag(~a:b+b:c+c:a))
+@ %def 
+
+
+\subsection{Getting cliques}
+\label{sec:getting-cliques}
+
+I graph theory, a clique is often a complete subset of a graph. A
+maximal clique is a clique which can not be enlarged. In statistics
+(and that is the convention we follow here) a clique is usually
+understood to be a maximal clique.  
+
+Finding the cliques of a general graph is an NP complete
+problem. Finding the cliques of triangualted graph is linear in the
+number of cliques.  
+
+@ 
+<<>>=
+str(getCliques(ug11))
+str(getCliques(ug11m))
+str(getCliques(ug11M))
+@ %def 
 
 \subsection{Maximum cardinality search}
 \label{sec:maxim-card-search}
@@ -375,7 +402,6 @@ triangulated. Otherwise a linear ordering of the nodes is returned.
 mcs(ug11)
 mcs(ug11m)
 mcs(ug11M)
-mcs(ug11i)
 @ %def 
 
 
@@ -384,7 +410,6 @@ mcs(ug11i)
 mcs(dag11.mor)
 mcs(as(dag11.mor,"matrix"))
 mcs(as(dag11.mor,"Matrix")) 
-mcs(as(dag11.mor,"igraph")) 
 mcs(dag11) 
 @ %def 
 
@@ -403,7 +428,6 @@ Triangulate an undirected graph by adding extra edges to the graph:
 (tug11<-triangulate(ug11))
 (tug11m<-triangulate(ug11m))
 (tug11M<-triangulate(ug11M))
-(tug11i<-triangulate(ug11i))
 @ 
 
 @ 
@@ -438,6 +462,24 @@ rr <- rip(tug11M)
 <<fig=T>>=
 plot(rr)
 @ %def 
+
+
+
+\subsection{Minimal triangulation and maximum prime subgraph decomposition}
+\label{sec:minim-triang-maxim}
+
+An undirected graph uG is triangulated (or chordal) if it has no
+cycles of length >= 4 without a chord which is equivalent to that the
+vertices can be given a perfect ordering. Any undirected graph can be
+triangulated by adding edges to the graph, so called fill-ins which
+gives the graph TuG. A triangulation TuG is minimal if no fill-ins can
+be removed without breaking the property that TuG is triangulated. A
+related concept is the minimum triangulation, which is the the graph
+with the smallest number of fill-ins. The minimum triangulation is
+unique. Finding the minimum triangulation is NP-hard.
+ 
+
+ 
 
 
 \section{Time and space considerations}
@@ -496,19 +538,37 @@ M <- 1:10
 ##
 g1 <- randomGraph(V, M, 0.05)
 length(edgeList(g1))
-object.size(g1)
-object.size(as.adjMAT(g1))
-object.size(as.adjMAT(g1, "Matrix"))
+c(NEL=object.size(g1),
+mat=object.size(as(g1, "matrix")),
+Mat=object.size(as.adjMAT(g1, "Matrix")))
 
 ## More dense graph 
 ##
 g1 <- randomGraph(V, M, 0.5)
 length(edgeList(g1))
-object.size(g1)
-object.size(as.adjMAT(g1))
-object.size(as.adjMAT(g1, "Matrix"))
+c(NEL=object.size(g1),
+mat=object.size(as(g1, "matrix")),
+Mat=object.size(as.adjMAT(g1, "Matrix")))
 @ %def 
 
+
+\section{Graph queries}
+
+The \graph\ and \rbgl\ packages implement various graph operations for
+\code{graphNEL} objects. See the documentation for these packages.
+The \grbase\ implements a few additional functions, see
+Section~\ref{sec:intro}. An additional function in \grbase\ for graph
+operations is \code{querygraph()}. This function is intended as a wrapper for the
+various graph operations available in \grbase, \graph\ and
+\rbgl. There are two main virtues of \code{querygraph()}: 1)
+\code{querygraph()} operates on any of the three graph representations
+described above\footnote{Actually not quite yet, but it will be so in
+  the future.}  and 2) \code{querygraph()} provides a unified
+interface to the graph operations. The general syntax is
+@ 
+<<>>=
+args(querygraph)
+@ %def 
 
 
 

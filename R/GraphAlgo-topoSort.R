@@ -14,22 +14,20 @@ topoSort <- function(object, index=FALSE){
   UseMethod("topoSort")
 }
 
-##FIXME : Should be "Matrix" for large graphs...
 topoSort.graphNEL <- function(object, index=FALSE){
-  topoSortMAT(as(object,"matrix"), index=index)
+  topoSortMAT(as(object,"Matrix"), index=index)
 }
 
 topoSort.matrix <- topoSort.Matrix <- function(object, index=FALSE){
   topoSortMAT(object, index=index)
 }
 
-
 topoSortMAT <- function(XX_, index=FALSE){
   if (inherits(XX_, "Matrix")){
-    ans <- .Call("C_topoSort_sp", XX_ ,package="gRbase")
+    ans <- .Call("C_topoSortMAT_sp", XX_ ,package="gRbase")
   } else {
     if (inherits(XX_, "matrix")){
-      ans <- .Call("C_topoSort_st", XX_ ,package="gRbase")
+      ans <- .Call("C_topoSortMAT_st", XX_ ,package="gRbase")
     } else {
       stop("'XX_' must be a matrix or a sparse matrix (a 'dgCMatrix')")
     }

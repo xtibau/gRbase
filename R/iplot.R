@@ -17,3 +17,4 @@ iplot.graphNEL <- function(x,...){
        vertex.label.cex=2,
        edge.label.cex=2)
 }
+
