@@ -7,15 +7,19 @@
 ## FIXME: Add tests, .Rd files and vignette
 ## #######################################
 
-triangulateMAT_spCpp <- function(XX_, LL_=rep(2,ncol(XX_))){
-  res <- .Call("C_triangulate_sp", XX_, log(LL_), 0, 0
+mcsMAT_spCpp <- function(XX_, OO_=0:(ncol(XX_)-1) ){
+  res <- .Call("C_mcsMAT_sp", XX_, OO_, 0, 0
                ,package="gRbase"
                )
-  dimnames(res) <- dimnames(XX_)
   res
 }
 
-triangulateMAT_stCpp <- function(XX_, LL_=rep(2,ncol(XX_))){
-  as(triangulateMAT_spCpp(asdgCMatrix(XX_), LL_), "matrix")
+mcsMAT_stCpp <- function(XX_, OO_=0:(ncol(XX_)-1) ){
+  .asdgCMatrix <- function(object){
+    .Call("C_asdgCMatrix_st", object*1.0 
+                 ,package="gRbase"
+                 )
+  }
   
+  mcsMAT_spCpp(.asdgCMatrix(XX_), OO_)
 }

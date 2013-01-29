@@ -55,8 +55,10 @@ vpaL2adjMAT(vpaL, vn=uniquePrim(c(vpaL, recursive=TRUE)), result="matrix")
 glist <- list(1:3,2:4,4:5)
 am1 <- glist2adjMAT(glist)
 am2 <- vpaL2adjMAT(glist)
-## plot(coerceGraph(am1, "igraph"))
-## plot(coerceGraph(am2, "igraph"))
+if (interactive()){
+ plot(as(am1, "graphNEL"))
+ plot(as(am2, "graphNEL"))
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

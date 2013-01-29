@@ -8,14 +8,14 @@
 ## FIXME: Add tests, .Rd files and vignette
 ## #######################################
 
-topoSort_sp <- function(XX_){
-  .Call("C_topoSort_sp", XX_ 
+topoSortMAT_spCpp <- function(XX_){
+  .Call("C_topoSortMAT_sp", XX_ 
         ,package="gRbase"
         )
 }
 
-topoSort_st <- function(XX_){
-  .Call("C_topoSort_sp", XX_ 
+topoSortMAT_stCpp <- function(XX_){
+  .Call("C_topoSortMAT_st", XX_ 
         ,package="gRbase"
         )
 }

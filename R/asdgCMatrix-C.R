@@ -13,7 +13,6 @@ asdgCMatrix.matrix <- function(object){
   res <- .Call("C_asdgCMatrix_st", object*1.0 
                ,package="gRbase"
                )
-  dimnames(res) <- dimnames(object)
   res
 }
 

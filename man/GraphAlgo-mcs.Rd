@@ -1,14 +1,12 @@
 \name{mcs}
 \alias{mcs}
 \alias{mcs.graphNEL}
-\alias{mcs.igraph}
 \alias{mcs.matrix}
 \alias{mcs.Matrix}
 \alias{mcsMAT}
 
 \alias{mcsmarked}
 \alias{mcsmarked.graphNEL}
-\alias{mcsmarked.igraph}
 \alias{mcsmarked.matrix}
 \alias{mcsmarkedMAT}
 
@@ -23,21 +21,19 @@
 \usage{
 mcs(object, root = NULL, index = FALSE)
 \method{mcs}{graphNEL}(object, root = NULL, index = FALSE)
-\method{mcs}{igraph}(object, root = NULL, index = FALSE)
 \method{mcs}{matrix}(object, root = NULL, index = FALSE)
 mcsMAT(amat, vn = colnames(amat), root = NULL, index = FALSE) 
 
 mcsmarked(object, discrete = NULL, index = FALSE)
 \method{mcsmarked}{graphNEL}(object, discrete = NULL, index = FALSE)
-\method{mcsmarked}{igraph}(object, discrete = NULL, index = FALSE)
 \method{mcsmarked}{matrix}(object, discrete = NULL, index = FALSE)
 mcsmarkedMAT(amat, vn = colnames(amat), discrete = NULL, index = FALSE) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-    An undirected graph represented either as a 'graphNEL', a 'matrix' or
-    an 'igraph'.
+    An undirected graph represented either as a 'graphNEL', a 'matrix'
+    or a sparse matrix (a 'dgCMatrix').
   }
   \item{root}{
     A vector of variables. The first variable in the perfect ordering
@@ -67,9 +63,8 @@ mcsmarkedMAT(amat, vn = colnames(amat), discrete = NULL, index = FALSE)
     e.g. mixed interaction models where some vertices represent discrete
     variables and some represent continuous variables. Such graphs are
     said to be marked. The \code{mcsmarked()} function will return a
-    perfect ordering iff the graph is strongly decomposable. As graphs,
-    whether represented as graphNEL objects, igraph objects or adjacency
-    matrices do not know about whether vertices represent discrete or
+    perfect ordering iff the graph is strongly decomposable. As graphs
+    do not know about whether vertices represent discrete or
     continuous variables, this information is supplied in the
     \code{discrete} argument. 
 }

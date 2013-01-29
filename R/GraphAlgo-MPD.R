@@ -21,24 +21,25 @@ mpd <- function(uG, TuG=minimalTriang(uG, details=0), details=0) {
 
   ##TuG <- MinimalTriang(uG)
 
-  Tree <- rip(TuG) 	# Tree arranged as	[1]nodes,[2]cliques,[3]separators,[4]parents
-
+  Tree <- rip(TuG) ## Tree arranged as [1]nodes,[2]cliques,[3]separators,[4]parents
+  #print(Tree)
+  
   MPDTree <- vector("list",length=4)
 
   if (length(Tree[[2]]) == 1)
     {
-      MPDTree <- Tree		# Tree contains only 1 clique so cannot be decomposed
+      MPDTree <- Tree		## Tree contains only 1 clique so cannot be decomposed
     }
-
   else
     {
-      i <- length(Tree[[3]])	# indexes separators of Tree, starting with the last one (although the order of aggregation is immaterial)
-      while (i > 1)			# 1st clique never has a parent
+      i <- length(Tree[[3]])	## indexes separators of Tree, starting with the last one (although the order of aggregation is immaterial)
+      while (i > 1)		## 1st clique never has a parent
         {
           if(!(is.complete(subGraph(c(Tree[[3]][i],recursive=TRUE),uG))))
             {
               Tree[[3]][i] <- 0		# set separator i to 'empty'
               parent.i <- Tree[[4]][[i]]
+              #cat(sprintf("i=%i parent.i=%i\n", i, parent.i))
               sel <- !(Tree[[2]][[i]] %in% Tree[[2]][[parent.i]])
               Tree[[2]][[parent.i]] <- c(Tree[[2]][parent.i],Tree[[2]][[i]][c(sel)],recursive=TRUE)	# merge clique i into its parent clique
 
@@ -72,13 +73,13 @@ mpd <- function(uG, TuG=minimalTriang(uG, details=0), details=0) {
             }	
           else
             {
-              sel[i,1] <- TRUE	# to select only those cluster numbers that are now not empty
-              sel[i,2] <- i	# record original cluster number i
+              sel[i,1] <- TRUE	## to select only those cluster numbers that are now not empty
+              sel[i,2] <- i	## record original cluster number i
             }
         }
       
-      ch <- as.logical(sel[,1])
-      Appel <- sel[,2][ch]			# original cluster numbers of non-empty clusters
+      ch    <- as.logical(sel[,1])
+      Appel <- sel[,2][ch]	## original cluster numbers of non-empty clusters
       MPDTree[[2]] <- MPDTree[[2]][ch]
       names(MPDTree[[2]]) <- Appel 
       MPDTree[[3]] <- MPDTree[[3]][ch]

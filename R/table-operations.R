@@ -27,14 +27,10 @@ tableDiv <- function(t1,t2){
   tableOp(t1,t2, op="/")
 }
 
-## Alternative to tableOp
-##
-tableOp <- function(t1,t2,op="*"){
+tableOp <- function(t1, t2, op="*"){
 
-  if (!is.array(t1))
-    stop("'t1' is not an array")
-  if (!is.array(t2))
-    stop("'t2' is not an array")
+  if (!is.array(t1)) {stop("'t1' is not an array")}
+  if (!is.array(t2)) {stop("'t2' is not an array")}
 
   di1 <- dim(t1)
   di2 <- dim(t2)
@@ -43,24 +39,20 @@ tableOp <- function(t1,t2,op="*"){
   vn1 <- names(dn1)
   vn2 <- names(dn2)
 
-  ## indices of those variables in vn2 which exist in vn1:
-  idx <- fmatch(vn2, vn1)
+  idx <- fmatch(vn2, vn1)   ## location of variables in vn2 in vn1:
+  idx.na <- is.na(idx)      ## logical of variables in {vn2\vn1}
 
-  ## indices of those variables in vn2 which do not exist in vn1:
-  idx.na <- is.na(idx)
+  if (any(idx.na)){         ## If there are variables in {vn2 \ vn1}
+    aug.vn <- vn2[idx.na]   ## Find those variables
+    aug.di <- di2[idx.na]   ## - and their levels
+    aug.dn <- dn2[idx.na]   ## - and their dimnames
 
-  if (any(idx.na)){
-    ## If there are variables in vn2 which are not in vn1
-    aug.vn <- vn2[idx.na] # Find those variables
-    aug.di <- di2[idx.na] # - and their levels
-    aug.dn <- dn2[idx.na] # - and their dimnames
-
-    ## Create new "augmented" table defined over (vn1, vn2\vn1)
+    ## Create "augmented" table defined over (vn1, vn2\vn1) by repeating t1.
     pot1      <- rep.int(as.numeric(t1), prod(aug.di))
     vn.new    <- c(vn1, aug.vn)
     di.new    <- c(di1, aug.di)
     dn.new    <- c(dn1, aug.dn)
-    dim(pot1) <- di.new
+    dim(pot1)      <- di.new
     dimnames(pot1) <- dn.new
   } else {
     pot1   <- t1
@@ -69,12 +61,11 @@ tableOp <- function(t1,t2,op="*"){
     dn.new <- dn1
   }
 
-  ## Find indices of vn2 in the new "augmented" table
-  ii    <- fmatch(vn2, vn.new)
-
-  ## Create perumation indices; first variables in vn2; then the rest
-  perm  <-  c(ii, (1:length(vn.new))[-ii])
-
+  ## Find indices of vn2 in augmented table (vn1, vn2\vn1)
+  vn2.idx    <- fmatch(vn2, vn.new)
+  ## Create perumation indices; first variables in vn2; then vn1\vn2
+  perm  <-  c(vn2.idx, (1:length(vn.new))[-vn2.idx])
+  
   if (op == "*") {
     pot1 <- as.numeric(aperm.default(pot1, perm, TRUE)) * as.numeric(t2)
   }
@@ -84,12 +75,68 @@ tableOp <- function(t1,t2,op="*"){
   }
   dim(pot1)      <- di.new[perm]
   dimnames(pot1) <- dn.new[perm]
-  class(pot1) <- "array"
+
   class(pot1) <- c("parray","array")
   pot1
 }
 
 
+.tableOp <- function(t1, t2, op="*"){
+
+  if (!is.array(t1)) {stop("'t1' is not an array")}
+  if (!is.array(t2)) {stop("'t2' is not an array")}
+
+#  op <- match.arg(op, c("*","/","+","-"))
+ # if (any(fmatch(op, c("*","/","+","-"))>0)){
+    op <- switch(op,
+                 "*"={`*`},
+                 "/"={`/`},
+                 "+"={`+`},
+                 "-"={`-`})
+  #}
+
+
+  di1 <- dim(t1)
+  di2 <- dim(t2)
+  dn1 <- dimnames(t1)
+  dn2 <- dimnames(t2)
+  vn1 <- names(dn1)
+  vn2 <- names(dn2)
+
+  idx <- fmatch(vn2, vn1)   ## location of variables in vn2 in vn1:
+  idx.na <- is.na(idx)      ## logical of variables in {vn2\vn1}
+
+  if (any(idx.na)){         ## If there are variables in {vn2 \ vn1}
+    aug.vn <- vn2[idx.na]   ## Find those variables
+    aug.di <- di2[idx.na]   ## - and their levels
+    aug.dn <- dn2[idx.na]   ## - and their dimnames
+
+    ## Create "augmented" table defined over (vn1, vn2\vn1) by repeating t1.
+    vn.new    <- c(vn1, aug.vn)
+    di.new    <- c(di1, aug.di)
+    dn.new    <- c(dn1, aug.dn)
+    t1           <- rep.int(as.numeric(t1), prod(aug.di))
+    dim(t1)      <- di.new
+    dimnames(t1) <- dn.new
+  } else {
+    vn.new <- vn1
+    di.new <- di1
+    dn.new <- dn1
+  }
+
+  ## indices of vn2 in augmented table (vn1, vn2\vn1)
+  vn2.idx    <- fmatch(vn2, vn.new)
+  ## Create perumation indices; first variables in vn2; then vn1\vn2
+  perm  <-  c(vn2.idx, (1:length(vn.new))[-vn2.idx])
+
+  tt1 <- op(aperm.default(t1, perm, TRUE), as.numeric(t2))
+  if (identical(op, `/`))
+    tt1[!is.finite(tt1)] <- 0
+  dim(tt1)      <- di.new[perm]
+  dimnames(tt1) <- dn.new[perm]
+  class(tt1) <- c("parray","array")
+  tt1
+}
 
 tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
 {
@@ -102,15 +149,14 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
   vn2  <- names(dimnames(t2))
 
   ## indices of vn2 in vn1:
-  ii   <- fmatch(vn2, vn1)
-  ## indices of vn2 in vn1 followed by indicies of remaining variables in vn1,
-  ## so that vn2 varies fastest.
-  perm <- c(ii, (1:length(vn1))[-ii])
+  vn2.idx   <- fmatch(vn2, vn1)
+  ## Create perumation indices; first variables in vn2; then vn1\vn2  
+  perm <- c(vn2.idx, (1:length(vn1))[-vn2.idx])
 
   pot1 <-
     if (restore) {
       zz    <- op(aperm.default(t1, perm, TRUE), as.numeric(t2))
-      newvn <- c(vn2, vn1[-ii])
+      newvn <- c(vn2, vn1[-vn2.idx])
       perm2 <- fmatch(vn1, newvn)
       aperm.default(zz, perm2, TRUE)
     } else {

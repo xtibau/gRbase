@@ -3,7 +3,6 @@
 \alias{triangulate.graphNEL}
 \alias{triangulate.matrix}
 \alias{triangulate.Matrix}
-\alias{triangulate.igraph}
 \alias{triangulateMAT}
 
 
@@ -17,15 +16,14 @@
 \usage{
 triangulate(object, ...)
 \method{triangulate}{graphNEL}(object, method="mcwh",  nLevels = rep(2,length(nodes(object))), result="graphNEL",...)
-\method{triangulate}{igraph}(object, method="mcwh",  nLevels = rep(2,length(V(object))), result="igraph",...)
 \method{triangulate}{matrix}(object, method="mcwh",  nLevels = rep(2,ncol(object)), result="matrix",...)
 \method{triangulate}{Matrix}(object, method="mcwh",  nLevels = rep(2,ncol(object)), result="Matrix",...)
 triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{object}{An undirected graph represented either as a \code{graphNEL},
-    a (dense) \code{matrix}, a (sparse) \code{dgCMatrix} or an \code{igraph}.}
+  \item{object}{An undirected graph represented either as a
+    \code{graphNEL} object, a (dense) \code{matrix}, a (sparse) \code{dgCMatrix}}
   % \item{amat}{An adjacency matrix (symmetrical)}
 
   \item{method}{Triangulation method. Only valid option is "mcwh" (minimum clique
@@ -60,7 +58,7 @@ triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
 
 \value{ A
   triangulated graph represented either as a \code{graphNEL}, a (dense)
-  \code{matrix}, a (sparse) \code{dgCMatrix} or an \code{igraph}.
+  \code{matrix} or a (sparse) \code{dgCMatrix}.
 
 }
 %\references{ ~put references to the literature/web site here ~ }
@@ -87,10 +85,6 @@ tuG2 <- triangulate(uG2)
 ## adjacency matrix (sparse)
 uG2 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="Matrix")
 tuG2 <- triangulate(uG2)
-
-## igraph
-uG3 <- ug(~a:b+b:c+c:d+d:e+e:f+f:a, result="igraph")
-tuG3 <- triangulate(uG3)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

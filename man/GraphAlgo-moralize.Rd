@@ -1,7 +1,6 @@
 \name{moralize}
 \alias{moralize}
 \alias{moralize.graphNEL}
-\alias{moralize.igraph}
 \alias{moralize.matrix}
 \alias{moralize.Matrix}
 \alias{moralizeMAT}
@@ -18,7 +17,6 @@
 \usage{
 moralize(object, ...)
 \method{moralize}{graphNEL}(object, result="graphNEL", ...)
-\method{moralize}{igraph}(object, result="igraph", ...)
 \method{moralize}{matrix}(object, result="matrix", ...)
 \method{moralize}{Matrix}(object, result="Matrix", ...)
 moralizeMAT(amat, result=NULL)
@@ -26,9 +24,8 @@ moralizeMAT(amat, result=NULL)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-    A directed acyclic graph represented either as a 'graphNEL', a 'matrix' or
-    an 'igraph'.
-    %%     ~~Describe \code{object} here~~
+    A directed acyclic graph represented either as a 'graphNEL', a
+    'matrix' or as sparse 'dgCMatrix'.
   }
   \item{result}{The representation of the moralized graph.
     When NULL the representation will be the same as the input object.
@@ -42,8 +39,8 @@ moralizeMAT(amat, result=NULL)
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-  A moralized graph represented either as a 'graphNEL', a 'matrix' or
-  an 'igraph'.
+  A moralized graph represented either as a 'graphNEL', a 'matrix' or a
+  sparse 'dgCMatrix'.
 }
 %\references{
 %% ~put references to the literature/web site here ~

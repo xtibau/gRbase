@@ -43,17 +43,26 @@ mpdMAT(uGmat, TuGmat = minimalTriangMAT(uGmat, details = 0), details = 0)
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 
-\seealso{ \code{\link{minimalTriang}},\code{\link{rip}}, \code{\link{triangulate}}
+\seealso{
+  \code{\link{mcs}},
+  \code{\link{mcsMAT}},  
+  \code{\link{minimalTriang}},
+  \code{\link{minimalTriangMAT}},
+  \code{\link{rip}},
+  \code{\link{ripMAT}},
+  \code{\link{triangulate}},
+  \code{\link{triangulateMAT}}
 }
 
 \examples{
-## A graphNEL object
+## Maximal prime subgraph decomposition - a graphNEL object
 g1 <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e)
+if (interactive()) plot(g1)
 x <- mpd(g1)
 
-
-## An adjacency matrix
+## Maximal prime subgraph decomposition - an adjacency matrix
 g1m <- ug(~a:b+b:c+c:d+d:e+e:f+a:f+b:e, result="matrix")
+if (interactive()) plot(as(g1m, "graphNEL"))
 x <- mpdMAT(g1m)
 
 

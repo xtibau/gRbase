@@ -14,7 +14,7 @@
 
 \alias{as.adjMAT}
 \alias{graphNEL2ftM}
-\alias{maxCliqueMAT}
+
 
 \title{Simple operations on undirected and directed acyclic graphs.}
 \description{
@@ -36,7 +36,6 @@ parents(set, object)
 simplicialNodes(object)
 as.adjMAT(object, result="matrix")
 graphNEL2ftM(object)
-maxCliqueMAT(amat)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -46,7 +45,6 @@ maxCliqueMAT(amat)
   %     matrix list. }
   \item{result}{Either \code{"matrix"} of \code{"Matrix"} (for a sparse
     matrix representation).}
-  \item{amat}{Adjacency matrix}
 }
  \details{
    Notice: \code{as.adjMAT(g)} does the same as \code{as(g, "matrix")} but

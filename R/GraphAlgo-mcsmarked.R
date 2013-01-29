@@ -32,6 +32,37 @@ mcsmarked.matrix <- function (object, discrete=NULL, index = FALSE){
 }
 
 
+mcsmarkedMAT <- function(amat, vn = colnames(amat), discrete = NULL, index = FALSE) {
+
+  if (is.null(discrete)){
+    return(mcsMAT(amat, vn=vn, index=index))
+  }
+
+  nv   <- length(vn)
+  vn.ext <- c(".", vn)
+
+  idx <- match(discrete, vn.ext)
+
+  ## amat.ext <- matrix(0L, nrow=nv+1L, ncol=nv+1L)
+
+  amat.ext <- as(Matrix(0, nrow=nv+1L, ncol=nv+1L), "dgCMatrix")
+
+  
+  amat.ext[2:(nv+1),2:(nv+1)] <- amat
+  
+  amat.ext[idx, 1L] <- 1L
+  amat.ext[1L, idx] <- 1L
+	  
+  ans <- mcsMAT(amat.ext, vn=vn.ext, index=index)
+  if (length(ans)>0)
+    ans <- ans[-1L]
+  
+  ans
+}
+
+
+
+
 .mcsmarkedMAT <- function(amat, vn = colnames(amat), discrete = NULL, index = FALSE) {
 
   if (is.null(discrete)){
@@ -60,38 +91,6 @@ mcsmarked.matrix <- function (object, discrete=NULL, index = FALSE){
   
   ans
 }
-
-mcsmarkedMAT <- function(amat, vn = colnames(amat), discrete = NULL, index = FALSE) {
-
-  if (is.null(discrete)){
-    return(mcsMAT(amat, vn=vn, index=index))
-  }
-
-  nv   <- length(vn)
-  vn.ext <- c(".", vn)
-
-  idx <- match(discrete, vn.ext)
-##   if (any(is.na(idx))){
-##     stop("Not all variables are in the graph\n")
-##   }
-
-  amat.ext <- matrix(0L, nrow=nv+1L, ncol=nv+1L)
-  #dimnames(amat.ext)  <- list(vn.ext, vn.ext)
-
-  amat.ext[2:(nv+1),2:(nv+1)] <- amat
-  
-  amat.ext[idx, 1L] <- 1L
-  amat.ext[1L, idx] <- 1L
-	  
-  ans <- mcsMAT(amat.ext, vn=vn.ext, index=index)
-  if (length(ans)>0)
-    ans <- ans[-1L]
-  
-  ans
-}
-
-
-
 
 
 

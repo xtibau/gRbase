@@ -12,7 +12,7 @@
 using namespace Rcpp;
 
 // standard matrix
-RcppExport SEXP C_topoSort_st ( SEXP XX_ ){
+RcppExport SEXP C_topoSortMAT_st ( SEXP XX_ ){
   typedef Eigen::Map<Eigen::MatrixXi> MapMati;
   const MapMati X(Rcpp::as<MapMati>(XX_));
   //typedef Eigen::MappedSparseMatrix<double> MSpMat;
@@ -62,7 +62,7 @@ RcppExport SEXP C_topoSort_st ( SEXP XX_ ){
 }
 
 // sparse matrix
-RcppExport SEXP C_topoSort_sp ( SEXP XX_ ){
+RcppExport SEXP C_topoSortMAT_sp ( SEXP XX_ ){
   //   typedef Eigen::Map<Eigen::MatrixXi> MapMati;
   //   const MapMati X(Rcpp::as<MapMati>(XX_));
   typedef Eigen::MappedSparseMatrix<double> MSpMat;
