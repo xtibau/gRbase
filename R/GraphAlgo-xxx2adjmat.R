@@ -29,45 +29,41 @@ glist2adjMAT <- function(glist, vn=uniquePrim(c(glist, recursive=TRUE)),
   amat
 }
 
-
 ## NEL 2 adjacency matrix
-as.adjMAT <- function(object, result="matrix"){
+graphNEL2adjMAT <- as.adjMAT <- function(object, result="matrix"){
   if(!inherits(object, "graphNEL"))
-    stop("Must be a graphNEL object...")
-  
-  vn    <- graph::nodes(object)
-  nr    <- length(vn)
-  if (result=="matrix"){
-    amat  <- matrix(0L, ncol=nr, nrow=nr, dimnames=list(vn,vn))
-  } else {
-    #amat  <- as(Matrix(0L, ncol=nr, nrow=nr, dimnames=list(vn,vn), sparse=TRUE),"dgCMatrix")
-    amat  <- .dgCMatrix(0L, ncol=nr, nrow=nr, dimnames=list(vn,vn))
-  }
+    stop("'object' must be a graphNEL object...")
 
-##   ed    <- graph::edges(object)  
-##   if(length(ed)>0){
-##     for (ii in 1:length(ed)){
-##       vv <- names(ed)[[ii]]
-##       ww <- ed[[ii]]
-##       if (length(ww)>0)
-##         amat[vv,ww] <- 1L
-##     }
-##   }
-##   return(amat)
+  result <- match.arg(result, c("matrix","Matrix","dgCMatrix"))  
+  vn     <- graph::nodes(object)
+  nr     <- length(vn)
 
+  switch(result,
+         "matrix"={
+           amat  <- matrix(0L, ncol=nr, nrow=nr, dimnames=list(vn,vn))
+         },
+         "Matrix"=,"dgCMatrix"={
+           amat  <- .dgCMatrix(0L, ncol=nr, nrow=nr, dimnames=list(vn,vn))
+         })
+           
   ftM  <- graphNEL2ftM(object)
   ftMi <- matrix(match(ftM, vn), ncol=2)
   amat[ftMi] <- 1L
   amat
 }
 
+graphNEL2matrix <- function(object){ as.adjMAT(object, result="matrix") }
+graphNEL2dgCMatrix <- function(object){ as.adjMAT(object, result="Matrix") }
+  
+
+
+
+
 
 ## graphNEL2ftM will return a matrix with an edge from ii to jj AND from jj to ii.
 graphNEL2ftM <- function(object){
   if(!is(object, "graphNEL"))
     stop("Must be a graphNEL object...")
-
-  ##print("graphNEL2ftM")
   ed  <- graph::edges(object)
   nn  <- names(ed)
   ans <- do.call(rbind,
@@ -114,4 +110,15 @@ vpaL2tfM <- function(vpaL){
 
 
 
+
+##   ed    <- graph::edges(object)  
+##   if(length(ed)>0){
+##     for (ii in 1:length(ed)){
+##       vv <- names(ed)[[ii]]
+##       ww <- ed[[ii]]
+##       if (length(ww)>0)
+##         amat[vv,ww] <- 1L
+##     }
+##   }
+##   return(amat)
 

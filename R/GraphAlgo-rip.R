@@ -18,7 +18,7 @@ rip.graphNEL <- function(object, root=NULL, nLevels=NULL){
   if (edgemode(object)=="directed"){
     stop("Graph must be undirected")
   }
-  ripMAT(as.adjMAT(object), root=root, nLevels=nLevels)
+  ripMAT(graphNEL2dgCMatrix(object), root=root, nLevels=nLevels)
 }
 
 rip.igraph <- function(object, root=NULL, nLevels=NULL){

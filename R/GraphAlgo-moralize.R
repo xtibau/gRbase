@@ -6,7 +6,7 @@ moralize.graphNEL <- function(object, result="graphNEL", ...){
   if (edgemode(object)=="undirected"){
     stop("Graph must be directed")
   }
-  moralizeMAT(as.adjMAT(object, "Matrix"), result=result)
+  moralizeMAT(graphNEL2dgCMatrix(object), result=result)
 }
 
 moralize.igraph <- function(object, result="igraph", ...){

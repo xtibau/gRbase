@@ -25,7 +25,7 @@ is.DAG.graphNEL <- function(object){
   if(edgemode(object)=="undirected"){
     FALSE
   } else {
-    length(topoSort(as.adjMAT(object, "Matrix")))>0
+    length(topoSort(graphNEL2dgCMatrix(object)))>0
   }
 }
 

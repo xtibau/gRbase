@@ -21,6 +21,8 @@
 \alias{moralizeMAT_spC}
 
 \alias{sp_topoSort} %% FIXME: Delete when new version of gRain is on CRAN. 
+\alias{glist2setMAT}
+
 
 %% Fast coercion of "matrix" to "dgCMatrix"
 \alias{asdgCMatrix}         
@@ -84,12 +86,13 @@
 \alias{mcsMATR}
 \alias{triang2R}
 \alias{vparlist2tf}
+\alias{isGSD_glist}
+\alias{properties_glist}
+
 \alias{coerceGraph}
 \alias{coerceGraph.graphNEL}
 \alias{coerceGraph.igraph}
 \alias{coerceGraph.matrix}
-\alias{isGSD_glist}
-\alias{properties_glist}
 
 %% Array operations in C
 %% ---------------------

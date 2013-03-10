@@ -248,6 +248,33 @@ data(wine)
 
 
 cleanEx()
+nameEx("GraphAlgo-coerce")
+### * GraphAlgo-coerce
+
+flush(stderr()); flush(stdout())
+
+### Name: graph-coercion
+### Title: Coercion of graphs
+### Aliases: graphNEL2ftM as.adjMAT graphNEL2adjMAT graphNEL2matrix
+###   graphNEL2dgCMatrix
+### Keywords: utilities
+
+### ** Examples
+
+uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+closure("me", uG)
+
+maxClique(uG)
+amat1 <- as.adjMAT(uG)
+maxCliqueMAT(amat1)
+
+amat1 <- as.adjMAT(uG, result="Matrix")
+maxCliqueMAT(amat1)
+
+
+
+
+cleanEx()
 nameEx("GraphAlgo-edgeList")
 ### * GraphAlgo-edgeList
 
@@ -536,7 +563,6 @@ flush(stderr()); flush(stdout())
 ### Title: Simple operations on undirected and directed acyclic graphs.
 ### Aliases: ancestors ancestralGraph ancestralSet children closure
 ###   is.complete is.decomposition is.simplicial parents simplicialNodes
-###   as.adjMAT graphNEL2ftM
 ### Keywords: utilities
 
 ### ** Examples
@@ -1057,6 +1083,45 @@ removeRedundant(l, maximal=FALSE)
 
 is.insetlist (c(2,4), l)
 is.insetlist (c(2,8), l)
+
+
+
+
+cleanEx()
+nameEx("simulateArray")
+### * simulateArray
+
+flush(stderr()); flush(stdout())
+
+### Name: simulateArray
+### Title: Simulate data from array
+### Aliases: simulateArray
+### Keywords: utilities
+
+### ** Examples
+
+
+## 2x2 array
+x <- parray(c("a","b"), levels=c(2,2), values=1:4)
+
+## Simulate from entire array
+s <-simulateArray(x,1000)
+xtabs(~., as.data.frame(s))
+
+## Simulate from slice defined by that dimension 1 is fixed at level 2
+s <-simulateArray(x,6000,1,2)
+xtabs(~., as.data.frame(s))
+
+## 2x2x2 array
+x <- parray(c("a","b","c"), levels=c(2,2,2), values=1:8)
+
+## Simulate from entire array
+s <-simulateArray(x,36000)
+xtabs(~., as.data.frame(s))
+
+## Simulate from slice defined by that dimension 3 is fixed at level 1
+s <-simulateArray(x,10000,3,1)
+xtabs(~., as.data.frame(s))
 
 
 
