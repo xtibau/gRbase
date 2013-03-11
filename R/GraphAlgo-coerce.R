@@ -5,7 +5,6 @@
 ##############################################################
 
 ## FIXME: coercion: Are all possibilities accounted for ???
-
 ## FIXME: Should all the coerceGraph methods be deleted???
 ## THere may be speed issues
 
@@ -22,7 +21,7 @@ coerceGraph.graphNEL <- function(object, result){
                      gg
                    },
          "matrix","Matrix"  ={
-           as.adjMAT(object, result=result)
+           graphNEL2adjMAT(object, result=result)
          }
          )
 }
@@ -54,8 +53,6 @@ coerceGraph.matrix <- function(object, result){
          "matrix"  ={object}
          ) 
 }
-
-
 
 setOldClass("igraph")
 setAs("graphNEL", "igraph", # input,output
@@ -89,8 +86,9 @@ setAs("Matrix", "igraph",
         gg
       })
 
-setAs("igraph",   "matrix",   function(from) as(get.adjacency(from),"matrix"))
-setAs("igraph",   "graphNEL", function(from) igraph.to.graphNEL(from))
-setAs("igraph",   "Matrix",   function(from) .asdgCMatrix(get.adjacency(from)))
-setAs("graphNEL", "matrix",   function(from) as.adjMAT(from, result="matrix"))
-setAs("graphNEL", "Matrix",   function(from) as.adjMAT(from, result="Matrix"))
+setAs("igraph",   "matrix",      function(from) as(get.adjacency(from),"matrix"))
+setAs("igraph",   "graphNEL",    function(from) igraph.to.graphNEL(from))
+setAs("igraph",   "Matrix",      function(from) .asdgCMatrix(get.adjacency(from)))
+setAs("graphNEL", "matrix",      function(from) graphNEL2adjMAT(from, result="matrix"))
+setAs("graphNEL", "Matrix",      function(from) graphNEL2adjMAT(from, result="Matrix"))
+setAs("graphNEL", "dgCMatrix",   function(from) graphNEL2adjMAT(from, result="Matrix"))

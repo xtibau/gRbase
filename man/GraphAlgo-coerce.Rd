@@ -1,42 +1,30 @@
-\name{graph-operations}
+\name{graph-coercion}
 
-\alias{ancestors}
-\alias{ancestralGraph}
-\alias{ancestralSet}
-\alias{children}
-\alias{closure}
+\alias{graphNEL2ftM}
+\alias{as.adjMAT}
+\alias{graphNEL2adjMAT}
+\alias{graphNEL2matrix}
+\alias{graphNEL2dgCMatrix}
 
-\alias{is.complete}
-\alias{is.decomposition}
-\alias{is.simplicial}
-\alias{parents}
-\alias{simplicialNodes}
-
-\title{Simple operations on undirected and directed acyclic graphs.}
+\title{Coercion of graphs}
 \description{
-  Make operations on undirected and directed acyclic graphs (which are
-  represented as \code{graphNEL} objects.
+  Coercion of graphs from graphNEL format to adjacency matrix format and
+  to other formats
 }
 
 \usage{
-ancestors(set, object)
-ancestralGraph(set, object)
-ancestralSet(set, object)
-children(set, object)
-closure(set, object)
-is.complete(object, set)
-is.decomposition(set, set2, set3, object)
-is.simplicial(set, object)
-parents(set, object)
-simplicialNodes(object)
+as.adjMAT(object, result="matrix")
+graphNEL2adjMAT(object, result="matrix")
+graphNEL2ftM(object)
+graphNEL2matrix(object)
+graphNEL2dgCMatrix(object)
 }
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{set, set2, set3}{Vectors of sets}
   \item{object}{A graphNEL object}
-%  \item{result}{Either \code{"matrix"} of \code{"Matrix"} (for a sparse
-%    matrix representation).}
+  \item{result}{Either \code{"matrix"} of \code{"Matrix"} (for a sparse
+    matrix representation).}
 }
 \details{
   Notice: \code{graphNEL2adjMAT(g, result="matrix")} and
@@ -51,6 +39,7 @@ simplicialNodes(object)
 %   \item{comp2 }{Description of 'comp2'}
 %   ...
 % }
+
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
 % \note{ ~~further notes~~ 

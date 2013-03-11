@@ -10,7 +10,7 @@ mcs <- function(object, root=NULL, index=FALSE){
 
 mcs.graphNEL <- function(object, root=NULL, index=FALSE){
   if (is.UG(object)){
-    mcsMAT(as.adjMAT(object), root=root, index=index)
+    mcsMAT(graphNEL2dgCMatrix(object), root=root, index=index)
   } else {
     character(0)
   }

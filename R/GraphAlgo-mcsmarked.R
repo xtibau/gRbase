@@ -12,9 +12,9 @@ mcsmarked <- function (object, discrete=NULL, index = FALSE){
 
 mcsmarked.graphNEL <- function (object, discrete=NULL, index = FALSE){
   if (is.null(discrete))
-    mcsMAT(as.adjMAT(object), index=index)
+    mcsMAT(graphNEL2dgCMatrix(object), index=index)
   else
-    mcsmarkedMAT(as.adjMAT(object), discrete=discrete, index = index)
+    mcsmarkedMAT(graphNEL2dgCMatrix(object), discrete=discrete, index = index)
 }
 
 mcsmarked.igraph <- function (object, discrete=NULL, index = FALSE){

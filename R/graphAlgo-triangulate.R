@@ -1,7 +1,7 @@
 
 triangulate.graphNEL <- function(object, method="mcwh",
                         nLevels=rep(2,length(nodes(object))), result="graphNEL",...){
-  triangulateMAT(as.adjMAT(object),
+  triangulateMAT(graphNEL2dgCMatrix(object),
                  method=method, nLevels=nLevels, result=result, ...) 
 }
 
@@ -37,13 +37,8 @@ triangulateMAT <- function(amat, method="mcwh",
   else {
     result <- match.arg(result, c("matrix","graphNEL","igraph", "Matrix"))
   }
-
-##   if (cls =="dgCMatrix"){
-##     ans <- triangulateMAT_spR(amat)
-##   } else {
-##     ans <- triangulateMAT_stC(amat)
-##   }
-  if (cls =="dgCMatrix"){
+  
+  if (cls=="dgCMatrix"){
     ans <- triangulateMAT_spCpp(amat, nLevels)
   } else {
     ans <- triangulateMAT_stCpp(amat, nLevels)
@@ -110,7 +105,6 @@ triangulateMAT_spR<- function(amat, vn=colnames(amat), nLevels=rep(2, length(vn)
 ## .triangulate_stR <- function(object, vn=nodes(object), nLevels=rep(2, length(vn))){
   
 ##   amat       <- amat2 <- as.adjMAT(object)
-
 ##   anodes     <- vn     
 ##   activeList <- gnodes <- rep(1, length(vn))
 ##   wgt        <- rep(NA,length(vn))
