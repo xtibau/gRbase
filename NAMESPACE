@@ -6,6 +6,6 @@ importClassesFrom("Matrix",
 importMethodsFrom("Matrix",
                   t, isSymmetric)
 
-importFrom(fastmatch, fmatch)
+##importFrom(fastmatch, fmatch)
 
 

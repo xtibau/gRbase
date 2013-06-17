@@ -39,7 +39,7 @@ tableOp <- function(t1, t2, op="*"){
   vn1 <- names(dn1)
   vn2 <- names(dn2)
 
-  idx <- fmatch(vn2, vn1)   ## location of variables in vn2 in vn1:
+  idx <- match(vn2, vn1)   ## location of variables in vn2 in vn1:
   idx.na <- is.na(idx)      ## logical of variables in {vn2\vn1}
 
   if (any(idx.na)){         ## If there are variables in {vn2 \ vn1}
@@ -62,7 +62,7 @@ tableOp <- function(t1, t2, op="*"){
   }
 
   ## Find indices of vn2 in augmented table (vn1, vn2\vn1)
-  vn2.idx    <- fmatch(vn2, vn.new)
+  vn2.idx    <- match(vn2, vn.new)
   ## Create perumation indices; first variables in vn2; then vn1\vn2
   perm  <-  c(vn2.idx, (1:length(vn.new))[-vn2.idx])
   
@@ -87,7 +87,7 @@ tableOp <- function(t1, t2, op="*"){
   if (!is.array(t2)) {stop("'t2' is not an array")}
 
 #  op <- match.arg(op, c("*","/","+","-"))
- # if (any(fmatch(op, c("*","/","+","-"))>0)){
+ # if (any(match(op, c("*","/","+","-"))>0)){
     op <- switch(op,
                  "*"={`*`},
                  "/"={`/`},
@@ -103,7 +103,7 @@ tableOp <- function(t1, t2, op="*"){
   vn1 <- names(dn1)
   vn2 <- names(dn2)
 
-  idx <- fmatch(vn2, vn1)   ## location of variables in vn2 in vn1:
+  idx <- match(vn2, vn1)   ## location of variables in vn2 in vn1:
   idx.na <- is.na(idx)      ## logical of variables in {vn2\vn1}
 
   if (any(idx.na)){         ## If there are variables in {vn2 \ vn1}
@@ -125,7 +125,7 @@ tableOp <- function(t1, t2, op="*"){
   }
 
   ## indices of vn2 in augmented table (vn1, vn2\vn1)
-  vn2.idx    <- fmatch(vn2, vn.new)
+  vn2.idx    <- match(vn2, vn.new)
   ## Create perumation indices; first variables in vn2; then vn1\vn2
   perm  <-  c(vn2.idx, (1:length(vn.new))[-vn2.idx])
 
@@ -149,7 +149,7 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
   vn2  <- names(dimnames(t2))
 
   ## indices of vn2 in vn1:
-  vn2.idx   <- fmatch(vn2, vn1)
+  vn2.idx   <- match(vn2, vn1)
   ## Create perumation indices; first variables in vn2; then vn1\vn2  
   perm <- c(vn2.idx, (1:length(vn1))[-vn2.idx])
 
@@ -157,7 +157,7 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
     if (restore) {
       zz    <- op(aperm.default(t1, perm, TRUE), as.numeric(t2))
       newvn <- c(vn2, vn1[-vn2.idx])
-      perm2 <- fmatch(vn1, newvn)
+      perm2 <- match(vn1, newvn)
       aperm.default(zz, perm2, TRUE)
     } else {
       op(aperm.default(t1, perm, TRUE), as.numeric(t2))
@@ -179,7 +179,7 @@ tableSlice <-  function (x, margin, level, impose)
     vn    <- names(dn)
 
     if (is.character(margin)){
-        margin2 <- fmatch(margin, vn)
+        margin2 <- match(margin, vn)
         if (any(is.na(margin2)))
             stop("Variables: ", margin[is.na(margin2)], " do not exist in table...")
     } else {
@@ -189,7 +189,7 @@ tableSlice <-  function (x, margin, level, impose)
     if (is.character(level)){
         level2  <- rep(NA, length(level))
         for (kk in seq_along(margin)){
-            level2[kk] <- fmatch(level[kk],dn[[margin2[kk]]])
+            level2[kk] <- match(level[kk],dn[[margin2[kk]]])
         }
         if (any(is.na(level2)))
             stop("Level: ", level[is.na(level2)], " do not exist in table...")
@@ -251,7 +251,7 @@ tableMargin <- function (x, margin, keep.class = FALSE)
     oc <- oldClass(x)
     if (length(margin)) {
         if (is.character(margin)) {
-          marg.idx <- fmatch(margin, vn)
+          marg.idx <- match(margin, vn)
           if (any(is.na(marg.idx)))
             stop("Variable not in table...\n")
         }

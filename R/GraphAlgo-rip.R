@@ -36,7 +36,7 @@ rip.Matrix <- function(object, root=NULL, nLevels=NULL){
   ripMAT(object, root=root, nLevels=nLevels)
 }
 
-.ripMAT <- function(amat, root=NULL, nLevels=NULL){
+ripMAT <- function(amat, root=NULL, nLevels=NULL){
   ## FIXME: ripMAT Check that it is an adjMAT.
   cq.vn   <- maxCliqueMAT(amat)[[1]]
   ncq     <- length(cq.vn)
@@ -70,7 +70,7 @@ rip.Matrix <- function(object, root=NULL, nLevels=NULL){
     sp.vn <- lapplyI2V(sp.idx, vn)
     child <- match(seq_along(cq2.idx), pa.idx)
     host  <- rep.int(0L, length(nodes))
-    ll    <- lapply(cq2.vn, fmatch, nodes)
+    ll    <- lapply(cq2.vn, match, nodes)
     for (ii in seq_along(ll)){
       host[ll[[ii]]] <- ii
     }
@@ -80,7 +80,7 @@ rip.Matrix <- function(object, root=NULL, nLevels=NULL){
     pa.idx <- 0L
     sp.vn  <- list(character(0))
     child  <- NA
-    host <- rep.int(1L, length(nodes))    
+    host  <- rep.int(1L, length(nodes))    
   }
 
   .getChildList <- function(parents){
@@ -107,62 +107,8 @@ rip.Matrix <- function(object, root=NULL, nLevels=NULL){
   return(rip3)
 }
 
-
-
-print.ripOrder <- function(x, ...){
-  idx <- 1:length(x$cliques)
-  cat("cliques\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$cliques, idx)
-  
-  cat("separators\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$separators, idx)
-  
-  cat("parents\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$pa, idx)
-  
-#  cat("Children\n")
-#  mapply(function(xx,ii) cat(" ",ii,paste(xx, collapse=' '),"\n"), x$ch, idx)
-}
-
-.createJTreeGraph <- function(rip){
-  if (length(rip$cliques)>1){
-    ft <-cbind(rip$parents, 1:length(rip$parents))
-    ft <- ft[ft[,1]!=0,, drop=FALSE]
-    V <- seq_along(rip$parents)
-    if (nrow(ft)==0){
-      jt <- new("graphNEL", nodes = as.character(V), edgemode = "undirected")
-    } else {
-      jt <- ftM2graphNEL(ft, V=as.character(V), edgemode="undirected")
-    }
-  } else {
-    jt <- new("graphNEL", nodes = "1", edgemode = "undirected")
-  }
-  return(jt)
-}
-
-plot.ripOrder <- function(x,...){
-  plot(x$createGraph(x))
-}
-
-.rip2dag<-function (rip) {
-  if (length(rip$cliques) > 1) {
-    ft <- cbind(rip$parents, 1:length(rip$parents))
-    ft <- ft[ft[, 1] != 0, , drop = FALSE]
-    V  <- seq_along(rip$parents)
-    if (nrow(ft) == 0) {
-      jt <- new("graphNEL", nodes = as.character(V), edgemode = "directed")
-    } else {
-      jt <- ftM2graphNEL(ft, V = as.character(V), edgemode = "directed")
-    }
-  } else {
-    jt <- new("graphNEL", nodes = "1", edgemode = "directed")
-  }
-  return(jt)
-}
-
-
 ## Old version; replaced by newer and much faster in January 2013
-ripMAT <- function(amat, root=NULL, nLevels=NULL){
+.ripMAT.OLD <- function(amat, root=NULL, nLevels=NULL){
   
   t0 <- proc.time()
   vn <- colnames(amat)
@@ -241,6 +187,63 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
 
   return(rip2)
 }
+
+
+
+
+
+print.ripOrder <- function(x, ...){
+  idx <- 1:length(x$cliques)
+  cat("cliques\n")
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$cliques, idx)
+  
+  cat("separators\n")
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$separators, idx)
+  
+  cat("parents\n")
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$pa, idx)
+  
+#  cat("Children\n")
+#  mapply(function(xx,ii) cat(" ",ii,paste(xx, collapse=' '),"\n"), x$ch, idx)
+}
+
+.createJTreeGraph <- function(rip){
+  if (length(rip$cliques)>1){
+    ft <-cbind(rip$parents, 1:length(rip$parents))
+    ft <- ft[ft[,1]!=0,, drop=FALSE]
+    V <- seq_along(rip$parents)
+    if (nrow(ft)==0){
+      jt <- new("graphNEL", nodes = as.character(V), edgemode = "undirected")
+    } else {
+      jt <- ftM2graphNEL(ft, V=as.character(V), edgemode="undirected")
+    }
+  } else {
+    jt <- new("graphNEL", nodes = "1", edgemode = "undirected")
+  }
+  return(jt)
+}
+
+plot.ripOrder <- function(x,...){
+  plot(x$createGraph(x))
+}
+
+.rip2dag<-function (rip) {
+  if (length(rip$cliques) > 1) {
+    ft <- cbind(rip$parents, 1:length(rip$parents))
+    ft <- ft[ft[, 1] != 0, , drop = FALSE]
+    V  <- seq_along(rip$parents)
+    if (nrow(ft) == 0) {
+      jt <- new("graphNEL", nodes = as.character(V), edgemode = "directed")
+    } else {
+      jt <- ftM2graphNEL(ft, V = as.character(V), edgemode = "directed")
+    }
+  } else {
+    jt <- new("graphNEL", nodes = "1", edgemode = "directed")
+  }
+  return(jt)
+}
+
+
 
 
 
