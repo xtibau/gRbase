@@ -9,7 +9,7 @@ setdiffPrim <- function (x, y){
   ##            x[match(x, y, 0L) == 0L]
   ##     else x)  
   unique.default(if (length(x) || length(y))
-                 x[fmatch(x, y, 0L) == 0L]
+                 x[match(x, y, 0L) == 0L]
   else x)
 }
 
@@ -24,7 +24,7 @@ unlistPrim <- function(l){
 }
 
 matchPrim<-function(x,table){
-  fmatch(x,table)
+  match(x,table)
 }
 
 outerPrim <- function(X,Y){

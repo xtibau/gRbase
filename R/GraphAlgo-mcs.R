@@ -38,7 +38,7 @@ mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE)
   vn.old <- vn
   if (!is.null(root)){
     vn   <- c(root, setdiffPrim(vn, root))
-    root2 <- fmatch(vn, vn.old)-1
+    root2 <- match(vn, vn.old)-1
   } else {
     root2 <- 0:(ncol(amat)-1)
   }

@@ -5,9 +5,6 @@
 \alias{triangulate.Matrix}
 \alias{triangulateMAT}
 
-
-
-
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Triangulation of an undirected graph}
 \description{
@@ -15,9 +12,10 @@
 }
 \usage{
 triangulate(object, ...)
-\method{triangulate}{graphNEL}(object, method="mcwh",  nLevels = rep(2,length(nodes(object))), result="graphNEL",...)
-\method{triangulate}{matrix}(object, method="mcwh",  nLevels = rep(2,ncol(object)), result="matrix",...)
-\method{triangulate}{Matrix}(object, method="mcwh",  nLevels = rep(2,ncol(object)), result="Matrix",...)
+\method{triangulate}{graphNEL}(object, method="mcwh", nLevels = rep(2,length(nodes(object))), 
+                               result="graphNEL",...)
+\method{triangulate}{matrix}(object, method="mcwh", nLevels = rep(2,ncol(object)), result="matrix",...)
+\method{triangulate}{Matrix}(object, method="mcwh", nLevels = rep(2,ncol(object)), result="Matrix",...)
 triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
