@@ -15,25 +15,22 @@
 
 \SweaveOpts{keep.source=T}
 
+<<echo=FALSE,print=FALSE>>=
+require( gRbase )
+prettyVersion <- packageDescription("gRbase")$Version
+prettyDate <- format(Sys.Date())
+@
+
 \title{Advanced array operations in the \grbase\ package}
 \author{S{\o}ren H{\o}jsgaard}
+\date{\pkg{gRbase} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
+
 
 \begin{document}
+
+\SweaveInput{Rmarkup.STY}
+
 \maketitle
-
-\renewenvironment{Schunk}{\linespread{.85}\small}{}
-
-% \definecolor{MyGray}{rgb}{0.95,0.95,0.95}
-% \makeatletter
-% \renewenvironment{Schunk}{
-%   \begin{lrbox}{\@tempboxa}
-%     \begin{boxedminipage}
-%       {\columnwidth}\small}
-%     {\end{boxedminipage}
-%   \end{lrbox}%
-%   \colorbox{MyGray}{\usebox{\@tempboxa}}
-% }
-% \makeatother
 
 \parindent0pt\parskip5pt
 

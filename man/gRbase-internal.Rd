@@ -45,7 +45,7 @@
 \alias{print.parray}
 
 
-
+\alias{maxClique}
 
 
 %% Some igraph stuff. Should be removed one day

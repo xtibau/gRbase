@@ -1,6 +1,7 @@
 pkgname <- "gRbase"
 source(file.path(R.home("share"), "R", "examples-header.R"))
 options(warn = 1)
+options(pager = "console")
 library('gRbase')
 
 base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
@@ -261,14 +262,13 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
-closure("me", uG)
+getCliques(uG)
 
-maxClique(uG)
 amat1 <- as.adjMAT(uG)
-maxCliqueMAT(amat1)
+getCliques(amat1)
 
 amat1 <- as.adjMAT(uG, result="Matrix")
-maxCliqueMAT(amat1)
+getCliques(amat1)
 
 
 
@@ -568,13 +568,13 @@ flush(stderr()); flush(stdout())
 
 uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 closure("me", uG)
+getCliques(uG)
 
-maxClique(uG)
 amat1 <- as.adjMAT(uG)
-maxCliqueMAT(amat1)
+getCliques(amat1)
 
 amat1 <- as.adjMAT(uG, result="Matrix")
-maxCliqueMAT(amat1)
+getCliques(amat1)
 
 
 
