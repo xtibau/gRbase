@@ -1,11 +1,13 @@
 useDynLib(gRbase)
+
+importFrom(RBGL, maxClique, is.triangulated, separates)
+
+importClassesFrom("Matrix", Matrix)
+
+importMethodsFrom("Matrix", t, isSymmetric)
+
+export(maxClique)
+
 exportPattern("^[[:alpha:]]+")
-
-importClassesFrom("Matrix",
-                  Matrix)
-importMethodsFrom("Matrix",
-                  t, isSymmetric)
-
-##importFrom(fastmatch, fmatch)
 
 

@@ -48,8 +48,8 @@ graphNEL2dgCMatrix(object)
 % }
 \seealso{
   \code{\link{edgeList}}
+  \code{\link{getCliques}}  
   \code{\link{nonEdgeList}}
-  %\code{\link{as.adjMAT}}
   \code{\link{mcs}}
   \code{\link{rip}}
   \code{\link{moralize}}
@@ -57,14 +57,13 @@ graphNEL2dgCMatrix(object)
 }
 \examples{
 uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
-closure("me", uG)
+getCliques(uG)
 
-maxClique(uG)
 amat1 <- as.adjMAT(uG)
-maxCliqueMAT(amat1)
+getCliques(amat1)
 
 amat1 <- as.adjMAT(uG, result="Matrix")
-maxCliqueMAT(amat1)
+getCliques(amat1)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

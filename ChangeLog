@@ -1,3 +1,12 @@
+2013-06-25 Søren Højsgaard <sorenh@math.aau.dk>	
+
+	* Changes in NAMESPACE file such that the entire RBGL package is
+	not loaded.
+
+	* Makefile added for building vignettes
+	
+	* Version 1.6-10 uploaded.				
+
 2013-05-28 Søren Højsgaard <sorenh@math.aau.dk>	
 
 	* The use of fmatch has been replaced by the use of mathc.

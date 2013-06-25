@@ -4,9 +4,11 @@
 
 \documentclass[12pt]{article}
 
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
 \usepackage{boxedminipage,color,a4wide,url}
+%\usepackage[utf8]{inputenc}
+\usepackage{inputenx}
 
 \def\code#1{\texttt{#1}}
 \def\pkg#1{{\bf #1}}
@@ -18,28 +20,25 @@
 \def\rbgl{\texttt{RBGL}}
 \def\igraph{\texttt{igraph}}
 
+<<echo=FALSE,print=FALSE>>=
+require( gRbase )
+prettyVersion <- packageDescription("gRbase")$Version
+prettyDate <- format(Sys.Date())
+@
+
+
 \title{Graphs in the \grbase\ package}
-\author{Søren Højsgaard}
+\author{S{\o}ren H{\o}jsgaard}
+\date{\pkg{gRbase} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
+
 \begin{document}
+
+\SweaveInput{Rmarkup.STY}
 
 \maketitle
 
 \SweaveOpts{prefix.string=fig/graph,keep.source=T,height=4} 
 \setkeys{Gin}{width=0.6\textwidth} 
-
-% \definecolor{MyGray}{rgb}{0.95,0.95,0.95}
-% \makeatletter
-% \renewenvironment{Schunk}{
-%   \begin{lrbox}{\@tempboxa}
-%     \begin{boxedminipage}
-%       {\columnwidth}\small}
-%     {\end{boxedminipage}
-%   \end{lrbox}%
-%   \colorbox{MyGray}{\usebox{\@tempboxa}}
-% }
-% \makeatother
-
-\renewenvironment{Schunk}{\linespread{.85}\small}{}
 
 @
 <<echo=FALSE>>=
@@ -48,6 +47,8 @@ oopt <- options()
 options("digits"=4, "width"=80, "prompt"="R> ", "continue"="  ")
 options(useFancyQuotes="UTF-8")
 @ %def
+
+
 
 <<echo=F>>=
 library(gRbase)
@@ -497,7 +498,7 @@ represented as a \graphnel\ object or as a matrix:
 
 @ 
 <<>>=
-system.time({for (ii in 1:200) maxClique(ug11)})     ## in RBGL
+system.time({for (ii in 1:200) RBGL::maxClique(ug11)})     ## in RBGL
 system.time({for (ii in 1:200) maxCliqueMAT(ug11m)}) ## in gRbase
 @ %def 
 

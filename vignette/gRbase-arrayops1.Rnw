@@ -6,34 +6,31 @@
 %\usepackage[T1]{fontenc}
 \usepackage{inputenx}
 \usepackage{boxedminipage,color}
+%\usepackage[utf8]{inputenc}
+
+\def\code#1{{\texttt{#1}}}
+\def\R{\texttt{R}}
+
+
+<<echo=FALSE,print=FALSE>>=
+require( gRbase )
+prettyVersion <- packageDescription("gRbase")$Version
+prettyDate <- format(Sys.Date())
+@
+
+
 \title{Primitive array operations in the \texttt{gRbase} package}
 \author{S{\o}ren H{\o}jsgaard}
-\SweaveOpts{keep.source=T}
+\date{\pkg{gRbase} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 
 \begin{document}
-
-\definecolor{myGray}{rgb}{0.95,0.95,0.95}
-
-% \makeatletter
-% \renewenvironment{Schunk}{
-%   \begin{lrbox}{\@tempboxa}
-%     \begin{boxedminipage}
-%       {\columnwidth}\small}
-%     {\end{boxedminipage}
-%   \end{lrbox}%
-%   \colorbox{myGray}{\usebox{\@tempboxa}}
-% }
-% \makeatother
-
-\renewenvironment{Schunk}{\linespread{.85}\small}{}
+\SweaveInput{Rmarkup.STY}
 
 \maketitle
 
 \tableofcontents
 
 \parindent0pt\parskip5pt
-\def\code#1{{\texttt{#1}}}
-\def\R{\texttt{R}}
 
 @
 <<echo=F,results=hide>>=
