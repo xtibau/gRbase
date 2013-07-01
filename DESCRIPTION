@@ -1,5 +1,5 @@
 Package: gRbase
-Version: 1.6-10
+Version: 1.6-11
 Title: A package for graphical modelling in R
 Author: Søren Højsgaard <sorenh@math.aau.dk> with contributions from
         Claus Dethlefsen <cld@rn.dk> and Clive Bowsher
@@ -40,7 +40,7 @@ Encoding: latin1
 LinkingTo: Rcpp,RcppArmadillo,RcppEigen
 ByteCompile: No
 Suggests: Rgraphviz
-Packaged: 2013-06-25 12:53:18 UTC; sorenh
+Packaged: 2013-07-01 19:23:20 UTC; sorenh
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-06-25 17:43:45
+Date/Publication: 2013-07-02 00:42:37

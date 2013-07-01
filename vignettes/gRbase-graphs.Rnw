@@ -5,10 +5,10 @@
 \documentclass[12pt]{article}
 
 %\usepackage[T1]{fontenc}
-%\usepackage[latin1]{inputenc}
+\usepackage[latin1]{inputenc}
 \usepackage{boxedminipage,color,a4wide,url}
 %\usepackage[utf8]{inputenc}
-\usepackage{inputenx}
+%\usepackage{inputenx}
 
 \def\code#1{\texttt{#1}}
 \def\pkg#1{{\bf #1}}
@@ -33,7 +33,33 @@ prettyDate <- format(Sys.Date())
 
 \begin{document}
 
-\SweaveInput{Rmarkup.STY}
+%\SweaveInput{Rmarkup.STY}
+
+\definecolor{darkred}{rgb}{.7,0,0} 
+\definecolor{midnightblue}{rgb}{0.098,0.098,0.439} 
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,
+  formatcom={\color{midnightblue}}
+} 
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{darkred}}
+} 
+\DefineVerbatimEnvironment{Scode}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{blue}}
+} 
+
+\fvset{listparameters={\setlength{\topsep}{-2pt}}}
+\renewenvironment{Schunk}{\linespread{.90}}{}    
+
 
 \maketitle
 

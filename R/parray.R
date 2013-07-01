@@ -22,9 +22,14 @@ parray <- function(varNames, levels, values=1, normalize="none", smooth=0){
   ## Normalize if requested
   switch(normalize,
          "first" = {
+           ##cat("first\n")
            if (length(nlev)>1){
+             ##aaa <<- ans
              tmp   <- matrix(ans, ncol=dim(ans)[1], byrow=TRUE)
+             ##print(tmp)
+             ##ttt <<- tmp
              tmp   <- t.default(tmp/rowSumsPrim(tmp))
+             ##print(tmp)
              ans[] <- tmp             
            } else {
              ans <- ans / sum(ans)

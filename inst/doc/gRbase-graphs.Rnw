@@ -1,0 +1,868 @@
+% \VignetteIndexEntry{gRbase-graphs: Graphs in the gRbase package}
+% \VignetteDepends{gRbase}
+% \VignetteKeyword{graphs}
+
+\documentclass[12pt]{article}
+
+%\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{boxedminipage,color,a4wide,url}
+%\usepackage[utf8]{inputenc}
+%\usepackage{inputenx}
+
+\def\code#1{\texttt{#1}}
+\def\pkg#1{{\bf #1}}
+\def\grbase{\pkg{gRbase}}
+\def\graphnel{\texttt{graphNEL}}
+\def\R{\texttt{R}}
+\def\graph{\texttt{graph}}
+\def\rgraphviz{\texttt{Rgraphviz}}
+\def\rbgl{\texttt{RBGL}}
+\def\igraph{\texttt{igraph}}
+
+<<echo=FALSE,print=FALSE>>=
+require( gRbase )
+prettyVersion <- packageDescription("gRbase")$Version
+prettyDate <- format(Sys.Date())
+@
+
+
+\title{Graphs in the \grbase\ package}
+\author{S{\o}ren H{\o}jsgaard}
+\date{\pkg{gRbase} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
+
+\begin{document}
+
+%\SweaveInput{Rmarkup.STY}
+
+\definecolor{darkred}{rgb}{.7,0,0} 
+\definecolor{midnightblue}{rgb}{0.098,0.098,0.439} 
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,
+  formatcom={\color{midnightblue}}
+} 
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{darkred}}
+} 
+\DefineVerbatimEnvironment{Scode}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{blue}}
+} 
+
+\fvset{listparameters={\setlength{\topsep}{-2pt}}}
+\renewenvironment{Schunk}{\linespread{.90}}{}    
+
+
+\maketitle
+
+\SweaveOpts{prefix.string=fig/graph,keep.source=T,height=4} 
+\setkeys{Gin}{width=0.6\textwidth} 
+
+@
+<<echo=FALSE>>=
+dir.create("fig")
+oopt <- options()
+options("digits"=4, "width"=80, "prompt"="R> ", "continue"="  ")
+options(useFancyQuotes="UTF-8")
+@ %def
+
+
+
+<<echo=F>>=
+library(gRbase)
+@ 
+
+\tableofcontents
+
+\parindent0pt\parskip5pt
+
+\section{Introduction}
+\label{sec:intro}
+
+For the \R\ community, the packages \graph, \rbgl, \rgraphviz\ and
+\igraph\ are extremely useful tools for graph operations, manipulation
+and layout. The \grbase\ package adds some additional tools to these
+fine packages. The most important tools are:
+
+\begin{enumerate}
+\item Undirected and directed acyclic graphs can be specified using
+  formulae or an adjacency list using the functions \code{ug()} and
+  \code{dag()}. This gives graphs represented in one of the following
+  forms:\footnote{There is a fourth form: \igraph\ objects. These,
+    however, will probably not be supported in the future.}
+  \begin{itemize}
+  \item A \graphnel\ object (the default),
+  \item A dense adjacency matrix. By this we mean a ``standard''
+    matrix in \R. 
+
+  \item A sparse adjacency matrix. By this we mean a \code{dgCMatrix} 
+    from the \code{Matrix} package.
+  \end{itemize}
+ 
+\item Some graph algorithms are implemented in \grbase. These can be
+  applied to graphs represented as \graphnel s and matrices. The most
+  important algorithms are:
+  \begin{itemize}
+  \item \code{moralize()}, (moralize a directed acyclic graph)
+  \item \code{mcs()},(maximum cardinality search for undirected graph) 
+  \item \code{triangulate()}, (triangulate undirected graph)
+  \item \code{rip()}, (RIP ordering of cliques of triangulated undirected graph)
+  \item \code{getCliques()}, (get the (maximal) cliques of an undirected graph)
+  \item \code{minimalTriang()} (minimal triangulation of undirected
+    graph)\footnote{Needs more work}
+  \item \code{mpd()} (maximal prime subgraph decomposition of
+    undirected graph)\footnote{Needs more work} 
+  \end{itemize}
+
+  The general scheme is the following: There is a \code{mcs()}
+  function and \code{mcs()} methods for \graphnel s and for the two
+  matrix types. The workhorse is the function \code{mcsMAT()} and the
+  various methods coerces the graph to a (sparse) matrix and invokes
+  \code{mcsMAT()}. 
+
+\end{enumerate}
+
+
+
+\section{Graphs}
+\label{sec:xxx}
+
+Undirected graphs can be created by the \code{ug()} function and
+directed acyclic graphs (DAGs) by the \code{dag()} function.
+
+The graphs can be specified either using formulae or a list of
+vectors; see examples below.
+
+\subsection{Undirected graphs}
+
+An undirected graph is created by the \code{ug()} function. 
+
+\paragraph{As \code{graphNEL}:}
+The following specifications are equivalent (notice that ``\code{:}''
+and ``\code{*}'' can be used interchangably):
+
+@ 
+<<print=F>>=
+ug11 <- ug(~a:b:c + c:d + d:e + a:e + f:g)
+ug11 <- ug(~a*b*c + c*d + d*e + a*e + f*g)
+ug12 <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"))
+ug13 <- ug(~a:b:c, ~c:d, ~d:e + a:e + f:g)
+ug13 <- ug(~a*b*c, ~c*d, ~d*e + a*e + f*g)
+@ %def 
+
+@ 
+<<>>=
+ug11
+@ %def 
+
+
+
+\paragraph{As adjacency matrix:}
+A  representation as an adjacency matrix can be
+obtained with one of the following equivalent specifications:
+
+@ 
+<<print=F>>=
+ug11m <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="matrix")
+ug12m <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
+            result="matrix")
+@ %def 
+
+@ 
+<<>>=
+ug11m
+@ %def 
+
+
+@ 
+<<print=F>>=
+ug11M <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="Matrix")
+ug12M <- ug(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g"), 
+            result="Matrix")
+@ %def 
+
+@ 
+<<>>=
+ug11M
+@ %def 
+
+
+
+
+
+
+\subsection{Directed acyclic graphs (DAGs)}
+
+A directed acyclic graph is created by the \code{dag()} function. 
+
+
+\paragraph{As \code{graphNEL}:}
+The
+following specifications are equivalent (notice that ``\code{:}''
+and ``\code{*}'' can be used interchangably):
+
+<<print=F>>=
+dag11 <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f)
+dag11 <- dag(~a + b*a + c*a*b + d*c*e + e*a + g*f)
+dag12 <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
+             c("e","a"),c("g","f"))
+dag13 <- dag(~a, ~b:a,  ~c:a:b, ~d:c:e, ~e:a, ~g:f)
+dag13 <- dag(~a, ~b*a,  ~c*a*b, ~d*c*e, ~e*a, ~g*f)
+@
+
+@ 
+<<>>=
+dag11
+@ %def 
+
+Here \texttt{\~{ }a} means that ``a'' has no parents while 
+\texttt{\~{ }d:b:c} means that ``d'' has parents ``b'' and
+``c''. 
+
+
+\paragraph{As adjacency matrix:}
+A  representation as an adjacency matrix can be
+obtained with
+
+<<print=F>>=
+dag11m <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="matrix")
+dag12m <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
+             c("e","a"),c("g","f"), result="matrix")
+@
+
+@ 
+<<>>=
+dag11m
+@ %def 
+
+<<print=F>>=
+dag11M <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="Matrix")
+dag12M <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"), 
+             c("e","a"),c("g","f"), result="Matrix")
+@
+
+@ 
+<<>>=
+dag11M
+@ %def 
+
+
+
+
+\subsection{Graph coercion}
+\label{sec:graph-coercion}
+
+
+Graphs can be coerced between differente representations using
+\code{as()}; for example
+
+@ 
+<<>>=
+as(ug11,"matrix")
+as(as(ug11,"matrix"),"dgCMatrix")
+as(as(as(ug11,"matrix"),"dgCMatrix"),"graphNEL")
+as(as(as(as(ug11,"matrix"),"Matrix"),"graphNEL"),"igraph")
+@ %def 
+
+\paragraph{NOTICE!}
+\label{sec:notice}
+There is one thing to notice when coercing a dense matrix to a sparse
+matrix. Consider this
+
+@ 
+<<>>=
+m <- matrix(1:4,nrow=2)
+as(m, "Matrix")
+as(m, "dgCMatrix")
+@ %def 
+
+In the first case, the matrix coercion method will, based on
+properties of the matrix, impose a specific type on the result. The
+graph algorithms in \grbase\ are based on the \code{dgCMatrix} form
+and hence the latter case is more safe. Coercion to a \code{dgCMatrix}
+can be made much faster with the following function from \grbase:
+
+@ 
+<<>>=
+asdgCMatrix(m)
+@ %def 
+
+
+
+
+
+
+\subsection{Plotting graphs}
+\label{sec:plotting-graphs}
+
+
+Graphs represented as \graphnel\ objects  are displayed with
+\code{plot()}. There is no \code{plot()} method for graphs represented
+as adjacency matrices, so here coercion is one option:
+
+@ 
+<<fig=T>>=
+par(mfrow=c(1,2))
+plot(ug11)
+plot(as(ug11m,"graphNEL"))
+@ %def 
+
+An alternative for adjacency matrices is the \code{gplot()} function
+in the \pkg{sna} package:
+
+@ 
+<<eval=F>>=
+par(mfrow=c(1,2))
+library(sna)
+gplot(ug11m, label=colnames(ug11m),gmode="graph")
+gplot(dag11m, label=colnames(dag11m))
+@ %def 
+
+
+
+
+
+\section{Advanced graph operations}
+\label{sec:advanc-graph-oper}
+
+\subsection{Moralization}
+\label{sec:moralization}
+
+@ 
+<<>>=
+apropos("^moralize\\.")
+@ %def 
+
+
+A moralized directed acyclic graph is obtained with
+
+@ 
+<<>>=
+dag11.mor <- moralize(dag11)
+@ %def 
+
+@ 
+<<fig=T>>=
+par(mfrow=c(1,2))
+plot(dag11)
+plot(dag11.mor)
+@ %def 
+
+For the alternative representations
+
+@ 
+<<>>=
+moralize(dag11m)
+moralize(dag11M) 
+@ %def 
+
+
+\subsection{Topological sort}
+\label{sec:topological-sort}
+
+A topological ordering of a directed graph is a linear ordering of its
+vertices such that, for every edge (u->v), u comes before v in the
+ordering. A topological ordering is possible if and only if the graph
+has no directed cycles, that is, if it is a directed acyclic graph
+(DAG). Any DAG has at least one topological ordering.  
+
+
+@ 
+<<>>=
+topoSort(dag11)
+topoSort(dag11m)
+topoSort(dag11M)
+@ %def 
+
+The \code{dag()} function actually allows specification of a directed
+graph with cycles (a check can be imposed with
+\code{forceCheck=TRUE}). Below is a directed graph with a cycle
+
+@ 
+<<>>=
+topoSort(dag(~a:b+b:c+c:a))
+@ %def 
+
+
+\subsection{Getting cliques}
+\label{sec:getting-cliques}
+
+I graph theory, a clique is often a complete subset of a graph. A
+maximal clique is a clique which can not be enlarged. In statistics
+(and that is the convention we follow here) a clique is usually
+understood to be a maximal clique.  
+
+Finding the cliques of a general graph is an NP complete
+problem. Finding the cliques of triangualted graph is linear in the
+number of cliques.  
+
+@ 
+<<>>=
+str(getCliques(ug11))
+str(getCliques(ug11m))
+str(getCliques(ug11M))
+@ %def 
+
+\subsection{Maximum cardinality search}
+\label{sec:maxim-card-search}
+
+@ 
+<<>>=
+apropos("^mcs\\.")
+@ %def 
+
+
+Testing for whether a graph is triangulated is based on Maximum
+Cardinality Search. If \code{character(0)} is returned the graph is not
+triangulated. Otherwise a linear ordering of the nodes is returned. 
+
+@ 
+<<print=F>>=
+mcs(ug11)
+mcs(ug11m)
+mcs(ug11M)
+@ %def 
+
+
+@ 
+<<>>=
+mcs(dag11.mor)
+mcs(as(dag11.mor,"matrix"))
+mcs(as(dag11.mor,"Matrix")) 
+mcs(dag11) 
+@ %def 
+
+\subsection{Triangulation}
+\label{sec:triangulation}
+
+@ 
+<<>>=
+apropos("^triangulate\\.")
+@ %def 
+
+
+Triangulate an undirected graph by adding extra edges to the graph:
+
+<<print=T>>=
+(tug11<-triangulate(ug11))
+(tug11m<-triangulate(ug11m))
+(tug11M<-triangulate(ug11M))
+@ 
+
+@ 
+<<fig=T>>=
+par(mfrow=c(1,2))
+plot(ug11)
+plot(tug11)
+@ %def 
+
+
+\subsection{RIP ordering / junction tree}
+\label{sec:rip-ordering-}
+
+@ 
+<<>>=
+apropos("^rip\\.")
+@ %def 
+
+A RIP ordering of the cliques of a triangulated graph can be obtained as:
+
+
+
+@ 
+<<>>=
+rr <- rip(tug11)
+rr
+rr <- rip(tug11m)
+rr <- rip(tug11M) 
+@ %def 
+
+@ 
+<<fig=T>>=
+plot(rr)
+@ %def 
+
+
+
+\subsection{Minimal triangulation and maximum prime subgraph decomposition}
+\label{sec:minim-triang-maxim}
+
+An undirected graph uG is triangulated (or chordal) if it has no
+cycles of length >= 4 without a chord which is equivalent to that the
+vertices can be given a perfect ordering. Any undirected graph can be
+triangulated by adding edges to the graph, so called fill-ins which
+gives the graph TuG. A triangulation TuG is minimal if no fill-ins can
+be removed without breaking the property that TuG is triangulated. A
+related concept is the minimum triangulation, which is the the graph
+with the smallest number of fill-ins. The minimum triangulation is
+unique. Finding the minimum triangulation is NP-hard.
+ 
+
+ 
+
+
+\section{Time and space considerations}
+\label{sec:xxx}
+
+\subsection{Time}
+\label{sec:xxx}
+
+
+It is worth noticing that working with graphs representated as
+\code{graphNEL} objects is somewhat slower working with graphs
+represented as adjacency matrices. 
+Consider finding the cliques of an undirected graph
+represented as a \graphnel\ object or as a matrix:
+
+@ 
+<<>>=
+system.time({for (ii in 1:200) RBGL::maxClique(ug11)})     ## in RBGL
+system.time({for (ii in 1:200) maxCliqueMAT(ug11m)}) ## in gRbase
+@ %def 
+
+Working with sparse matrices rather than standard matrices slows
+indexing down:
+
+@ 
+<<>>=
+system.time({for (ii in 1:2000) ug11m[2,]})
+system.time({for (ii in 1:2000) ug11M[2,]})
+@ %def 
+
+However, \grbase\ has some functionality for indexing sparse matrices
+quickly: 
+
+@ 
+<<>>=
+system.time({for (ii in 1:2000) sp_getXj(ug11M,2)})
+@ %def 
+
+
+\subsection{Space}
+\label{sec:xxx}
+
+
+The \graphnel\ representation is -- at least -- in
+principle more economic in terms of space requirements than the
+adjacency matrix representation (because the adjacency matrix
+representation uses a $0$ to represent a ``missing edge''. The sparse
+matrix representation is clearly only superior to the standard matrix
+representation if the graph is sparse:
+
+@ 
+<<>>=
+V <- 1:100
+M <- 1:10
+## Sparse graph 
+##
+g1 <- randomGraph(V, M, 0.05)
+length(edgeList(g1))
+c(NEL=object.size(g1),
+mat=object.size(as(g1, "matrix")),
+Mat=object.size(as.adjMAT(g1, "Matrix")))
+
+## More dense graph 
+##
+g1 <- randomGraph(V, M, 0.5)
+length(edgeList(g1))
+c(NEL=object.size(g1),
+mat=object.size(as(g1, "matrix")),
+Mat=object.size(as.adjMAT(g1, "Matrix")))
+@ %def 
+
+
+\section{Graph queries}
+
+The \graph\ and \rbgl\ packages implement various graph operations for
+\code{graphNEL} objects. See the documentation for these packages.
+The \grbase\ implements a few additional functions, see
+Section~\ref{sec:intro}. An additional function in \grbase\ for graph
+operations is \code{querygraph()}. This function is intended as a wrapper for the
+various graph operations available in \grbase, \graph\ and
+\rbgl. There are two main virtues of \code{querygraph()}: 1)
+\code{querygraph()} operates on any of the three graph representations
+described above\footnote{Actually not quite yet, but it will be so in
+  the future.}  and 2) \code{querygraph()} provides a unified
+interface to the graph operations. The general syntax is
+@ 
+<<>>=
+args(querygraph)
+@ %def 
+
+
+
+
+
+
+% "MAXCLIQUE", 
+% "cliques", 
+% "connectedComp", 
+% "concomp", 
+% "separates", 
+% "adj", 
+% "cl", 
+% "ne", 
+% "is.triangulated", 
+% "subgraph", 
+% "an", 
+% "pa", 
+% "ch", 
+% "nodes", 
+% "edges", 
+% "is.complete", 
+% "simplicialNodes", 
+% "is.simplicial", 
+% "ancestralSet", 
+% "ancestralGraph"
+        
+        
+
+
+
+
+% \section{Operations on undirected graphs} 
+% \label{sec:xxx}
+
+
+% \subsection{Simple operations}
+% \label{sec:xxx}
+
+% Simple operations on undirected graphs are:
+
+% @ 
+% <<>>=
+% nodes(ug1)
+% edges(ug1)
+% @ %def 
+
+
+
+% Many features of a graph are obtained by asking queries using the
+% \code{queryg} function:
+
+% \subsubsection{Nodes}
+% <<>>=
+% queryg(ug1, "nodes")
+% @ %def 
+
+
+% \subsubsection{Edges}
+% @ 
+% <<>>=
+% queryg(ug1, "edges")
+% @ %def 
+
+
+% \subsubsection{Cliques}
+% @ 
+% <<>>=
+% queryg(ug1, "cliques")
+% @ %def 
+
+% \subsubsection{Connected components}
+% @ 
+% <<>>=
+% queryg(ug1, "concomp")
+% @ %def 
+
+
+% \subsubsection{Closure}
+% @ 
+% <<>>=
+% queryg(ug1, "cl", "c") 
+% @ %def 
+
+% \subsubsection{Adjacencies}
+% \label{sec:xxx}
+% @ 
+% <<>>=
+% queryg(ug1, "adj", "c")
+% @ %def 
+
+
+% \subsubsection{Simplicial nodes}
+% Nodes whose boundary is complete.
+
+% @ 
+% <<>>=
+% queryg(ug1, "simplicialNodes")
+% @ %def 
+
+
+
+% \subsubsection{Is complete}
+% Is the graph complete?
+
+% @ 
+% <<>>=
+% queryg(ug1, "is.complete")
+% @ %def 
+
+
+% \subsubsection{Is simplical}
+% Is a node/set simplical?
+
+% @ 
+% <<>>=
+% queryg(ug1, "is.simplicial", "a")
+% queryg(ug1, "is.simplicial", c("a","b","d"))
+% @ %def 
+
+% \subsubsection{Is triangulated}
+
+% @ 
+% <<>>=
+% queryg(ug1, "is.triangulated")
+% @ %def 
+
+
+% \subsubsection{Is $A$ and $B$ separated by $S$}
+
+% @ 
+% <<>>=
+% queryg(ug1, "separates", c("a","b"), c("d","f"), "c")
+% queryg(ug1, "separates", c("a","b"), c("d","f"), c("c","e"))
+% @ %def 
+
+
+% \subsubsection{Subgraph}
+% @ 
+% <<fig=T>>=
+% queryg(ug1, "subgraph", c("a","b","c","f"))
+% plot(queryg(ug1, "subgraph", c("a","b","c","f")))
+% @ %def 
+
+
+
+
+% \subsection{Triangulation and Maximum Cardinality Search}
+% \label{sec:xxx}
+
+
+
+
+
+
+
+% % \section{Directed acyclic graphs} 
+% % \label{sec:dags}
+
+% % A directed acyclic graph can be specified as:
+% % <<>>=
+% % dag1 <- dag(~a, ~b+a,  ~c+a, ~d+b+c, ~e+c)
+% % dag1 <- dag("a", c("b","a"), c("c","a"), c("d","b","c"), c("e","c"))
+% % nodes(dag1)
+% % edges(dag1)
+% % vpav(dag1)
+% % @
+% % Here \code{"a"} means that ``a'' has no parents, while
+% % \code{c("d","b","c")} means that ``d'' has parents ``b'' and ``c''.
+
+% % Graphs are displayed with \code{plot}:
+% % @ 
+% % <<fig=T>>=
+% % plot(dag1)
+% % @ %def 
+
+
+
+% \section{Operations on directed acyclic graphs} 
+% \label{sec:xxx}
+
+
+% \subsection{Simple operations}
+% \label{sec:xxx}
+
+% Simple operations on directed acyclic graphs are:
+
+% @ 
+% <<>>=
+% nodes(dag1)
+% edges(dag1)
+% vpav(dag1)
+% @ %def 
+
+% \subsection{Graph queries}
+
+% Many features of a graph are obtained by asking queries using the
+% \code{queryg} function as above:
+
+
+% \subsubsection{Parents}
+% @ 
+% <<>>=
+% queryg(dag1, "pa", "d")
+% @ %def 
+
+
+% \subsubsection{Children}
+% @ 
+% <<>>=
+% queryg(dag1, "ch", "c")
+% @ %def 
+
+
+% \subsubsection{Ancestral set}
+% @ 
+% <<>>=
+% queryg(dag1, "ancestralSet", c("b","e"))
+% @ %def 
+
+% \subsubsection{Ancestral graph}
+
+% @ 
+% <<>>=
+% queryg(dag1, "ancestralGraph", c("b","e"))
+% @ %def 
+
+% \subsubsection{Subgraph}
+% @ 
+% <<fig=T>>=
+% queryg(dag1, "subgraph", c("a","b","c","f"))
+% plot(queryg(dag1, "subgraph", c("a","b","c","f")))
+% @ %def 
+
+
+
+
+% \subsection{Moralization}
+% \label{sec:moralize}
+
+% <<fig=T>>=
+% moralize(dag1)
+% plot(moralize(dag1))
+% @ 
+
+
+
+
+
+
+@ 
+<<echo=FALSE>>=
+#rm(print.list)
+options("width"=85)
+@ %def 
+
+
+\end{document}
+
+
+
+
+% \RecustomVerbatimEnvironment{Sinput}{Verbatim}%
+% {fontsize=\scriptsize,frame=single,framerule=1pt,
+%   rulecolor=\color{red},   fillcolor=\color{yellow} }
+% \RecustomVerbatimEnvironment{Soutput}{Verbatim}%
+% {fontsize=\scriptsize, frame=single,framerule=0.1pt}
+
+
+
