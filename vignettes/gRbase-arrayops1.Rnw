@@ -4,12 +4,13 @@
 \documentclass{article}
 \usepackage{a4wide}
 %\usepackage[T1]{fontenc}
-\usepackage{inputenx}
+%\usepackage{inputenx}
 \usepackage{boxedminipage,color}
-%\usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
 
 \def\code#1{{\texttt{#1}}}
 \def\R{\texttt{R}}
+\def\pkg#1{\texttt{#1}}
 
 
 <<echo=FALSE,print=FALSE>>=
@@ -24,7 +25,35 @@ prettyDate <- format(Sys.Date())
 \date{\pkg{gRbase} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 
 \begin{document}
-\SweaveInput{Rmarkup.STY}
+%%\SweaveInput{Rmarkup.STY}
+
+\definecolor{darkred}{rgb}{.7,0,0} 
+\definecolor{midnightblue}{rgb}{0.098,0.098,0.439} 
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,
+  formatcom={\color{midnightblue}}
+} 
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{darkred}}
+} 
+\DefineVerbatimEnvironment{Scode}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{blue}}
+} 
+
+\fvset{listparameters={\setlength{\topsep}{-2pt}}}
+\renewenvironment{Schunk}{\linespread{.90}}{}    
+
+
+
 
 \maketitle
 

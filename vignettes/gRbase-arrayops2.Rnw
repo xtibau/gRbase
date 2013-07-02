@@ -3,15 +3,18 @@
 
 \documentclass[12pt]{article}
 %\usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc}
-\usepackage{inputenx}
+\usepackage[latin1]{inputenc}
+%\usepackage{inputenx}
 \usepackage{boxedminipage,color,a4wide,url}
 
 \def\code#1{\texttt{#1}}
-\def\grain{\texttt{gRain}}
 \def\R{\texttt{R}}
+\def\pkg#1{\texttt{#1}}
+
+\def\grain{\texttt{gRain}}
 \def\grbase{\texttt{gRbase}}
 \def\ptab{\code{ptab}}
+
 
 \SweaveOpts{keep.source=T}
 
@@ -28,7 +31,34 @@ prettyDate <- format(Sys.Date())
 
 \begin{document}
 
-\SweaveInput{Rmarkup.STY}
+%%\SweaveInput{Rmarkup.STY}
+
+\definecolor{darkred}{rgb}{.7,0,0} 
+\definecolor{midnightblue}{rgb}{0.098,0.098,0.439} 
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,
+  formatcom={\color{midnightblue}}
+} 
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{darkred}}
+} 
+\DefineVerbatimEnvironment{Scode}{Verbatim}{
+  fontfamily=tt,
+  %%fontseries=b,
+  %% xleftmargin=2em,  
+  formatcom={\color{blue}}
+} 
+
+\fvset{listparameters={\setlength{\topsep}{-2pt}}}
+\renewenvironment{Schunk}{\linespread{.90}}{}    
+
+
 
 \maketitle
 
