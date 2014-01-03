@@ -140,10 +140,14 @@ tableOp <- function(t1, t2, op="*"){
 
 tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
 {
-  if (!is.array(t1))
+  if (!is.array(t1)){
+    str( t1 )
     stop("'t1' is not an array")
-  if (!is.array(t2))
+  }
+  if (!is.array(t2)){
+    str( t2 )
     stop("'t2' is not an array")
+  }
 
   vn1  <- names(dimnames(t1))
   vn2  <- names(dimnames(t2))

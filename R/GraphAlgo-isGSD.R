@@ -2,6 +2,7 @@
 ## Is model defined by <glist> graphical and strongly decomposable
 ## if discrete=NULL, then the check is just if the graph is decomposable
 ## Issues: Fails on the "empty graph".
+
 isGSD_glist <- function(glist, vn=unique(unlist(glist)), discrete=NULL) 
 {
   amat <- glist2adjMAT(glist,vn=vn)
