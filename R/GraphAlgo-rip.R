@@ -36,46 +36,58 @@ rip.Matrix <- function(object, root=NULL, nLevels=NULL){
   ripMAT(object, root=root, nLevels=nLevels)
 }
 
-ripMAT <- function(amat, root=NULL, nLevels=NULL){
+ripMAT <- function(amat, root=NULL, nLevels=rep(2, ncol(amat))){
   ## FIXME: ripMAT Check that it is an adjMAT.
+
+  ## mcs.idx: The enumeration of nodes in vn
+  ## so 1,2,8 ... means that nodes 1,2,8... come first in the elimination
+  ## mcs.vn: corresponding ordering of nodes
+  
+  mcs.vn <- mcsMAT(amat, root=root)
+  if (length(mcs.vn)==0)
+    return( NULL )
+  
   cq.vn   <- maxCliqueMAT(amat)[[1]]
   ncq     <- length(cq.vn)
   vn      <- colnames(amat)
   
-  if (ncq>1){
-    mcidx   <- mcsMAT(amat, root=root, index=TRUE)
-    cq.idx  <- lapplyV2I(cq.vn, vn)
-    max_no  <- sapply(cq.idx, function(cc) max(mcidx[cc]))
-    cq2.idx <- cq.idx[order(max_no)]
-    cq2.vn  <- lapplyI2V(cq2.idx, vn)
+  if (ncq>1){    
+    ## cq.idx       <- lapplyV2I(cq.vn, vn)
+    cq.mcs.idx   <- lapplyV2I(cq.vn, mcs.vn)
+    max.no       <- sapply(cq.mcs.idx, function(cc) max(cc))
+    ## max.no: The highest number assigned to a clique by MCS 
+    cq.mcs.idx   <- cq.mcs.idx[ order(max.no) ]
+    ## cq.mcs.idx: Order the cliques by the largest number
+    cq.mcs.vn    <- lapplyI2V( cq.mcs.idx, mcs.vn )
 
-    sp.idx  <- vector("list", ncq) 
+    sp.idx      <- vector("list", ncq) 
     sp.idx[[1]] <- integer(0)
-    pa.idx  <- rep.int(0L, ncq)
+    pa.idx      <- rep.int(0L, ncq)
 
+    ## Use: cq.mcs.idx
     for (ii in 2:ncq){
-      paset <- unlist(cq2.idx[1:(ii-1L)])
-      isect <- intersectPrim(cq2.idx[[ii]], paset)
+      paset  <- unlist(cq.mcs.idx[ 1:(ii-1L) ])
+      isect  <- intersectPrim( cq.mcs.idx[[ii]], paset )
       sp.idx[[ii]] <- isect  
       if (length(isect)){
         for (kk in (ii-1):1){  
-          if (subsetof(isect,cq2.idx[[kk]])){
-            pa.idx[ii]   <- kk  
+          if (subsetof( isect, cq.mcs.idx[[kk]]) ){
+            pa.idx[ii] <- kk  
             break()    
           }
         }
       }
     }
-    nodes <- vn[mcidx]               
-    sp.vn <- lapplyI2V(sp.idx, vn)
-    child <- match(seq_along(cq2.idx), pa.idx)
+    nodes <- mcs.vn
+    sp.vn <- lapplyI2V(sp.idx, mcs.vn)
+    child <- match(seq_along(cq.mcs.idx), pa.idx)
     host  <- rep.int(0L, length(nodes))
-    ll    <- lapply(cq2.vn, match, nodes)
+    ll    <- lapply(cq.mcs.vn, match, nodes)
     for (ii in seq_along(ll)){
       host[ll[[ii]]] <- ii
     }
   } else { ## The graph has only one clique!
-    cq2.vn <- list(vn)
+    cq.mcs.vn <- list(vn)
     nodes  <- vn
     pa.idx <- 0L
     sp.vn  <- list(character(0))
@@ -84,10 +96,10 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
   }
 
   .getChildList <- function(parents){
-    vv <- 1:length(parents)
-    ft <-unname(cbind(parents, vv))
-    ft <- ft[ft[, 1] != 0, , drop = FALSE]
-    vch<-lapply(vv, function(ff) ft[ft[,1]==ff,2])
+    vv  <- 1:length(parents)
+    ft  <- unname(cbind(parents, vv))
+    ft  <- ft[ft[, 1] != 0, , drop = FALSE]
+    vch <- lapply(vv, function(ff) ft[ft[,1]==ff,2])
     names(vch) <- vv
     vch
   }
@@ -95,8 +107,10 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
   
   rip3 <-
     structure(list(nodes       = nodes,
-                   cliques     = cq2.vn, separators = sp.vn,
-                   parents     = pa.idx, children = child,
+                   cliques     = cq.mcs.vn,
+                   separators  = sp.vn,
+                   parents     = pa.idx,
+                   children    = child,
                    host        = host,
                    nLevels     = nLevels,
                    createGraph = .createJTreeGraph,
@@ -105,87 +119,6 @@ ripMAT <- function(amat, root=NULL, nLevels=NULL){
               class="ripOrder")
 
   return(rip3)
-}
-
-## Old version; replaced by newer and much faster in January 2013
-.ripMAT.OLD <- function(amat, root=NULL, nLevels=NULL){
-  
-  t0 <- proc.time()
-  vn <- colnames(amat)
-  mcidx <- mcsMAT(amat=amat, root=root, index=TRUE)
-  if (length(mcidx)==0) ## Graph is not chordal !
-    return(list())  
-  len <- length(mcidx)
-  
-  if (len>1) {
-    ladder <- is.ladder <- rep.int(0, len)
-    is.ladder[len] <- 1
-    
-    cq      <- list()
-    cqcount <- 1
-    for (ii in len:1){
-      nb   <- amat[mcidx[ii],]
-      prev <- rep(0, len)
-      ##cat(sprintf("length(nb)=%i length(prev)=%i\n", length(nb), length(prev)))
-      if (ii > 1){          
-        prev[mcidx[1:(ii-1)]] <- 1
-        prevnb <- nb*prev
-        ladder[ii] <- sum(prevnb)
-      }
-      if (ii == len){
-        cq[[cqcount]] <- c(mcidx[ii],which(prevnb==1))
-        cqcount <- cqcount + 1
-      } else {
-        xx <- (ladder[ii] + 1 > ladder[ii+1])    #print(xx)
-        if (xx){ 
-          cq[[cqcount]] <- c(mcidx[ii],which(prevnb==1))
-          cqcount       <- cqcount + 1
-        }
-        is.ladder[ii] <- xx
-      }
-    }
-      
-    cq <- lapply(rev(cq), function(x) {names(x)<-NULL; x})
-    
-    ncq <- length(cq)
-    sp  <- as.list(rep(NA, ncq))
-    pa  <- rep(0, ncq)
-      
-    if (ncq>1){
-      for (ii in 2:ncq){
-        paset <- unlist(cq[1:(ii-1)])
-        isect <- intersectPrim(cq[[ii]], paset)
-        sp[[ii]] <- isect  
-        if (length(isect)){
-          for (kk in (ii-1):1){  #print("----");print(kk); print(cq[[kk]]); print(isect)
-            if (subsetof(isect,cq[[kk]])){
-              pa[ii]   <- kk  
-              break()    
-            }
-          }
-        }
-      }
-    }
-    
-    sp <- lapply(sp, function(x)if (any(is.na(x))) character(0) else vn[x])
-    cq <- lapply(cq, function(a) vn[a])
-    child <- match(seq_along(cq), pa)  
-  }  else {   ## The graph has only one node!
-    cq <- list(colnames(amat))
-    sp <- list(character(0))
-    child <- NA
-    pa <- 0
-  }
-
-  rip2 <-
-    structure(list(nodes      = vn[mcidx],               
-                   cliques    = cq, separators = sp, parents = pa, children = child,
-                   nLevels    = nLevels, createGraph= .createJTreeGraph,
-                   childList = lapply(graph::edges(.rip2dag(list(cliques=cq, parents=pa))), as.integer)                   
-                   ),
-              class="ripOrder")
-
-  return(rip2)
 }
 
 
@@ -248,6 +181,87 @@ plot.ripOrder <- function(x,...){
 
 
 
+
+## Old version; replaced by newer and much faster in January 2013
+## .ripMAT.OLD <- function(amat, root=NULL, nLevels=NULL){
+  
+##   t0 <- proc.time()
+##   vn <- colnames(amat)
+##   mcidx <- mcsMAT(amat=amat, root=root, index=TRUE)
+##   if (length(mcidx)==0) ## Graph is not chordal !
+##     return(list())  
+##   len <- length(mcidx)
+  
+##   if (len>1) {
+##     ladder <- is.ladder <- rep.int(0, len)
+##     is.ladder[len] <- 1
+    
+##     cq      <- list()
+##     cqcount <- 1
+##     for (ii in len:1){
+##       nb   <- amat[mcidx[ii],]
+##       prev <- rep(0, len)
+##       ##cat(sprintf("length(nb)=%i length(prev)=%i\n", length(nb), length(prev)))
+##       if (ii > 1){          
+##         prev[mcidx[1:(ii-1)]] <- 1
+##         prevnb <- nb*prev
+##         ladder[ii] <- sum(prevnb)
+##       }
+##       if (ii == len){
+##         cq[[cqcount]] <- c(mcidx[ii],which(prevnb==1))
+##         cqcount <- cqcount + 1
+##       } else {
+##         xx <- (ladder[ii] + 1 > ladder[ii+1])    #print(xx)
+##         if (xx){ 
+##           cq[[cqcount]] <- c(mcidx[ii],which(prevnb==1))
+##           cqcount       <- cqcount + 1
+##         }
+##         is.ladder[ii] <- xx
+##       }
+##     }
+      
+##     cq <- lapply(rev(cq), function(x) {names(x)<-NULL; x})
+    
+##     ncq <- length(cq)
+##     sp  <- as.list(rep(NA, ncq))
+##     pa  <- rep(0, ncq)
+      
+##     if (ncq>1){
+##       for (ii in 2:ncq){
+##         paset <- unlist(cq[1:(ii-1)])
+##         isect <- intersectPrim(cq[[ii]], paset)
+##         sp[[ii]] <- isect  
+##         if (length(isect)){
+##           for (kk in (ii-1):1){  #print("----");print(kk); print(cq[[kk]]); print(isect)
+##             if (subsetof(isect,cq[[kk]])){
+##               pa[ii]   <- kk  
+##               break()    
+##             }
+##           }
+##         }
+##       }
+##     }
+    
+##     sp <- lapply(sp, function(x)if (any(is.na(x))) character(0) else vn[x])
+##     cq <- lapply(cq, function(a) vn[a])
+##     child <- match(seq_along(cq), pa)  
+##   }  else {   ## The graph has only one node!
+##     cq <- list(colnames(amat))
+##     sp <- list(character(0))
+##     child <- NA
+##     pa <- 0
+##   }
+
+##   rip2 <-
+##     structure(list(nodes      = vn[mcidx],               
+##                    cliques    = cq, separators = sp, parents = pa, children = child,
+##                    nLevels    = nLevels, createGraph= .createJTreeGraph,
+##                    childList = lapply(graph::edges(.rip2dag(list(cliques=cq, parents=pa))), as.integer)                   
+##                    ),
+##               class="ripOrder")
+
+##   return(rip2)
+## }
 
 
 

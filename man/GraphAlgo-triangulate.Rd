@@ -12,29 +12,27 @@
 }
 \usage{
 triangulate(object, ...)
-\method{triangulate}{graphNEL}(object, method="mcwh", nLevels = rep(2,length(nodes(object))), 
-                               result="graphNEL",...)
-\method{triangulate}{matrix}(object, method="mcwh", nLevels = rep(2,ncol(object)), result="matrix",...)
-\method{triangulate}{Matrix}(object, method="mcwh", nLevels = rep(2,ncol(object)), result="Matrix",...)
-triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
-}
+% \method{triangulate}{graphNEL}(object, nLevels = rep(2,length(nodes(object))), result="graphNEL",...)
+% \method{triangulate}{matrix}(object, nLevels = rep(2,ncol(object)), result="matrix",...)
+% \method{triangulate}{Matrix}(object, nLevels = rep(2,ncol(object)), result="Matrix",...)
+
+\method{triangulate}{graphNEL}(object, nLevels = NULL, result="graphNEL", ...)
+\method{triangulate}{matrix}(object, nLevels = NULL, result="matrix", ...)
+\method{triangulate}{Matrix}(object, nLevels = NULL, result="Matrix", ...)
+triangulateMAT(amat, nLevels=rep(2, ncol(amat)), result=NULL, ...)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{An undirected graph represented either as a
     \code{graphNEL} object, a (dense) \code{matrix}, a (sparse) \code{dgCMatrix}}
-  % \item{amat}{An adjacency matrix (symmetrical)}
 
-  \item{method}{Triangulation method. Only valid option is "mcwh" (minimum clique
-    weight heuristic). See section   'details'.}
+  \item{nLevels}{The number of levels of the variables (nodes) when
+    these are discrete. Used in determining the triangulation using a
+    "minimum clique weight heuristic". See section 'details'.}
 
-  \item{nLevels}{Typically, the number of levels of the
-    variables (nodes) when these are discrete. Used in determining the
-    triangulation using a "minimum clique weight heuristic". See section
-    'details'.}
-
-  \item{result}{The type (representation) of the result. Same possible
-    representations as the input graph, and default is the same type as
-    the input graph.  }
+  \item{result}{The type (representation) of the result. Possible values
+    are \code{"graphNEL"}, \code{"matrix"}, \code{"Matrix"} (the latter
+    meaning a sparse \code{dgCMatrix}).
+  }
 
   \item{...}{Additional arguments, currently not used.}
 
@@ -42,28 +40,37 @@ triangulateMAT(amat, method="mcwh", nLevels=rep(2,ncol(amat)), result=NULL, ...)
     \code{dgCMatrix}. } 
 }
 
+\details{
+  The workhorse is the \code{triangulateMAT} function.  
 
-\details{ The triangulation is made so as the total state space is kept
-  low by applying a minimum clique weight heuristic: When a fill-in is
+  The triangulation is made so as the total state space is kept low by
+  applying a minimum clique weight heuristic: When a fill-in is
   necessary, the algorithm will search for an edge to add such that the
   complete set to be formed will have as small a state-space as
-  possible. 
+  possible. It is in this connection that the \code{nLevels} values are
+  used.
 
-  If \code{nLevels}
-  is the same for all nodes then the heuristic aims at keeping the
-  clique sizes small.
+  Default (when \code{nLevels=NULL}) is to take \code{nLevels=2}
+  for all nodes. If \code{nLevels} is the same for all nodes then the heuristic
+  aims at keeping the clique sizes small.  
 }
 
-\value{ A
-  triangulated graph represented either as a \code{graphNEL}, a (dense)
+\value{A triangulated graph represented either as a \code{graphNEL}, a (dense)
   \code{matrix} or a (sparse) \code{dgCMatrix}.
-
 }
+
+\note{
+  Care should be taken when specifying \code{nLevels} for other
+  representations than adjacency matrices: Since the
+  \code{triangulateMAT} function is the workhorse, any other
+  representation is transformed to an adjacency matrix and the order of
+  values in \code{nLevels} most come in the order of the nodes in the
+  adjacency matrix representation.  
+}
+
+
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
-\note{
-  The workhorse is the \code{triangulateMAT} function.  
-}
 \seealso{
   \code{\link{ug}}
   \code{\link{dag}}

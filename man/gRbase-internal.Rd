@@ -45,6 +45,10 @@
 \alias{print.parray}
 
 
+\alias{print.ripOrder}
+\alias{plot.ripOrder}
+
+
 \alias{maxClique}
 
 
