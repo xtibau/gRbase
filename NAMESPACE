@@ -1,18 +1,19 @@
 useDynLib(gRbase)
 
-importFrom(RBGL, maxClique, is.triangulated, separates)
-
-importClassesFrom(Matrix, Matrix)
-
-importMethodsFrom(Matrix, t, isSymmetric)
-
-importFrom(Matrix, Matrix)
-
-export(maxClique)
+importFrom(Rcpp, evalCpp)
 
 exportPattern("^[[:alpha:]]+")
 
-importFrom(igraph, igraph.to.graphNEL, igraph.from.graphNEL, get.adjacency,
-           V, "V<-", E, is.directed, "E<-", layout.lgl, plot.igraph,
-           graph.adjacency, is.dag)
+importFrom(methods, setOldClass) # because of setOldClass("igraph")
+
+importClassesFrom(Matrix, Matrix)
+importMethodsFrom(Matrix, t, isSymmetric)
+importFrom(Matrix, Matrix)
+
+importFrom(RBGL, maxClique, is.triangulated, separates)
+
+importFrom(igraph, plot.igraph, print.igraph)
+
+importFrom(graph, edges, nodes)
+importMethodsFrom(graph, plot)
 

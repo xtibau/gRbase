@@ -1,3 +1,15 @@
+2014-03-17 Søren Højsgaard <sorenh@math.aau.dk>	
+
+	* Added array functions (arrayPerm, arrayMargin, arrayOp
+	etc). These are implemented using Rcpp, they are not documented
+	but illustrated in a vignette.
+
+	* Many new implementations of graph/matrix operations with Rcpp.
+
+	* Major cleanups
+	
+	* Version 1.7-0 uploaded.					
+
 2013-07-17 Søren Højsgaard <sorenh@math.aau.dk>	
 
 	* Bug in rip() function fixed. Thanks to Vanessa Didelez for the

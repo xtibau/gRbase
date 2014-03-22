@@ -1,11 +1,15 @@
 \name{edgeList}
 \alias{edgeList}
-\alias{edgeList.graphNEL}
-\alias{edgeList.matrix}
+\alias{edgeList.default}
+%% \alias{edgeList.graphNEL}
+%% \alias{edgeList.matrix}
+%% \alias{edgeList.Matrix}
 \alias{edgeListMAT}
 \alias{nonEdgeList}
-\alias{nonEdgeList.graphNEL}
-\alias{nonEdgeList.matrix}
+\alias{nonEdgeList.default}
+%% \alias{nonEdgeList.graphNEL}
+%% \alias{nonEdgeList.matrix}
+%% \alias{nonEdgeList.Matrix}
 \alias{nonEdgeListMAT}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -18,12 +22,16 @@
 }
 \usage{
 edgeList(object, matrix = FALSE)
-\method{edgeList}{graphNEL}(object, matrix = FALSE)
-\method{edgeList}{matrix}(object, matrix = FALSE)
+\method{edgeList}{default}(object, matrix = FALSE)
+%% \method{edgeList}{graphNEL}(object, matrix = FALSE)
+%% \method{edgeList}{matrix}(object, matrix = FALSE)
+%% \method{edgeList}{Matrix}(object, matrix = FALSE)
 nonEdgeList(object, matrix = FALSE)
-\method{nonEdgeList}{graphNEL}(object, matrix = FALSE)
-\method{nonEdgeList}{matrix}(object, matrix = FALSE)
-edgeListMAT(adjmat, matrix = FALSE, edgemode="undirected")
+\method{nonEdgeList}{default}(object, matrix = FALSE)
+%% \method{nonEdgeList}{graphNEL}(object, matrix = FALSE)
+%% \method{nonEdgeList}{matrix}(object, matrix = FALSE)
+%% \method{nonEdgeList}{Matrix}(object, matrix = FALSE)
+edgeListMAT(adjmat, matrix = FALSE)
 nonEdgeListMAT(adjmat, matrix = FALSE)
 }
 \arguments{
@@ -36,24 +44,24 @@ nonEdgeListMAT(adjmat, matrix = FALSE)
   \item{matrix}{
     If TRUE the result is a matrix; otherwise the result is a list.
   }
-  \item{edgemode}{
-    Can be "directed" or "undirected".
-  }
-  
+  %% \item{edgemode}{
+  %%   Can be "directed" or "undirected".
+  %% }
+
 }
 \details{
   If object is a matrix, then edgeList() checks if object is
   symmetrical. If so it is assumed that the graph is undirected;
   otherwise the graph is assumed to be directed.
 
-  The workhorse is edgeListMAT.
+  The workhorse is \code{edgeListMAT}.
 }
 
 \value{
   A list or a matrix with edges.
 }
 \author{  Søren Højsgaard, \email{sorenh@math.aau.dk} }
-  
+
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

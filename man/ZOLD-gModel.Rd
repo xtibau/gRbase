@@ -1,4 +1,4 @@
-\name{gModel}
+\name{zzz-gModel}
 \alias{gModel}
 \alias{gModel-class}
 
@@ -14,7 +14,7 @@
 
 \alias{print.gModel}
 
-\title{Class "gModel" - graphical models}
+\title{Old: Class "gModel" - graphical models}
 \description{
   The general class \code{gModel} contains a formula object and a
   \code{gmData} object. Implementations of different
@@ -45,6 +45,8 @@ gModel(formula, gmData)
 %\note{ ~~further notes~~ }
 
 \seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{hllm}}.}
+
+\keyword{internal}
 
 \examples{
 data(rats)

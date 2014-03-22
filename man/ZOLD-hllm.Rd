@@ -1,10 +1,10 @@
-\name{hllm}
+\name{zzz-hllm}
 \alias{hllm}
 \alias{fit.hllm}
 \alias{stepwise.hllm}
 \alias{hllm-class}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Hierarchical log-linear models}
+\title{Old: Hierarchical log-linear models}
 \description{
   NOTICE: THIS FUNCTION IS DEFUNCT. PLEASE USE THE gRim PACKAGE FOR
   HIERARCHICAL LOG LINEAR MODELS.
@@ -43,6 +43,8 @@ hllm(formula = ~.^1, gmData, marginal)
   from the superclass \code{gModel}.
 }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
+
+\keyword{internal}
 
 \seealso{\code{\link{gmData}}, \code{\link{gRfit}}, \code{\link{ggm}}
 }

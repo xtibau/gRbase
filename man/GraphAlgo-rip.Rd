@@ -1,21 +1,26 @@
 \name{rip}
 \alias{rip}
-\alias{rip.graphNEL}
-\alias{rip.matrix}
-\alias{rip.Matrix}
+\alias{rip.default}
+%% \alias{rip.graphNEL}
+%% \alias{rip.matrix}
+%% \alias{rip.Matrix}
 \alias{ripMAT}
 
-\alias{jTreeMAT}
 \alias{jTree}
-\alias{jTree.graphNEL}
-\alias{jTree.matrix}
-\alias{jTree.Matrix}
+\alias{jTree.default}
+%% \alias{jTree.graphNEL}
+%% \alias{jTree.matrix}
+%% \alias{jTree.Matrix}
+\alias{jTreeMAT}
 
-\alias{junctionTreeMAT}
+
 \alias{junctionTree}
-\alias{junctionTree.graphNEL}
-\alias{junctionTree.matrix}
-\alias{junctionTree.Matrix}
+\alias{junctionTree.default}
+%% \alias{junctionTree.graphNEL}
+%% \alias{junctionTree.matrix}
+%% \alias{junctionTree.Matrix}
+\alias{junctionTreeMAT}
+
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -23,34 +28,34 @@
 }
 \description{
   A RIP (running intersection property) ordering of the cliques is also called a perfect ordering. If
-  the graph is not chordal, then no such ordering exists. 
+  the graph is not chordal, then no such ordering exists.
 }
 \usage{
 rip(object, root = NULL, nLevels = NULL)
-\method{rip}{graphNEL}(object, root = NULL, nLevels = NULL)
-\method{rip}{matrix}(object, root = NULL, nLevels = NULL)
-\method{rip}{Matrix}(object, root = NULL, nLevels = NULL)
-ripMAT(amat, root = NULL, nLevels = rep(2, ncol(amat))) 
+\method{rip}{default}(object, root = NULL, nLevels = NULL)
+%% \method{rip}{graphNEL}(object, root = NULL, nLevels = NULL)
+%% \method{rip}{matrix}(object, root = NULL, nLevels = NULL)
+%% \method{rip}{Matrix}(object, root = NULL, nLevels = NULL)
+ripMAT(amat, root = NULL, nLevels = rep(2, ncol(amat)))
 
 jTree(object, ...)
-% \method{jTree}{graphNEL}(object, nLevels=rep(2,length(nodes(object))),...)
-% \method{jTree}{matrix}(object, nLevels=rep(2,ncol(object)),...)
-% \method{jTree}{Matrix}(object, nLevels=rep(2,ncol(object)),...)
-\method{jTree}{graphNEL}(object, nLevels=NULL, ...)
-\method{jTree}{matrix}(object, nLevels=NULL, ...)
-\method{jTree}{Matrix}(object, nLevels=NULL, ...)
+\method{jTree}{default}(object, nLevels=NULL, ...)
+%% \method{jTree}{graphNEL}(object, nLevels=NULL, ...)
+%% \method{jTree}{matrix}(object, nLevels=NULL, ...)
+%% \method{jTree}{Matrix}(object, nLevels=NULL, ...)
 jTreeMAT(amat, nLevels=rep(2,ncol(amat)), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-    An undirected graph represented either as a 'graphNEL', a 'matrix'
-    or a sparse 'dgCMatrix'
+    An undirected graph represented either as a
+    \code{graphNEL} object, an \code{igraph}, a (dense) \code{matrix},
+    a (sparse) \code{dgCMatrix}.
   }
   \item{root}{
     A vector of variables. The first variable in the perfect ordering
     will be the first variable on 'root'. The ordering of the variables
-    given in 'root' will be followed as far as possible. 
+    given in 'root' will be followed as far as possible.
   }
   \item{nLevels}{
     Typically, the number of levels of the variables
@@ -71,7 +76,7 @@ jTreeMAT(amat, nLevels=rep(2,ncol(amat)), ...)
   the first in the RIP ordering.
 
   The \code{jTree()} (and \code{jTree()})  (for "junction tree") is just
-  a wrapper for a call of \code{triangulate()} followed by a call of \code{rip()}.  
+  a wrapper for a call of \code{triangulate()} followed by a call of \code{rip()}.
 }
 \value{
   \code{rip} returns a list (an object of class \code{ripOrder}. A print method exists for
@@ -86,7 +91,7 @@ jTreeMAT(amat, nLevels=rep(2,ncol(amat)), ...)
   The workhorse is the \code{ripMAT()} function.
 
   The \code{nLevels} argument to the \code{rip} functions has no
-  meaning. 
+  meaning.
 %%  ~~further notes~~
 }
 
@@ -96,7 +101,7 @@ jTreeMAT(amat, nLevels=rep(2,ncol(amat)), ...)
   \code{\link{mcs}}
   \code{\link{triangulate}}
   \code{\link{moralize}}
-  \code{\link{ug}}, 
+  \code{\link{ug}},
   \code{\link{dag}}
 
 }

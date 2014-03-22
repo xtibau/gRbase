@@ -1,39 +1,80 @@
 \name{gRbase-internal}
 
-%% Various R/C/C++ implementations; 
+%% ---------------------------------------
+%% Coercion between graph representations.
+%% ---------------------------------------
+\alias{matrix2dgCMatrix}
+\alias{dgCMatrix2matrix}
+
+\alias{MAT2dgCMatrix}
+\alias{MAT2matrix}
+\alias{MAT2ftM}
+\alias{SYMMAT2ftM}
+
+\alias{coerceGraph}
+\alias{coerceGraph.graphNEL}
+\alias{coerceGraph.igraph}
+\alias{coerceGraph.matrix}
+\alias{coerceGraph.dgCMatrix}
+
+\alias{adjList2matrix}
+\alias{adjList2dgCMatrix}
+
+
+%% Various R/C/C++ implementations;
 %% --------------------------------
 %% no need to document further
-\alias{topoSortMAT_spCpp}
-\alias{topoSortMAT_stCpp}
 
-\alias{triangulateMAT_stC}
-\alias{triangulateMAT_spR}
-\alias{triangulateMAT_spCpp} %% RcppEigen
-\alias{triangulateMAT_stCpp} %% Wrapper to Eigen version
+\alias{is_sym_MAT}
 
-\alias{mcsMAT_stR}
-\alias{mcsMAT_stC}
-\alias{mcsMAT_spR}
-\alias{mcsMAT_spCpp}
-\alias{mcsMAT_stCpp}
+\alias{cell2entry2_cpp}
+\alias{cell2entry_cpp}
+\alias{getCellNumberPrim_cpp}
+\alias{getCellNumber_cpp}
+\alias{nextCellSlicePrim_cpp}
+\alias{nextCellSlice_cpp}
+\alias{nextCell_cpp}
+\alias{permuteCellEntries_cpp}
+\alias{slice2entry_cpp}
 
-\alias{moralizeMAT_stR}
-\alias{moralizeMAT_spC}
 
-\alias{sp_topoSort} %% FIXME: Delete when new version of gRain is on CRAN. 
+\alias{alignArrays}
+\alias{alignArrays2}
+\alias{allSubsets}
+\alias{allSubsets0}
+\alias{arrayMargin}
+\alias{arrayMargin0}
+\alias{arrayMarginChr_cpp}
+\alias{arrayOp}
+\alias{arrayOp2}
+\alias{arrayPerm}
+\alias{arrayPerm0}
+\alias{extendArrayAlong}
+\alias{extendArrays}
+\alias{getPerm}
+\alias{fitLoglin}
+
+\alias{propagateLS_cpp}
+
+\alias{mcsMAT_}
+\alias{topoSortMAT_}
+\alias{triangulateMAT_}
+
+\alias{sp_setXtf1} % bruges i gRain
+\alias{solveSPD}   % bruges i gRim
+
+%% Needs documentation
+\alias{adjList2adjMAT}
+\alias{adjList2ftList}
+\alias{adjList2ftM}
+\alias{adjList2tfList}
+\alias{adjList2tfM}
 \alias{glist2setMAT}
 
-
-%% Fast coercion of "matrix" to "dgCMatrix"
-\alias{asdgCMatrix}         
-\alias{asdgCMatrix.matrix}
-\alias{asdgCMatrix.Matrix}
-
-\alias{igraph-class}
+%% \alias{adjList2MAT} We need this
 
 %% Some methods which need not be in the proper .Rd files (to shorten
 %% the listing)
-
 
 \alias{varNames.parray}
 \alias{nLevels.parray}
@@ -44,64 +85,33 @@
 \alias{valueLabels.array}
 \alias{print.parray}
 
-
 \alias{print.ripOrder}
 \alias{plot.ripOrder}
-
-
 \alias{maxClique}
 
+%% utilities - deprecated; should go when downstreams have been updated
+\alias{colSumsPrim}
+\alias{intersectPrim}
+\alias{matchPrim}
+\alias{outerPrim}
+\alias{setdiffPrim}
+\alias{uniquePrim}
+\alias{unlistPrim}
+\alias{rowSumsPrim}
 
-%% Some igraph stuff. Should be removed one day
-\alias{mcs.igraph}
-\alias{mcsmarked.igraph}
-\alias{junctionTree.igraph}
-\alias{jTree.igraph}
-\alias{rip.igraph}
-\alias{moralize.igraph}
-\alias{triangulate.igraph}
 
-%% Needs .Rd - New Cpp implementations
-%% -----------------------------------
-%% Undocumented utilities
-\alias{sp_getXi}
-\alias{sp_getXj}
-\alias{sp_getXij}
-\alias{sp_getXtf}
-\alias{sp_getXM}
-\alias{sp_setXij1}
-\alias{sp_setXtf1}
-\alias{sp_setXM1}
-\alias{sp_moralize}
-\alias{sp_fromto}
-\alias{st_fromto}
 
-\alias{ripMAT2}
-\alias{moralMAT}
 \alias{lapplyV2I}
 \alias{lapplyI2V}
 \alias{lapplyMatch}
-
-\alias{solveSPD} %% FIXME: Inverse of symmetric pos. def. matrix; needs .Rd
-
-
-%% Needs .Rd
-
-\alias{mcsMATR}
-\alias{triang2R}
-\alias{vparlist2tf}
 \alias{isGSD_glist}
 \alias{properties_glist}
 
-\alias{coerceGraph}
-\alias{coerceGraph.graphNEL}
-\alias{coerceGraph.igraph}
-\alias{coerceGraph.matrix}
 
+%% ----------------------
 %% Array operations in C
-%% ---------------------
-%% Examples of the usage of these functions are given in
-%% vignette
+%% ----------------------
+%% Examples of the usage of these functions are given in vignette
 \alias{aperm2}
 \alias{cell2entry}
 \alias{entry2cell}
@@ -112,16 +122,20 @@
 \alias{nextCellSlice}
 \alias{permuteCellEntries}
 
-%%%
-%%% SHD stuff
-%%%
+
+
+
+
+
+%%% --------------
+%%% Miscellaneous
+%%% --------------
 
 \alias{makeDimNames}
 \alias{names2pairs}
 \alias{rowmat2list}
 \alias{colmat2list}
 \alias{matrix2list}
-\alias{ellK}
 
 \alias{list2rhsFormula}
 \alias{rhsFormula2list}
@@ -129,14 +143,13 @@
 \alias{rhsf2list}
 
 \alias{which.arr.ind}
+\alias{which_matrix_index}
 \alias{pairs2num}
-%% !!
+
 
 %% DED stuff
 \alias{showf}  % used in old gRbase stuff; delete later
 \alias{readf}  % used in old gRbase stuff; delete later
-
-
 \alias{dual.rep}
 %% !!
 
@@ -146,27 +159,25 @@
 \alias{ips}
 \alias{outfun}
 \alias{ell}
+\alias{ellK}
+
 %% !!
 
 \alias{addEdge}
 \alias{dropEdge}
 \alias{addEdge.gModel}
 \alias{dropEdge.gModel}
-
-
-
 \alias{all.subsets}
 \alias{extract.power}
 \alias{selectOrder}
 \alias{processFormula}
 \alias{partial.corr.matrix}
-
 \alias{update.gModel}
 \alias{gRfit-class}
-
 \alias{stepwise}
 \alias{stepwise.default}
 
+\alias{igraph-class}
 
 
 \title{Internal gRbase functions}
@@ -182,3 +193,41 @@
 %%\alias{is.cont}
 %%\alias{contains}
 %%\alias{is.graphical}
+
+
+
+%% Some igraph stuff. Should be removed one day
+%% \alias{mcs.igraph}
+%% \alias{mcsmarked.igraph}
+%% \alias{junctionTree.igraph}
+%% \alias{jTree.igraph}
+%% \alias{rip.igraph}
+%% \alias{moralize.igraph}
+%% \alias{triangulate.igraph}
+
+%% Needs .Rd - New Cpp implementations
+%% -----------------------------------
+%% Undocumented utilities
+%% \alias{sp_getXi}
+%% \alias{sp_getXj}
+%% \alias{sp_getXij}
+%% \alias{sp_getXtf}
+%% \alias{sp_getXM}
+%% \alias{sp_setXij1}
+%% \alias{sp_setXtf1}
+%% \alias{sp_setXM1}
+%% \alias{sp_moralize}
+%% \alias{sp_fromto}
+%% \alias{st_fromto}
+
+%% \alias{ripMAT2}
+%% \alias{moralMAT}
+
+%% \alias{topoSortMAT_sp}
+%% \alias{topoSortMAT_st}
+
+%% \alias{mcsMAT_spCpp}
+%% \alias{mcsMAT_stCpp}
+
+%% \alias{moralizeMAT_stR}
+%% \alias{moralizeMAT_spC}

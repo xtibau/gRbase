@@ -5,6 +5,11 @@
 \alias{ugList}
 \alias{dagList}
 
+\alias{ugList2matrix}
+\alias{ugList2dgCMatrix}
+\alias{dagList2matrix}
+\alias{dagList2dgCMatrix}
+
 % \alias{ugMAT}
 % \alias{ugListMAT}
 % \alias{dagMAT}
@@ -36,16 +41,16 @@ dagList(x, result="NEL", forceCheck=FALSE)
 % \details{
 %   Functions dag() and ug() were originally called newDAG() and
 %   newUG(). The latter functions are retained in the package for backward
-%   compatibility, but they will be removed at some point of time in the future. 
+%   compatibility, but they will be removed at some point of time in the future.
 % }
 \value{
   Functions ug(), dag(), ugList() and dagList() return a 'graphNEL'
   object, an adjacency matrix or an 'igraph' object.
-  %Functions ugMAT() and ugListMAT() return an adjacency matrix. 
+  %Functions ugMAT() and ugListMAT() return an adjacency matrix.
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
-% \note{ ~~further notes~~ 
+% \note{ ~~further notes~~
 
 %  ~Make other sections like Warning with \section{Warning }{....} ~
 % }
@@ -55,7 +60,7 @@ ugr <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 
 ugr <- ug(~me:ve:al,~al:an:st)
 
-ugr <- ug(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st")) 
+ugr <- ug(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 
 ugr <- ug(~me:ve:al, c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
 
@@ -65,14 +70,13 @@ dagr <- dag(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("
 
 dagr <- dag(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 
-
 dagr <- dag(~me:ve:al,~ve:al:an)
 
-edges(ugr)
-nodes(ugr)
+graph::edges(ugr)
+graph::nodes(ugr)
 
-edges(dagr)
-nodes(dagr)
+graph::edges(dagr)
+graph::nodes(dagr)
 
 ugList(list(~me:ve:al,~al:an:st))
 dagList(list(~me:ve:al,~ve:al:an))

@@ -1,8 +1,9 @@
 \name{moralize}
 \alias{moralize}
-\alias{moralize.graphNEL}
-\alias{moralize.matrix}
-\alias{moralize.Matrix}
+\alias{moralize.default}
+%% \alias{moralize.graphNEL}
+%% \alias{moralize.matrix}
+%% \alias{moralize.Matrix}
 \alias{moralizeMAT}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -16,24 +17,26 @@
 }
 \usage{
 moralize(object, ...)
-\method{moralize}{graphNEL}(object, result="graphNEL", ...)
-\method{moralize}{matrix}(object, result="matrix", ...)
-\method{moralize}{Matrix}(object, result="Matrix", ...)
-moralizeMAT(amat, result=NULL)
+\method{moralize}{default}(object, result=NULL, ...)
+%% \method{moralize}{graphNEL}(object, result="graphNEL", ...)
+%% \method{moralize}{matrix}(object, result="matrix", ...)
+%% \method{moralize}{Matrix}(object, result="Matrix", ...)
+%%moralizeMAT(XX_)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-    A directed acyclic graph represented either as a 'graphNEL', a
-    'matrix' or as sparse 'dgCMatrix'.
+    A directed acyclic graph represented either as a
+    \code{graphNEL} object, an \code{igraph}, a (dense) \code{matrix},
+    a (sparse) \code{dgCMatrix}.
   }
   \item{result}{The representation of the moralized graph.
     When NULL the representation will be the same as the input object.
-  } 
+  }
   \item{\dots}{
     Additional arguments, currently not used
   }
-  \item{amat}{Adjacency matrix}
+  %\item{XX_}{Adjacency matrix; either a dense matrix or a sparce dgCMatrix.}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -56,8 +59,8 @@ moralizeMAT(amat, result=NULL)
   \code{\link{mcs}}
   \code{\link{jTree}}
   \code{\link{rip}}
-  \code{\link{ug}}, 
-  \code{\link{dag}}  
+  \code{\link{ug}},
+  \code{\link{dag}}
 }
 \examples{
 daG <- dag(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)

@@ -1,47 +1,45 @@
 \name{triangulate}
 \alias{triangulate}
-\alias{triangulate.graphNEL}
-\alias{triangulate.matrix}
-\alias{triangulate.Matrix}
+\alias{triangulate.default}
+
 \alias{triangulateMAT}
+
+
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Triangulation of an undirected graph}
 \description{
-  This function will triangulate an undirected graph by adding fill-ins. 
+  This function will triangulate an undirected graph by adding fill-ins.
 }
 \usage{
 triangulate(object, ...)
-% \method{triangulate}{graphNEL}(object, nLevels = rep(2,length(nodes(object))), result="graphNEL",...)
-% \method{triangulate}{matrix}(object, nLevels = rep(2,ncol(object)), result="matrix",...)
-% \method{triangulate}{Matrix}(object, nLevels = rep(2,ncol(object)), result="Matrix",...)
-
-\method{triangulate}{graphNEL}(object, nLevels = NULL, result="graphNEL", ...)
-\method{triangulate}{matrix}(object, nLevels = NULL, result="matrix", ...)
-\method{triangulate}{Matrix}(object, nLevels = NULL, result="Matrix", ...)
-triangulateMAT(amat, nLevels=rep(2, ncol(amat)), result=NULL, ...)}
+\method{triangulate}{default}(object, nLevels = NULL, result=NULL, ...)
+triangulateMAT(amat, nLevels=rep(2, ncol(amat)), ...)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{object}{An undirected graph represented either as a
-    \code{graphNEL} object, a (dense) \code{matrix}, a (sparse) \code{dgCMatrix}}
+  \item{object}{
+    An undirected graph represented either as a
+    \code{graphNEL} object, an \code{igraph}, a (dense) \code{matrix},
+    a (sparse) \code{dgCMatrix}.
+  }
 
   \item{nLevels}{The number of levels of the variables (nodes) when
     these are discrete. Used in determining the triangulation using a
     "minimum clique weight heuristic". See section 'details'.}
 
   \item{result}{The type (representation) of the result. Possible values
-    are \code{"graphNEL"}, \code{"matrix"}, \code{"Matrix"} (the latter
-    meaning a sparse \code{dgCMatrix}).
+    are \code{"graphNEL"}, \code{"igraph"}, \code{"matrix"},
+    \code{"dgCMatrix"}. Default is the same as the type of \code{object}.
   }
 
   \item{...}{Additional arguments, currently not used.}
 
   \item{amat}{Adjacency matrix; a (dense) \code{matrix}, or a (sparse)
-    \code{dgCMatrix}. } 
+    \code{dgCMatrix}. }
 }
 
 \details{
-  The workhorse is the \code{triangulateMAT} function.  
+  The workhorse is the \code{triangulateMAT} function.
 
   The triangulation is made so as the total state space is kept low by
   applying a minimum clique weight heuristic: When a fill-in is
@@ -52,7 +50,7 @@ triangulateMAT(amat, nLevels=rep(2, ncol(amat)), result=NULL, ...)}
 
   Default (when \code{nLevels=NULL}) is to take \code{nLevels=2}
   for all nodes. If \code{nLevels} is the same for all nodes then the heuristic
-  aims at keeping the clique sizes small.  
+  aims at keeping the clique sizes small.
 }
 
 \value{A triangulated graph represented either as a \code{graphNEL}, a (dense)
@@ -65,7 +63,9 @@ triangulateMAT(amat, nLevels=rep(2, ncol(amat)), result=NULL, ...)}
   \code{triangulateMAT} function is the workhorse, any other
   representation is transformed to an adjacency matrix and the order of
   values in \code{nLevels} most come in the order of the nodes in the
-  adjacency matrix representation.  
+  adjacency matrix representation.
+
+  Currently there is no check for that the graph is undirected.
 }
 
 

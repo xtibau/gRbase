@@ -1,5 +1,11 @@
-# include <RcppEigen.h>
-# include <Rcpp.h>
+/* 
+   topoSortMAT_ : Returns topological ordering of variables if graph is acyclic. 
+   If cyclic, the first return value is -1
+ */
+
+#include <RcppEigen.h>
+
+//[[Rcpp::depends(RcppEigen)]]
 
 #ifndef BEGIN_RCPP
 #define BEGIN_RCPP
@@ -11,12 +17,14 @@
 
 using namespace Rcpp;
 
-// standard matrix
-RcppExport SEXP C_topoSortMAT_st ( SEXP XX_ ){
-  typedef Eigen::Map<Eigen::MatrixXi> MapMati;
-  const MapMati X(Rcpp::as<MapMati>(XX_));
-  //typedef Eigen::MappedSparseMatrix<double> MSpMat;
-  //const MSpMat   X(as<MSpMat>(XX_));
+typedef Eigen::MappedSparseMatrix<double> MSpMat;
+typedef Eigen::Map<Eigen::MatrixXd> MapMatd;
+typedef Eigen::Map<Eigen::MatrixXi> MapMati;
+
+template <typename TT>
+SEXP do_topoSortMAT ( SEXP XX_ ){
+  const TT X(as<TT>(XX_));
+  
   int ii, jj, kk=0, count=0, ll=0, flagsum=0;
   int ncX(X.rows());
   Eigen::VectorXi indegree(ncX);
@@ -28,7 +36,7 @@ RcppExport SEXP C_topoSortMAT_st ( SEXP XX_ ){
   }
   for (jj = 0; jj < ncX; jj++)
     for (ii = 0; ii < ncX; ii++)
-      indegree[jj] = indegree[jj] +  X.coeff(ii,jj); 
+      indegree[jj] = indegree[jj] +  X.coeff(ii,jj);
   
   /*   Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;*/
   /*   Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;*/
@@ -48,137 +56,180 @@ RcppExport SEXP C_topoSortMAT_st ( SEXP XX_ ){
 	    /* Rcout <<" updating indegree at entry="<<jj<<std::endl;*/
 	  }
 	}
-      }      
+      }
       /* Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;	*/
     }
     if (flagsum==ncX)
       break;
     count++;
     /* Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;	*/
-  }  
-  if (flagsum<ncX)
-    ans[0] = -1;
-  return(wrap(ans));
-}
-
-// sparse matrix
-RcppExport SEXP C_topoSortMAT_sp ( SEXP XX_ ){
-  //   typedef Eigen::Map<Eigen::MatrixXi> MapMati;
-  //   const MapMati X(Rcpp::as<MapMati>(XX_));
-  typedef Eigen::MappedSparseMatrix<double> MSpMat;
-  const MSpMat   X(as<MSpMat>(XX_));
-  int ii, jj, kk=0, count=0, ll=0, flagsum=0;
-  int ncX(X.rows());
-  Eigen::VectorXi indegree(ncX);
-  Eigen::VectorXi flag(ncX);
-  Eigen::VectorXi ans(ncX);
-  
-  for (ii = 0; ii < ncX; ii++) {
-    indegree[ii] = 0; flag[ii] = 0; ans[ii] = 0;
   }
-  for (jj = 0; jj < ncX; jj++)
-    for (ii = 0; ii < ncX; ii++)
-      indegree[jj] = indegree[jj] +  X.coeff(ii,jj); 
-  
-  /*   Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;*/
-  /*   Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;*/
-  while (count < ncX){
-    /* Rcout << "count=" << count << std::endl;*/
-    for (kk = 0; kk < ncX; kk++){
-      /* Rcout <<" kk="<<kk<<" indeg="<<indegree[kk]<<" flag="<<flag[kk] << std::endl;*/
-      if ((indegree[kk] == 0) && (flag[kk] == 0)){
-	/*Rcout << "   no incomming:" << kk << std::endl;*/
-	ans[ll++] = kk+1;
-	flag[kk]  = 1;
-	flagsum++;
-	for (jj = 0; jj < ncX; jj++){
-	  /*  Rcout <<"kk,jj="<<kk<<","<<jj<<" entry=" << X.coeff(kk,jj) << std::endl;*/
-	  if (X.coeff(kk,jj) == 1){
-	    indegree[jj]--;
-	    /* Rcout <<" updating indegree at entry="<<jj<<std::endl;*/
-	  }
-	}
-      }      
-      /* Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;	*/
-    }
-    if (flagsum==ncX)
-      break;
-    count++;
-    /* Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;	*/
-  }  
   if (flagsum<ncX)
     ans[0] = -1;
   return(wrap(ans));
 }
 
+// [[Rcpp::export]]
+SEXP topoSortMAT_ ( SEXP XX_ ){
+  int type = TYPEOF(XX_) ;
+  //Rf_PrintValue(wrap(type));
+  switch( type ){
+  case INTSXP  : return do_topoSortMAT<MapMati>(XX_); // matrix - integer 
+  case REALSXP : return do_topoSortMAT<MapMatd>(XX_); // matrix - double
+  case S4SXP   : return do_topoSortMAT<MSpMat>(XX_); // dgCMatrix
+  }
+  return R_NilValue ;
+}
 
 
 
 
+/*** R
+
+library(gRbase)
+dag11  <- gRbase::dag(~a + b:a + c:a:b + d:c:e + e:a + g:f)
+dag11m <- gRbase::dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="matrix")
+dag11M <- gRbase::dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="Matrix")
+
+##topoSort(dag11)
+## topoSort(dag11m)
+##topoSort(dag11M)
+
+library(microbenchmark)
+microbenchmark(
+#topoSortMAT_sp(dag11M),
+#topoSortMAT_st(dag11m),
+topoSortMAT_(dag11M),
+topoSortMAT_(dag11m)
+)
+
+
+##C_topoSortMAT_st(dag11m)
+
+
+*/
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// RcppExport SEXP C_topoSort ( SEXP XX_ ){
-  
-//   using Eigen::Map;
-//   using Eigen::MatrixXi;
+// //[[Rcpp::export]]
+// SEXP topoSortMAT_sp ( SEXP XX_ ){
+//   //   typedef Eigen::Map<Eigen::MatrixXi> MapMati;
+//   //   const MapMati X(Rcpp::as<MapMati>(XX_));
 //   typedef Eigen::MappedSparseMatrix<double> MSpMat;
-//   typedef Eigen::SparseMatrix<double> SpMat;
 //   const MSpMat   X(as<MSpMat>(XX_));
-//   int ii, ll=0, flagsum=0;
+
+//   int ii, jj, kk=0, count=0, ll=0, flagsum=0;
 //   int ncX(X.rows());
 //   Eigen::VectorXi indegree(ncX);
 //   Eigen::VectorXi flag(ncX);
 //   Eigen::VectorXi ans(ncX);
-  
-//   for (int jj = 0; jj < X.cols(); jj++) {
-//     indegree[jj] = flag[jj] = ans[jj] = 0;
-//     for (SpMat::InnerIterator it(X, jj); it; ++it) indegree[jj] += it.value();
+
+//   for (ii = 0; ii < ncX; ii++) {
+//     indegree[ii] = 0; flag[ii] = 0; ans[ii] = 0;
 //   }
-//   Rcout<<"indegree: " << indegree.adjoint() << std::endl;
-//   Rcout<<"flag    : " << flag.adjoint() << std::endl;
-//   for (int count = 0; count < ncX; ++count) {
-//     Rcout << "count=" << count << std::endl;
-//     for (int kk = 0; kk < ncX; kk++) {
-//       Rcout <<" kk="<<kk<<" indeg="<<indegree[kk]<<" flag="<<flag[kk] << std::endl;
-//       if ((indegree[kk] == 0) && (flag[kk] == 0)) {
-// 	Rcout << "   no incoming:" << kk << std::endl;
+//   for (jj = 0; jj < ncX; jj++)
+//     for (ii = 0; ii < ncX; ii++)
+//       indegree[jj] = indegree[jj] +  X.coeff(ii,jj);
+
+//   /*   Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;*/
+//   /*   Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;*/
+//   while (count < ncX){
+//     /* Rcout << "count=" << count << std::endl;*/
+//     for (kk = 0; kk < ncX; kk++){
+//       /* Rcout <<" kk="<<kk<<" indeg="<<indegree[kk]<<" flag="<<flag[kk] << std::endl;*/
+//       if ((indegree[kk] == 0) && (flag[kk] == 0)){
+// 	/*Rcout << "   no incomming:" << kk << std::endl;*/
 // 	ans[ll++] = kk+1;
 // 	flag[kk]  = 1;
 // 	flagsum++;
-// 	for (int jj = 0; jj < ncX; jj++){
-// 	  //Rcout <<"kk,jj="<<kk<<","<<jj<<" entry=" << X.coeff(kk,jj) << std::endl;
-// 	  if (X.coeff(kk,jj) == 1) {
+// 	for (jj = 0; jj < ncX; jj++){
+// 	  /*  Rcout <<"kk,jj="<<kk<<","<<jj<<" entry=" << X.coeff(kk,jj) << std::endl;*/
+// 	  if (X.coeff(kk,jj) == 1){
 // 	    indegree[jj]--;
-// 	    Rcout <<" updating indegree at entry="<<jj<<std::endl;
+// 	    /* Rcout <<" updating indegree at entry="<<jj<<std::endl;*/
 // 	  }
 // 	}
-//       }      
-//       Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; 
-//       Rcout << std::endl;     
+//       }
+//       /* Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;	*/
 //     }
-//     if (flagsum == ncX)
+//     if (flagsum==ncX)
 //       break;
-//     Rcout<<"flag    : " << flag.adjoint() <<" " ; Rcout << std::endl;
-//   }  
-//   if (flagsum < ncX)
+//     count++;
+//     /* Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;	*/
+//   }
+//   if (flagsum<ncX)
 //     ans[0] = -1;
-//   return Rcpp::wrap(ans);
+//   return(wrap(ans));
 // }
+
+
+// //[[Rcpp::export]]
+// SEXP topoSortMAT_st ( SEXP XX_ ){
+//   typedef Eigen::Map<Eigen::MatrixXd> MapMatd;
+//   const MapMatd X(Rcpp::as<MapMatd>(XX_));
+//   //typedef Eigen::MappedSparseMatrix<double> MSpMat;
+//   //const MSpMat   X(as<MSpMat>(XX_));
+
+//   int ii, jj, kk=0, count=0, ll=0, flagsum=0;
+//   int ncX(X.rows());
+//   Eigen::VectorXi indegree(ncX);
+//   Eigen::VectorXi flag(ncX);
+//   Eigen::VectorXi ans(ncX);
+
+//   for (ii = 0; ii < ncX; ii++) {
+//     indegree[ii] = 0; flag[ii] = 0; ans[ii] = 0;
+//   }
+//   for (jj = 0; jj < ncX; jj++)
+//     for (ii = 0; ii < ncX; ii++)
+//       indegree[jj] = indegree[jj] +  X.coeff(ii,jj);
+
+//   /*   Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;*/
+//   /*   Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;*/
+//   while (count < ncX){
+//     /* Rcout << "count=" << count << std::endl;*/
+//     for (kk = 0; kk < ncX; kk++){
+//       /* Rcout <<" kk="<<kk<<" indeg="<<indegree[kk]<<" flag="<<flag[kk] << std::endl;*/
+//       if ((indegree[kk] == 0) && (flag[kk] == 0)){
+// 	/*Rcout << "   no incomming:" << kk << std::endl;*/
+// 	ans[ll++] = kk+1;
+// 	flag[kk]  = 1;
+// 	flagsum++;
+// 	for (jj = 0; jj < ncX; jj++){
+// 	  /*  Rcout <<"kk,jj="<<kk<<","<<jj<<" entry=" << X.coeff(kk,jj) << std::endl;*/
+// 	  if (X.coeff(kk,jj) == 1){
+// 	    indegree[jj]--;
+// 	    /* Rcout <<" updating indegree at entry="<<jj<<std::endl;*/
+// 	  }
+// 	}
+//       }
+//       /* Rcout<<"indegree: ";for (ii=0;ii<ncX;ii++) Rcout << indegree[ii]<<" " ; Rcout << std::endl;	*/
+//     }
+//     if (flagsum==ncX)
+//       break;
+//     count++;
+//     /* Rcout<<"flag    : ";for (ii=0;ii<ncX;ii++) Rcout << flag[ii]<<" " ; Rcout << std::endl;	*/
+//   }
+//   if (flagsum<ncX)
+//     ans[0] = -1;
+//   return(wrap(ans));
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

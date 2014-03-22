@@ -1,6 +1,6 @@
 \name{glist2adjMAT}
 \alias{glist2adjMAT}
-\alias{vpaL2adjMAT}
+\alias{vpaList2adjMAT}
 \alias{vpaL2tfM}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -12,17 +12,17 @@
   graph is assumed to be undirected.
 }
 \usage{
-glist2adjMAT(glist, vn = uniquePrim(c(glist, recursive = TRUE)), result="matrix")
-vpaL2adjMAT(vpaL, vn=uniquePrim(c(vpaL, recursive=TRUE)), result="matrix")
+glist2adjMAT(glist, vn = unique(unlist(glist)), result="matrix")
+vpaList2adjMAT(glist, vn = unique(unlist(glist)), result="matrix")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{glist}{
-    A list of generators for an undirected graph.
+    A list of generators where a generator is a vector of nodes. For
+    \code{glist2adjMAT} a vector (v1,...,vn) means that there are
+    undirected edges between all nodes. For \code{vpaList2adjMAT},
+    (v1,...,vn) means that there will be arrows from v2,...,vn to v1.
   }
-  \item{vpaL}{
-    A list of the form (v,pa(v)) specifying a directed acyclic graph. 
-  }  
   \item{vn}{
     The names of the vertices in the graphs. These will be the row and
     column names of the matrix
@@ -54,7 +54,7 @@ vpaL2adjMAT(vpaL, vn=uniquePrim(c(vpaL, recursive=TRUE)), result="matrix")
 \examples{
 glist <- list(1:3,2:4,4:5)
 am1 <- glist2adjMAT(glist)
-am2 <- vpaL2adjMAT(glist)
+am2 <- vpaList2adjMAT(glist)
 if (interactive()){
  plot(as(am1, "graphNEL"))
  plot(as(am2, "graphNEL"))

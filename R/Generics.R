@@ -11,17 +11,24 @@ triangulate <- function(object, ...)
   UseMethod("triangulate")
 }
 
-compile <- function (object, ...) 
+compile <- function (object, ...)
 {
     UseMethod("compile")
 }
 
-propagate <- function (object, ...) 
+propagate <- function (object, ...)
 {
     UseMethod("propagate")
 }
 
-compareModels <- function (object, object2, ...) 
+compareModels <- function (object, object2, ...)
 {
     UseMethod("compareModels")
 }
+
+
+stepwise <- function(object,...){
+    UseMethod("stepwise")
+}
+
+#stepwise.default <- function(object,...) return(step(getFit(object)))

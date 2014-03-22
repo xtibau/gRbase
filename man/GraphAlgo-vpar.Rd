@@ -20,10 +20,10 @@ vpar(object, getv = TRUE, forceCheck = TRUE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{An object representing a graph. Valid objects are an
-    adjacency matrix or as a graphNEL.  
+    adjacency matrix or as a graphNEL.
 }
 \item{getv}{
-  The result is by default a list of vectors of the form 
+  The result is by default a list of vectors of the form
   \code{(v, pa1, pa2, ... paN)} where \code{pa1, pa2, ... paN} are the
   parents of \code{v}. If \code{getv} is \code{FALSE} then the vectors
   will have the form \code{(pa1, pa2, ... paN)}.
@@ -76,11 +76,12 @@ vpar(ugNEL, forceCheck=FALSE)
 
 ## Bidirected graphs
 ## This is, for graphNEL's, the same as working with bidirected edges:
-edgemode(ugNEL)
-edgemode(ugNEL) <- "directed"
-edgemode(ugNEL)
+if (require(graph)){
+graph::edgemode(ugNEL)
+graph::edgemode(ugNEL) <- "directed"
+graph::edgemode(ugNEL)
 vpar(ugNEL,FALSE)
-
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

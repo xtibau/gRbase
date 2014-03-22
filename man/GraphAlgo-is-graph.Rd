@@ -5,6 +5,12 @@
 \alias{is.DAGMAT}
 \alias{is.DAG.graphNEL}
 
+\alias{is.DG}
+\alias{is.DG.matrix}
+\alias{is.DG.Matrix}
+\alias{is.DGMAT}
+\alias{is.DG.graphNEL}
+
 \alias{is.UG}
 \alias{is.UG.matrix}
 \alias{is.UG.Matrix}
@@ -24,14 +30,17 @@
   Check properties of graphs.
 }
 \description{
-  Check if a graph is 1) a directed acyclic graph (DAG), 2) an undirected
-  graph (UG), 3) a triangulated (chordal) undirected graph (TUG). A
-  graph represented as 1) graphNEL (from the graph  package), 2) an adjacency
+  Check if a graph is 1) a directed acyclic graph (DAG), 2) a directed
+  graph (DG), 3) an undirected
+  graph (UG), 4) a triangulated (chordal) undirected graph (TUG). This
+  is done for
+  graphs represented as 1) graphNEL (from the graph  package), 2) an adjacency
   matrix, 3) a sparse adjacency matrix (a dgCMatrix from the Matrix
-  package).  
+  package).
 }
 \usage{
 is.DAG(object)
+is.DG(object)
 is.UG(object)
 is.TUG(object)
 is.adjMAT(x)
@@ -48,6 +57,42 @@ is.adjMAT(x)
 
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
 %% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\details{
+  A non-zero value at entry (i,j) in an adjacency matrix A for a graph
+  means that there is an edge from i to j. If also (j,i) is non-zero
+  there is also an edge from j to i. In this case we may think of a
+  bidirected edge between i and j or we may think of the edge as being
+  undirected.  We do not distinguish between undirected and bidirected
+  edges in the gRbase package. On the other hand, graphNEL objects from
+  the graph package makes such a distinction (the function
+  \code{edgemode()} will tell if edges are "directed" or "undirected" in
+  a graphNEL object).
+
+  The function \code{is.UG()} checks if the adjacency
+  matrix is symmetric (If applied to a graphNEL, the adjacency matrix is
+  created and checked for symmetry.)
+
+  The function \code{is.TUG()} checks if the graph is undirected and
+  triangulated (also called chordal) by checking if the adjacency matrix is
+  symmetric and the vertices can be given a perfect ordering using
+  maximum cardinality seach.
+
+  The function \code{is.DG()} checks if a graph is directed, i.e., that
+  there are no undirected edges. This is done by computing the
+  elementwise product of A and the transpose of A; if there are no
+  non--zero entries in this product then the graph is directed.
+
+  The function \code{is.DAG()} will
+  return \code{TRUE} if all edges are directed and if there are no
+  cycles in the graph. (This is checked by checking if the vertices in
+  the graph can be given a topological ordering which is based on
+  identifying an undirected edge with a bidrected edge).
+
+  There is a special case, namely if the graph has no edges at all (such
+  that the adjacency matrix consists only of zeros). Such a graph is
+  both undirected, triangulated, directed and directed acyclic.
+}
 
 \seealso{
   \code{\link{dag}},
@@ -101,10 +146,11 @@ is.TUG(ug2NEL)
 is.TUG(ug2MAT)
 is.TUG(ug2MATS)
 
+
 ## Bidirected graphs
-edgemode(ugNEL)
-edgemode(ugNEL) <- "directed"
-edgemode(ugNEL)
+graph::edgemode(ugNEL)
+graph::edgemode(ugNEL) <- "directed"
+graph::edgemode(ugNEL)
 is.DAG(ugNEL)
 is.UG(ugNEL)
 

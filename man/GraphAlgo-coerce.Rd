@@ -1,6 +1,7 @@
 \name{graph-coercion}
 
 \alias{graphNEL2ftM}
+\alias{graphNEL2tfM}
 \alias{as.adjMAT}
 \alias{graphNEL2adjMAT}
 \alias{graphNEL2matrix}
@@ -30,7 +31,7 @@ graphNEL2dgCMatrix(object)
   Notice: \code{graphNEL2adjMAT(g, result="matrix")} and
   \code{graphNEL2adjMAT(g, result="Matrix")} do the same as
   \code{as(g, "matrix")} and \code{as(g, "Matrix")} but
-  considerably faster. 
+  considerably faster.
 }
 % \value{
 %   ~Describe the value returned
@@ -42,13 +43,13 @@ graphNEL2dgCMatrix(object)
 
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
-% \note{ ~~further notes~~ 
+% \note{ ~~further notes~~
 
 %  ~Make other sections like Warning with \section{Warning }{....} ~
 % }
 \seealso{
   \code{\link{edgeList}}
-  \code{\link{getCliques}}  
+  \code{\link{getCliques}}
   \code{\link{nonEdgeList}}
   \code{\link{mcs}}
   \code{\link{rip}}

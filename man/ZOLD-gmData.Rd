@@ -1,62 +1,62 @@
-\name{gmData}
- \alias{newgmData}
- \alias{as.gmData}
- \alias{as.gmData.array}
- \alias{as.gmData.data.frame}
- \alias{as.gmData.table}
- \alias{latent}
- \alias{latent.gmData}
- \alias{latent<-}
- \alias{latent<-.gmData}
- \alias{nLevels}
- \alias{nLevels.gmData}
- \alias{nLevels<-}
- \alias{nLevels<-.gmData}
- \alias{description}
- \alias{description.gmData}
- \alias{description<-}
- \alias{description<-.gmData}
- \alias{obs}
- \alias{observations}
- \alias{observations.gmData}
- \alias{observations<-}
- \alias{observations<-.gmData}
- \alias{print.gmData}
- \alias{shortNames}
- \alias{shortNames.gmData}
- \alias{shortNames<-}
- \alias{shortNames<-.gmData}
- \alias{summary.gmData}
- \alias{valueLabels}
- \alias{valueLabels.gmData}
- \alias{valueLabels<-}
- \alias{valueLabels<-.gmData}
- \alias{varNames}
- \alias{varNames.gmData}
- \alias{varNames<-}
- \alias{varNames<-.gmData}
- \alias{varTypes}
- \alias{varTypes.gmData}
- \alias{varTypes<-}
- \alias{varTypes<-.gmData}
+\name{zzz-gmData}
+\alias{newgmData}
+\alias{as.gmData}
+\alias{as.gmData.array}
+\alias{as.gmData.data.frame}
+\alias{as.gmData.table}
+\alias{latent}
+\alias{latent.gmData}
+\alias{latent<-}
+\alias{latent<-.gmData}
+\alias{nLevels}
+\alias{nLevels.gmData}
+\alias{nLevels<-}
+\alias{nLevels<-.gmData}
+\alias{description}
+\alias{description.gmData}
+\alias{description<-}
+\alias{description<-.gmData}
+\alias{obs}
+\alias{observations}
+\alias{observations.gmData}
+\alias{observations<-}
+\alias{observations<-.gmData}
+\alias{print.gmData}
+\alias{shortNames}
+\alias{shortNames.gmData}
+\alias{shortNames<-}
+\alias{shortNames<-.gmData}
+\alias{summary.gmData}
+\alias{valueLabels}
+\alias{valueLabels.gmData}
+\alias{valueLabels<-}
+\alias{valueLabels<-.gmData}
+\alias{varNames}
+\alias{varNames.gmData}
+\alias{varNames<-}
+\alias{varNames<-.gmData}
+\alias{varTypes}
+\alias{varTypes.gmData}
+\alias{varTypes<-}
+\alias{varTypes<-.gmData}
 
- \alias{dataOrigin}
- \alias{dataOrigin.gmData}
+\alias{dataOrigin}
+\alias{dataOrigin.gmData}
 
- \alias{ordinal<-}
- \alias{ordinal<-.gmData}
+\alias{ordinal<-}
+\alias{ordinal<-.gmData}
 
-  \alias{ordinal}
- \alias{ordinal.gmData}
+\alias{ordinal}
+\alias{ordinal.gmData}
 
-  \alias{nominal<-}
- \alias{nominal<-.gmData}
+\alias{nominal<-}
+\alias{nominal<-.gmData}
 
- \alias{nominal}
- \alias{nominal.gmData}
+\alias{nominal}
+\alias{nominal.gmData}
 
  
-\title{Class "gmData" graphical meta data}
+\title{Old: Class "gmData" graphical meta data}
 \description{A common class for representing data. No matter the actual
   representation of data, the important characteristics are contained in
   a graphical metadata object. }
@@ -127,6 +127,8 @@ newgmData(varNames,
 }
 
 \seealso{\code{demo(gmData)}}
+
+\keyword{internal}
 
 \examples{
 

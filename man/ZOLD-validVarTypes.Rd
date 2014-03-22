@@ -1,7 +1,7 @@
-\name{validVarTypes}
+\name{zzz-validVarTypes}
 \alias{validVarTypes}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ Admissible variable types in gmData objects }
+\title{Old: Admissible variable types in gmData objects }
 \description{
 The variable types in a \code{\link{gmData}} object must be from a
 vector predefined types which may be 
@@ -33,7 +33,7 @@ validVarTypes()
 %\note{ ~~further notes~~ }
 
 % ~Make other sections like Warning with \section{Warning }{....} ~
-
+\keyword{internal}
 \seealso{ \code{\link{gmData}}}
 \examples{
 oldtypes <- validVarTypes()

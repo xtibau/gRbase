@@ -1,22 +1,25 @@
 \name{topoSort}
 \alias{topoSort}
-\alias{topoSort.graphNEL}
-\alias{topoSort.matrix}
-\alias{topoSort.Matrix}
+\alias{topoSort.default}
+%% \alias{topoSort.graphNEL}
+%% \alias{topoSort.matrix}
+%% \alias{topoSort.Matrix}
 \alias{topoSortMAT}
+
 
 
 \alias{topoSort_vparList}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-  Topological sort of vertices in directed 
+  Topological sort of vertices in directed acyclic graph
 }
 \description{
   A topological ordering of a directed graph is a linear
   ordering of its vertices such that, for every edge (u->v), u comes before
   v in the ordering. A topological ordering is possible if and only if the graph has
   no directed cycles, that is, if it is a directed acyclic graph
-  (DAG). Any DAG has at least one topological ordering.
+  (DAG). Any DAG has at least one topological ordering. Can hence be
+  used for checking if a graph is a DAG.
 }
 \usage{
 topoSort(object, index = FALSE)
@@ -24,23 +27,23 @@ topoSort(object, index = FALSE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-    A graph represented as a \code{graphNEL} object or an adjacency
-    matrix. An adjacency matrix can either be a standard matrix or a
-    sparse \code{dgCMatrix} matrix (from the Matrix package).
+    An graph represented either as a
+    \code{graphNEL} object, an \code{igraph}, a (dense) \code{matrix},
+    a (sparse) \code{dgCMatrix}.
 }
   \item{index}{
     If FALSE, an ordering is returned if it exists and
     \code{character(0)} otherwise. If TRUE, the index of the variables
-    in an adjacency matrix is returned and \code{-1} otherwise. 
+    in an adjacency matrix is returned and \code{-1} otherwise.
     %%     ~~Describe \code{index} here~~
 }
 }
 \value{
     If FALSE, an ordering is returned if it exists and
     \code{character(0)} otherwise. If TRUE, the index of the variables
-    in an adjacency matrix is returned and \code{-1} otherwise. 
+    in an adjacency matrix is returned and \code{-1} otherwise.
 }
-\author{Søren Højsgaard, \email{sorenh@math.aau.dk}}  
+\author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
 
 %% ~Make other sections like Warning with
 \section{Note}{
@@ -50,7 +53,7 @@ topoSort(object, index = FALSE)
 \section{Warning }{
   Do not use \code{index=TRUE} when the input is a \code{graphNEL}
   object; the result is unpredictable.
-} 
+}
 
 \seealso{
   \code{\link{dag}},
@@ -58,8 +61,8 @@ topoSort(object, index = FALSE)
 }
 \examples{
 dagMAT  <- dag(~a:b:c+c:d:e, result="matrix")
-dagMATS <- as(dagMAT, "Matrix")
-dagNEL  <- dag(~a:b:c+c:d:e, result="NEL")
+dagMATS <- as(dagMAT, "dgCMatrix")
+dagNEL  <- as(dagMAT, "graphNEL")
 
 topoSort(dagMAT)
 topoSort(dagMATS)

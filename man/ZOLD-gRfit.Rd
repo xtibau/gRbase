@@ -1,4 +1,4 @@
-\name{gRfit}
+\name{zzz-gRfit}
 \alias{gRfit}
 \alias{getFit}
 \alias{getFit<-}
@@ -9,7 +9,7 @@
 \alias{fit}
 
 
-\title{Class "gRfit" - fitted graphical models}
+\title{Old: Class "gRfit" - fitted graphical models}
 \description{
  Objects of class \code{gRfit} are created when the function \code{fit}
  is applied to a \code{\link{gModel}} object. When adding new types of
@@ -39,6 +39,8 @@ getFit(x)
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
 %\note{ ~~further notes~~ }
+
+\keyword{internal}
 
 \seealso{\code{\link{gModel}}.}
 

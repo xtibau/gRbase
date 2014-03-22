@@ -1,5 +1,6 @@
 \name{mpd}
 \alias{mpd}
+\alias{mpd.default}
 \alias{mpdMAT}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Maximal prime subgraph decomposition}
@@ -8,15 +9,15 @@
   subgraph decomposition) of an undirected graph
 }
 \usage{
-mpd(uG, TuG = minimalTriang(uG, details = 0), details = 0)
-mpdMAT(uGmat, TuGmat = minimalTriangMAT(uGmat, details = 0), details = 0)
+mpd(object, tobject = minimalTriang(object), details = 0)
+mpdMAT(amat, tamat = minimalTriangMAT(amat), details = 0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{uG}{An undirected graph; a graphNEL object}
-  \item{TuG}{Any minimal triangulation of uG; a graphNEL object}
-  \item{uGmat}{An undirected graph; a symmetric adjacency matrix}
-  \item{TuGmat}{Any minimal triangulation of uG; a symmetric adjacency matrix}
+  \item{object}{An undirected graph; a graphNEL object}
+  \item{tobject}{Any minimal triangulation of object; a graphNEL object}
+  \item{amat}{An undirected graph; a symmetric adjacency matrix}
+  \item{tamat}{Any minimal triangulation of object; a symmetric adjacency matrix}
   \item{details}{The amount of details to be printed. }
 }
 \details{
@@ -38,14 +39,14 @@ mpdMAT(uGmat, TuGmat = minimalTriangMAT(uGmat, details = 0), details = 0)
 
 \author{Clive Bowsher \email{C.Bowsher@statslab.cam.ac.uk} with modifications
   by Søren Højsgaard, \email{sorenh@math.aau.dk}}
-%\note{ ~~further notes~~ 
+%\note{ ~~further notes~~
 %
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 
 \seealso{
   \code{\link{mcs}},
-  \code{\link{mcsMAT}},  
+  \code{\link{mcsMAT}},
   \code{\link{minimalTriang}},
   \code{\link{minimalTriangMAT}},
   \code{\link{rip}},
