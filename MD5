@@ -1,5 +1,5 @@
 8d827766eb6ba6c29b35a0f6348a30f0 *ChangeLog
-4dd4532605be76ecbacc2bd194eee8db *DESCRIPTION
+4163900c9d0314f6daea8d6aa8766acb *DESCRIPTION
 530f0001cfb1eac4a9aff88f8f8e00c1 *NAMESPACE
 cd413d1467d3def77299c5b2f287582a *R/Generics.R
 aa532261416be1cdde70cfc0c2367099 *R/RcppExports.R
@@ -63,6 +63,7 @@ d22303b741e32cffaeb8bc65b76bb8be *demo/cadcomplete.R
 8622dfd6f1ca8aa9544e51db58b61b7f *demo/gmData.R
 05e68417c22773668e62ab1da4291edd *demo/haireye.R
 900b02c0b93a0d657efe0be4b54e5d9e *demo/reinis.R
+5dc756d7a3376365d0e88708051436fa *gRbase-Ex.R
 8fc07a549e908bbe0f0aba44480f1e0a *inst/CITATION
 175000c10af9b7bce0be54951b1e63f7 *inst/doc/gRbase-arrayops1.R
 682f7c720a5453b74f7af762bd1c31f5 *inst/doc/gRbase-arrayops1.Rnw
@@ -137,7 +138,7 @@ a73031cbe7d6aaf0bd22e20f6526977d *src/Makevars.win
 bbedbe109998c0b4ba1f21ccc825094e *src/RcppExports.cpp
 562573740fdef963466ee99a194e5cc2 *src/_utils_print.c
 0ffcaf5dfc2d17c001197449f1323c5d *src/_utils_print.h
-59462c2822ef3e3618115ee443e186d3 *src/allSubsets.cpp
+c3cdc530cfe44be47433daaffa543818 *src/allSubsets.cpp
 fdd4b7613f9286ed34532438516e8a5a *src/arrayBasic.cpp
 0d41b5a96012b063b9e0e3a0480bab7c *src/arrayOps.cpp
 d2c485c650e8aad373b03f8b4183531f *src/arrayOps.h

@@ -31,7 +31,7 @@ inline IntegerVector conc_int(const IntegerVector& x, int y){
 // Works for integer input vector
 //[[Rcpp::export(allSubsets0)]]
 List allSubsets0_cpp( IntegerVector x ){
-  int nx = x.length(), nout=pow(2, nx), i, k, ny=1;
+  int nx = x.length(), nout=pow(2., nx), i, k, ny=1;
   List out( nout );
   out[0]=-1;
   double z;
