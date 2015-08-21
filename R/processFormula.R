@@ -59,28 +59,30 @@ processFormula <- function (formula, data, marginal, type = c("Discrete", "Conti
 }
 
 
-## Turn a right-hand-sided formula into a list
+## Turn a right-hand-sided formula into a list (anything on the left hand side is ignored)
 ##
 ## January 2011
 
 rhsFormula2list <- rhsf2list <- function(f){
-
-  if (is.character(f)){
-    return(list(f))
-  } else {
-    if (is.numeric(f)){
-      return(lapply(list(f), "as.character"))
+    if ( is.character( f ) ){
+        list( f )
     } else {
-      if (is.list(f)){
-        return(lapply(f, "as.character"))
-      } else {
-        .xxx. <- f[[2]]
-        f1 <- unlist(strsplit(paste(deparse(.xxx.), collapse="")," *\\+ *"))
-        f2 <- unlist(lapply(f1, strsplit, " *\\* *| *: *| *\\| *"),recursive=FALSE)
-        return(f2)
-      }
+        if ( is.numeric( f ) ){
+            lapply( list( f ), "as.character" )
+        } else {
+            if ( is.list( f ) ){
+                lapply(f, "as.character")
+            } else {
+                ## We assume a formula...
+                ## FIXME: Was:   ##.xxx. <- f[[2]]
+                ## Changed to
+                .xxx. <- f[[ length( f ) ]]
+                f1 <- unlist(strsplit(paste(deparse(.xxx.), collapse="")," *\\+ *"))
+                f2 <- unlist(lapply(f1, strsplit, " *\\* *| *: *| *\\| *"),recursive=FALSE)
+                f2
+            }
+        }
     }
-  }
 }
 
 
@@ -95,7 +97,7 @@ list2rhsFormula <- list2rhsf <- function(f){
              .GlobalEnv)
 }
 
-all.subsets <- function(x,g.sep="+"){
+allSubsets <- function(x,g.sep="+"){
   if (length(x)==1)
     return(x)
   else {
@@ -110,7 +112,7 @@ all.subsets <- function(x,g.sep="+"){
 }
 
 selectOrder  <- function(x,order=2){
-  v <- all.subsets(x)
+  v <- allSubsets(x)
   value <- v[lapply(v,length)==as.numeric(order)]
   return(value)
 }

@@ -10,9 +10,7 @@
  */
 
 #include <RcppEigen.h>
-
 //[[Rcpp::interfaces(r,cpp)]]
-
 //[[Rcpp::depends(RcppEigen)]]
 
 #ifndef BEGIN_RCPP
@@ -38,7 +36,7 @@ SpMat internal_dagList2dgCMatrix ( List LL, CharacterVector vn ){
   int ngen = LL.length(), genlen;
   CharacterVector gen;
   IntegerVector geni;
-
+  
   for (int ii=0; ii<ngen; ii++){
     gen = LL[ii];
     geni = match(gen, vn);
@@ -46,7 +44,7 @@ SpMat internal_dagList2dgCMatrix ( List LL, CharacterVector vn ){
     //Rf_PrintValue(gen);
     if (genlen>1){
       for (int jj=1; jj<genlen; jj++){
-	triplets.push_back(T(geni[jj]-1, geni[0]-1, 1));
+		triplets.push_back(T(geni[jj]-1, geni[0]-1, 1));
       }
     }
   }
@@ -76,15 +74,15 @@ SpMat internal_ugList2dgCMatrix ( List LL, CharacterVector vn ){
     //Rf_PrintValue(gen);
     if (genlen>1){
       for (int jj=0; jj<genlen-1; jj++){
-	for (int kk=jj+1; kk<genlen; kk++){
-	  triplets.push_back(T(geni[jj]-1, geni[kk]-1, 1));
-	  triplets.push_back(T(geni[kk]-1, geni[jj]-1, 1));
-	}
+		for (int kk=jj+1; kk<genlen; kk++){
+		  triplets.push_back(T(geni[jj]-1, geni[kk]-1, 1));
+		  triplets.push_back(T(geni[kk]-1, geni[jj]-1, 1));
+		}
       }
     }
   }
   fill.setFromTriplets(triplets.begin(), triplets.end());
-
+  
   for (int ii=0; ii<fill.rows(); ii++){
     for (SpMat::InnerIterator inner_jj(fill, ii); inner_jj; ++inner_jj){
       fill.coeffRef(inner_jj.row(),inner_jj.col())=1;
@@ -231,6 +229,33 @@ SEXP adjList2dgCMatrix(List LL){
   return dagList2dgCMatrix(tfList, vn);
 }
 
+
+
+/*** R
+
+g <- list(c("A","B"), c("B","C"))
+vn <- unique(unlist(g))
+
+ugList2matrix(g, vn)
+
+data(cad1, package="gRbase")
+library(gRim)
+use <- c(1,2,3,9:14)
+cad1 <- cad1[,use]
+s <- dmod(~.^., data=cad1)
+
+
+ugList2matrix(terms(s), unique(unlist(terms(s))))
+M<-ugList2dgCMatrix(terms(s), unique(unlist(terms(s))));M
+
+
+
+
+
+
+*/
+
+
 // //[[Rcpp::export]]
 // SEXP do_dgCMatrix2matrix ( SEXP XX_ ){
 //   S4   DD(wrap(XX_));
@@ -241,19 +266,3 @@ SEXP adjList2dgCMatrix(List LL){
 //   Xout.attr("dimnames") = dn;
 //   return Xout;
 // }
-
-
-/*** R
-
-getwd()
-
-load("c:/Documents/stat/Rdevel/gmwR-DEVEL/gRbaseDEVEL/c-code/c-code-gRbase/ugdag2MAT/ed.RData")
-
-M <- adjList2dgCMatrix(ed)
-##m <- do_dgCMatrix2matrix(M)
-
-adjList2matrix(ed)
-
-*/
-
-

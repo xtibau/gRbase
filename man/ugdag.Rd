@@ -33,19 +33,16 @@ dagList(x, result="NEL", forceCheck=FALSE)
   \item{x}{A list containing a generating class for a graph, see
     examples below}
   \item{forceCheck}{Logical determining if it should be checked if the
-    graph is acyclical}
+    graph is acyclical. Yes, one can specify graphs with cycles using
+    the \code{dag()} function.}
   \item{result}{The format of the graph. The possible choices are "NEL"
     (for a graphNEL object), "matrix" (for an adjacency matrix),
     "igraph" (for an igraph object), "Matrix" (for a sparse matrix).}
 }
-% \details{
-%   Functions dag() and ug() were originally called newDAG() and
-%   newUG(). The latter functions are retained in the package for backward
-%   compatibility, but they will be removed at some point of time in the future.
-% }
 \value{
-  Functions ug(), dag(), ugList() and dagList() return a 'graphNEL'
-  object, an adjacency matrix or an 'igraph' object.
+  Functions \code{ug()}, \code{dag()}, \code{ugList()} and
+  \code{dagList()} can  return a \code{graphNEL}
+  object, a sparse or dense adjacency matrix or an \code{igraph} object.
   %Functions ugMAT() and ugListMAT() return an adjacency matrix.
 }
 %\references{ ~put references to the literature/web site here ~ }
@@ -56,33 +53,45 @@ dagList(x, result="NEL", forceCheck=FALSE)
 % }
 %\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
-ugr <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 
-ugr <- ug(~me:ve:al,~al:an:st)
+## The following specifications of undirected graphs are equivalent:
+uG1 <- ug(~a:b, ~a:c, ~b:c ~c:d)
+uG2 <- ug(c("a","b"), c("a","c"), c("b","c"), c("c","d"))
+uG3 <- ug(~a:b:c, ~c:d)
+uG4 <- ug(c("a","b","c"), c("c","d"))
+uG5 <- ug(~a:b:c + c:d)
 
-ugr <- ug(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+graph::edges(uG1)
+graph::nodes(uG1)
 
-ugr <- ug(~me:ve:al, c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+## The following specifications of directed acyclig graphs are equivalent:
+daG1 <- dag(~a:b:c, ~b:c, ~c:d)
+daG2 <- dag(c("a","b","c"), c("b","d"), c("c","d"))
+daG3 <- dag(~a:b:c + b:c + c:d)
 
+graph::edges(daG1)
+graph::nodes(daG2)
 
-dagr <- dag(c("me","ve"),c("me","al"),c("ve","al"),c("al","an"),c("al","st"),c("an","st"))
+## dag() allows to specify directed graphs with cycles:
+daG4 <- dag(~a:b+b:c+c:a) # A directed graph but with cycles
+## A check for acyclicity can be done with
+## daG5 <- dag(~a:b+b:c+c:a, forceCheck=TRUE) 
 
+## A check for acyclicity is provided by topoSort
+topoSort( daG3 )
+topoSort( daG4 )
 
-dagr <- dag(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
-
-dagr <- dag(~me:ve:al,~ve:al:an)
-
-graph::edges(ugr)
-graph::nodes(ugr)
-
-graph::edges(dagr)
-graph::nodes(dagr)
-
-ugList(list(~me:ve:al,~al:an:st))
-dagList(list(~me:ve:al,~ve:al:an))
-
-
-
+## Different representations
+uG6 <- ug(~a:b:c + c:d, result="graphNEL")  # default
+uG6
+uG7 <- ug(~a:b:c + c:d, result="NEL")       # same
+uG7
+uG8 <- ug(~a:b:c + c:d, result="matrix")    # dense matrix
+uG8
+uG9 <- ug(~a:b:c + c:d, result="dgCMatrix") # sparse matrix
+uG9
+uG10 <- ug(~a:b:c + c:d, result="Matrix")   # sparse matrix
+uG10
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

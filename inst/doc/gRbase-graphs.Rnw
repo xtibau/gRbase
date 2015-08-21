@@ -87,7 +87,7 @@ library(graph)
 \section{Introduction}
 \label{sec:intro}
 
-For the \R\ community, the packages \graph, \rbgl, \rgraphviz\ and
+The packages \graph, \rbgl, \rgraphviz\ and
 \igraph\ are extremely useful tools for graph operations, manipulation
 and layout. The \grbase\ package adds some additional tools to these
 fine packages. The most important tools are:
@@ -103,7 +103,6 @@ fine packages. The most important tools are:
   \begin{itemize}
   \item A \graphnel\ object (the default),
   \item A dense adjacency matrix (a ``standard'' matrix in \R).
-
   \item A sparse adjacency matrix( a \code{dgCMatrix}
     from the \code{Matrix} package).
   \end{itemize}
@@ -148,42 +147,76 @@ An undirected graph is created by the \code{ug()} function.
 The following specifications are equivalent (notice that ``\code{:}''
 and ``\code{*}'' can be used interchangably):
 
+
+%% @
+%% <<print=F>>=
+%% ug11 <- ug( ~a:b:c + c:d + d:e + a:e + f:g )
+%% ug12 <- ug( c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g") )
+%% ug13 <- ug(~a:b:c, ~c:d, ~d:e + a:e + f:g)
+%% ug14 <- ugList( list(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g")) )
+%% @ %def
+
+
+
+%% Default is to return a \code{graphNEL} object (for which there is a
+%% plot method):
+
+
+%% @
+%% <<>>=
+%% ug11
+%% @ %def
+
+
+
+
+%% @
+%% <<fig=T>>=
+%% plot( ug11 )
+%% @ %def
+
+
+
+
+%% A representation as a dense adjacency matrix can be
+%% obtained with:
+%% @
+%% <<print=F>>=
+%% ug11m <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="matrix"); ug11m
+%% @ %def
+
+
+%% A representation as a sparse adjacency matrix is obtained with
+%% @
+%% <<print=F>>=
+%% ug11M <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="dgCMatrix"); ug11M
+%% @ %def
+
+
 @
-<<print=F>>=
-ug11 <- ug( ~a:b:c + c:d + d:e + a:e + f:g )
-ug12 <- ug( c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g") )
-ug13 <- ug(~a:b:c, ~c:d, ~d:e + a:e + f:g)
-ug14 <- ugList( list(c("a","b","c"),c("c","d"),c("d","e"),c("a","e"),c("f","g")) )
+<<>>=
+ug11 <- ug( ~a*b + b*c*d)
+ug12 <- ug( c("a","b"), c("b","c","d") )
+ug13 <- ug( list( c("a","b"), c("b","c","d") ) )
 @ %def
 
 
 Default is to return a \code{graphNEL} object (for which there is a
 plot method):
 
-
-@
-<<>>=
-ug11
-@ %def
-
 @
 <<fig=T>>=
+ug11
+nodes(ug11)
+str( edges(ug11) )
 plot( ug11 )
 @ %def
 
-
-A representation as a dense adjacency matrix can be
-obtained with:
+Matrix representations are obtained with:
 @
-<<print=F>>=
-ug11m <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="matrix"); ug11m
-@ %def
-
-
-A representation as a sparse adjacency matrix is obtained with
-@
-<<print=F>>=
-ug11M <- ug(~a*b*c + c*d + d*e + a*e + f*g, result="dgCMatrix"); ug11M
+<<print=T>>=
+ug11m <- ug( ~a*b + b*c*d, result="matrix")
+ug11M <- ug( ~a*b + b*c*d, result="dgCMatrix")
 @ %def
 
 \subsection{Directed acyclic graphs (DAGs)}
@@ -193,36 +226,45 @@ The
 following specifications are equivalent (notice that ``\code{:}''
 and ``\code{*}'' can be used interchangably):
 
-
-<<print=F>>=
-dag11 <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f)
-dag12 <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"),
-             c("e","a"),c("g","f"))
-dag13 <- dag(~a, ~b:a,  ~c:a:b, ~d:c:e, ~e:a, ~g:f)
-dag14 <- dagList(list( "a", c("b","a"), c("c","a","b"), c("d","c","e"),
-                      c("e","a"),c("g","f") ))
-@
-
-Notice: Above, \texttt{\~{ }a} (and \code{"a"}) means that ``a'' has no parents while
-\texttt{\~{ }c:a:b} (and \code{c("c","a","b")}) means that ``c'' has parents ``a'' and
-``b''.
-
 @
 <<>>=
-dag11
+dag11 <- dag( ~a*b + b*c*d)
+dag12 <- dag( c("a","b"), c("b","c","d") )
+dag13 <- dag( list( c("a","b"), c("b","c","d") ) )
 @ %def
 
-A representation as a dense adjacency matrix can be
-obtained with
 
-<<print=T>>=
-dag11m <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="matrix")
-@
+%% <<print=F>>=
+%% dag11 <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f)
+%% dag12 <- dag("a", c("b","a"), c("c","a","b"), c("d","c","e"),
+%%              c("e","a"),c("g","f"))
+%% dag13 <- dag(~a, ~b:a,  ~c:a:b, ~d:c:e, ~e:a, ~g:f)
+%% dag14 <- dagList(list( "a", c("b","a"), c("c","a","b"), c("d","c","e"),
+%%                       c("e","a"),c("g","f") ))
+%% @
 
-A sparse matrix representation is obtained with:
-<<print=T>>=
-dag11M <- dag(~a + b:a + c:a:b + d:c:e + e:a + g:f, result="dgCMatrix")
+The syntax rules are that \texttt{\~{ }a} (and \code{"a"}) means that ``a'' has no parents while
+\texttt{\~{ }c:a:b} (and \code{c("c","a","b")}) means that ``c'' has parents ``a'' and
+``b''.
 @
+<<fig=T>>=
+dag11
+nodes( dag11 )
+str( edges( dag11 ) )
+plot( dag11 )
+@ %def
+
+
+Matrix representations are obtained with:
+@
+<<>>=
+dag11m <- dag( ~a*b + b*c*d, result="matrix")
+dag11M <- dag( ~a*b + b*c*d, result="dgCMatrix")
+@ %def
+
+
+
+
 
 \subsection{Other types of graphs}
 \label{sec:other-types-graphs}
@@ -233,7 +275,6 @@ graphs which are not DAGs. Consider
 <<>>=
 d1.bi <- dag(~a:b + b:a)
 edgemode( d1.bi )
-str( nodes(d1.bi) )
 str( edges(d1.bi) )
 @ %def
 This graph is not DAG because there is an edge from \code{a} to
@@ -259,19 +300,19 @@ print( try( dag(~a:b+b:c+c:a, forceCheck=TRUE) ) )
 \subsection{Graph properties}
 \label{sec:graph-properties}
 
-The \graphnel\ objects are very convenient to work with because there
-are many different methods for such objects, for example:
-@
-<<>>=
-str( graph::nodes( ug11 ) )
-str( graph::edges( ug11 ) )
-graph::edgeMatrix( ug11 )
-@ %def
-and
-@
-<<>>=
-str( RBGL::maxClique( ug11 ) )
-@ %def
+%% The \graphnel\ objects are very convenient to work with because there
+%% are many different methods for such objects, for example:
+%% @
+%% <<>>=
+%% str( graph::nodes( ug11 ) )
+%% str( graph::edges( ug11 ) )
+%% graph::edgeMatrix( ug11 )
+%% @ %def
+%% and
+%% @
+%% <<>>=
+%% str( RBGL::maxClique( ug11 ) )
+%% @ %def
 
 
 
@@ -294,21 +335,21 @@ contrast, with \graphnel\ objects one can work with three types of
 edges: undirected, directed and bidirected edges.
 
 \begin{itemize}
-\item The function \code{is.UG()} checks if the adjacency
+\item \code{is.UG()} checks if the adjacency
 matrix is symmetric (If applied to a graphNEL, the adjacency matrix is
 created and checked for symmetry.)
 
-\item The function \code{is.TUG()} checks if the graph is undirected and
+\item \code{is.TUG()} checks if the graph is undirected and
 triangulated (also called chordal) by checking if the adjacency matrix is
 symmetric and the vertices can be given a perfect ordering using
 maximum cardinality seach.
 
-\item The function \code{is.DG()} checks if a graph is directed, i.e., that
+\item \code{is.DG()} checks if a graph is directed, i.e., that
 there are no undirected edges. This is done by computing the
 elementwise product of A and the transpose of A; if there are no
 non--zero entries in this product then the graph is directed.
 
-\item The function \code{is.DAG()} will
+\item  \code{is.DAG()} will
 return \code{TRUE} if all edges are directed and if there are no
 cycles in the graph. (This is checked by checking if the vertices in
 the graph can be given a topological ordering which is based on
@@ -324,17 +365,17 @@ both undirected, triangulated, directed and directed acyclic.
 Consider these examples (where \code{isDirected()} is a method from
 the \graph\ package):
 
-@
-<<>>=
-properties <- function(x){
-    c(is.UG=is.UG(x), is.TUG=is.TUG(x), is.DG=is.DG(x), is.DAG=is.DAG(x),
-      isD=graph::isDirected(x))
-}
-properties( ug11 )
-properties( dag11 )
-properties( d1.bi )
-properties( d2.cyc )
-@ %def
+%% @
+%% <<>>=
+%% properties <- function(x){
+%%     c(is.UG=is.UG(x), is.TUG=is.TUG(x), is.DG=is.DG(x), is.DAG=is.DAG(x),
+%%       isD=graph::isDirected(x))
+%% }
+%% properties( ug11 )
+%% properties( dag11 )
+%% properties( d1.bi )
+%% properties( d2.cyc )
+%% @ %def
 
 
 \subsection{Graph coercion}
@@ -350,51 +391,40 @@ Graphs can be coerced between differente representations using
 (NEL <- as(Mat, "graphNEL"))
 @ %def
 
-Coercion is generally faster to with \code{coerceGraph()}:
+Faster (generally) coercion can be obtained with
 @
 <<>>=
-(mat <- coerceGraph(ug11, "matrix"))
-(Mat <- coerceGraph(mat, "dgCMatrix"))
-(NEL <- as(Mat, "graphNEL"))
+mat <- coerceGraph(ug11, "matrix")
+Mat <- coerceGraph(ug11, "dgCMatrix")
+NEL <- coerceGraph(mat, "graphNEL")
+@ %def
+and
+@
+<<>>=
+mat <- graphNEL2M(ug11, result="matrix")
+Mat <- graphNEL2M(ug11, result="dgCMatrix")
+NEL <- M2graphNEL(mat)
+@ %def
+
+
+@
+<<>>=
 if( require(microbenchmark) ){
-microbenchmark( as(ug11, "matrix"), coerceGraph(ug11, "matrix") )
+  microbenchmark(as(ug11, "matrix"), coerceGraph(ug11, "matrix"), graphNEL2M(ug11),
+                 as(ug11, "dgCMatrix"), coerceGraph(ug11, "dgCMatrix"),
+                 graphNEL2M(ug11, result="Matrix"),
+                 as(mat, "graphNEL"), coerceGraph(mat, "graphNEL"), M2graphNEL(mat))
 }
 @ %def
 
-%% If speed is an issue, a faster coercion still is
 
-%% @
-%% <<>>=
-%% if( require(microbenchmark) ){
-%% microbenchmark( as(ug11, "matrix"), coerceGraph(ug11, "matrix"),
-%%                graphNEL2matrix(ug11))
-%% }
-%% @ %def
-
-\subsection{Plotting graphs}
-\label{sec:plotting-graphs}
-
-
-Graphs represented as \graphnel\ objects  are displayed with
-\code{plot()}. There is no \code{plot()} method for graphs represented
-as adjacency matrices, so here coercion is one option:
-
+We also have
 @
-<<fig=T>>=
-par(mfrow=c(1,2)); plot(ug11); plot(as(ug11m,"graphNEL"))
+<<>>=
+str( edges(as(mat,"graphNEL")) )
+str( M2adjList(mat) )
 @ %def
 
-An alternative for adjacency matrices is the \code{gplot()} function
-in the \pkg{sna} package:
-
-@
-<<eval=F>>=
-if (require(sna)){
-    par(mfrow=c(1,2))
-    gplot(ug11m, label=colnames(ug11m), gmode="graph")
-    gplot(dag11m, label=colnames(dag11m))
-}
-@ %def
 
 
 
@@ -422,23 +452,16 @@ dag11.mor <- moralize(dag11)
 par(mfrow=c(1,2)); plot(dag11); plot(dag11.mor)
 @ %def
 
-Default is that the output representation is the same as the input
-representation, but this can be changed:
+We can work with a matrix representation too. Default is that the
+output representation is the same as the input representation, but
+this can be changed:
 @
 <<>>=
-class( moralize( dag11, result="matrix" ) )
-class( moralize( dag11, result="dgCMatrix" ) )
+moralize( dag11m )
+moralize( dag11, result="matrix" )
 @ %def
 
 
-
-%% For the alternative representations
-
-%% @
-%% <<>>=
-%% moralize(dag11m)
-%% moralize(dag11M)
-%% @ %def
 
 
 \subsection{Topological sort}
@@ -498,8 +521,7 @@ substantially faster:
 if (require(microbenchmark)){
     microbenchmark(
         RBGL::maxClique( ug11 ), getCliques( ug11 ), getCliques( ug11m ),
-        getCliques( ug11M ))
-}
+        getCliques( ug11M ))}
 @ %def
 
 
@@ -522,13 +544,20 @@ mcs(ug11m)
 mcs(ug11M)
 @ %def
 
-
+In some applications it is convenient to retain control over the
+ordering (if it exists). For example:
 @
 <<>>=
-mcs( dag11.mor )
-mcs( as( dag11.mor, "matrix" ))
-mcs( as( dag11.mor, "dgCMatrix" ))
+mcs(ug11, root=c("a","c"))
+@ %def
+The desired ordering (specified by \code{root}) is followed as far as
+possible (here only to the first variable \code{"a"}). Notice the
+output when applying \code{mcs()} to a directed
+graph:\footnote{Perhaps better to signal an error.}
+@
+<<>>=
 mcs( dag11 )
+mcs( as(dag11, "matrix") )
 @ %def
 
 
@@ -536,23 +565,24 @@ Any undirected graph can be triangulated by adding edges to the graph,
 so called fill-ins:
 
 <<print=T>>=
-(tug11  <- triangulate(ug11))
-(tug11m <- triangulate(ug11m))
-(tug11M <- triangulate(ug11M))
+ug11.nc <- ug( ~a:b:c + c:d + d:e + a:e + f:g )
+mcs(ug11.nc)
+(tug11.nc  <- triangulate(ug11.nc))
+mcs(tug11.nc)
 @
 
 @
 <<fig=T>>=
-par(mfrow=c(1,2)); plot(ug11); plot(tug11)
+par(mfrow=c(1,2)); plot(ug11.nc); plot(tug11.nc)
 @ %def
 
-Default is that the output representation is the same as the input
-representation, but this can be changed:
-@
-<<>>=
-class( triangulate( ug11, result = "matrix" ) )
-class( triangulate( ug11, result = "dgCMatrix" ) )
-@ %def
+%% Default is that the output representation is the same as the input
+%% representation, but this can be changed:
+%% @
+%% <<>>=
+%% class( triangulate( ug11, result = "matrix" ) )
+%% class( triangulate( ug11, result = "dgCMatrix" ) )
+%% @ %def
 
 \subsection{RIP ordering / junction tree}
 \label{sec:rip-ordering-}
@@ -562,7 +592,7 @@ as:
 
 @
 <<>>=
-rp <- rip(tug11); rp
+rp <- rip(tug11.nc); rp
 @ %def
 
 @

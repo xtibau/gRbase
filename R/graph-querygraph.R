@@ -75,21 +75,21 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
 
 ## adjmat based
 ancestors <- function(set, object){
-  amat  <- as.adjMAT(object)
+  amat  <- graphNEL2M(object)
   ##if (isUndirectedMAT(amat))
-  if (is.UG.matrix(amat))
+  if (isugMAT_(amat))
     return(NULL)
 
   An <- setorig <- set
   amat  <- amat[-match(set, rownames(amat)),]
 
   repeat{
-    set2 <- rowSums(amat[,set, drop=FALSE])
-    set  <- names(which(set2>0))
-    if (!length(set))
-      break()
-    An <- c(An, set)
-    amat  <- amat[set2 == 0,,drop=FALSE]
+      set2 <- rowSums(amat[,set, drop=FALSE])
+      set  <- names(which(set2>0))
+      if (!length(set))
+          break()
+      An <- c(An, set)
+      amat  <- amat[set2 == 0,,drop=FALSE]
   }
   setdiff(An, setorig)
 }
@@ -97,9 +97,9 @@ ancestors <- function(set, object){
 ## adjmat based -- Must be very slow !!!
 ancestralSet <- function(set, object){
 
-  amat  <- as.adjMAT(object)
+  amat  <- graphNEL2M(object)
   ##if (isUndirectedMAT(amat))
-  if (is.UG.matrix(amat))
+  if (isugMAT_(amat))
     return(NULL)
 
   if (missing(set))
@@ -128,9 +128,9 @@ ancestralSet <- function(set, object){
 
 ## adjmat based
 parents <- function(set, object){
-  amat  <- as.adjMAT(object)
+  amat  <- graphNEL2M(object)
   ##if (isUndirectedMAT(amat))
-  if (is.UG.matrix(amat))
+  if (isugMAT_(amat))
     return(NULL)
 
   pa   <- names(which(amat[,set]>0))
@@ -179,9 +179,9 @@ ancestralGraph <- function(set, object){
 
 is.complete <- function(object, set=NULL){
   if (is.null(set))
-    submat <- as.adjMAT(object)
+    submat <- graphNEL2M(object)
   else
-    submat <- as.adjMAT(object)[set,set]
+    submat <- graphNEL2M(object)[set,set]
   all(submat[upper.tri(submat)]>0)
 }
 

@@ -1,45 +1,27 @@
-/*
-  Implements
+/* **************************************************************
+  Implements:
   allSubsets_cpp(x)  - 'any' vector x
   allSubsets0_cpp(x) - integer vector x
 
- */
-
+  *************************************************************** */
 
 #include <Rcpp.h>
 using namespace Rcpp;
 //[[Rcpp::interfaces(r,cpp)]]
 
-template <const int RTYPE>
-inline Vector<RTYPE> do_subsetter_idx_ (const Vector<RTYPE>& x, const IntegerVector& idx){
-  Vector<RTYPE> out=no_init( idx.size() );
-  for (int i=0; i<idx.size(); ++i){
-    out[ i ] = x[ idx[ i ] - 1 ];
-  }
-  return out;
-}
-
-inline IntegerVector conc_int(const IntegerVector& x, int y){
-  int nx=x.size(), i;
-  IntegerVector out=no_init(nx+1);
-  for (i=0; i<nx; ++i) out[ i ] = x[ i ];
-  out[ nx ] = y;
-  return out;
-}
-
-
 // Works for integer input vector
-//[[Rcpp::export(allSubsets0)]]
-List allSubsets0_cpp( IntegerVector x ){
+//[[Rcpp::export]]
+List allSubsets0__(const IntegerVector& x ){
   int nx = x.length(), nout=pow(2., nx), i, k, ny=1;
+  double z;
   List out( nout );
   out[0]=-1;
-  double z;
-  IntegerVector tmp;
+
   for (i=0; i<nx; ++i){
     z = x[i];
     for (k=0; k<ny; ++k){
-      tmp = conc_int(out[k], z);
+      IntegerVector tmp = out[k];
+      tmp.push_back( z );
       out[ny+k] = tmp;
     }
     ny = 2*ny;
@@ -61,23 +43,22 @@ List allSubsets0_cpp( IntegerVector x ){
 template <int RTYPE>
 List do_allSubsets (Vector<RTYPE> vn){
   IntegerVector sq = seq_len( vn.size() );
-  List lst = allSubsets0_cpp( sq );
+  List lst = allSubsets0__( sq );
   int N=lst.size(), i;
   for (i=0; i<N; ++i){
-    lst[i] = do_subsetter_idx_<RTYPE>( vn, lst[i] );
+    lst[i] = vn[ IntegerVector( lst[i] )-1 ];
   }
   return lst;
 }
 
-
 // Works for any type of input vector
-// [[Rcpp::export(allSubsets)]]
-SEXP allSubsets_cpp( SEXP& XX_){
-  int type = TYPEOF(XX_) ;
+// [[Rcpp::export]]
+SEXP allSubsets__( SEXP& x){
+  int type = TYPEOF(x) ; //Rprintf("type=%i\n", type);
   switch( type ){
-  case INTSXP  : return allSubsets0_cpp( XX_ ) ;
-  case REALSXP : return do_allSubsets<REALSXP>( XX_ ) ;
-  case STRSXP  : return do_allSubsets<STRSXP> ( XX_ ) ;
+  case INTSXP  : return allSubsets0__( x ) ;
+  case REALSXP : return do_allSubsets<REALSXP>( x ) ;
+  case STRSXP  : return do_allSubsets<STRSXP> ( x ) ;
   }
   return R_NilValue ;
 }
@@ -111,14 +92,20 @@ function(x){
 })
 
 
+allSubsets(1:5)
+allSubsets(letters[1:5])
+
+
 library(microbenchmark)
 x <- 1:4
-microbenchmark(allSubsets0_R( x ), allSubsets1_R( x ), allSubsets_cpp(x))
+microbenchmark(allSubsets0_R( x ), allSubsets1_R( x ), allSubsets(x))
 
 x <- 1:10
-microbenchmark(allSubsets0_R( x ), allSubsets1_R( x ), allSubsets_cpp(x))
+microbenchmark(allSubsets0_R( x ), allSubsets1_R( x ), allSubsets(x))
 
 x <- 1:15
-microbenchmark(allSubsets0_R( x ), allSubsets_cpp(x),times=10)
+microbenchmark(allSubsets0_R( x ), allSubsets(x),times=10)
+
+
 
  */

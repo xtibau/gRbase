@@ -14,7 +14,6 @@ typedef Eigen::SparseMatrix<double> SpMat;
 typedef Eigen::SparseMatrix<int> SpMati;
 typedef Eigen::MappedSparseMatrix<double> MSpMat;
 
-
 #ifndef BEGIN_RCPP
 #define BEGIN_RCPP
 #endif
@@ -49,7 +48,6 @@ SEXP matrix2dgCMatrix ( SEXP XX_ ){
   }
   return R_NilValue ;
 }
-
 
 SEXP do_dgCMatrix2matrix ( SEXP XX_ ){
   S4 DD(wrap(XX_));

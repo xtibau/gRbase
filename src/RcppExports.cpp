@@ -10,25 +10,34 @@
 
 using namespace Rcpp;
 
-// allSubsets0_cpp
-List allSubsets0_cpp(IntegerVector x);
-static SEXP gRbase_allSubsets0_cpp_try(SEXP xSEXP) {
+// mcsMAT_
+SEXP mcsMAT_(SEXP XX_, SEXP OO_);
+RcppExport SEXP gRbase_mcsMAT_(SEXP XX_SEXP, SEXP OO_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP );
-        List __result = allSubsets0_cpp(x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type OO_(OO_SEXP);
+    __result = Rcpp::wrap(mcsMAT_(XX_, OO_));
+    return __result;
+END_RCPP
+}
+// do_mcs_sparse
+IntegerVector do_mcs_sparse(const MSpMat& X, const IntegerVector& mcs0idx_);
+static SEXP gRbase_do_mcs_sparse_try(SEXP XSEXP, SEXP mcs0idx_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const MSpMat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type mcs0idx_(mcs0idx_SEXP);
+    __result = Rcpp::wrap(do_mcs_sparse(X, mcs0idx_));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP gRbase_allSubsets0_cpp(SEXP xSEXP) {
+RcppExport SEXP gRbase_do_mcs_sparse(SEXP XSEXP, SEXP mcs0idx_SEXP) {
     SEXP __result;
     {
         Rcpp::RNGScope __rngScope;
-        __result = PROTECT(gRbase_allSubsets0_cpp_try(xSEXP));
+        __result = PROTECT(gRbase_do_mcs_sparse_try(XSEXP, mcs0idx_SEXP));
     }
     Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
     if (__isInterrupt) {
@@ -44,25 +53,22 @@ RcppExport SEXP gRbase_allSubsets0_cpp(SEXP xSEXP) {
     UNPROTECT(1);
     return __result;
 }
-// allSubsets_cpp
-SEXP allSubsets_cpp(SEXP& XX_);
-static SEXP gRbase_allSubsets_cpp_try(SEXP XX_SEXP) {
+// do_mcs_dense
+SEXP do_mcs_dense(const NumericMatrix& X, const IntegerVector& mcs0idx);
+static SEXP gRbase_do_mcs_dense_try(SEXP XSEXP, SEXP mcs0idxSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< SEXP& >::type XX_(XX_SEXP );
-        SEXP __result = allSubsets_cpp(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type mcs0idx(mcs0idxSEXP);
+    __result = Rcpp::wrap(do_mcs_dense(X, mcs0idx));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP gRbase_allSubsets_cpp(SEXP XX_SEXP) {
+RcppExport SEXP gRbase_do_mcs_dense(SEXP XSEXP, SEXP mcs0idxSEXP) {
     SEXP __result;
     {
         Rcpp::RNGScope __rngScope;
-        __result = PROTECT(gRbase_allSubsets_cpp_try(XX_SEXP));
+        __result = PROTECT(gRbase_do_mcs_dense_try(XSEXP, mcs0idxSEXP));
     }
     Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
     if (__isInterrupt) {
@@ -78,658 +84,326 @@ RcppExport SEXP gRbase_allSubsets_cpp(SEXP XX_SEXP) {
     UNPROTECT(1);
     return __result;
 }
-// cell2entry_cpp
-int cell2entry_cpp(NumericVector cell, IntegerVector adim);
-RcppExport SEXP gRbase_cell2entry_cpp(SEXP cellSEXP, SEXP adimSEXP) {
+// mcsMAT0_
+SEXP mcsMAT0_(SEXP XX_, SEXP mcs0idx_);
+static SEXP gRbase_mcsMAT0__try(SEXP XX_SEXP, SEXP mcs0idx_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type mcs0idx_(mcs0idx_SEXP);
+    __result = Rcpp::wrap(mcsMAT0_(XX_, mcs0idx_));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_mcsMAT0_(SEXP XX_SEXP, SEXP mcs0idx_SEXP) {
+    SEXP __result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type adim(adimSEXP );
-        int __result = cell2entry_cpp(cell, adim);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
+        __result = PROTECT(gRbase_mcsMAT0__try(XX_SEXP, mcs0idx_SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
     }
     UNPROTECT(1);
-    return __sexp_result;
+    return __result;
+}
+// moralizeMAT
+SEXP moralizeMAT(SEXP XX_);
+RcppExport SEXP gRbase_moralizeMAT(SEXP XX_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(moralizeMAT(XX_));
+    return __result;
 END_RCPP
 }
-// cell2entry2_cpp
-int cell2entry2_cpp(NumericVector cell, IntegerVector plevels);
-RcppExport SEXP gRbase_cell2entry2_cpp(SEXP cellSEXP, SEXP plevelsSEXP) {
+// rip_internal
+List rip_internal(IntegerVector mcs0idx, CharacterVector vn, List cqlist);
+static SEXP gRbase_rip_internal_try(SEXP mcs0idxSEXP, SEXP vnSEXP, SEXP cqlistSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< IntegerVector >::type mcs0idx(mcs0idxSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP);
+    Rcpp::traits::input_parameter< List >::type cqlist(cqlistSEXP);
+    __result = Rcpp::wrap(rip_internal(mcs0idx, vn, cqlist));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_rip_internal(SEXP mcs0idxSEXP, SEXP vnSEXP, SEXP cqlistSEXP) {
+    SEXP __result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type plevels(plevelsSEXP );
-        int __result = cell2entry2_cpp(cell, plevels);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
+        __result = PROTECT(gRbase_rip_internal_try(mcs0idxSEXP, vnSEXP, cqlistSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
     }
     UNPROTECT(1);
-    return __sexp_result;
+    return __result;
+}
+// do_getcq_sparse
+SEXP do_getcq_sparse(SEXP XX_, const IntegerVector& mcs0idx_);
+static SEXP gRbase_do_getcq_sparse_try(SEXP XX_SEXP, SEXP mcs0idx_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type mcs0idx_(mcs0idx_SEXP);
+    __result = Rcpp::wrap(do_getcq_sparse(XX_, mcs0idx_));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_do_getcq_sparse(SEXP XX_SEXP, SEXP mcs0idx_SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_do_getcq_sparse_try(XX_SEXP, mcs0idx_SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// do_getcq_dense
+SEXP do_getcq_dense(NumericMatrix X, const IntegerVector& mcs0idx);
+static SEXP gRbase_do_getcq_dense_try(SEXP XSEXP, SEXP mcs0idxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type mcs0idx(mcs0idxSEXP);
+    __result = Rcpp::wrap(do_getcq_dense(X, mcs0idx));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_do_getcq_dense(SEXP XSEXP, SEXP mcs0idxSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_do_getcq_dense_try(XSEXP, mcs0idxSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// getCliquesDec_
+SEXP getCliquesDec_(SEXP XX_, SEXP mcs0idx_);
+static SEXP gRbase_getCliquesDec__try(SEXP XX_SEXP, SEXP mcs0idx_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type mcs0idx_(mcs0idx_SEXP);
+    __result = Rcpp::wrap(getCliquesDec_(XX_, mcs0idx_));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_getCliquesDec_(SEXP XX_SEXP, SEXP mcs0idx_SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_getCliquesDec__try(XX_SEXP, mcs0idx_SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// topoSortMAT_
+SEXP topoSortMAT_(SEXP adjmat_);
+RcppExport SEXP gRbase_topoSortMAT_(SEXP adjmat_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type adjmat_(adjmat_SEXP);
+    __result = Rcpp::wrap(topoSortMAT_(adjmat_));
+    return __result;
 END_RCPP
 }
-// nextCell_cpp
-NumericVector nextCell_cpp(NumericVector cell, IntegerVector adim);
-RcppExport SEXP gRbase_nextCell_cpp(SEXP cellSEXP, SEXP adimSEXP) {
+// triangulateMAT_
+SEXP triangulateMAT_(SEXP adjmat_, SEXP nstates_);
+RcppExport SEXP gRbase_triangulateMAT_(SEXP adjmat_SEXP, SEXP nstates_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type adim(adimSEXP );
-        NumericVector __result = nextCell_cpp(cell, adim);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type adjmat_(adjmat_SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nstates_(nstates_SEXP);
+    __result = Rcpp::wrap(triangulateMAT_(adjmat_, nstates_));
+    return __result;
 END_RCPP
 }
-// nextCellSlicePrim_cpp
-NumericVector nextCellSlicePrim_cpp(NumericVector cell, IntegerVector adim, IntegerVector sliceIndic);
-RcppExport SEXP gRbase_nextCellSlicePrim_cpp(SEXP cellSEXP, SEXP adimSEXP, SEXP sliceIndicSEXP) {
+// issymMAT_
+bool issymMAT_(SEXP A_);
+RcppExport SEXP gRbase_issymMAT_(SEXP A_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type adim(adimSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type sliceIndic(sliceIndicSEXP );
-        NumericVector __result = nextCellSlicePrim_cpp(cell, adim, sliceIndic);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type A_(A_SEXP);
+    __result = Rcpp::wrap(issymMAT_(A_));
+    return __result;
 END_RCPP
 }
-// nextCellSlice_cpp
-NumericVector nextCellSlice_cpp(NumericVector cell, IntegerVector adim, IntegerVector sliceSet);
-RcppExport SEXP gRbase_nextCellSlice_cpp(SEXP cellSEXP, SEXP adimSEXP, SEXP sliceSetSEXP) {
+// isugMAT_
+bool isugMAT_(SEXP A_);
+RcppExport SEXP gRbase_isugMAT_(SEXP A_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type adim(adimSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type sliceSet(sliceSetSEXP );
-        NumericVector __result = nextCellSlice_cpp(cell, adim, sliceSet);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type A_(A_SEXP);
+    __result = Rcpp::wrap(isugMAT_(A_));
+    return __result;
 END_RCPP
 }
-// slice2entry_cpp
-IntegerVector slice2entry_cpp(IntegerVector sliceCell, IntegerVector sliceSet, IntegerVector adim);
-RcppExport SEXP gRbase_slice2entry_cpp(SEXP sliceCellSEXP, SEXP sliceSetSEXP, SEXP adimSEXP) {
+// isadjMAT_
+bool isadjMAT_(SEXP A_);
+RcppExport SEXP gRbase_isadjMAT_(SEXP A_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< IntegerVector >::type sliceCell(sliceCellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type sliceSet(sliceSetSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type adim(adimSEXP );
-        IntegerVector __result = slice2entry_cpp(sliceCell, sliceSet, adim);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type A_(A_SEXP);
+    __result = Rcpp::wrap(isadjMAT_(A_));
+    return __result;
 END_RCPP
 }
-// getCellNumberPrim_cpp
-int getCellNumberPrim_cpp(NumericVector cell, IntegerVector perm, IntegerVector pvec);
-RcppExport SEXP gRbase_getCellNumberPrim_cpp(SEXP cellSEXP, SEXP permSEXP, SEXP pvecSEXP) {
+// isdagMAT_
+bool isdagMAT_(SEXP A_);
+RcppExport SEXP gRbase_isdagMAT_(SEXP A_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type perm(permSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type pvec(pvecSEXP );
-        int __result = getCellNumberPrim_cpp(cell, perm, pvec);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type A_(A_SEXP);
+    __result = Rcpp::wrap(isdagMAT_(A_));
+    return __result;
 END_RCPP
 }
-// getCellNumber_cpp
-int getCellNumber_cpp(NumericVector cell, IntegerVector adim, IntegerVector perm);
-RcppExport SEXP gRbase_getCellNumber_cpp(SEXP cellSEXP, SEXP adimSEXP, SEXP permSEXP) {
+// MAT2ftM_
+SEXP MAT2ftM_(SEXP XX_);
+RcppExport SEXP gRbase_MAT2ftM_(SEXP XX_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type adim(adimSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type perm(permSEXP );
-        int __result = getCellNumber_cpp(cell, adim, perm);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(MAT2ftM_(XX_));
+    return __result;
 END_RCPP
 }
-// permuteCellEntries_cpp
-IntegerVector permuteCellEntries_cpp(IntegerVector perm, IntegerVector adim);
-RcppExport SEXP gRbase_permuteCellEntries_cpp(SEXP permSEXP, SEXP adimSEXP) {
+// symMAT2ftM_
+SEXP symMAT2ftM_(SEXP XX_);
+RcppExport SEXP gRbase_symMAT2ftM_(SEXP XX_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< IntegerVector >::type perm(permSEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type adim(adimSEXP );
-        IntegerVector __result = permuteCellEntries_cpp(perm, adim);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayMargin0_cpp
-NumericVector arrayMargin0_cpp(NumericVector a1, IntegerVector marg_idx);
-RcppExport SEXP gRbase_arrayMargin0_cpp(SEXP a1SEXP, SEXP marg_idxSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< IntegerVector >::type marg_idx(marg_idxSEXP );
-        NumericVector __result = arrayMargin0_cpp(a1, marg_idx);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayMarginChr_cpp
-NumericVector arrayMarginChr_cpp(NumericVector a1, CharacterVector marg);
-RcppExport SEXP gRbase_arrayMarginChr_cpp(SEXP a1SEXP, SEXP margSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type marg(margSEXP );
-        NumericVector __result = arrayMarginChr_cpp(a1, marg);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayMargin_cpp
-SEXP arrayMargin_cpp(SEXP a1, SEXP marg);
-RcppExport SEXP gRbase_arrayMargin_cpp(SEXP a1SEXP, SEXP margSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< SEXP >::type marg(margSEXP );
-        SEXP __result = arrayMargin_cpp(a1, marg);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// extendArrays_cpp
-List extendArrays_cpp(const NumericVector& a1, const NumericVector& a2);
-RcppExport SEXP gRbase_extendArrays_cpp(SEXP a1SEXP, SEXP a2SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type a2(a2SEXP );
-        List __result = extendArrays_cpp(a1, a2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// extendArrayAlong_cpp
-NumericVector extendArrayAlong_cpp(NumericVector a1, NumericVector a2);
-RcppExport SEXP gRbase_extendArrayAlong_cpp(SEXP a1SEXP, SEXP a2SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< NumericVector >::type a2(a2SEXP );
-        NumericVector __result = extendArrayAlong_cpp(a1, a2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// alignArrays_cpp
-List alignArrays_cpp(NumericVector a1, NumericVector a2);
-RcppExport SEXP gRbase_alignArrays_cpp(SEXP a1SEXP, SEXP a2SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< NumericVector >::type a2(a2SEXP );
-        List __result = alignArrays_cpp(a1, a2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// alignArrays2_cpp
-List alignArrays2_cpp(NumericVector a1, NumericVector a2);
-RcppExport SEXP gRbase_alignArrays2_cpp(SEXP a1SEXP, SEXP a2SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< NumericVector >::type a2(a2SEXP );
-        List __result = alignArrays2_cpp(a1, a2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayOp2_cpp
-NumericVector arrayOp2_cpp(const NumericVector& a1, const NumericVector& a2, const char op = '*');
-RcppExport SEXP gRbase_arrayOp2_cpp(SEXP a1SEXP, SEXP a2SEXP, SEXP opSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type a2(a2SEXP );
-        Rcpp::traits::input_parameter< const char >::type op(opSEXP );
-        NumericVector __result = arrayOp2_cpp(a1, a2, op);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayOp_cpp
-NumericVector arrayOp_cpp(const NumericVector& a1, const NumericVector& a2, const char op = '*');
-RcppExport SEXP gRbase_arrayOp_cpp(SEXP a1SEXP, SEXP a2SEXP, SEXP opSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type a2(a2SEXP );
-        Rcpp::traits::input_parameter< const char >::type op(opSEXP );
-        NumericVector __result = arrayOp_cpp(a1, a2, op);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// extendArrayAlongOLD_cpp
-NumericVector extendArrayAlongOLD_cpp(const NumericVector& a1, const NumericVector& a2);
-RcppExport SEXP gRbase_extendArrayAlongOLD_cpp(SEXP a1SEXP, SEXP a2SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type a2(a2SEXP );
-        NumericVector __result = extendArrayAlongOLD_cpp(a1, a2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayOpOLD_cpp
-NumericVector arrayOpOLD_cpp(NumericVector a1, NumericVector a2, const char op = '*');
-RcppExport SEXP gRbase_arrayOpOLD_cpp(SEXP a1SEXP, SEXP a2SEXP, SEXP opSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< NumericVector >::type a2(a2SEXP );
-        Rcpp::traits::input_parameter< const char >::type op(opSEXP );
-        NumericVector __result = arrayOpOLD_cpp(a1, a2, op);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayOp2OLD_cpp
-NumericVector arrayOp2OLD_cpp(const NumericVector& a1, const NumericVector& a2, const char op = '*');
-RcppExport SEXP gRbase_arrayOp2OLD_cpp(SEXP a1SEXP, SEXP a2SEXP, SEXP opSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type a1(a1SEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type a2(a2SEXP );
-        Rcpp::traits::input_parameter< const char >::type op(opSEXP );
-        NumericVector __result = arrayOp2OLD_cpp(a1, a2, op);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// getPerm
-IntegerVector getPerm(const SEXP& XX_, const SEXP& perm);
-RcppExport SEXP gRbase_getPerm(SEXP XX_SEXP, SEXP permSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const SEXP& >::type XX_(XX_SEXP );
-        Rcpp::traits::input_parameter< const SEXP& >::type perm(permSEXP );
-        IntegerVector __result = getPerm(XX_, perm);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayPerm0_cpp
-SEXP arrayPerm0_cpp(SEXP XX_, SEXP perm);
-RcppExport SEXP gRbase_arrayPerm0_cpp(SEXP XX_SEXP, SEXP permSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        Rcpp::traits::input_parameter< SEXP >::type perm(permSEXP );
-        SEXP __result = arrayPerm0_cpp(XX_, perm);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// arrayPerm_cpp
-SEXP arrayPerm_cpp(SEXP XX_, SEXP perm);
-RcppExport SEXP gRbase_arrayPerm_cpp(SEXP XX_SEXP, SEXP permSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        Rcpp::traits::input_parameter< SEXP >::type perm(permSEXP );
-        SEXP __result = arrayPerm_cpp(XX_, perm);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// fitLoglin_cpp
-List fitLoglin_cpp(NumericVector x, List glist, double peps = 1e-3);
-RcppExport SEXP gRbase_fitLoglin_cpp(SEXP xSEXP, SEXP glistSEXP, SEXP pepsSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP );
-        Rcpp::traits::input_parameter< List >::type glist(glistSEXP );
-        Rcpp::traits::input_parameter< double >::type peps(pepsSEXP );
-        List __result = fitLoglin_cpp(x, glist, peps);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// MAT2ftM
-SEXP MAT2ftM(SEXP XX_);
-RcppExport SEXP gRbase_MAT2ftM(SEXP XX_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = MAT2ftM(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// SYMMAT2ftM
-SEXP SYMMAT2ftM(SEXP XX_);
-RcppExport SEXP gRbase_SYMMAT2ftM(SEXP XX_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = SYMMAT2ftM(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// is_sym_MAT
-SEXP is_sym_MAT(SEXP XX_);
-RcppExport SEXP gRbase_is_sym_MAT(SEXP XX_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = is_sym_MAT(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(symMAT2ftM_(XX_));
+    return __result;
 END_RCPP
 }
 // matrix2dgCMatrix
 SEXP matrix2dgCMatrix(SEXP XX_);
 RcppExport SEXP gRbase_matrix2dgCMatrix(SEXP XX_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = matrix2dgCMatrix(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(matrix2dgCMatrix(XX_));
+    return __result;
 END_RCPP
 }
 // dgCMatrix2matrix
 SEXP dgCMatrix2matrix(SEXP XX_);
 RcppExport SEXP gRbase_dgCMatrix2matrix(SEXP XX_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = dgCMatrix2matrix(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// mcsMAT_
-SEXP mcsMAT_(SEXP XX_, SEXP OO_);
-RcppExport SEXP gRbase_mcsMAT_(SEXP XX_SEXP, SEXP OO_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        Rcpp::traits::input_parameter< SEXP >::type OO_(OO_SEXP );
-        SEXP __result = mcsMAT_(XX_, OO_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// moralizeMAT
-SEXP moralizeMAT(SEXP XX_);
-RcppExport SEXP gRbase_moralizeMAT(SEXP XX_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = moralizeMAT(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// propagateLS_cpp
-List propagateLS_cpp(List pp_, List rip);
-RcppExport SEXP gRbase_propagateLS_cpp(SEXP pp_SEXP, SEXP ripSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< List >::type pp_(pp_SEXP );
-        Rcpp::traits::input_parameter< List >::type rip(ripSEXP );
-        List __result = propagateLS_cpp(pp_, rip);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// rowmat2list
-SEXP rowmat2list(SEXP XX_);
-RcppExport SEXP gRbase_rowmat2list(SEXP XX_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = rowmat2list(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// colmat2list
-SEXP colmat2list(SEXP XX_);
-RcppExport SEXP gRbase_colmat2list(SEXP XX_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = colmat2list(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(dgCMatrix2matrix(XX_));
+    return __result;
 END_RCPP
 }
 // which_matrix_index
 SEXP which_matrix_index(SEXP XX_);
 RcppExport SEXP gRbase_which_matrix_index(SEXP XX_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = which_matrix_index(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(which_matrix_index(XX_));
+    return __result;
 END_RCPP
 }
-// solveSPD
-SEXP solveSPD(SEXP X_);
-RcppExport SEXP gRbase_solveSPD(SEXP X_SEXP) {
+// rowmat2list
+SEXP rowmat2list(SEXP XX_);
+RcppExport SEXP gRbase_rowmat2list(SEXP XX_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type X_(X_SEXP );
-        SEXP __result = solveSPD(X_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(rowmat2list(XX_));
+    return __result;
 END_RCPP
 }
-// sp_setXtf1
-SEXP sp_setXtf1(SEXP XX_, SEXP TF_);
-RcppExport SEXP gRbase_sp_setXtf1(SEXP XX_SEXP, SEXP TF_SEXP) {
+// colmat2list
+SEXP colmat2list(SEXP XX_);
+RcppExport SEXP gRbase_colmat2list(SEXP XX_SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        Rcpp::traits::input_parameter< SEXP >::type TF_(TF_SEXP );
-        SEXP __result = sp_setXtf1(XX_, TF_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// topoSortMAT_
-SEXP topoSortMAT_(SEXP XX_);
-RcppExport SEXP gRbase_topoSortMAT_(SEXP XX_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        SEXP __result = topoSortMAT_(XX_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// triangulateMAT_
-SEXP triangulateMAT_(SEXP XX_, SEXP OO_);
-RcppExport SEXP gRbase_triangulateMAT_(SEXP XX_SEXP, SEXP OO_SEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP );
-        Rcpp::traits::input_parameter< SEXP >::type OO_(OO_SEXP );
-        SEXP __result = triangulateMAT_(XX_, OO_);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    __result = Rcpp::wrap(colmat2list(XX_));
+    return __result;
 END_RCPP
 }
 // dagList2dgCMatrix
 SEXP dagList2dgCMatrix(List LL, CharacterVector vn);
 static SEXP gRbase_dagList2dgCMatrix_try(SEXP LLSEXP, SEXP vnSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP );
-        SEXP __result = dagList2dgCMatrix(LL, vn);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP);
+    __result = Rcpp::wrap(dagList2dgCMatrix(LL, vn));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_dagList2dgCMatrix(SEXP LLSEXP, SEXP vnSEXP) {
@@ -756,15 +430,11 @@ RcppExport SEXP gRbase_dagList2dgCMatrix(SEXP LLSEXP, SEXP vnSEXP) {
 SEXP ugList2dgCMatrix(List LL, CharacterVector vn);
 static SEXP gRbase_ugList2dgCMatrix_try(SEXP LLSEXP, SEXP vnSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP );
-        SEXP __result = ugList2dgCMatrix(LL, vn);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP);
+    __result = Rcpp::wrap(ugList2dgCMatrix(LL, vn));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_ugList2dgCMatrix(SEXP LLSEXP, SEXP vnSEXP) {
@@ -791,15 +461,11 @@ RcppExport SEXP gRbase_ugList2dgCMatrix(SEXP LLSEXP, SEXP vnSEXP) {
 SEXP dagList2matrix(List LL, CharacterVector vn);
 static SEXP gRbase_dagList2matrix_try(SEXP LLSEXP, SEXP vnSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP );
-        SEXP __result = dagList2matrix(LL, vn);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP);
+    __result = Rcpp::wrap(dagList2matrix(LL, vn));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_dagList2matrix(SEXP LLSEXP, SEXP vnSEXP) {
@@ -826,15 +492,11 @@ RcppExport SEXP gRbase_dagList2matrix(SEXP LLSEXP, SEXP vnSEXP) {
 SEXP ugList2matrix(List LL, CharacterVector vn);
 static SEXP gRbase_ugList2matrix_try(SEXP LLSEXP, SEXP vnSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP );
-        SEXP __result = ugList2matrix(LL, vn);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type vn(vnSEXP);
+    __result = Rcpp::wrap(ugList2matrix(LL, vn));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_ugList2matrix(SEXP LLSEXP, SEXP vnSEXP) {
@@ -861,14 +523,10 @@ RcppExport SEXP gRbase_ugList2matrix(SEXP LLSEXP, SEXP vnSEXP) {
 List adjList2tfList(List LL);
 static SEXP gRbase_adjList2tfList_try(SEXP LLSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        List __result = adjList2tfList(LL);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    __result = Rcpp::wrap(adjList2tfList(LL));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_adjList2tfList(SEXP LLSEXP) {
@@ -895,14 +553,10 @@ RcppExport SEXP gRbase_adjList2tfList(SEXP LLSEXP) {
 List adjList2ftList(List LL);
 static SEXP gRbase_adjList2ftList_try(SEXP LLSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        List __result = adjList2ftList(LL);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    __result = Rcpp::wrap(adjList2ftList(LL));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_adjList2ftList(SEXP LLSEXP) {
@@ -929,14 +583,10 @@ RcppExport SEXP gRbase_adjList2ftList(SEXP LLSEXP) {
 CharacterMatrix adjList2ftM(List LL);
 static SEXP gRbase_adjList2ftM_try(SEXP LLSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        CharacterMatrix __result = adjList2ftM(LL);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    __result = Rcpp::wrap(adjList2ftM(LL));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_adjList2ftM(SEXP LLSEXP) {
@@ -963,14 +613,10 @@ RcppExport SEXP gRbase_adjList2ftM(SEXP LLSEXP) {
 CharacterMatrix adjList2tfM(List LL);
 static SEXP gRbase_adjList2tfM_try(SEXP LLSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        CharacterMatrix __result = adjList2tfM(LL);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    __result = Rcpp::wrap(adjList2tfM(LL));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_adjList2tfM(SEXP LLSEXP) {
@@ -997,14 +643,10 @@ RcppExport SEXP gRbase_adjList2tfM(SEXP LLSEXP) {
 SEXP adjList2matrix(List LL);
 static SEXP gRbase_adjList2matrix_try(SEXP LLSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        SEXP __result = adjList2matrix(LL);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    __result = Rcpp::wrap(adjList2matrix(LL));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_adjList2matrix(SEXP LLSEXP) {
@@ -1031,14 +673,10 @@ RcppExport SEXP gRbase_adjList2matrix(SEXP LLSEXP) {
 SEXP adjList2dgCMatrix(List LL);
 static SEXP gRbase_adjList2dgCMatrix_try(SEXP LLSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::traits::input_parameter< List >::type LL(LLSEXP );
-        SEXP __result = adjList2dgCMatrix(LL);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< List >::type LL(LLSEXP);
+    __result = Rcpp::wrap(adjList2dgCMatrix(LL));
+    return __result;
 END_RCPP_RETURN_ERROR
 }
 RcppExport SEXP gRbase_adjList2dgCMatrix(SEXP LLSEXP) {
@@ -1061,13 +699,877 @@ RcppExport SEXP gRbase_adjList2dgCMatrix(SEXP LLSEXP) {
     UNPROTECT(1);
     return __result;
 }
+// cell2entry_cpp
+int cell2entry_cpp(NumericVector cell, IntegerVector dim);
+static SEXP gRbase_cell2entry_cpp_try(SEXP cellSEXP, SEXP dimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type dim(dimSEXP);
+    __result = Rcpp::wrap(cell2entry_cpp(cell, dim));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_cell2entry_cpp(SEXP cellSEXP, SEXP dimSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_cell2entry_cpp_try(cellSEXP, dimSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// cell2entry2_cpp
+int cell2entry2_cpp(NumericVector cell, IntegerVector plevels);
+static SEXP gRbase_cell2entry2_cpp_try(SEXP cellSEXP, SEXP plevelsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type plevels(plevelsSEXP);
+    __result = Rcpp::wrap(cell2entry2_cpp(cell, plevels));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_cell2entry2_cpp(SEXP cellSEXP, SEXP plevelsSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_cell2entry2_cpp_try(cellSEXP, plevelsSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// nextCell_cpp
+NumericVector nextCell_cpp(NumericVector cell, IntegerVector dim);
+static SEXP gRbase_nextCell_cpp_try(SEXP cellSEXP, SEXP dimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type dim(dimSEXP);
+    __result = Rcpp::wrap(nextCell_cpp(cell, dim));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_nextCell_cpp(SEXP cellSEXP, SEXP dimSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_nextCell_cpp_try(cellSEXP, dimSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// nextCellSlicePrim_cpp
+NumericVector nextCellSlicePrim_cpp(NumericVector cell, IntegerVector dim, IntegerVector sliceIndic);
+static SEXP gRbase_nextCellSlicePrim_cpp_try(SEXP cellSEXP, SEXP dimSEXP, SEXP sliceIndicSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sliceIndic(sliceIndicSEXP);
+    __result = Rcpp::wrap(nextCellSlicePrim_cpp(cell, dim, sliceIndic));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_nextCellSlicePrim_cpp(SEXP cellSEXP, SEXP dimSEXP, SEXP sliceIndicSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_nextCellSlicePrim_cpp_try(cellSEXP, dimSEXP, sliceIndicSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// nextCellSlice_cpp
+NumericVector nextCellSlice_cpp(NumericVector cell, IntegerVector dim, IntegerVector sliceSet);
+static SEXP gRbase_nextCellSlice_cpp_try(SEXP cellSEXP, SEXP dimSEXP, SEXP sliceSetSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sliceSet(sliceSetSEXP);
+    __result = Rcpp::wrap(nextCellSlice_cpp(cell, dim, sliceSet));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_nextCellSlice_cpp(SEXP cellSEXP, SEXP dimSEXP, SEXP sliceSetSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_nextCellSlice_cpp_try(cellSEXP, dimSEXP, sliceSetSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// slice2entry_cpp
+IntegerVector slice2entry_cpp(IntegerVector sliceCell, IntegerVector sliceSet, IntegerVector dim);
+static SEXP gRbase_slice2entry_cpp_try(SEXP sliceCellSEXP, SEXP sliceSetSEXP, SEXP dimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< IntegerVector >::type sliceCell(sliceCellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sliceSet(sliceSetSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type dim(dimSEXP);
+    __result = Rcpp::wrap(slice2entry_cpp(sliceCell, sliceSet, dim));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_slice2entry_cpp(SEXP sliceCellSEXP, SEXP sliceSetSEXP, SEXP dimSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_slice2entry_cpp_try(sliceCellSEXP, sliceSetSEXP, dimSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// getCellNumberPrim_cpp
+int getCellNumberPrim_cpp(NumericVector cell, IntegerVector perm, IntegerVector pvec);
+static SEXP gRbase_getCellNumberPrim_cpp_try(SEXP cellSEXP, SEXP permSEXP, SEXP pvecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type perm(permSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type pvec(pvecSEXP);
+    __result = Rcpp::wrap(getCellNumberPrim_cpp(cell, perm, pvec));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_getCellNumberPrim_cpp(SEXP cellSEXP, SEXP permSEXP, SEXP pvecSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_getCellNumberPrim_cpp_try(cellSEXP, permSEXP, pvecSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// getCellNumber_cpp
+int getCellNumber_cpp(NumericVector cell, IntegerVector dim, IntegerVector perm);
+static SEXP gRbase_getCellNumber_cpp_try(SEXP cellSEXP, SEXP dimSEXP, SEXP permSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type cell(cellSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type perm(permSEXP);
+    __result = Rcpp::wrap(getCellNumber_cpp(cell, dim, perm));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_getCellNumber_cpp(SEXP cellSEXP, SEXP dimSEXP, SEXP permSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_getCellNumber_cpp_try(cellSEXP, dimSEXP, permSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// permuteCellEntries_cpp
+IntegerVector permuteCellEntries_cpp(IntegerVector perm, IntegerVector dim);
+static SEXP gRbase_permuteCellEntries_cpp_try(SEXP permSEXP, SEXP dimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< IntegerVector >::type perm(permSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type dim(dimSEXP);
+    __result = Rcpp::wrap(permuteCellEntries_cpp(perm, dim));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_permuteCellEntries_cpp(SEXP permSEXP, SEXP dimSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_permuteCellEntries_cpp_try(permSEXP, dimSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// testOperations
+NumericVector testOperations(NumericVector t1, NumericVector t2);
+RcppExport SEXP gRbase_testOperations(SEXP t1SEXP, SEXP t2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type t1(t1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type t2(t2SEXP);
+    __result = Rcpp::wrap(testOperations(t1, t2));
+    return __result;
+END_RCPP
+}
+// aperm__
+SEXP aperm__(const SEXP& tab, const SEXP& perm);
+static SEXP gRbase_aperm___try(SEXP tabSEXP, SEXP permSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const SEXP& >::type tab(tabSEXP);
+    Rcpp::traits::input_parameter< const SEXP& >::type perm(permSEXP);
+    __result = Rcpp::wrap(aperm__(tab, perm));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_aperm__(SEXP tabSEXP, SEXP permSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_aperm___try(tabSEXP, permSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabExpand__
+NumericVector tabExpand__(const NumericVector& tab1, const NumericVector& tab2);
+static SEXP gRbase_tabExpand___try(SEXP tab1SEXP, SEXP tab2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const NumericVector& >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type tab2(tab2SEXP);
+    __result = Rcpp::wrap(tabExpand__(tab1, tab2));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabExpand__(SEXP tab1SEXP, SEXP tab2SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabExpand___try(tab1SEXP, tab2SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabAlign__
+NumericVector tabAlign__(const NumericVector& tab1, const NumericVector& tab2);
+static SEXP gRbase_tabAlign___try(SEXP tab1SEXP, SEXP tab2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const NumericVector& >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type tab2(tab2SEXP);
+    __result = Rcpp::wrap(tabAlign__(tab1, tab2));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabAlign__(SEXP tab1SEXP, SEXP tab2SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabAlign___try(tab1SEXP, tab2SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabMarg__
+SEXP tabMarg__(const SEXP& tab1, const SEXP& marg);
+static SEXP gRbase_tabMarg___try(SEXP tab1SEXP, SEXP margSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const SEXP& >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< const SEXP& >::type marg(margSEXP);
+    __result = Rcpp::wrap(tabMarg__(tab1, marg));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabMarg__(SEXP tab1SEXP, SEXP margSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabMarg___try(tab1SEXP, margSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabMult__
+NumericVector tabMult__(NumericVector tab1, NumericVector tab2);
+static SEXP gRbase_tabMult___try(SEXP tab1SEXP, SEXP tab2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tab2(tab2SEXP);
+    __result = Rcpp::wrap(tabMult__(tab1, tab2));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabMult__(SEXP tab1SEXP, SEXP tab2SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabMult___try(tab1SEXP, tab2SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabDiv__
+NumericVector tabDiv__(NumericVector tab1, NumericVector tab2);
+static SEXP gRbase_tabDiv___try(SEXP tab1SEXP, SEXP tab2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tab2(tab2SEXP);
+    __result = Rcpp::wrap(tabDiv__(tab1, tab2));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabDiv__(SEXP tab1SEXP, SEXP tab2SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabDiv___try(tab1SEXP, tab2SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabDiv0__
+NumericVector tabDiv0__(NumericVector tab1, NumericVector tab2);
+static SEXP gRbase_tabDiv0___try(SEXP tab1SEXP, SEXP tab2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tab2(tab2SEXP);
+    __result = Rcpp::wrap(tabDiv0__(tab1, tab2));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabDiv0__(SEXP tab1SEXP, SEXP tab2SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabDiv0___try(tab1SEXP, tab2SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabAdd__
+NumericVector tabAdd__(NumericVector tab1, NumericVector tab2);
+static SEXP gRbase_tabAdd___try(SEXP tab1SEXP, SEXP tab2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tab2(tab2SEXP);
+    __result = Rcpp::wrap(tabAdd__(tab1, tab2));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabAdd__(SEXP tab1SEXP, SEXP tab2SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabAdd___try(tab1SEXP, tab2SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabSubt__
+NumericVector tabSubt__(NumericVector tab1, NumericVector tab2);
+static SEXP gRbase_tabSubt___try(SEXP tab1SEXP, SEXP tab2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tab2(tab2SEXP);
+    __result = Rcpp::wrap(tabSubt__(tab1, tab2));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabSubt__(SEXP tab1SEXP, SEXP tab2SEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabSubt___try(tab1SEXP, tab2SEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabOp__
+NumericVector tabOp__(const NumericVector& tab1, const NumericVector& tab2, const char op);
+static SEXP gRbase_tabOp___try(SEXP tab1SEXP, SEXP tab2SEXP, SEXP opSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const NumericVector& >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type tab2(tab2SEXP);
+    Rcpp::traits::input_parameter< const char >::type op(opSEXP);
+    __result = Rcpp::wrap(tabOp__(tab1, tab2, op));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabOp__(SEXP tab1SEXP, SEXP tab2SEXP, SEXP opSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabOp___try(tab1SEXP, tab2SEXP, opSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabEqual__
+bool tabEqual__(NumericVector tab1, NumericVector tab2, double eps);
+static SEXP gRbase_tabEqual___try(SEXP tab1SEXP, SEXP tab2SEXP, SEXP epsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type tab1(tab1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tab2(tab2SEXP);
+    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
+    __result = Rcpp::wrap(tabEqual__(tab1, tab2, eps));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabEqual__(SEXP tab1SEXP, SEXP tab2SEXP, SEXP epsSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabEqual___try(tab1SEXP, tab2SEXP, epsSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabListMult__
+NumericVector tabListMult__(const List& lst);
+static SEXP gRbase_tabListMult___try(SEXP lstSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const List& >::type lst(lstSEXP);
+    __result = Rcpp::wrap(tabListMult__(lst));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabListMult__(SEXP lstSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabListMult___try(lstSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// tabListAdd__
+NumericVector tabListAdd__(const List& lst);
+static SEXP gRbase_tabListAdd___try(SEXP lstSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const List& >::type lst(lstSEXP);
+    __result = Rcpp::wrap(tabListAdd__(lst));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_tabListAdd__(SEXP lstSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_tabListAdd___try(lstSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// is_subsetof_
+bool is_subsetof_(CharacterVector x, CharacterVector set);
+static SEXP gRbase_is_subsetof__try(SEXP xSEXP, SEXP setSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type set(setSEXP);
+    __result = Rcpp::wrap(is_subsetof_(x, set));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_is_subsetof_(SEXP xSEXP, SEXP setSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_is_subsetof__try(xSEXP, setSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// get_superset_
+IntegerVector get_superset_(CharacterVector x, List setlist, bool all);
+static SEXP gRbase_get_superset__try(SEXP xSEXP, SEXP setlistSEXP, SEXP allSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< List >::type setlist(setlistSEXP);
+    Rcpp::traits::input_parameter< bool >::type all(allSEXP);
+    __result = Rcpp::wrap(get_superset_(x, setlist, all));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_get_superset_(SEXP xSEXP, SEXP setlistSEXP, SEXP allSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_get_superset__try(xSEXP, setlistSEXP, allSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// allSubsets0__
+List allSubsets0__(const IntegerVector& x);
+static SEXP gRbase_allSubsets0___try(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x(xSEXP);
+    __result = Rcpp::wrap(allSubsets0__(x));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_allSubsets0__(SEXP xSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_allSubsets0___try(xSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// allSubsets__
+SEXP allSubsets__(SEXP& x);
+static SEXP gRbase_allSubsets___try(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< SEXP& >::type x(xSEXP);
+    __result = Rcpp::wrap(allSubsets__(x));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_allSubsets__(SEXP xSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_allSubsets___try(xSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// names2pairsM
+SEXP names2pairsM(CharacterVector x, CharacterVector y, bool sort, std::string result);
+RcppExport SEXP gRbase_names2pairsM(SEXP xSEXP, SEXP ySEXP, SEXP sortSEXP, SEXP resultSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< bool >::type sort(sortSEXP);
+    Rcpp::traits::input_parameter< std::string >::type result(resultSEXP);
+    __result = Rcpp::wrap(names2pairsM(x, y, sort, result));
+    return __result;
+END_RCPP
+}
+// solveSPD
+SEXP solveSPD(arma::mat X);
+RcppExport SEXP gRbase_solveSPD(SEXP XSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    __result = Rcpp::wrap(solveSPD(X));
+    return __result;
+END_RCPP
+}
+// sp_setXtf1
+SEXP sp_setXtf1(SEXP XX_, SEXP TF_);
+RcppExport SEXP gRbase_sp_setXtf1(SEXP XX_SEXP, SEXP TF_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type TF_(TF_SEXP);
+    __result = Rcpp::wrap(sp_setXtf1(XX_, TF_));
+    return __result;
+END_RCPP
+}
 
 // validate (ensure exported C++ functions exist before calling them)
 static int gRbase_RcppExport_validate(const char* sig) { 
     static std::set<std::string> signatures;
     if (signatures.empty()) {
-        signatures.insert("List(*allSubsets0)(IntegerVector)");
-        signatures.insert("SEXP(*allSubsets)(SEXP&)");
+        signatures.insert("IntegerVector(*do_mcs_sparse)(const MSpMat&,const IntegerVector&)");
+        signatures.insert("SEXP(*do_mcs_dense)(const NumericMatrix&,const IntegerVector&)");
+        signatures.insert("SEXP(*mcsMAT0_)(SEXP,SEXP)");
+        signatures.insert("List(*rip_internal)(IntegerVector,CharacterVector,List)");
+        signatures.insert("SEXP(*do_getcq_sparse)(SEXP,const IntegerVector&)");
+        signatures.insert("SEXP(*do_getcq_dense)(NumericMatrix,const IntegerVector&)");
+        signatures.insert("SEXP(*getCliquesDec_)(SEXP,SEXP)");
         signatures.insert("SEXP(*dagList2dgCMatrix)(List,CharacterVector)");
         signatures.insert("SEXP(*ugList2dgCMatrix)(List,CharacterVector)");
         signatures.insert("SEXP(*dagList2matrix)(List,CharacterVector)");
@@ -1078,14 +1580,45 @@ static int gRbase_RcppExport_validate(const char* sig) {
         signatures.insert("CharacterMatrix(*adjList2tfM)(List)");
         signatures.insert("SEXP(*adjList2matrix)(List)");
         signatures.insert("SEXP(*adjList2dgCMatrix)(List)");
+        signatures.insert("int(*cell2entry_cpp)(NumericVector,IntegerVector)");
+        signatures.insert("int(*cell2entry2_cpp)(NumericVector,IntegerVector)");
+        signatures.insert("NumericVector(*nextCell_cpp)(NumericVector,IntegerVector)");
+        signatures.insert("NumericVector(*nextCellSlicePrim_cpp)(NumericVector,IntegerVector,IntegerVector)");
+        signatures.insert("NumericVector(*nextCellSlice_cpp)(NumericVector,IntegerVector,IntegerVector)");
+        signatures.insert("IntegerVector(*slice2entry_cpp)(IntegerVector,IntegerVector,IntegerVector)");
+        signatures.insert("int(*getCellNumberPrim_cpp)(NumericVector,IntegerVector,IntegerVector)");
+        signatures.insert("int(*getCellNumber_cpp)(NumericVector,IntegerVector,IntegerVector)");
+        signatures.insert("IntegerVector(*permuteCellEntries_cpp)(IntegerVector,IntegerVector)");
+        signatures.insert("SEXP(*aperm__)(const SEXP&,const SEXP&)");
+        signatures.insert("NumericVector(*tabExpand__)(const NumericVector&,const NumericVector&)");
+        signatures.insert("NumericVector(*tabAlign__)(const NumericVector&,const NumericVector&)");
+        signatures.insert("SEXP(*tabMarg__)(const SEXP&,const SEXP&)");
+        signatures.insert("NumericVector(*tabMult__)(NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*tabDiv__)(NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*tabDiv0__)(NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*tabAdd__)(NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*tabSubt__)(NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*tabOp__)(const NumericVector&,const NumericVector&,const char)");
+        signatures.insert("bool(*tabEqual__)(NumericVector,NumericVector,double)");
+        signatures.insert("NumericVector(*tabListMult__)(const List&)");
+        signatures.insert("NumericVector(*tabListAdd__)(const List&)");
+        signatures.insert("bool(*is_subsetof_)(CharacterVector,CharacterVector)");
+        signatures.insert("IntegerVector(*get_superset_)(CharacterVector,List,bool)");
+        signatures.insert("List(*allSubsets0__)(const IntegerVector&)");
+        signatures.insert("SEXP(*allSubsets__)(SEXP&)");
     }
     return signatures.find(sig) != signatures.end();
 }
 
 // registerCCallable (register entry points for exported C++ functions)
 RcppExport SEXP gRbase_RcppExport_registerCCallable() { 
-    R_RegisterCCallable("gRbase", "gRbase_allSubsets0", (DL_FUNC)gRbase_allSubsets0_cpp_try);
-    R_RegisterCCallable("gRbase", "gRbase_allSubsets", (DL_FUNC)gRbase_allSubsets_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_do_mcs_sparse", (DL_FUNC)gRbase_do_mcs_sparse_try);
+    R_RegisterCCallable("gRbase", "gRbase_do_mcs_dense", (DL_FUNC)gRbase_do_mcs_dense_try);
+    R_RegisterCCallable("gRbase", "gRbase_mcsMAT0_", (DL_FUNC)gRbase_mcsMAT0__try);
+    R_RegisterCCallable("gRbase", "gRbase_rip_internal", (DL_FUNC)gRbase_rip_internal_try);
+    R_RegisterCCallable("gRbase", "gRbase_do_getcq_sparse", (DL_FUNC)gRbase_do_getcq_sparse_try);
+    R_RegisterCCallable("gRbase", "gRbase_do_getcq_dense", (DL_FUNC)gRbase_do_getcq_dense_try);
+    R_RegisterCCallable("gRbase", "gRbase_getCliquesDec_", (DL_FUNC)gRbase_getCliquesDec__try);
     R_RegisterCCallable("gRbase", "gRbase_dagList2dgCMatrix", (DL_FUNC)gRbase_dagList2dgCMatrix_try);
     R_RegisterCCallable("gRbase", "gRbase_ugList2dgCMatrix", (DL_FUNC)gRbase_ugList2dgCMatrix_try);
     R_RegisterCCallable("gRbase", "gRbase_dagList2matrix", (DL_FUNC)gRbase_dagList2matrix_try);
@@ -1096,6 +1629,32 @@ RcppExport SEXP gRbase_RcppExport_registerCCallable() {
     R_RegisterCCallable("gRbase", "gRbase_adjList2tfM", (DL_FUNC)gRbase_adjList2tfM_try);
     R_RegisterCCallable("gRbase", "gRbase_adjList2matrix", (DL_FUNC)gRbase_adjList2matrix_try);
     R_RegisterCCallable("gRbase", "gRbase_adjList2dgCMatrix", (DL_FUNC)gRbase_adjList2dgCMatrix_try);
+    R_RegisterCCallable("gRbase", "gRbase_cell2entry_cpp", (DL_FUNC)gRbase_cell2entry_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_cell2entry2_cpp", (DL_FUNC)gRbase_cell2entry2_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_nextCell_cpp", (DL_FUNC)gRbase_nextCell_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_nextCellSlicePrim_cpp", (DL_FUNC)gRbase_nextCellSlicePrim_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_nextCellSlice_cpp", (DL_FUNC)gRbase_nextCellSlice_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_slice2entry_cpp", (DL_FUNC)gRbase_slice2entry_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_getCellNumberPrim_cpp", (DL_FUNC)gRbase_getCellNumberPrim_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_getCellNumber_cpp", (DL_FUNC)gRbase_getCellNumber_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_permuteCellEntries_cpp", (DL_FUNC)gRbase_permuteCellEntries_cpp_try);
+    R_RegisterCCallable("gRbase", "gRbase_aperm__", (DL_FUNC)gRbase_aperm___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabExpand__", (DL_FUNC)gRbase_tabExpand___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabAlign__", (DL_FUNC)gRbase_tabAlign___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabMarg__", (DL_FUNC)gRbase_tabMarg___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabMult__", (DL_FUNC)gRbase_tabMult___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabDiv__", (DL_FUNC)gRbase_tabDiv___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabDiv0__", (DL_FUNC)gRbase_tabDiv0___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabAdd__", (DL_FUNC)gRbase_tabAdd___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabSubt__", (DL_FUNC)gRbase_tabSubt___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabOp__", (DL_FUNC)gRbase_tabOp___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabEqual__", (DL_FUNC)gRbase_tabEqual___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabListMult__", (DL_FUNC)gRbase_tabListMult___try);
+    R_RegisterCCallable("gRbase", "gRbase_tabListAdd__", (DL_FUNC)gRbase_tabListAdd___try);
+    R_RegisterCCallable("gRbase", "gRbase_is_subsetof_", (DL_FUNC)gRbase_is_subsetof__try);
+    R_RegisterCCallable("gRbase", "gRbase_get_superset_", (DL_FUNC)gRbase_get_superset__try);
+    R_RegisterCCallable("gRbase", "gRbase_allSubsets0__", (DL_FUNC)gRbase_allSubsets0___try);
+    R_RegisterCCallable("gRbase", "gRbase_allSubsets__", (DL_FUNC)gRbase_allSubsets___try);
     R_RegisterCCallable("gRbase", "gRbase_RcppExport_validate", (DL_FUNC)gRbase_RcppExport_validate);
     return R_NilValue;
 }

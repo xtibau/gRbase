@@ -1,29 +1,27 @@
-tablePerm <- function(a, perm, resize=TRUE, keep.class=FALSE){
+tablePerm <- function(x, perm, resize=TRUE, keep.class=FALSE){
   # Like aperm() but perm can be dimnames
-  if (missing(perm)){
+  if (missing( perm )){
     perm <- integer(0)
-    #return(.Internal(aperm(a, perm, resize)))
-    return(aperm.default(a, perm, resize))
+    return(aperm.default( x, perm, resize ))
   }
 
-  if (is.character(perm)){
-    perm <- match(perm,names(dimnames(a)))
-    if (any(is.na(perm)))
+  if (is.character( perm )){
+    perm <- match(perm, names(dimnames( x )))
+    if ( any( is.na( perm )))
       stop("Invalid permutation...")
   }
-  #ans <- .Internal(aperm(a, perm, resize))
-  ans <- aperm.default(a, perm, resize)
+  ans <- aperm.default( x, perm, resize )
   if (keep.class){
-      class(ans) <- oldClass(a)
+      class( ans ) <- oldClass( x )
   }
   ans
 }
 
-tableMult <- function(t1,t2){
+tableMult <- function(t1, t2){
   tableOp(t1,t2, op="*")
 }
 
-tableDiv <- function(t1,t2){
+tableDiv <- function(t1, t2){
   tableOp(t1,t2, op="/")
 }
 
@@ -39,7 +37,7 @@ tableOp <- function(t1, t2, op="*"){
   vn1 <- names(dn1)
   vn2 <- names(dn2)
 
-  idx <- match(vn2, vn1)   ## location of variables in vn2 in vn1:
+  idx <- match(vn2, vn1)    ## location of variables in vn2 in vn1:
   idx.na <- is.na(idx)      ## logical of variables in {vn2\vn1}
 
   if (any(idx.na)){         ## If there are variables in {vn2 \ vn1}
@@ -65,7 +63,7 @@ tableOp <- function(t1, t2, op="*"){
   vn2.idx    <- match(vn2, vn.new)
   ## Create perumation indices; first variables in vn2; then vn1\vn2
   perm  <-  c(vn2.idx, (1:length(vn.new))[-vn2.idx])
-  
+
   if (op == "*") {
     pot1 <- as.numeric(aperm.default(pot1, perm, TRUE)) * as.numeric(t2)
   }
@@ -86,15 +84,11 @@ tableOp <- function(t1, t2, op="*"){
   if (!is.array(t1)) {stop("'t1' is not an array")}
   if (!is.array(t2)) {stop("'t2' is not an array")}
 
-#  op <- match.arg(op, c("*","/","+","-"))
- # if (any(match(op, c("*","/","+","-"))>0)){
-    op <- switch(op,
-                 "*"={`*`},
-                 "/"={`/`},
-                 "+"={`+`},
-                 "-"={`-`})
-  #}
-
+  op <- switch(op,
+               "*"={`*`},
+               "/"={`/`},
+               "+"={`+`},
+               "-"={`-`})
 
   di1 <- dim(t1)
   di2 <- dim(t2)
@@ -154,7 +148,7 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
 
   ## indices of vn2 in vn1:
   vn2.idx   <- match(vn2, vn1)
-  ## Create perumation indices; first variables in vn2; then vn1\vn2  
+  ## Create perumation indices; first variables in vn2; then vn1\vn2
   perm <- c(vn2.idx, (1:length(vn1))[-vn2.idx])
 
   pot1 <-
@@ -171,116 +165,212 @@ tableOp2 <- .tableOp2 <- function (t1, t2, op = `*`, restore = FALSE)
   pot1
 }
 
+
 tableSlice <-  function (x, margin, level, impose)
 {
     if (is.null(margin))
         return(x)
-
     if (is.null(dimnames(x)))
-        stop("tableSlice requires a structure with a dimnames attribute (e.g. array or a table) ")
+        stop("'tableSlice' requires a structure with a dimnames attribute")
 
     dn    <- dimnames(x)
     vn    <- names(dn)
 
     if (is.character(margin)){
-        margin2 <- match(margin, vn)
-        if (any(is.na(margin2)))
-            stop("Variables: ", margin[is.na(margin2)], " do not exist in table...")
+        mar.idx <- match(margin, vn)
+        if (any((z<-is.na(mar.idx))))
+            stop("Variable(s): ", margin[z], " do not exist in table...")
     } else {
-        margin2 <- margin
+        mar.idx <- margin
     }
 
     if (is.character(level)){
-        level2  <- rep(NA, length(level))
+        lev.idx  <- rep(NA, length(level))
         for (kk in seq_along(margin)){
-            level2[kk] <- match(level[kk],dn[[margin2[kk]]])
+            lev.idx[kk] <- match(level[kk], dn[[mar.idx[kk]]])
         }
-        if (any(is.na(level2)))
-            stop("Level: ", level[is.na(level2)], " do not exist in table...")
+        if (any((z<-is.na(lev.idx))))
+            stop("Level: ", level[z], " do not exist in table...")
     } else {
-        level2 <- level
+        lev.idx <- level
     }
+
+    idx          <- vector("list", length(dim(x)))
+    idx[]        <- TRUE
+    idx[mar.idx] <- lev.idx
+    ans <-do.call("[", c(list(x), idx))
 
     if (!missing(impose) && is.numeric(impose)){
-        di     <- dim(x)
-        ld     <- length(di)
-        zz     <- rep(TRUE,length(x))
-        aprod  <- c(1,cumprod(di))
-
-        for(ii in 1:length(margin))
-        {
-            si   <- margin2[ii];
-            idx2 <- rep(1:di[si], each=aprod[si], times=length(x)/(di[si]*aprod[si]))
-            zz   <- zz & level2[ii] == idx2
-        }
-
-        dr<-di[(1:ld)[-margin2]]
-
-        x[!zz] <- impose
-        ans <- x
-    } else {
-        idx          <- vector("list", length(dim(x)))
-        idx[]        <- TRUE
-        idx[margin2] <- level2
-        ans <-do.call("[", c(list(x), idx))
+        ans[] <- impose
     }
-
-    ans <- array(ans, dim=sapply(dn[-margin2], length), dimnames=dn[-margin2])
+    ans <- array(ans, dim=sapply(dn[-mar.idx], length), dimnames=dn[-mar.idx])
     class(ans) <- c("parray","array")
     ans
 }
 
+
 ## tableSlicePrim: Works only with margin and level being indices
-tableSlicePrim <- function(x, margin, level){
+tableSlicePrim <- function(x, mar.idx, lev.idx){
   idx         <- vector("list", length(dim(x)))
   idx[]       <-TRUE
-  idx[margin] <- level
-  do.call("[", c(list(x), idx), parent.frame())
+  idx[mar.idx] <- lev.idx
+  do.call("[", c(list(x), idx))
 }
 
 tableMargin <- function (x, margin, keep.class = FALSE)
 {
 ##   cat("===== tableMargin =====\n")
-##   print(as.data.frame.table(x))
-##   print(margin)
+##   print(as.data.frame.table(x));   print(margin)
 
     if (!is.array(x))
         stop("'x' is not an array")
 
-    at <- attributes(x)
+    at <- attributes( x )
     di <- at[['dim']]
     dn <- at[['dimnames']]
+    vn <- names( dn )
 
-    vn <- names(dn)
-    oc <- oldClass(x)
     if (length(margin)) {
+        if( class(margin)=="formula" ){
+            margin <- unlist(rhsf2list( margin ), use.names=FALSE)
+        }
         if (is.character(margin)) {
-          marg.idx <- match(margin, vn)
-          if (any(is.na(marg.idx)))
-            stop("Variable not in table...\n")
+            margin <- unique( margin )
+            marg.idx <- match(margin, vn)
+            if (any(is.na(marg.idx)))
+                stop(sprintf("Variable(s): %s not in table ...\n",
+                        toString( margin[is.na(marg.idx)] )) )
         }
         else {
-          marg.idx <- margin
+            marg.idx <- margin
         }
         rest.idx <- (seq_along(vn))[-marg.idx]
-        nr <- prod(di[marg.idx])
-        nc <- prod(di[rest.idx])
-        
-        z <- rowSumsPrim(
-                         matrix(
-                                aperm.default(x, c(rest.idx, marg.idx), TRUE),
-                                nrow=nr, ncol=nc, byrow=TRUE))
-        attributes(z) <- list(dim=di[marg.idx], dimnames=dn[marg.idx])
+        nr <- prod( di[marg.idx] )
+        nc <- prod( di[rest.idx] )
 
+        z <- rowSumsPrim(
+            matrix(
+                aperm.default(x, c(rest.idx, marg.idx), TRUE),
+                nrow=nr, ncol=nc, byrow=TRUE))
+        attributes(z) <- list(dim=di[marg.idx], dimnames=dn[marg.idx])
     } else {
-      z <- sum(x)
-      #dim(z) <- 1
+        z <- sum(x)
     }
     if (keep.class)
-        class(z) <- oc
-
+        class(z) <- oldClass( x )
     return(z)
 }
+
+
+tableGetSliceIndex <- function(x, margin, level, complement=FALSE){
+    di <- dim(x)
+    dn <- dimnames(x)
+    vn <- names(dn)
+    nidx <- match(margin, vn)
+
+    if ( any((z<-is.na(nidx))) ){
+        stop(sprintf("margin %s not in table\n",
+                     toString(margin[z])))
+    }
+
+    sidx <- unlist(lapply(seq_along(nidx),
+                          function(i) {match(level[i], dn[[ nidx[i] ]])}),
+                   use.names = FALSE)
+
+    if (any((z<-is.na(sidx)))){
+        stop(sprintf("level %s not in table\n", toString(level[z])))
+    }
+
+    out <- slice2entry(sidx, nidx, di)
+    if (complement){
+        (1:prod(di))[-out]
+    } else {
+        out
+    }
+}
+
+tableSetSliceValue <- function(x, margin, level, complement=FALSE, value=0){
+    idx <- tableGetSliceIndex(x, margin=margin, level=level, complement=complement)
+    x[ idx ] <- value
+    x
+}
+
+
+
+##
+## Spring 2015
+##
+
+
+tabSlice2Entries <- function(x, slice, complement=FALSE){
+    tabSlice2Entries_(x, names(slice), unlist(slice, use.names=FALSE), complement)
+}
+
+tabSlice2Entries_<- function(x, margin, level, complement=FALSE){
+    di <- dim(x)
+    dn <- dimnames(x)
+    vn <- names(dn)
+
+    marg <- match(margin, vn)
+
+    lev <- unlist(lapply(seq_along(marg),
+                         function(i) {match(level[i], dn[[ marg[i] ]])}),
+                  use.names = FALSE)
+
+    if ( any((z<-is.na(marg))) ){
+        stop(sprintf("margin %s not in table\n", toString(margin[z])))
+    }
+
+    if (any((z<-is.na(lev)))){
+        stop(sprintf("level %s not in table\n", toString(level[z])))
+    }
+
+    .tabSlice2Entries_(marg, lev, di, complement)
+}
+
+.tabSlice2Entries_ <- function(margin, level, dim, complement=FALSE){
+    out <- slice2entry(level, margin, dim)
+    if (complement){
+        (1:prod(dim))[-out]
+    } else {
+        out
+    }
+}
+
+## Multiplies entries in slice by value1 and all other entries by value2; if
+## value1 or value2 are are NULL, then nothing happens
+tabSliceMult <- function(x, slice, val=1, comp=0){
+    if ( !is.null(val) ){
+        idx <- tabSlice2Entries(x, slice)
+        x[idx] <- x[idx] * val
+    }
+    if ( !is.null(comp) ){
+        idx <- tabSlice2Entries(x, slice, complement=TRUE)
+        x[idx] <- x[idx] * comp
+    }
+    x
+}
+
+
+tabCondProb <- function(tab, cond=NULL){
+    if (!is.array( tab ))
+        stop("tab must be an array")
+    if (is.null(cond)){
+        tab / sum( tab )
+    } else {
+        out <- tabDiv(tab, tabMarg(tab, cond))
+        tabPerm(out, names(dimnames(tab)))
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 

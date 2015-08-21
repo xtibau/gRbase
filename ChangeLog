@@ -1,4 +1,29 @@
-2014-03-17 Søren Højsgaard <sorenh@math.aau.dk>	
+2015-08-20 Søren Højsgaard <sorenh@math.aau.dk>
+
+	* is.adjMAT is now based on own c++ code; way faster.
+
+	* get_superset_ and is_subsetof_ added.
+
+	* names2pairsM added.
+
+	* graph conversion utilities reworked.
+
+	* check argument added to triangulate; controls if it is checked
+	that a graph is triangulated.
+
+	* New vignettes
+
+	* Version 1.7-1 uploaded.
+
+2014-06-26 Søren Højsgaard <sorenh@math.aau.dk>
+
+	* tableSetSliceValue and tableGetSliceIndex functions added.
+
+	* 'margin' in tableMargin can be a right-hand-sided formula.
+
+	* Version 1.7-0.1 uploaded.
+
+2014-03-17 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Added array functions (arrayPerm, arrayMargin, arrayOp
 	etc). These are implemented using Rcpp, they are not documented
@@ -7,42 +32,42 @@
 	* Many new implementations of graph/matrix operations with Rcpp.
 
 	* Major cleanups
-	
-	* Version 1.7-0 uploaded.					
 
-2013-07-17 Søren Højsgaard <sorenh@math.aau.dk>	
+	* Version 1.7-0 uploaded.
+
+2013-07-17 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Bug in rip() function fixed. Thanks to Vanessa Didelez for the
 	bug report.
 
-	* Version 1.6-12 uploaded.				
+	* Version 1.6-12 uploaded.
 
-2013-06-25 Søren Højsgaard <sorenh@math.aau.dk>	
+2013-06-25 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Changes in NAMESPACE file such that the entire RBGL package is
 	not loaded.
 
 	* Makefile added for building vignettes
-	
-	* Version 1.6-10 uploaded.				
 
-2013-05-28 Søren Højsgaard <sorenh@math.aau.dk>	
+	* Version 1.6-10 uploaded.
+
+2013-05-28 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* The use of fmatch has been replaced by the use of mathc.
-	
+
 	* ripMAT re-implemented; much faster.
 
-	* Version 1.6-9 uploaded.			
+	* Version 1.6-9 uploaded.
 
-2013-03-10 Søren Højsgaard <sorenh@math.aau.dk>	
+2013-03-10 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* simulateArray and glist2setMAT from gRain moved to gRbase
 
 	* minor cleanups
 
-	* Version 1.6-8 uploaded.		
+	* Version 1.6-8 uploaded.
 
-2013-01-29 Søren Højsgaard <sorenh@math.aau.dk>	
+2013-01-29 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* mcsMAT now implemented via Rcpp for sparse (dgCMatrix)
 	and dense matrices.
@@ -55,23 +80,23 @@
 	* getCliques implemented.
 
 	* Vignettes are improved.
-	
-	* Version 1.6-7 uploaded.	
-	
-2013-01-08 Søren Højsgaard <sorenh@math.aau.dk>	
+
+	* Version 1.6-7 uploaded.
+
+2013-01-08 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* triangulateMAT now implemented via Rcpp for sparse (dgCMatrix)
 	and dense matrices.
 
 	* asdgCMatrix function added. Fast coercion from dense to
-	dgCMatrix. 
+	dgCMatrix.
 
 	* ripMAT now also returns childList; the children of each node in
 	the junction tree.
 
-	* Version 1.6-6 uploaded	
-	
-2012-12-27 Søren Højsgaard <sorenh@math.aau.dk>	
+	* Version 1.6-6 uploaded
+
+2012-12-27 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* is.UG, is.DAG, is.TUG added
 
@@ -79,13 +104,13 @@
 	Matrix package).
 
 	* solveSPD for finding the inverse of symmetric positive definite
-	matrix added. 
+	matrix added.
 
 	* random_dag function added
 
-	* Version 1.6-5 uploaded	
+	* Version 1.6-5 uploaded
 
-2012-10-07 Søren Højsgaard <sorenh@math.aau.dk>	
+2012-10-07 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Minor changes to the DESCRIPTION file
 
@@ -94,82 +119,82 @@
 
 	* Version 1.6-4 uploaded
 
-2012-09-25 Søren Højsgaard <sorenh@math.aau.dk>	
+2012-09-25 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Bug in C code for mcs (maximum cardinality search)
 	detected. Problem solved be using R version of mcs.
-	
+
 	* mcsmarkedMAT speeded up
 
 	* update of DESCRIPTION file
-	
-	* Version 1.6-3 uploaded				
-	
-2012-08-05 Søren Højsgaard <sorenh@math.aau.dk>	
+
+	* Version 1.6-3 uploaded
+
+2012-08-05 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Change of Makevars file to pass checks on linux
 
-	* Version 1.6-2 uploaded				
+	* Version 1.6-2 uploaded
 
-2012-08-04 Søren Højsgaard <sorenh@math.aau.dk>	
+2012-08-04 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Smaller changes to documentation, including proper markup of
 	email adresses.
 
-	* Version 1.6-1 uploaded			
+	* Version 1.6-1 uploaded
 
-2012-07-27 Søren Højsgaard <sorenh@math.aau.dk>	
+2012-07-27 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Package changed such that it depends on igraph now (and not the
 	more obsolete igraph0 package)
 
 	* Facilities for working with graphs represented as sparse
-	matrices have been added. 
+	matrices have been added.
 
-	* Version 1.6-0 uploaded	
+	* Version 1.6-0 uploaded
 
-2012-06-13 Søren Højsgaard <sorenh@math.aau.dk>	
+2012-06-13 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Dependency on igraph changed to igraph0
 
 	* Version 1.5-1 uploaded
-	
-2012-02-28 Søren Højsgaard <sorenh@math.aau.dk>	
+
+2012-02-28 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Update of URL, version number and CITATION file
 
 	* Version 1.5-0 uploaded
 
-2012-01-17 Søren Højsgaard <sorenh@math.aau.dk>	
+2012-01-17 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Small changes to package structure
 
 	* Version 1.4.4 uploaded
 
-2012-01-17 Søren Højsgaard <sorenh@math.aau.dk>	
+2012-01-17 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* URL updated
 
 	* Version 1.4.3 uploaded
-	
-2011-12-30 Søren Højsgaard <sorenh@agrsci.dk>		
+
+2011-12-30 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Plot method for junction tree (rip ordering) added.
 
 	* E-mail address changed
 
 	* Version 1.4.2 uploaded
-	
-2011-09-07 Søren Højsgaard <sorenh@agrsci.dk>		
+
+2011-09-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Smaller issue regarding charmatch vs match
-	
-	* Version 1.4.1 uploaded	
-	
-2011-07-20 Søren Højsgaard <sorenh@agrsci.dk>	
+
+	* Version 1.4.1 uploaded
+
+2011-07-20 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* as methods for graph coercion added
-	
+
 	* Minor speedups
 
 	* rowmat2list and colmat2list added.
@@ -178,16 +203,16 @@
 
 	* Datasets dumping, wine and Nutrimouse added.
 
-	* Version 1.4.0 uploaded	
+	* Version 1.4.0 uploaded
 
 
-2011-01-11 Søren Højsgaard <sorenh@agrsci.dk>	
+2011-01-11 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Minor fixes
 
-	* Version 1.3.9 uploaded	
+	* Version 1.3.9 uploaded
 
-2011-01-07 Søren Højsgaard <sorenh@agrsci.dk>	
+2011-01-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Fixes in vignettes
 
@@ -195,64 +220,64 @@
 
 	* Version 1.3.8 uploaded
 
-2011-01-07 Søren Højsgaard <sorenh@agrsci.dk>	
+2011-01-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* All calls to .Internal have been removed
-	
-	* Version 1.3.7 uploaded	
 
-2011-01-07 Søren Højsgaard <sorenh@agrsci.dk>	
+	* Version 1.3.7 uploaded
+
+2011-01-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* C-code has been reorganized
 
 	* Vignettes have been added.
 
-	* Version 1.3.6 uploaded	
-	
-2010-12-20 Søren Højsgaard <sorenh@agrsci.dk>	
+	* Version 1.3.6 uploaded
+
+2010-12-20 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Generic iplot function added
 
 	* Version 1.3.5 uploaded
 
-2010-02-24 Søren Højsgaard <sorenh@agrsci.dk>	
+2010-02-24 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* edgeList and nonEdgeList reimplemented
 
 	* Version 1.3.4 uploaded
-	
-2010-02-17 Søren Højsgaard <sorenh@agrsci.dk>	
+
+2010-02-17 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Fix of generic triangulate function
 
 	* Version 1.3.3 uploaded
 
-2010-02-11 Søren Højsgaard <sorenh@agrsci.dk>	
+2010-02-11 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* triangulate has been made gereric and a triangulate.graphNEL
 	function has been added.
 
 	* Functions propagate and compile have been made generic
-	
+
 	* Version 1.3.2 uploaded
 
-2010-01-10 Søren Højsgaard <sorenh@agrsci.dk>	
+2010-01-10 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* names2pairs reimplemented
 
 	* Datasets milkcomp and ashtrees added
 
 	* version 1.3.1 uploaded
-	
 
-2009-12-29 Søren Højsgaard <sorenh@agrsci.dk>	
+
+2009-12-29 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Function combnPrim (a C version of combn) for finding all m
 	combinations of n elements has been added.
 
 	* Version 1.3.0 uploaded
 
-2009-12-27 Søren Højsgaard <sorenh@agrsci.dk>	
+2009-12-27 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Functions for finding a minimal triangulation of undirected
 	graph ('minimalTriang' and 'minimalTriangMAT') added. Code kindly
@@ -264,15 +289,15 @@
 
 	* Version 1.2.0 uploaded
 
-2009-06-28 Søren Højsgaard <sorenh@agrsci.dk>	
+2009-06-28 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* First argument to fit is now 'object' rather than 'm'
 
 	* conc2pcor function added.
-	
+
 	* Version 1.1.3 uploaded
 
-2009-06-28 Søren Højsgaard <sorenh@agrsci.dk>	
+2009-06-28 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* rip failed when a graph had only one node. Fixed now.
 
@@ -283,9 +308,9 @@
 
 2009-04-26 Søren Højsgaard <sorenh@agrsci.dk>
 
-	* Speedups of various functions; cleaning up some code. 
-	
-	* Version 1.1.0 uploaded	
+	* Speedups of various functions; cleaning up some code.
+
+	* Version 1.1.0 uploaded
 
 2009-02-21 Søren Højsgaard <sorenh@agrsci.dk>
 
@@ -296,17 +321,17 @@
 	* Bug fixed in moralizeMAT
 
 	* Version 1.0.0 uploaded
-	
+
 
 2009-02-11 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Vignette about graphs added.
 
 	* More datasets added.
-	
+
 	* Version 0.9.0 uploaded
-	
-	
+
+
 2009-01-22 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Bug fixed in rhsFormula2list
@@ -319,7 +344,7 @@
 	* Various xxxMAT functions added for graph algorithms on adjancecy matrices
 
 	* Version 0.8.0 uploaded
-	
+
 2009-01-05 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Bug fixed in MCS (failed if graph was not chordal)
@@ -328,13 +353,13 @@
 	to avoid conflicts with RHugin
 
 	* Version 0.7.0 uploaded
-	
+
 
 2008-12-17 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* is.decomposition fixed.
 
-	
+
 
 2008-12-17 Søren Højsgaard <sorenh@agrsci.dk>
 
@@ -347,12 +372,12 @@
 
 2008-12-11 Søren Højsgaard <sorenh@agrsci.dk>
 
-	* cov2pcor function added. 
+	* cov2pcor function added.
 
 	* MCS function fixed to return indices correctly when 'root'
 	argument is used.
 
-	* Version 0.6.5 uploaded	
+	* Version 0.6.5 uploaded
 
 2008-12-04 Søren Højsgaard <sorenh@agrsci.dk>
 
@@ -368,20 +393,20 @@
 	newUG(), newDAG(), newUGlist() and newDAGlist()
 
 	* A collection of graph operations have been added
-	
+
 	* carcassall data have been added
 
 	* edgeList and nonEdgeList functions added
 
 	* pairs2num function added
-	
+
 
 2008-10-13 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* triangulation algorithms from gRain moved to gRbase
 
 	* Version 0.6.0 uploaded
-	
+
 2008-09-09 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* General table operations functions added (taken from gRain)
@@ -389,15 +414,15 @@
 	* Functions for specifying graphs in graphNEL format added (newUG
 	and newDAG)
 
-	* MCS, RIP and querygraph functions added. 
-	
+	* MCS, RIP and querygraph functions added.
+
 	* Version 0.5.0 uploaded
-	
+
 
 2008-07-12 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* processFormula extended
-	
+
 	* Version 0.4.2 uploaded
 
 2008-05-01 Søren Højsgaard <sorenh@agrsci.dk>
@@ -409,7 +434,7 @@
 
 2008-04-24 Søren Højsgaard <sorenh@agrsci.dk>
 
-	* Minor changes made to match R 2.7.0 
+	* Minor changes made to match R 2.7.0
 
 	* Reorganizing code structure
 
@@ -419,10 +444,10 @@
 2008-04-15 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* uniquePrim, setdiffPrim, unlistPrim added
-	
-	* Speed improved of remove.redundant, isin 
 
-	* Speed improved of dual.rep 
+	* Speed improved of remove.redundant, isin
+
+	* Speed improved of dual.rep
 
 	* Version 0.3.2 uploaded
 
@@ -431,7 +456,7 @@
 	* C implementation of certain set operations (remove.redundant,
 	isin).
 
-	* names2pairs and subsetof included. 
+	* names2pairs and subsetof included.
 
 	* Version 0.3.1 uploaded
 
@@ -448,7 +473,7 @@
 
 	* Version 0.2.5 uploaded.
 
-	
+
 2008-01-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Breast cancer data set added.
@@ -457,7 +482,7 @@
 
 	* Version 0.2.4 uploaded.
 
-	
+
 2007-11-25 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* Functions shortNames, varTypes and nLevels now returns named
@@ -467,14 +492,14 @@
 
 	* Version 0.2.3 uploaded.
 
-	
+
 2007-11-07 Søren Højsgaard <sorenh@agrsci.dk>
 
 	* All the info printed on startup has been removed.
 
 	* Coronary artery disease data now properly described. They are in
 	data sets cad1 and cad2.
-	
+
 	* Version 0.2.2 uploaded
 
 
@@ -489,7 +514,7 @@
 	* newgmData can infer valueLabels automatically
 
 	* Rewriting of gmData part in vignette
-	
+
 	* addEdge/dropEdge have been removed because they collide with the
 	graph package. As an alternative, an update.gModel method added
 	(this needs more work).
@@ -501,7 +526,7 @@
 	the top
 
 	* description function for gmData is removed (collides with
-	generic description function from graph package). 
+	generic description function from graph package).
 
 	* newgmData modified: Makes shortNames to be of length 1 if at all
 	possible. Sets dataOrigin as the class of the observations.
@@ -509,7 +534,7 @@
 	* dataOrigin function for gmData added.
 
 	* ordinal, ordinal<-, nominal, nominal functions for gmData
-	added. 
+	added.
 
 	* Version number changed to 0.2.0
 
@@ -517,6 +542,6 @@
 
 	* cad-data: A .R file has been added to read data as factors
 
-	
 
-	
+
+

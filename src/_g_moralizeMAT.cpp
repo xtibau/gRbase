@@ -1,7 +1,8 @@
 /* 
    moralizeMAT: Moralizes dag
    
-   Known issues: Dos not check if graph is a dag
+   Known issues: Does not check if graph is a dag, code not templated
+
 */
 
 #include <RcppEigen.h>

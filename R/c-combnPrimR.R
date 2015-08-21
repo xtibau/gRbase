@@ -13,9 +13,11 @@ combnPrim <- function(x, m, simplify=TRUE){
   NSEL  <- as.integer(m)
   NSET <- as.integer(choose(NCAND,NSEL))
   ANS  <- rep.int(0L, NSET*NSEL)
-  res <- .C("combnC", NSEL, NCAND, NSET, ANS, DUP=TRUE
+  res <- .C("combnC", NSEL, NCAND, NSET, ANS
             ,PACKAGE="gRbase"
   )[[4]]
+
+
 
   if (simplify){
     matrix(x[res], nrow=NSEL, ncol=NSET)

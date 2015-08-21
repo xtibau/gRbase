@@ -52,7 +52,6 @@ minimalSets <- function(setlist, index=FALSE){
 
 ## A function to remove redundant generators.  If maximal=T, returns
 ## the maximal generators, if =F, the minimal generators.
-
 ## Can be speeded up if the as.character part can be avoided...
 
 removeRedundant <- function(setlist, maximal=TRUE, index=FALSE){
@@ -64,14 +63,12 @@ removeRedundant <- function(setlist, maximal=TRUE, index=FALSE){
 
 
 
-
 ## Is x contained in any vector in setlist;
 is.insetlist <- function(x, setlist, index=FALSE){
   isin(setlist, x, index)
 }
 
 isin <- function(setlist, x, index=FALSE){
-
   len.setlist <- length(setlist)
   if (len.setlist==0){
     if (index)
@@ -100,7 +97,6 @@ isin <- function(setlist, x, index=FALSE){
     return(any(iii))
   }
 }
-
 
 ## Faster versions of 'standard R functions'
 ## FIXME: subsetof : Rcpp implementation

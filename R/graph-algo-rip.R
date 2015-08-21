@@ -178,24 +178,3 @@ plot.ripOrder <- function(x,...){
 
 
 
-## rip.graphNEL <- function(object, root=NULL, nLevels=NULL){
-##   if (graph::edgemode(object)=="directed"){
-##     stop("Graph must be undirected")
-##   }
-##   ripMAT(graphNEL2dgCMatrix(object), root=root, nLevels=nLevels)
-## }
-
-## rip.igraph <- function(object, root=NULL, nLevels=NULL){
-##   if (igraph::is.directed(object)){
-##     stop("Graph must be undirected")
-##   }
-##   ripMAT(igraph::get.adjacency(object), root=root, nLevels=nLevels)
-## }
-
-## rip.matrix <- function(object, root=NULL, nLevels=NULL){
-##   ripMAT(object, root=root, nLevels=nLevels)
-## }
-
-## rip.Matrix <- function(object, root=NULL, nLevels=NULL){
-##   ripMAT(object, root=root, nLevels=nLevels)
-## }

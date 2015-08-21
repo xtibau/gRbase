@@ -6,8 +6,7 @@
 \description{
   This package provides a basis for graphical modelling in R and in
   particular for other graphical modelling packages, most notably
-  \pkg{gRim} and \pkg{gRain}.   The package is a contribution to the gR-project 
-  described by Lauritzen (2002).
+  \pkg{gRim}, \pkg{gRain} and \pkg{gRc}.
 }
 \section{Details}{
   \pkg{gRbase} provides the following:
@@ -28,26 +27,25 @@
     \item A general framework for setting up data and model structures
     and provide examples for fitting hierarchical log linear 
     models for contingency tables and graphical Gaussian models for the
-    multivariate normal distribution.
-
-    Notice: This last part is not maintained / developed further.
+    multivariate normal distribution. (Notice: This last part is not maintained / developed further.)
     
   }
 }
 \section{Authors}{
-  Søren Højsgaard, Aarhus University, DK-8830 Tjele, Denmark
-  
-  Claus Dethlefsen, Center for Cardiovascular Research, Aalborg Hospital,
-  Århus University Hospital, DK-9000 Aalborg, Denmark
+  Soren Hojsgaard, Department of Mathematical Sciences, Aalborg
+  University, Fredrik Bajersvej 7G, DK-9220 Aalborg East, Denmark
 
-  Code for maximal prime subgraph decomposition has been provided by
-  Clive Bowsher.
+  Contributions from Claus Dethlefsen, Clive  Bowsher, David Edwards.
+  
 }
 \section{Acknowledgements}{
   Thanks to the other members of the gR initiative, in particular to
   David Edwards for providing functions for formula-manipulation.
 }
 \references{
+  Hojsgaard, S., Edwards, D., Lauritzen, S. (2012) Graphical models with
+  R. Springer. ISBN: 978-1-4614-2298-3
+  
   Lauritzen, S. L. (2002). gRaphical Models in R.
   \emph{R News}, 3(2)39.
 }

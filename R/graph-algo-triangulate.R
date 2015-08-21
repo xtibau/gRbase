@@ -5,44 +5,47 @@ triangulateMAT <- function(amat, nLevels=rep(2, ncol(amat)), ...){
     triangulateMAT_( amat, nLevels )
 }
 
-triangulate.default <- function(object, nLevels=NULL, result=NULL, ...)
+
+## FIXME: triangulate: Need clever choice of matrix-representation
+## FIXME: (Sparse/dense)
+triangulate.default <- function(object, nLevels=NULL, result=NULL, check=TRUE, ...)
 {
     cls <- match.arg(class( object ),
                      c("graphNEL","igraph","matrix","dgCMatrix"))
     if (is.null( result ))
         result <- cls
 
-    switch(cls,
-           "graphNEL" ={tt <- triangulateMAT( graphNEL2dgCMatrix(object), nLevels=nLevels )},
-           "igraph"   ={tt <- triangulateMAT( igraph::get.adjacency(object), nLevels=nLevels)},
-           "dgCMatrix"=,
-           "matrix"   ={tt <- triangulateMAT( object, nLevels=nLevels )})
-    as( tt, result )
+    mm <- coerceGraph( object, "matrix" )
+    if ( !is.UGMAT(mm) )
+        stop("Graph must be undirected\n")
+
+    if (check){
+        if ( length(mcsMAT(mm)) > 0)
+            coerceGraph(mm, result)
+        else {
+            mm <- triangulateMAT( mm, nLevels=nLevels )
+            coerceGraph(mm, result)
+        }
+    } else {
+        mm <- triangulateMAT( mm, nLevels=nLevels )
+        coerceGraph(mm, result)
+    }
 }
 
 
 
 
 
-## triangulate.graphNEL <- function(object, nLevels=NULL, result="graphNEL",...){
-##     as(triangulateMAT( graphNEL2dgCMatrix(object), nLevels=nLevels ), result)
-## }
-
-## triangulate.igraph <- function(object, nLevels=NULL, result="igraph",...){
-##   as(triangulateMAT( igraph::get.adjacency(object), nLevels=nLevels), result )
-## }
-
-## triangulate.matrix <- function(object, nLevels=NULL, result="matrix", ...){
-##     as( triangulateMAT( object, nLevels=nLevels ), result)
-## }
-
-## triangulate.Matrix <- function(object, nLevels=NULL, result="Matrix", ...){
-##     as(triangulateMAT( object, nLevels=nLevels ), result)
-## }
 
 
 
-## .matClass <- function(amat){
-##   max( which(inherits(amat, c("matrix","Matrix","dgCMatrix"), which=TRUE) > 0 ))
-## }
+
+
+
+
+
+
+
+
+
 

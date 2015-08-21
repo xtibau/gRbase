@@ -153,9 +153,9 @@ void C_subsetof2(char **qset, int *len_qset,
 		 char **setlist, int *start_set, int *end_set, int *ans)
 {
   /*   Rprintf("    start_set %i end_set %i sy %i ey %i\n", *start_set, *end_set, *sy, *ey ); */
-  int ii, jj, nmatch=0, nx;
+  int ii, jj, nmatch=0; //, nx;
   
-  nx   = *end_set-*start_set+1;
+  //nx   = *end_set-*start_set+1;
   *ans = 0;
   
   for (ii=0; ii<*len_qset; ii++){

@@ -8,8 +8,10 @@
 
 \alias{MAT2dgCMatrix}
 \alias{MAT2matrix}
-\alias{MAT2ftM}
-\alias{SYMMAT2ftM}
+\alias{MAT2ftM_}
+\alias{MAT2MAT}
+\alias{as.amat}
+\alias{symMAT2ftM_}
 
 \alias{coerceGraph}
 \alias{coerceGraph.graphNEL}
@@ -21,21 +23,25 @@
 \alias{adjList2dgCMatrix}
 
 
+
 %% Various R/C/C++ implementations;
 %% --------------------------------
 %% no need to document further
 
-\alias{is_sym_MAT}
+\alias{isdagMAT_}
+\alias{issymMAT_}
+\alias{isugMAT_}
 
-\alias{cell2entry2_cpp}
-\alias{cell2entry_cpp}
-\alias{getCellNumberPrim_cpp}
-\alias{getCellNumber_cpp}
-\alias{nextCellSlicePrim_cpp}
-\alias{nextCellSlice_cpp}
-\alias{nextCell_cpp}
-\alias{permuteCellEntries_cpp}
-\alias{slice2entry_cpp}
+
+%\alias{cell2entry2_cpp}
+%\alias{cell2entry_cpp}
+%\alias{getCellNumberPrim_cpp}
+%\alias{getCellNumber_cpp}
+%\alias{nextCellSlicePrim_cpp}
+%\alias{nextCellSlice_cpp}
+%\alias{nextCell_cpp}
+%\alias{permuteCellEntries_cpp}
+%\alias{slice2entry_cpp}
 
 
 \alias{alignArrays}
@@ -54,11 +60,20 @@
 \alias{getPerm}
 \alias{fitLoglin}
 
-\alias{propagateLS_cpp}
+\alias{propagateLS__}
 
+\alias{isadjMAT_}
 \alias{mcsMAT_}
+\alias{mcsMAT0_}
 \alias{topoSortMAT_}
 \alias{triangulateMAT_}
+\alias{do_getcq_dense}
+\alias{do_getcq_sparse}
+\alias{do_mcs_dense}
+\alias{do_mcs_sparse}
+\alias{getCliquesDec_}
+\alias{rip_internal}
+
 
 \alias{sp_setXtf1} % bruges i gRain
 \alias{solveSPD}   % bruges i gRim
@@ -133,6 +148,7 @@
 
 \alias{makeDimNames}
 \alias{names2pairs}
+\alias{names2pairsM}
 \alias{rowmat2list}
 \alias{colmat2list}
 \alias{matrix2list}

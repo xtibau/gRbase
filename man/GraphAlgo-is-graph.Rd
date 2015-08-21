@@ -1,27 +1,32 @@
 \name{is.DAG}
 \alias{is.DAG}
-\alias{is.DAG.matrix}
-\alias{is.DAG.Matrix}
-\alias{is.DAGMAT}
 \alias{is.DAG.graphNEL}
+\alias{is.DAG.default}
+\alias{is.DAGMAT}
+%% \alias{is.DAG.matrix}
+%% \alias{is.DAG.Matrix}
 
 \alias{is.DG}
-\alias{is.DG.matrix}
-\alias{is.DG.Matrix}
-\alias{is.DGMAT}
 \alias{is.DG.graphNEL}
+\alias{is.DG.default}
+\alias{is.DGMAT}
+%% \alias{is.DG.matrix}
+%% \alias{is.DG.Matrix}
+
 
 \alias{is.UG}
-\alias{is.UG.matrix}
-\alias{is.UG.Matrix}
-\alias{is.UGMAT}
 \alias{is.UG.graphNEL}
+\alias{is.UG.default}
+\alias{is.UGMAT}
+%% \alias{is.UG.matrix}
+%% \alias{is.UG.Matrix}
 
 \alias{is.TUG}
-\alias{is.TUG.matrix}
-\alias{is.TUG.Matrix}
-\alias{is.TUGMAT}
 \alias{is.TUG.graphNEL}
+\alias{is.TUG.default}
+\alias{is.TUGMAT}
+%% \alias{is.TUG.matrix}
+%% \alias{is.TUG.Matrix}
 
 \alias{is.adjMAT}
 
@@ -145,7 +150,6 @@ ug2MATS <- ug(~a:b+b:c+c:d+d:a, result="Matrix")
 is.TUG(ug2NEL)
 is.TUG(ug2MAT)
 is.TUG(ug2MATS)
-
 
 ## Bidirected graphs
 graph::edgemode(ugNEL)

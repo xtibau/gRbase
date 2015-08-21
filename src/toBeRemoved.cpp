@@ -1,3 +1,11 @@
+/* ********************************************
+
+   FIXME: sp_setXtf1 bruges i gRain (i .setRoot); skal
+   re-implementeres i gRain.
+
+ * ********************************************* */
+
+
 #include <RcppEigen.h>
 
 using namespace Rcpp;

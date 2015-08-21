@@ -5,11 +5,9 @@
 ####
 ######################################################
 
-
-
 parray <- function(varNames, levels, values=1, normalize="none", smooth=0){
 
-  normalize <- match.arg(normalize, choices=c("none","first","all"))  
+  normalize <- match.arg(normalize, choices=c("none","first","all"))
   varNames  <- rhsFormula2list(varNames)[[1]]
   if (smooth>0){
     values <- values + smooth
@@ -24,13 +22,8 @@ parray <- function(varNames, levels, values=1, normalize="none", smooth=0){
          "first" = {
            ##cat("first\n")
            if (length(nlev)>1){
-             ##aaa <<- ans
              tmp   <- matrix(ans, ncol=dim(ans)[1], byrow=TRUE)
-             ##print(tmp)
-             ##ttt <<- tmp
-             tmp   <- t.default(tmp/rowSumsPrim(tmp))
-             ##print(tmp)
-             ans[] <- tmp             
+             ans[] <- t.default(tmp/rowSumsPrim(tmp))
            } else {
              ans <- ans / sum(ans)
            }},
@@ -43,31 +36,31 @@ parray <- function(varNames, levels, values=1, normalize="none", smooth=0){
 }
 
 as.parray  <- function(values, normalize="none", smooth=0){
-  
+
   normalize <- match.arg(normalize, choices=c("none","first","all"))
 
   if (!inherits(values, c("array","matrix","integer","double","table"))){
     stop("arg must be array, matrix, table, integer or double\n")
   }
-  
+
   if (smooth>0){
     values <- values + smooth
   }
-  
+
   if (is.null(dimnames(values))){
     if (!is.null(dim(values)))
       nLevels <- dim(values)
-    else 
+    else
       nLevels <- length(values)
+
     varNames <- paste("V", 1:length(nLevels),sep='')
     dimnames <- makeDimNames(varNames, nLevels)
     ans <- array(values, dim = nLevels, dimnames = dimnames)
-    class(ans) <- "parray"
   } else {
     ans <- values
-    class(ans) <- "parray"
   }
-  
+  class(ans) <- c("parray","array")
+
   switch(normalize,
     "first"={
       if (length(dim(ans))>1){
@@ -82,21 +75,21 @@ as.parray  <- function(values, normalize="none", smooth=0){
     },
     "none"={}
     )
-
+  attr(ans, "call") <- NULL
   return(ans)
-}  
+}
 
 data2parray <- function(data, varNames=NULL, normalize="none", smooth=0){
   cls <- match(class(data), c("data.frame","table", "xtabs", "matrix"))[1]
   if (is.na(cls)){
     stop("'data' must be one of  dataframe, table, xtabs, matrix")
   }
-  
+
   .set.varNames <- function(varNames, dataNames){
     if (is.null(varNames)){
       if (is.null(dataNames))
         stop("'data' has no variable names")
-      varNames <- dataNames 
+      varNames <- dataNames
     } else {
       if (class(varNames) %in% c("formula", "character")){
         varNames <- rhsf2list(varNames)[[1]]
@@ -104,7 +97,7 @@ data2parray <- function(data, varNames=NULL, normalize="none", smooth=0){
     }
     varNames
   }
-  
+
   switch(as.character(cls),
          "1"={
            dataNames <- names(data)
@@ -113,7 +106,7 @@ data2parray <- function(data, varNames=NULL, normalize="none", smooth=0){
          },
          "2"=, "3"=, "4"={
            dataNames <- names(dimnames(data))
-           varNames <- .set.varNames(varNames, dataNames)           
+           varNames <- .set.varNames(varNames, dataNames)
            val  <- tableMargin(data, varNames)
          }
          )
@@ -136,6 +129,32 @@ makeDimNames <- function(varNames, levels, sep=''){
     }
     ll
   }, varNames, levels, SIMPLIFY=FALSE)
+}
+
+makeDimNames <-
+function(varNames, levels, sep=''){
+    if (missing(varNames) || is.null(varNames))
+        return(lapply(levels, seq))
+    if (length(varNames) != length(levels))
+        stop("'varNames' and 'levels' must have the same length")
+    if (is.list(levels)){
+        names(levels) <- varNames
+        return( levels )
+    }
+    out <- lapply(seq_along(varNames), function(i)
+                  {
+                      ll <- levels[[ i ]]
+                      vv <- varNames[ i ]
+                      if (!is.character(ll)){
+                          if (length(ll)==1){
+                              ll <- 1:ll
+                          }
+                          ll <- paste(vv,ll,sep="")
+                      }
+                      ll
+                  })
+    names(out) <- varNames
+    out
 }
 
 varNames.array     <- function(x) names(attr(x,"dimnames"))
@@ -175,11 +194,11 @@ print.parray  <- function(x,...){
 
 ##   normalize <- match.arg(normalize, choices=c("none","first","all"))
 ##   varNames  <- rhsFormula2list(varNames)[[1]]
-  
+
 ##   if (is.list(levels)){
 ##     dimnames        <- levels
 ##     names(dimnames) <- varNames
-##     levels          <- sapply(dimnames, length)  
+##     levels          <- sapply(dimnames, length)
 ##   } else {
 ##     dimnames <- makeDimNames(varNames, levels)
 ##   }
@@ -196,7 +215,7 @@ print.parray  <- function(x,...){
 ##            if (length(dim(ans))>1){
 ##              marg  <- 2:length(dim(ans))
 ##              ma2   <- tableMargin(ans, marg)
-##              ans   <- tablePerm(.tableOp2(ans, ma2, op=`/`), names(dimnames(ans)))        
+##              ans   <- tablePerm(.tableOp2(ans, ma2, op=`/`), names(dimnames(ans)))
 ##            } else {
 ##              ans <- ans / sum(ans)
 ##            }},

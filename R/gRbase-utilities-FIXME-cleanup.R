@@ -30,31 +30,12 @@ iplot.graphNEL <- function(x,...){
 ### ----------------------------
 ## Turns a matrix into a list, either by row or by column.
 ## Notice: finding unique rows in a matrix can be speeded up this way.
-## rowmat2list <- function(ans){
-##   if (nrow(ans)==0)
-##     return(list())
-##   res <- vector("list", nrow(ans))
-##   for (ii in 1:nrow(ans)){
-##     res[[ii]] <- ans[ii,]
-##   }
-##   res
-## }
-
-## colmat2list <- function(ans){
-##   if (ncol(ans)==0)
-##     return(list())
-##   res <- vector("list", ncol(ans))
-##   for (ii in 1:ncol(ans)){
-##     res[[ii]] <- ans[,ii]
-##   }
-##   res
-## }
 
 matrix2list <- function(x, byrow=TRUE){
   if (byrow)
-    rowmat2list(x)
+    rowmat2list(x) # cpp implementation
   else
-    colmat2list(x)
+    colmat2list(x) # cpp implementation
 }
 
 ## Returns matrix n x 2 matrix with indices of non-zero
@@ -205,35 +186,3 @@ names2pairs <- function(x, y=NULL, sort=TRUE, result="list"){
   }
 }
 
-
-# x <-letters[1:6]
-# y <-letters[8:14]
-
-# system.time({for (ii in 1:10000) n2p2(x,y, sort=F)})
-# system.time({for (ii in 1:10000) names2pairs(x,y, sort=F)})
-
-# Rprof()
-# system.time({for (ii in 1:50000) n2p2(x,y)})
-# Rprof(NULL)
-# summaryRprof()
-
-
-# n2p1 <- names2pairs
-
-# n2p1("a")
-# n2p2("a")
-
-# n2p1(c("k","a","b","c"))
-# n2p2(c("k","a","b","c"))
-
-# n2p1(c("k","a","b","c"), sort=F)
-# n2p2(c("k","a","b","c"), sort=F)
-
-# n2p1(c("k","a","b","c"), c("i"))
-# n2p2(c("k","a","b","c"), c("i"))
-
-# n2p1(c("k","a","b","c"), c("i"), sort=F)
-# n2p2(c("k","a","b","c"), c("i"), sort=F)
-
-# n2p1(c("k","a","b","c"), c("i","j"))
-# n2p2(c("k","a","b","c"), c("i","j"))

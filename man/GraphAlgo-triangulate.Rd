@@ -13,7 +13,8 @@
 }
 \usage{
 triangulate(object, ...)
-\method{triangulate}{default}(object, nLevels = NULL, result=NULL, ...)
+\method{triangulate}{default}(object, nLevels = NULL, result=NULL,
+check=TRUE, ...)
 triangulateMAT(amat, nLevels=rep(2, ncol(amat)), ...)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -31,6 +32,8 @@ triangulateMAT(amat, nLevels=rep(2, ncol(amat)), ...)}
     are \code{"graphNEL"}, \code{"igraph"}, \code{"matrix"},
     \code{"dgCMatrix"}. Default is the same as the type of \code{object}.
   }
+  \item{check}{If \code{TRUE} (the default) it is checked whether the graph is
+    triangulated before doing the triangulation; gives a speed up}
 
   \item{...}{Additional arguments, currently not used.}
 
