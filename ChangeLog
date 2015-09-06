@@ -1,3 +1,14 @@
+2015-xx-xx Søren Højsgaard <sorenh@math.aau.dk>
+
+	* Corrected use of log and fabs in c++ code; thanks to BDR for
+	pointing this out
+
+	* get_subset_ added
+
+	* ug2dag added (works only on graphNEL's)
+
+	* Version 1.7-2 uploaded.
+
 2015-08-20 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* is.adjMAT is now based on own c++ code; way faster.

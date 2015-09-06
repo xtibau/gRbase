@@ -68,7 +68,7 @@ nonEdgeListMAT(adjmat, matrix = FALSE)
 \seealso{
   %\code{\link{edgeList}}
   %\code{\link{nonEdgeList}}
-  \code{\link{as.adjMAT}}
+  \code{\link{graphNEL2M}}
   \code{\link{mcs}}
   \code{\link{rip}}
   \code{\link{moralize}}
@@ -79,7 +79,7 @@ nonEdgeListMAT(adjmat, matrix = FALSE)
 \examples{
 ## A graph with edges
 g  <- ug(~a:b+b:c+c:d)
-gm <- as.adjMAT(g)
+gm <- graphNEL2M(g)
 
 edgeList(g)
 edgeList(gm)
@@ -95,7 +95,7 @@ nonEdgeListMAT(gm)
 
 ## A graph without edges
 g  <- ug(~a+b+c)
-gm <- as.adjMAT(g)
+gm <- graphNEL2M(g)
 
 edgeList(g)
 edgeList(gm)

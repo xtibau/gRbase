@@ -44,7 +44,7 @@ bool do_issymMAT_ ( SEXP X_ ){
 	
   for( i=0; i<nrX; ++i){
     for( j=i; j<ncX; ++j ){
-      if ( fabs( X.coeff(i,j)-X.coeff(j,i) ) > 1e-6 ){
+      if ( fabs( (double) (X.coeff(i,j)-X.coeff(j,i)) ) > 1e-6 ){
 				out=false;
 				break;
       }
@@ -86,7 +86,7 @@ bool do_isugMAT_ ( SEXP X_ ){
       break;
     } 
     for( j=i; j<ncX; ++j ){
-      if ( fabs( X.coeff(i,j)-X.coeff(j,i) ) > 1e-6 ){
+      if ( fabs( (double) (X.coeff(i,j)-X.coeff(j,i)) ) > 1e-6 ){
 				out=false;
 				break;
       }

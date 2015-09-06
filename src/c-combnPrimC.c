@@ -97,66 +97,66 @@
 
     /* Function Body */
     if (*nsel < 1 || *ncand < 1 || *nsel > *ncand) {
-	*j = -1;
-	goto L9999;
+			*j = -1;
+			goto L9999;
     } else {
-	*j = 0;
+			*j = 0;
     }
-/*  Just starting? */
+		/*  Just starting? */
     if (list[1] < 1) {
-/*     Yes: return 1,2,3... */
-	i__1 = *nsel;
-	for (i__ = 1; i__ <= i__1; ++i__) {
-	    list[i__] = i__;
-	}
+			/*     Yes: return 1,2,3... */
+			i__1 = *nsel;
+			for (i__ = 1; i__ <= i__1; ++i__) {
+				list[i__] = i__;
+			}
     } else {
-/*     No: find the first selection that we can increment. */
-/*     Start with the first list item. */
-	i__ = 1;
-/*     Loop. */
-	more = TRUE_;
-	while(more) {
-/*        Current list item. */
-	    listi = list[i__];
-/*        Is this the final list item? */
-	    if (i__ >= *nsel) {
-/*           Yes:  comparison value is number of candidates plus one. */
-		nmax = *ncand + 1;
-	    } else {
-/*           No:  comparison value is next list item. */
-		nmax = list[i__ + 1];
-	    }
-/*        Can the current item be incremented? */
-	    if (nmax - listi > 1) {
-/*           Yes:  increment it. */
-		list[i__] = listi + 1;
-/*           Reinitialize the preceding items. */
-		i__1 = i__ - 1;
-		for (m = 1; m <= i__1; ++m) {
-		    list[m] = m;
-		}
-/*           Break. */
-		more = FALSE_;
-	    } else {
-/*           Can't increment the current item:  is it the final one? */
-		if (i__ >= *nsel) {
-/*              Yes:  set the status. */
-		    *j = 1;
-/*              Restart the sequence. */
-		    i__1 = *nsel;
-		    for (i__ = 1; i__ <= i__1; ++i__) {
-			list[i__] = i__;
-		    }
-/*              Break. */
-		    more = FALSE_;
-		} else {
-/*              No:  next list item. */
-		    ++i__;
-		}
-	    }
-	}
+			/*     No: find the first selection that we can increment. */
+			/*     Start with the first list item. */
+			i__ = 1;
+			/*     Loop. */
+			more = TRUE_;
+			while(more) {
+				/*        Current list item. */
+				listi = list[i__];
+				/*        Is this the final list item? */
+				if (i__ >= *nsel) {
+					/*           Yes:  comparison value is number of candidates plus one. */
+					nmax = *ncand + 1;
+				} else {
+					/*           No:  comparison value is next list item. */
+					nmax = list[i__ + 1];
+				}
+				/*        Can the current item be incremented? */
+				if (nmax - listi > 1) {
+					/*           Yes:  increment it. */
+					list[i__] = listi + 1;
+					/*           Reinitialize the preceding items. */
+					i__1 = i__ - 1;
+					for (m = 1; m <= i__1; ++m) {
+						list[m] = m;
+					}
+					/*           Break. */
+					more = FALSE_;
+				} else {
+					/*           Can't increment the current item:  is it the final one? */
+					if (i__ >= *nsel) {
+						/*              Yes:  set the status. */
+						*j = 1;
+						/*              Restart the sequence. */
+						i__1 = *nsel;
+						for (i__ = 1; i__ <= i__1; ++i__) {
+							list[i__] = i__;
+						}
+						/*              Break. */
+						more = FALSE_;
+					} else {
+						/*              No:  next list item. */
+						++i__;
+					}
+				}
+			}
     }
-L9999:
+ L9999:
     return 0;
 } /* sla_combn__ */
 

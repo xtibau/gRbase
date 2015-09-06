@@ -1,5 +1,5 @@
 Package: gRbase
-Version: 1.7-1
+Version: 1.7-2
 Title: A Package for Graphical Modelling in R
 Author: Søren Højsgaard <sorenh@math.aau.dk>
 Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
@@ -44,6 +44,6 @@ Imports: Matrix, RBGL, igraph, graph, Rcpp (>= 0.11.1)
 Suggests: Rgraphviz, microbenchmark
 LinkingTo: Rcpp (>= 0.11.1), RcppArmadillo, RcppEigen
 NeedsCompilation: yes
-Packaged: 2015-08-21 08:02:28 UTC; sorenh
+Packaged: 2015-09-06 06:57:21 UTC; sorenh
 Repository: CRAN
-Date/Publication: 2015-08-21 11:48:22
+Date/Publication: 2015-09-06 16:18:03

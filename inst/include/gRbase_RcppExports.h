@@ -805,6 +805,25 @@ namespace gRbase {
         return Rcpp::as<IntegerVector >(__result);
     }
 
+    inline IntegerVector get_subset_(CharacterVector x, List setlist, bool all = false) {
+        typedef SEXP(*Ptr_get_subset_)(SEXP,SEXP,SEXP);
+        static Ptr_get_subset_ p_get_subset_ = NULL;
+        if (p_get_subset_ == NULL) {
+            validateSignature("IntegerVector(*get_subset_)(CharacterVector,List,bool)");
+            p_get_subset_ = (Ptr_get_subset_)R_GetCCallable("gRbase", "gRbase_get_subset_");
+        }
+        RObject __result;
+        {
+            RNGScope __rngScope;
+            __result = p_get_subset_(Rcpp::wrap(x), Rcpp::wrap(setlist), Rcpp::wrap(all));
+        }
+        if (__result.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (__result.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(__result).c_str());
+        return Rcpp::as<IntegerVector >(__result);
+    }
+
     inline List allSubsets0__(const IntegerVector& x) {
         typedef SEXP(*Ptr_allSubsets0__)(SEXP);
         static Ptr_allSubsets0__ p_allSubsets0__ = NULL;

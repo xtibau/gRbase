@@ -229,6 +229,10 @@ get_superset_ <- function(x, setlist, all = FALSE) {
     .Call('gRbase_get_superset_', PACKAGE = 'gRbase', x, setlist, all)
 }
 
+get_subset_ <- function(x, setlist, all = FALSE) {
+    .Call('gRbase_get_subset_', PACKAGE = 'gRbase', x, setlist, all)
+}
+
 allSubsets0__ <- function(x) {
     .Call('gRbase_allSubsets0__', PACKAGE = 'gRbase', x)
 }

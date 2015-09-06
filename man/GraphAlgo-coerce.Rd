@@ -24,6 +24,8 @@
 \alias{graphNEL2tfM}
 \alias{as.adjMAT}
 
+\alias{ug2dag}
+
 %%\alias{NEL2MAT}
 
 \title{Coercion of graphs}
@@ -33,19 +35,20 @@
 }
 
 \usage{
-as.adjMAT(object, result="matrix")
 graphNEL2M(object, result="matrix")
 graphNEL2MAT(object, limit=100)
 graphNEL2ftM(object)
 graphNEL2matrix(object)
 graphNEL2dgCMatrix(object)
+ug2dag(object)
+as.adjMAT(object, result="matrix")
 }
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{A graphNEL object}
-  \item{result}{Either \code{"matrix"} of \code{"Matrix"} (or
-    equivalenty \code{"dgCMatrix"}) for a sparse
+  \item{result}{Either \code{"matrix"} or
+    \code{"dgCMatrix"} for a sparse
     matrix representation.}
   \item{limit}{If the number of nodes is larger than \code{limit} the
     matrix will be sparse; otherwise dense.}
@@ -55,6 +58,8 @@ graphNEL2dgCMatrix(object)
   \code{graphNEL2M(g, result="Matrix")} do the same as
   \code{as(g, "matrix")} and \code{as(g, "Matrix")} but
   considerably faster.
+	\code{as.adjMAT} is the same as \code{graphNEL2M} (and is retained for
+	backward compatibility).
 }
 % \value{
 %   ~Describe the value returned
@@ -81,12 +86,14 @@ graphNEL2dgCMatrix(object)
 }
 \examples{
 uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
+uG <- ug(~me:ve + me:al + ve:al + al:an + al:st + an:st)
+
 getCliques(uG)
 
-uG.m <- as.adjMAT(uG)
+uG.m <- graphNEL2M(uG)
 getCliques( uG.m )
 
-ug.M <- as.adjMAT(uG, result="Matrix")
+ug.M <- graphNEL2M(uG, result="Matrix")
 getCliques( ug.M )
 
 graphNEL2ftM( uG )

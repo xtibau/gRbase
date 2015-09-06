@@ -338,7 +338,52 @@ M2dagList <- function(x){
 }
 
 
+ug2dag <- function(object){
 
+    if (class(object) != "graphNEL")
+        stop("Object 'object' must be a graphNEL")
+    if (graph::edgemode(object) != "undirected")
+        stop("Graph must have undirected edges")
+    if (length( m <- mcs(object) )==0)
+        stop("Graph is not chordal")
+
+    adjList  <- graph::adj(object, m)
+    vparList <- vector("list", length(m))
+    names(vparList) <- m
+
+    vparList[[1]] <- m[1]
+    if (length(m) > 1){
+        for (i in 2:length(m)){
+            vparList[[ i ]] <- c(m[ i ],
+                                intersectPrim(adjList[[ i ]], m[ 1:i ]))
+        }
+    }
+
+    dg <- dagList(vparList)
+    dg
+}
+
+
+#' .eliminationOrder <- function(gg){
+#'   is.acyc <- TRUE
+#'   ### amat <- as.adjmat(gg)
+#'   amat <- as.adjMAT(gg)
+#'   elorder <- NULL
+
+#'   repeat{
+#'     idx <- which(rowSums(amat)==0)
+#'     if (!length(idx)){
+#'       return(NULL)
+#'     }
+#'     elorder <- c(elorder, idx)
+#'     amat <- amat[-idx,-idx]
+
+#'     if(all(c(0,0)==dim(amat))){
+#'       break()
+#'     }
+#'   }
+#'   names(rev(elorder))
+#' }
 
 
 

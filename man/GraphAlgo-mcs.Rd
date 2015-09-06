@@ -99,7 +99,7 @@ mcsmarkedMAT(amat, vn = colnames(amat), discrete = NULL, index = FALSE)
 \examples{
 uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st)
 mcs(uG)
-mcsMAT(as.adjMAT(uG))
+mcsMAT( graphNEL2M(uG) )
 ## Same as
 uG <- ug(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st,result="matrix")
 mcsMAT(uG)

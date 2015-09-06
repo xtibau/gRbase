@@ -42,7 +42,7 @@ simplicialNodes(object)
   Notice: \code{graphNEL2adjMAT(g, result="matrix")} and
   \code{graphNEL2adjMAT(g, result="Matrix")} do the same as
   \code{as(g, "matrix")} and \code{as(g, "Matrix")} but
-  considerably faster. 
+  considerably faster.
 }
 % \value{
 %   ~Describe the value returned
@@ -53,14 +53,13 @@ simplicialNodes(object)
 % }
 %\references{ ~put references to the literature/web site here ~ }
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
-% \note{ ~~further notes~~ 
+% \note{ ~~further notes~~
 
 %  ~Make other sections like Warning with \section{Warning }{....} ~
 % }
 \seealso{
   \code{\link{edgeList}}
   \code{\link{nonEdgeList}}
-  %\code{\link{as.adjMAT}}
   \code{\link{mcs}}
   \code{\link{rip}}
   \code{\link{moralize}}
@@ -69,13 +68,13 @@ simplicialNodes(object)
 \examples{
 uG <- ug(~me:ve,~me:al,~ve:al,~al:an,~al:st,~an:st)
 closure("me", uG)
-getCliques(uG)
+getCliques( uG )
 
-amat1 <- as.adjMAT(uG)
-getCliques(amat1)
+amat1 <- graphNEL2M( uG )
+getCliques( amat1 )
 
-amat1 <- as.adjMAT(uG, result="Matrix")
-getCliques(amat1)
+amat1 <- graphNEL2M( uG, result="Matrix" )
+getCliques( amat1 )
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

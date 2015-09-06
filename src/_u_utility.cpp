@@ -64,12 +64,68 @@ IntegerVector get_superset_all_(CharacterVector x, List setlist){
 }
 
 
+
+
+
+
+
 //[[Rcpp::export]]
 IntegerVector get_superset_(CharacterVector x, List setlist, bool all=false){
 	if (all)
 		return get_superset_all_(x, setlist);
 	else
 		return get_superset_one_(x, setlist);
+}
+
+
+
+IntegerVector get_subset_one_(CharacterVector x, List setlist){
+  bool outb=false;
+  //IntegerVector val= IntegerVector::create( NA_INTEGER );
+	int val=-1, k=0;
+
+  for (int i=0; i<setlist.length(); ++i){
+		CharacterVector set=setlist[i];
+		outb = (any(is_na(match(set, x))));
+		outb = ! outb;
+		if (outb){
+			val=i+1;
+			k=1;
+			break;
+		}
+  }
+	IntegerVector out = IntegerVector(k);
+  out[0] = val;
+	return out;
+}
+
+IntegerVector get_subset_all_(CharacterVector x, List setlist){
+  IntegerVector vec(setlist.length());
+  int k=0;
+
+  for (int i=0; i<setlist.length(); ++i){
+		CharacterVector set=setlist[i];
+		bool out = (any(is_na(match(set, x))));
+		out = ! out;
+		if (out)
+			vec[k++] = i+1;
+  }
+
+	IntegerVector out = IntegerVector(k);
+	if (k>0){
+		for (int i=0; i<k; ++i)	out[i]=vec[i];
+	}
+
+	return out;
+}
+
+
+//[[Rcpp::export]]
+IntegerVector get_subset_(CharacterVector x, List setlist, bool all=false){
+	if (all)
+		return get_subset_all_(x, setlist);
+	else
+		return get_subset_one_(x, setlist);
 }
 
 
@@ -82,12 +138,13 @@ x1 <- c("b","a")
 x2 <- c("a","k")
 set <- letters[1:4]
 setlist <- list(x1, x2, c("a","b","k"))
+str(setlist)
 
-is_subsetof(x1, set)
-is_subsetof(x2, set)
+is_subsetof_(x1, set)
+is_subsetof_(x2, set)
 
-is_subsetof(set, x1)
-is_subsetof(set, x2)
+is_subsetof_(set, x1)
+is_subsetof_(set, x2)
 
 get_superset_(x1, setlist)
 get_superset_(c("a","r"), setlist)
@@ -96,7 +153,36 @@ get_superset_(x1, setlist, all=T)
 get_superset_(c("a","r"), setlist, all=T)
 
 
+
+
+setlist <- list(x1, x2, c("a","b","k"), c("a","r","k"))
+str(setlist)
+
+get_subset_(x1, setlist)
+get_subset_(c("a","b", "k"), setlist, all=F)
+
+get_subset_(c("a","b", "k"), setlist, all=T)
+
+get_subset_(x1, setlist, all=T)
+get_subset_(c("a","r"), setlist, all=T)
+
+
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

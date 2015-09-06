@@ -1461,6 +1461,38 @@ RcppExport SEXP gRbase_get_superset_(SEXP xSEXP, SEXP setlistSEXP, SEXP allSEXP)
     UNPROTECT(1);
     return __result;
 }
+// get_subset_
+IntegerVector get_subset_(CharacterVector x, List setlist, bool all);
+static SEXP gRbase_get_subset__try(SEXP xSEXP, SEXP setlistSEXP, SEXP allSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< List >::type setlist(setlistSEXP);
+    Rcpp::traits::input_parameter< bool >::type all(allSEXP);
+    __result = Rcpp::wrap(get_subset_(x, setlist, all));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP gRbase_get_subset_(SEXP xSEXP, SEXP setlistSEXP, SEXP allSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(gRbase_get_subset__try(xSEXP, setlistSEXP, allSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
 // allSubsets0__
 List allSubsets0__(const IntegerVector& x);
 static SEXP gRbase_allSubsets0___try(SEXP xSEXP) {
@@ -1604,6 +1636,7 @@ static int gRbase_RcppExport_validate(const char* sig) {
         signatures.insert("NumericVector(*tabListAdd__)(const List&)");
         signatures.insert("bool(*is_subsetof_)(CharacterVector,CharacterVector)");
         signatures.insert("IntegerVector(*get_superset_)(CharacterVector,List,bool)");
+        signatures.insert("IntegerVector(*get_subset_)(CharacterVector,List,bool)");
         signatures.insert("List(*allSubsets0__)(const IntegerVector&)");
         signatures.insert("SEXP(*allSubsets__)(SEXP&)");
     }
@@ -1653,6 +1686,7 @@ RcppExport SEXP gRbase_RcppExport_registerCCallable() {
     R_RegisterCCallable("gRbase", "gRbase_tabListAdd__", (DL_FUNC)gRbase_tabListAdd___try);
     R_RegisterCCallable("gRbase", "gRbase_is_subsetof_", (DL_FUNC)gRbase_is_subsetof__try);
     R_RegisterCCallable("gRbase", "gRbase_get_superset_", (DL_FUNC)gRbase_get_superset__try);
+    R_RegisterCCallable("gRbase", "gRbase_get_subset_", (DL_FUNC)gRbase_get_subset__try);
     R_RegisterCCallable("gRbase", "gRbase_allSubsets0__", (DL_FUNC)gRbase_allSubsets0___try);
     R_RegisterCCallable("gRbase", "gRbase_allSubsets__", (DL_FUNC)gRbase_allSubsets___try);
     R_RegisterCCallable("gRbase", "gRbase_RcppExport_validate", (DL_FUNC)gRbase_RcppExport_validate);

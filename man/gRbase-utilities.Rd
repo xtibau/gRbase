@@ -3,6 +3,7 @@
 \alias{colwiseProd}
 \alias{is_subsetof_}
 \alias{get_superset_}
+\alias{get_subset_}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Utility functions for gRbase}
