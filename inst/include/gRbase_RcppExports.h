@@ -26,6 +26,44 @@ namespace gRbase {
         }
     }
 
+    inline List allSubsets0__(const IntegerVector& x) {
+        typedef SEXP(*Ptr_allSubsets0__)(SEXP);
+        static Ptr_allSubsets0__ p_allSubsets0__ = NULL;
+        if (p_allSubsets0__ == NULL) {
+            validateSignature("List(*allSubsets0__)(const IntegerVector&)");
+            p_allSubsets0__ = (Ptr_allSubsets0__)R_GetCCallable("gRbase", "gRbase_allSubsets0__");
+        }
+        RObject __result;
+        {
+            RNGScope __rngScope;
+            __result = p_allSubsets0__(Rcpp::wrap(x));
+        }
+        if (__result.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (__result.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(__result).c_str());
+        return Rcpp::as<List >(__result);
+    }
+
+    inline SEXP allSubsets__(SEXP& x) {
+        typedef SEXP(*Ptr_allSubsets__)(SEXP);
+        static Ptr_allSubsets__ p_allSubsets__ = NULL;
+        if (p_allSubsets__ == NULL) {
+            validateSignature("SEXP(*allSubsets__)(SEXP&)");
+            p_allSubsets__ = (Ptr_allSubsets__)R_GetCCallable("gRbase", "gRbase_allSubsets__");
+        }
+        RObject __result;
+        {
+            RNGScope __rngScope;
+            __result = p_allSubsets__(Rcpp::wrap(x));
+        }
+        if (__result.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (__result.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(__result).c_str());
+        return Rcpp::as<SEXP >(__result);
+    }
+
     inline IntegerVector do_mcs_sparse(const MSpMat& X, const IntegerVector& mcs0idx_) {
         typedef SEXP(*Ptr_do_mcs_sparse)(SEXP,SEXP);
         static Ptr_do_mcs_sparse p_do_mcs_sparse = NULL;
@@ -822,44 +860,6 @@ namespace gRbase {
         if (__result.inherits("try-error"))
             throw Rcpp::exception(as<std::string>(__result).c_str());
         return Rcpp::as<IntegerVector >(__result);
-    }
-
-    inline List allSubsets0__(const IntegerVector& x) {
-        typedef SEXP(*Ptr_allSubsets0__)(SEXP);
-        static Ptr_allSubsets0__ p_allSubsets0__ = NULL;
-        if (p_allSubsets0__ == NULL) {
-            validateSignature("List(*allSubsets0__)(const IntegerVector&)");
-            p_allSubsets0__ = (Ptr_allSubsets0__)R_GetCCallable("gRbase", "gRbase_allSubsets0__");
-        }
-        RObject __result;
-        {
-            RNGScope __rngScope;
-            __result = p_allSubsets0__(Rcpp::wrap(x));
-        }
-        if (__result.inherits("interrupted-error"))
-            throw Rcpp::internal::InterruptedException();
-        if (__result.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(__result).c_str());
-        return Rcpp::as<List >(__result);
-    }
-
-    inline SEXP allSubsets__(SEXP& x) {
-        typedef SEXP(*Ptr_allSubsets__)(SEXP);
-        static Ptr_allSubsets__ p_allSubsets__ = NULL;
-        if (p_allSubsets__ == NULL) {
-            validateSignature("SEXP(*allSubsets__)(SEXP&)");
-            p_allSubsets__ = (Ptr_allSubsets__)R_GetCCallable("gRbase", "gRbase_allSubsets__");
-        }
-        RObject __result;
-        {
-            RNGScope __rngScope;
-            __result = p_allSubsets__(Rcpp::wrap(x));
-        }
-        if (__result.inherits("interrupted-error"))
-            throw Rcpp::internal::InterruptedException();
-        if (__result.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(__result).c_str());
-        return Rcpp::as<SEXP >(__result);
     }
 
 }

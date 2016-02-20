@@ -22,7 +22,7 @@
 \alias{adjList2matrix}
 \alias{adjList2dgCMatrix}
 
-
+\alias{stepwise}
 
 %% Various R/C/C++ implementations;
 %% --------------------------------
@@ -190,8 +190,6 @@
 \alias{partial.corr.matrix}
 \alias{update.gModel}
 \alias{gRfit-class}
-\alias{stepwise}
-\alias{stepwise.default}
 
 \alias{igraph-class}
 

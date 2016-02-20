@@ -439,7 +439,7 @@ NumericVector tabDiv0__(NumericVector tab1, NumericVector tab2){
       zz = i+k*n2;
       //cout << "i=" << i << " k=" << k << " zz=" << zz << endl;
       xx = out[zz] / tab2[i] ;
-      if (isinf( xx )) out[zz] = 0;  else out[zz]=xx;
+      if (std::isinf( xx )) out[zz] = 0;  else out[zz]=xx;
     }
   }
   return out;

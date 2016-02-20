@@ -24,6 +24,8 @@ moralize.default <- function(object, result=NULL, ...)
            "igraph"   ={
                if (!igraph::is.directed( object ))
                    stop("Graph must be directed")
+               if (is.null(igraph::V(object)$name))
+                   igraph::V(object)$name <- igraph::V(object)
                m <- moralizeMAT(igraph::get.adjacency(object))
            })
     coerceGraph( m, result)

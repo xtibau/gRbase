@@ -152,9 +152,6 @@ get_superset_(c("a","r"), setlist)
 get_superset_(x1, setlist, all=T)
 get_superset_(c("a","r"), setlist, all=T)
 
-
-
-
 setlist <- list(x1, x2, c("a","b","k"), c("a","r","k"))
 str(setlist)
 

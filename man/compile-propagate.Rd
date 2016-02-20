@@ -22,13 +22,19 @@ propagate(object, ...)
 \value{
   The value returned depends on the class of the first argument.
 }
-%\references{ ~put references to the literature/web site here ~ }
+\references{
+  Højsgaard, Søren; Edwards, David; Lauritzen, Steffen (2012): Graphical
+	Models with R, Springer
+}
 \author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
 %\note{ ~~further notes~~ 
 %
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
-\seealso{\code{\link[gRain]{compile.grain}}, \code{\link[gRain]{propagate.grain}}}
+\seealso{
+	\code{\link[gRain]{compile.grain}},
+	\code{\link[gRain]{propagate.grain}}
+}
 %\examples{
 %}
 % Add one or more standard keywords, see file 'KEYWORDS' in the

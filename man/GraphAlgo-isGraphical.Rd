@@ -11,7 +11,7 @@
   Properties of a generating class (for defining a graph)
 }
 
-\description{  A set of generators define an undirected graph, here
+\description{A set of generators define an undirected graph, here
   called a dependence graph. Given a set of generators it is checked 1)
   if the dependence dependence graph is in 1-1-correspondance with the
   genrators (such that the corresponding model is graphical) and 2) if

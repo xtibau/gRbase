@@ -1,37 +1,42 @@
-2015-xx-xx Søren Højsgaard <sorenh@math.aau.dk>
+2016-02-14 Søren Højsgaard <sorenh@math.aau.dk>
+
+	* Fixed quotes in DESRIPTION file
+	* Version 1.7-5 uploaded.
+	
+2016-02-14 Søren Højsgaard <sorenh@math.aau.dk>
+
+	* Fixed issue about isinf in cpp files
+	* Version 1.7-4 uploaded.
+	
+2015-12-31 Søren Højsgaard <sorenh@math.aau.dk>
+
+	* moralizeMAT fails if matrix does not have dimnames. Fixed
+	now. Thanks to David Edwards for reporting bug.
+	* Version 1.7-3 uploaded.
+	
+2015-10-10 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Corrected use of log and fabs in c++ code; thanks to BDR for
 	pointing this out
-
 	* get_subset_ added
-
 	* ug2dag added (works only on graphNEL's)
-
 	* Version 1.7-2 uploaded.
 
 2015-08-20 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* is.adjMAT is now based on own c++ code; way faster.
-
 	* get_superset_ and is_subsetof_ added.
-
 	* names2pairsM added.
-
 	* graph conversion utilities reworked.
-
 	* check argument added to triangulate; controls if it is checked
 	that a graph is triangulated.
-
 	* New vignettes
-
 	* Version 1.7-1 uploaded.
 
 2014-06-26 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* tableSetSliceValue and tableGetSliceIndex functions added.
-
 	* 'margin' in tableMargin can be a right-hand-sided formula.
-
 	* Version 1.7-0.1 uploaded.
 
 2014-03-17 Søren Højsgaard <sorenh@math.aau.dk>
@@ -39,43 +44,33 @@
 	* Added array functions (arrayPerm, arrayMargin, arrayOp
 	etc). These are implemented using Rcpp, they are not documented
 	but illustrated in a vignette.
-
 	* Many new implementations of graph/matrix operations with Rcpp.
-
 	* Major cleanups
-
 	* Version 1.7-0 uploaded.
 
 2013-07-17 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Bug in rip() function fixed. Thanks to Vanessa Didelez for the
 	bug report.
-
 	* Version 1.6-12 uploaded.
 
 2013-06-25 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Changes in NAMESPACE file such that the entire RBGL package is
 	not loaded.
-
 	* Makefile added for building vignettes
-
 	* Version 1.6-10 uploaded.
 
 2013-05-28 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* The use of fmatch has been replaced by the use of mathc.
-
 	* ripMAT re-implemented; much faster.
-
 	* Version 1.6-9 uploaded.
 
 2013-03-10 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* simulateArray and glist2setMAT from gRain moved to gRbase
-
 	* minor cleanups
-
 	* Version 1.6-8 uploaded.
 
 2013-01-29 Søren Højsgaard <sorenh@math.aau.dk>

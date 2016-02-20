@@ -69,6 +69,13 @@ moralize(daG)
 daG <- dag(~me+ve,~me+al,~ve+al,~al+an,~al+st,~an+st, result="matrix")
 moralizeMAT(daG)
 
+if (require(igraph)){
+M <- matrix(c(1,2,3,3), nrow=2)
+G <- graph.edgelist(M)
+G
+V(G)$name
+moralize(G)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

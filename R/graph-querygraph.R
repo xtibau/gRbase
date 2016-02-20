@@ -16,7 +16,6 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
       "connectedComp",
       "separates",
       "is.triangulated",
-
       "adj",
       "subgraph",
       "nodes",
@@ -51,18 +50,18 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
          "nodes"=            { graph::nodes(object)                             },
          "edges"=            { graph::edges(object)                             },
          ## gRbase functions
-         "ancestors"=,"an"=  { gRbase::ancestors(set, object)		         },
-         "ancestralGraph"=   { gRbase::ancestralGraph(set, object)	         },
-         "ancestralSet"=     { gRbase::ancestralSet(set, object)                 },
-         "children"=         { gRbase::children(set, object)         	         },
-         "closure"=          { gRbase::closure(set, object)          	         },
-         "edgeList"=         { gRbase::edgeList(object)	       		         },
+         "ancestors"=,"an"=  { gRbase::ancestors(set, object)		                },
+         "ancestralGraph"=   { gRbase::ancestralGraph(set, object)	            },
+         "ancestralSet"=     { gRbase::ancestralSet(set, object)                },
+         "children"=         { gRbase::children(set, object)         	          },
+         "closure"=          { gRbase::closure(set, object)          	          },
+         "edgeList"=         { gRbase::edgeList(object)	       		              },
          "is.decomposition"= { gRbase::is.decomposition(set, set2, set3, object) },
-         "is.complete"=      { gRbase::is.complete(object, set)         	 },
-         "is.simplicial"=    { gRbase::is.simplicial(set, object)         	 },
-         "parents"=          { gRbase::parents(set, object)         		 },
-         "simplicialNodes"=  { gRbase::simplicialNodes(object)         	         },
-         "vpar"=             { gRbase::vpar(object)         			 }
+         "is.complete"=      { gRbase::is.complete(object, set)         	      },
+         "is.simplicial"=    { gRbase::is.simplicial(set, object)         	    },
+         "parents"=          { gRbase::parents(set, object)         		        },
+         "simplicialNodes"=  { gRbase::simplicialNodes(object)         	        },
+         "vpar"=             { gRbase::vpar(object)         			              }
          )
 }
 
@@ -188,7 +187,7 @@ is.complete <- function(object, set=NULL){
 is.decomposition <- function(set, set2, set3, object){
   vn <- uniquePrim(c(set, set2, set3))
   if (setequal(vn, graph::nodes(object))){
-    separates(set, set2, set3, object) & is.complete(object, set3)
+    RBGL::separates(set, set2, set3, object) & is.complete(object, set3)
   } else {
     FALSE
   }

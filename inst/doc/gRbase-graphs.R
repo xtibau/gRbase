@@ -1,5 +1,5 @@
 ### R code from vignette source 'gRbase-graphs.Rnw'
-### Encoding: ISO8859-1
+### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: gRbase-graphs.Rnw:23-26

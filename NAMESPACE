@@ -1,19 +1,16 @@
 useDynLib(gRbase)
 
 exportPattern("^[[:alpha:]]+")
-
 importFrom(Rcpp, evalCpp)
-
-
 importFrom(methods, setOldClass) # because of setOldClass("igraph")
 
 importClassesFrom(Matrix, Matrix)
 importMethodsFrom(Matrix, t, isSymmetric, diag)
 importFrom(Matrix, Matrix)
 
-importFrom(RBGL, maxClique, is.triangulated, separates)
+importFrom("RBGL", "maxClique", "is.triangulated", "separates")
 
-importFrom(igraph, plot.igraph, print.igraph)
+importFrom(igraph, plot.igraph, print.igraph, "graph.edgelist")
 
 importFrom(graph, edges, nodes)
 importMethodsFrom(graph, plot)
