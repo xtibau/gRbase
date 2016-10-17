@@ -1,25 +1,4 @@
 
-iplot <- function(x,...){
-  UseMethod("iplot")
-}
-
-iplot.graphNEL <- function(x,...){
-  ig <- igraph::igraph.from.graphNEL(x)
-  igraph::V(ig)$label <- igraph::V(ig)$name
-  igraph::V(ig)$size  <- 50
-  ig$cex   <-  4
-                                        #ig$layout   <- layout.graphopt
-                                        #ig$layout <- layout.kamada.kawai
-  ig$layout <- igraph::layout.lgl
-  plot(ig,
-       vertex.label.family="Helvetica",
-       edge.label.family="Helvetica",
-       vertex.label.cex=2,
-       edge.label.cex=2)
-}
-
-
-
 .dgCMatrix <- function(data=NA, nrow=1, ncol=1, byrow=FALSE, dimnames=NULL,
                       sparse = TRUE, doDiag = TRUE, forceCheck = FALSE){
   as(Matrix(data=data, nrow=nrow, ncol=ncol, dimnames=dimnames, sparse=TRUE), "dgCMatrix")
@@ -86,17 +65,7 @@ ellK <- function (K, S, n)
     return(value)
 }
 
-cov2pcor <- function(V){
-  ans <- -cov2cor(solve(V))
-  diag(ans) <- -diag(ans)
-  ans
-  }
 
-conc2pcor <- function(K){
-  ans <- -cov2cor(K)
-  diag(ans)<-1
-  ans
-}
 
 
 

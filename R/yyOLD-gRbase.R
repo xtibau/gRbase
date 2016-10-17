@@ -192,14 +192,42 @@ globalVariables(c("rawdata", "loglm.formula"))
 
 ### Some generic functions
 
+##
+## Update 2016 in Rennes, France
+## Needed to get compileCPT to work with proper array input in gRain
+## (strange that nobody has noticed that it fails before)
+## 
+valueLabels         <- function(x) UseMethod("valueLabels")
+valueLabels.default  <- function(x) attr(x,"dimnames")
+valueLabels.gmData  <- function(x) attr(x,"valueLabels")
+
+varNames         <- function(x)UseMethod("varNames")
+varNames.default <- function(x) names(attr(x,"dimnames"))
+varNames.gmData <- function(x)as.vector(x$varNames)
+
+nLevels         <- function(x)UseMethod("nLevels")
+nLevels.default <- function(x) dim(x)
+nLevels.gmData  <- function(x)structure(as.vector(x$nLevels), .Names=varNames(x))
+
+## nLevels.array      <- function(x) dim(x)
+## nLevels.parray     <- function(x) dim(x)
+
+##varNames.array     <- function(x) names(attr(x,"dimnames"))
+##valueLabels.array  <- function(x) attr(x,"dimnames")
+
+##varNames.parray    <- function(x) names(attr(x,"dimnames"))
+##valueLabels.parray <- function(x) attr(x,"dimnames")
+
+##
+## END of French update
+##
+
 "latent.gmData" <- function(x){attr(x,"latent")}
 "latent" <- function(x) UseMethod("latent")
 
 "latent<-.gmData" <- function(tmp,value){attr(tmp,"latent")<-value; return(tmp)}
 "latent<-" <- function(tmp,value) UseMethod("latent<-")
 
-valueLabels.gmData<- function(x) attr(x,"valueLabels")
-valueLabels       <- function(x) UseMethod("valueLabels")
 
 "valueLabels<-.gmData"<- function(tmp,value){attr(tmp,"valueLabels")<-value; return(tmp)}
 "valueLabels<-"       <- function(tmp,value) UseMethod("valueLabels<-")
@@ -223,14 +251,10 @@ obs             <- function(x) UseMethod("observations")
 "varTypes<-.gmData" <- function(tmp,value){ tmp$varTypes <-value; return(tmp)}
 "varTypes<-" <- function(tmp,value) UseMethod("varTypes<-")
 
-varNames.gmData <- function(x)as.vector(x$varNames)
-varNames <- function(x)UseMethod("varNames")
 
 "varNames<-.gmData" <- function(tmp,value){ tmp$varNames <-value; return(tmp)}
 "varNames<-" <- function(tmp,value) UseMethod("varNames<-")
 
-nLevels.gmData <- function(x)structure(as.vector(x$nLevels), .Names=varNames(x))
-nLevels <- function(x)UseMethod("nLevels")
 
 "nLevels<-.gmData" <- function(tmp,value){ tmp$nLevels <-value; return(tmp)}
 "nLevels<-" <- function(tmp,value) UseMethod("nLevels<-")
@@ -307,7 +331,6 @@ summary.gmData <- function(object, ...){
     cat("Factor:", ll, "\n Levels:", paste(xx,sep=' '),"\n")
   }, valueLabels(object),names(valueLabels(object)))
   return(invisible(object))
-
 }
 
 

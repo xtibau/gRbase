@@ -1,25 +1,26 @@
 
 // ------------------------------------------------------------
 // Utility functions intended to mimic R's c() function
-// Author: Søren Højsgaard
+// Author: SÃ¸ren HÃ¸jsgaard
 // ------------------------------------------------------------
 
-#define DO_CONCAT										\
-  for (int i=0; i<nx; ++i)   out[i] = x[i];				\
-  for (int i=0; i<ny; ++i)   out[i+nx] = y[i];							\
-  bool has_xnames=!Rf_isNull(x.names()), has_ynames = !Rf_isNull(y.names()); \
-  if( has_xnames || has_ynames ){										\
-    Rcpp::CharacterVector nam( nx + ny );								\
-    if ( has_xnames ){													\
-      Rcpp::CharacterVector xnam = x.names();							\
-      for (int i=0; i<nx; ++i)	nam[i] = xnam[i];						\
-    }																	\
-    if ( has_ynames ){													\
-      Rcpp::CharacterVector ynam = y.names();							\
-      for (int i=0; i<ny; ++i)	nam[i+nx] = ynam[i];					\
-    }																	\
-    out.names() = nam;													\
-  }																		\
+#define DO_CONCAT																												\
+  for (int i=0; i<nx; ++i)   out[i] = x[i];															\
+  for (int i=0; i<ny; ++i)   out[i+nx] = y[i];													\
+  bool has_xnames=!Rf_isNull(x.names());																\
+	bool has_ynames = !Rf_isNull(y.names());															\
+  if( has_xnames || has_ynames ){																				\
+    Rcpp::CharacterVector nam( nx + ny );																\
+    if ( has_xnames ){																									\
+      Rcpp::CharacterVector xnam = x.names();														\
+      for (int i=0; i<nx; ++i)	nam[i] = xnam[i];												\
+    }																																		\
+    if ( has_ynames ){																									\
+      Rcpp::CharacterVector ynam = y.names();														\
+      for (int i=0; i<ny; ++i)	nam[i+nx] = ynam[i];										\
+    }																																		\
+    out.names() = nam;																									\
+  }																																			\
   
 template <typename T>
 T do_concat_(const T& x, const T& y){
@@ -37,20 +38,16 @@ Rcpp::Vector<RTYPE> do_concat2_(const Rcpp::Vector<RTYPE>& x, const Rcpp::Vector
   return out;
 }
 
+/*** R
 
+cppFunction(
+"NumericVector f1 (NumericVector a, NumericVector b){
+  return do_concat_<NumericVector>(a, b);
+}"
 
+)
 
-
-
-
-
-
-
-
-
-
-
-
+ ***/
 
 
 /* // [[Rcpp::export]] */

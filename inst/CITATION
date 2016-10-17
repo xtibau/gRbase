@@ -12,7 +12,7 @@ citEntry(entry = "Article",
   url          = "http://www.jstatsoft.org/v14/i17/",
 
   textVersion  =
-  paste("Claus Dethlefsen, Søren Højsgaard (2005).",
+  paste("Claus Dethlefsen, SÃ¸ren HÃ¸jsgaard (2005).",
         "A Common Platform for Graphical Models in R: The gRbase Package.",
         "Journal of Statistical Software, 14(17), 1-12.",
         "URL http://www.jstatsoft.org/v14/i17/.")

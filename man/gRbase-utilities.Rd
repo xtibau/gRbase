@@ -34,7 +34,7 @@
   A vector or a logical.
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, \email{sorenh@math.aau.dk}}
+\author{SÃ¸ren HÃ¸jsgaard, \email{sorenh@math.aau.dk}}
 %% \note{
 %%   Use the xxxxPrim functions with caution!
 

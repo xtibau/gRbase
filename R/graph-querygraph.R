@@ -8,6 +8,16 @@
 ####
 #######################################################################
 
+#' @title Query a graph
+#'
+#' @description Unified approach to query a graph about its properties
+#'
+#' @name graph-query
+#'
+#' @param object A graph
+#' @param op The operation or query
+#' @param set,set2,set3 Sets of nodes in graph
+#' 
 querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
 
   ## From RBGL / graph packages
@@ -35,7 +45,7 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
       "simplicialNodes",
       "vpar")
 
-  op <- match.arg(op, choices=c(graph.RBGL, gRbase))
+    op <- match.arg(op, choices=c(graph.RBGL, gRbase))
   object <- coerceGraph(object, "graphNEL")
 
   switch(op,
@@ -73,6 +83,7 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
 ########################################################################
 
 ## adjmat based
+#' @rdname graph-query
 ancestors <- function(set, object){
   amat  <- graphNEL2M(object)
   ##if (isUndirectedMAT(amat))
@@ -94,6 +105,7 @@ ancestors <- function(set, object){
 }
 
 ## adjmat based -- Must be very slow !!!
+#' @rdname graph-query
 ancestralSet <- function(set, object){
 
   amat  <- graphNEL2M(object)
@@ -126,6 +138,7 @@ ancestralSet <- function(set, object){
 }
 
 ## adjmat based
+#' @rdname graph-query
 parents <- function(set, object){
   amat  <- graphNEL2M(object)
   ##if (isUndirectedMAT(amat))
@@ -138,6 +151,7 @@ parents <- function(set, object){
 }
 
 ## graphNEL based
+#' @rdname graph-query
 children <- function(set, object){
   if (graph::edgemode(object)=="undirected")
     return(NULL)
@@ -146,11 +160,13 @@ children <- function(set, object){
 }
 
 ## graphNEL based
+#' @rdname graph-query
 closure <- function(set, object){
   uniquePrim(c(set, unlist(graph::adj(object, set))))
 }
 
 ## graphNEL based
+#' @rdname graph-query
 simplicialNodes <- function(object){
   nodes <- graph::nodes(object)
   b     <- unlistPrim(lapply(nodes, function(s) is.simplicial(s, object)))
@@ -166,6 +182,7 @@ simplicialNodes <- function(object){
 ###
 ########################################################################
 
+#' @rdname graph-query
 ancestralGraph <- function(set, object){
   graph::subGraph(ancestralSet(set, object), object)
 }
@@ -176,6 +193,7 @@ ancestralGraph <- function(set, object){
 ###
 ########################################################################
 
+#' @rdname graph-query
 is.complete <- function(object, set=NULL){
   if (is.null(set))
     submat <- graphNEL2M(object)
@@ -184,6 +202,7 @@ is.complete <- function(object, set=NULL){
   all(submat[upper.tri(submat)]>0)
 }
 
+#' @rdname graph-query
 is.decomposition <- function(set, set2, set3, object){
   vn <- uniquePrim(c(set, set2, set3))
   if (setequal(vn, graph::nodes(object))){
@@ -193,6 +212,7 @@ is.decomposition <- function(set, set2, set3, object){
   }
 }
 
+#' @rdname graph-query
 is.simplicial <- function(set, object){
   x <- unlist(graph::adj(object,set))
   is.complete(graph::subGraph(x, object), x)

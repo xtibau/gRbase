@@ -30,5 +30,5 @@ outerPrim <- function(X,Y){
 
 
 matchPrim<-function(x,table){ # Never used
-  match(x,table)
+  match(x, table)
 }

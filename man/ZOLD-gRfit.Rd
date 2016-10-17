@@ -6,7 +6,7 @@
 \alias{getFit.gRfit}
 \alias{print.gRfit}
 \alias{summary.gRfit}
-\alias{fit}
+%\alias{fit}
 
 
 \title{Old: Class "gRfit" - fitted graphical models}
@@ -37,7 +37,7 @@ getFit(x)
   algorithm. 
 }
 %\references{ ~put references to the literature/web site here ~ }
-\author{Søren Højsgaard, \email{sorenh@math.aau.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
+\author{SÃ¸ren HÃ¸jsgaard, \email{sorenh@math.aau.dk}, \cr Claus Dethlefsen, \email{cld@rn.dk}}
 %\note{ ~~further notes~~ }
 
 \keyword{internal}

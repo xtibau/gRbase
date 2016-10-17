@@ -6,23 +6,25 @@
 \alias{matrix2dgCMatrix}
 \alias{dgCMatrix2matrix}
 
-\alias{MAT2dgCMatrix}
-\alias{MAT2matrix}
+%\alias{MAT2dgCMatrix}
+%\alias{MAT2matrix}
 \alias{MAT2ftM_}
 \alias{MAT2MAT}
 \alias{as.amat}
 \alias{symMAT2ftM_}
 
-\alias{coerceGraph}
-\alias{coerceGraph.graphNEL}
-\alias{coerceGraph.igraph}
-\alias{coerceGraph.matrix}
-\alias{coerceGraph.dgCMatrix}
+%% \alias{coerceGraph}
+%% \alias{coerceGraph.graphNEL}
+%% \alias{coerceGraph.igraph}
+%% \alias{coerceGraph.matrix}
+%% \alias{coerceGraph.dgCMatrix}
 
 \alias{adjList2matrix}
 \alias{adjList2dgCMatrix}
 
-\alias{stepwise}
+%%\alias{stepwise}
+
+\alias{\%>\%}
 
 %% Various R/C/C++ implementations;
 %% --------------------------------
@@ -32,6 +34,7 @@
 \alias{issymMAT_}
 \alias{isugMAT_}
 
+\alias{as.named.array}
 
 %\alias{cell2entry2_cpp}
 %\alias{cell2entry_cpp}
@@ -79,7 +82,7 @@
 \alias{solveSPD}   % bruges i gRim
 
 %% Needs documentation
-\alias{adjList2adjMAT}
+%%\alias{adjList2adjMAT}
 \alias{adjList2ftList}
 \alias{adjList2ftM}
 \alias{adjList2tfList}
@@ -91,13 +94,11 @@
 %% Some methods which need not be in the proper .Rd files (to shorten
 %% the listing)
 
-\alias{varNames.parray}
-\alias{nLevels.parray}
-\alias{valueLabels.parray}
 
-\alias{varNames.array}
-\alias{nLevels.array}
-\alias{valueLabels.array}
+\alias{varNames.default}
+\alias{nLevels.default}
+\alias{valueLabels.default}
+
 \alias{print.parray}
 
 \alias{print.ripOrder}
