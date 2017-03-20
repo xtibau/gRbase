@@ -1,5 +1,5 @@
 Package: gRbase
-Version: 1.8-1
+Version: 1.8-3
 Title: A Package for Graphical Modelling in R
 Author: Søren Højsgaard <sorenh@math.aau.dk>
 Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
@@ -33,12 +33,13 @@ License: GPL (>= 2)
 URL: http://people.math.aau.dk/~sorenh/software/gR/
 ByteCompile: Yes
 Encoding: UTF-8
+VignetteBuilder: knitr
 Depends: R (>= 3.0.2), methods
 Imports: graph, igraph, magrittr, Matrix, RBGL, Rcpp (>= 0.11.1)
-Suggests: Rgraphviz, microbenchmark
+Suggests: Rgraphviz, microbenchmark, knitr
 LinkingTo: Rcpp (>= 0.11.1), RcppArmadillo, RcppEigen
 RoxygenNote: 5.0.1
 NeedsCompilation: yes
-Packaged: 2016-10-16 18:09:38 UTC; sorenh
+Packaged: 2017-03-19 22:52:48 UTC; sorenh
 Repository: CRAN
-Date/Publication: 2016-10-17 00:46:21
+Date/Publication: 2017-03-20 07:16:19 UTC

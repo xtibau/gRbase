@@ -1,6 +1,4 @@
-* ripMAT: Need C++-implementation
 
-* is.adjMAT: Need C-implementation
+* There is an "arop" function in c++ code; should perhaps be visible in R.
 
-* everything in file yyyPrim.R should be removed, but first when downstream
-  packages do not use them anymore
+* Get travis to work

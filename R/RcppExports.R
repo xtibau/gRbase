@@ -41,16 +41,12 @@ topoSortMAT_ <- function(adjmat_) {
     .Call('gRbase_topoSortMAT_', PACKAGE = 'gRbase', adjmat_)
 }
 
+do_triangulate_elo <- function(X_, ELO_) {
+    .Call('gRbase_do_triangulate_elo', PACKAGE = 'gRbase', X_, ELO_)
+}
+
 triangulateMAT_ <- function(adjmat_, nstates_) {
     .Call('gRbase_triangulateMAT_', PACKAGE = 'gRbase', adjmat_, nstates_)
-}
-
-MAT2ftM_ <- function(XX_) {
-    .Call('gRbase_MAT2ftM_', PACKAGE = 'gRbase', XX_)
-}
-
-symMAT2ftM_ <- function(XX_) {
-    .Call('gRbase_symMAT2ftM_', PACKAGE = 'gRbase', XX_)
 }
 
 issymMAT_ <- function(A_) {
@@ -67,6 +63,14 @@ isadjMAT_ <- function(A_) {
 
 isdagMAT_ <- function(A_) {
     .Call('gRbase_isdagMAT_', PACKAGE = 'gRbase', A_)
+}
+
+MAT2ftM_ <- function(XX_) {
+    .Call('gRbase_MAT2ftM_', PACKAGE = 'gRbase', XX_)
+}
+
+symMAT2ftM_ <- function(XX_) {
+    .Call('gRbase_symMAT2ftM_', PACKAGE = 'gRbase', XX_)
 }
 
 matrix2dgCMatrix <- function(XX_) {

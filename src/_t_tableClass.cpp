@@ -3,6 +3,8 @@
 using namespace std;
 using namespace Rcpp;
 
+
+
 #include "_t_tableCore.h"
 
 class Ptable {

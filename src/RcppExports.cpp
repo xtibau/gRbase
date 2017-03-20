@@ -262,6 +262,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// do_triangulate_elo
+SEXP do_triangulate_elo(SEXP X_, SEXP ELO_);
+RcppExport SEXP gRbase_do_triangulate_elo(SEXP X_SEXP, SEXP ELO_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type X_(X_SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ELO_(ELO_SEXP);
+    rcpp_result_gen = Rcpp::wrap(do_triangulate_elo(X_, ELO_));
+    return rcpp_result_gen;
+END_RCPP
+}
 // triangulateMAT_
 SEXP triangulateMAT_(SEXP adjmat_, SEXP nstates_);
 RcppExport SEXP gRbase_triangulateMAT_(SEXP adjmat_SEXP, SEXP nstates_SEXP) {
@@ -271,28 +283,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type adjmat_(adjmat_SEXP);
     Rcpp::traits::input_parameter< SEXP >::type nstates_(nstates_SEXP);
     rcpp_result_gen = Rcpp::wrap(triangulateMAT_(adjmat_, nstates_));
-    return rcpp_result_gen;
-END_RCPP
-}
-// MAT2ftM_
-SEXP MAT2ftM_(SEXP XX_);
-RcppExport SEXP gRbase_MAT2ftM_(SEXP XX_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
-    rcpp_result_gen = Rcpp::wrap(MAT2ftM_(XX_));
-    return rcpp_result_gen;
-END_RCPP
-}
-// symMAT2ftM_
-SEXP symMAT2ftM_(SEXP XX_);
-RcppExport SEXP gRbase_symMAT2ftM_(SEXP XX_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
-    rcpp_result_gen = Rcpp::wrap(symMAT2ftM_(XX_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -337,6 +327,28 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type A_(A_SEXP);
     rcpp_result_gen = Rcpp::wrap(isdagMAT_(A_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MAT2ftM_
+SEXP MAT2ftM_(SEXP XX_);
+RcppExport SEXP gRbase_MAT2ftM_(SEXP XX_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    rcpp_result_gen = Rcpp::wrap(MAT2ftM_(XX_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// symMAT2ftM_
+SEXP symMAT2ftM_(SEXP XX_);
+RcppExport SEXP gRbase_symMAT2ftM_(SEXP XX_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type XX_(XX_SEXP);
+    rcpp_result_gen = Rcpp::wrap(symMAT2ftM_(XX_));
     return rcpp_result_gen;
 END_RCPP
 }

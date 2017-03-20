@@ -33,6 +33,7 @@
 \alias{isdagMAT_}
 \alias{issymMAT_}
 \alias{isugMAT_}
+\alias{aperm__}
 
 \alias{as.named.array}
 
@@ -70,6 +71,8 @@
 \alias{mcsMAT0_}
 \alias{topoSortMAT_}
 \alias{triangulateMAT_}
+\alias{triangulateEloMAT_}
+\alias{do_triangulate_elo}
 \alias{do_getcq_dense}
 \alias{do_getcq_sparse}
 \alias{do_mcs_dense}
