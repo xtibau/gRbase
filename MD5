@@ -1,5 +1,5 @@
 957653dfaac7d63c590d53c138761c6f *ChangeLog
-8519a6ea0538237272d0696039de9386 *DESCRIPTION
+f5f5573841e4c617ca01792427c07395 *DESCRIPTION
 2556ce5ddabc575b788c1a3001123129 *NAMESPACE
 cf2ebdcf2c5148f0ffdb71e2c710729d *R/Generics.R
 89eb3b99b5f3e4df6f09444971d01a46 *R/RcppExports.R
@@ -41,7 +41,7 @@ c5286e337caaf07fbd6f61ef146bad9c *R/yyOLD-gRbase.R
 dc658c6c5c179e639f6190889e4c8f14 *R/yyyPrim.R
 0c4c0b35b01c55f4805664cc364f986b *README.md
 3830aeb12123b162ca0515508c69b4a3 *TODO
-58d9e9b1d50b6233d6f480e613032a11 *build/vignette.rds
+36fe5c61fc30c8768202d8cba9e1832f *build/vignette.rds
 af5f056397ae51c8a1ed5966b06a756b *data/BodyFat.RData
 ef129787b3da6a90911803c53db820d2 *data/Nutrimouse.rda
 5b0468024e47461fe0ae891a585ff716 *data/ashtrees.RData
@@ -77,10 +77,10 @@ d22303b741e32cffaeb8bc65b76bb8be *demo/cadcomplete.R
 02b4c66a33815ed06f8af3216619e055 *inst/CITATION
 ffd9a537e5f316850dddab011351aaa4 *inst/doc/gRbase-arrays.R
 e53c74dca766987ab0e62e157b346649 *inst/doc/gRbase-arrays.Rnw
-1dce6810839b55feb0596b662da42c2c *inst/doc/gRbase-arrays.pdf
+db0853bce5ad788a187fc05aa0b2b715 *inst/doc/gRbase-arrays.pdf
 06dd3c4691b07ea21c5173860339f1d2 *inst/doc/gRbase-graphs.R
 9ceb2d61f645beba4fd3b2612c81371e *inst/doc/gRbase-graphs.Rnw
-1331e9c39d1ecfe71c028f54ab265b24 *inst/doc/gRbase-graphs.pdf
+f9885bc95ba1ebb763ca5dc56ace6867 *inst/doc/gRbase-graphs.pdf
 50a40a3437b47dfbce83ef74133c4968 *inst/include/gRbase.h
 80ea66b2ed2590dd7b01ce7f166f053f *inst/include/gRbase_RcppExports.h
 0cf11503ca38b327c49db749c338562a *inst/include/gRbase_typedefs.h
