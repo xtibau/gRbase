@@ -9,9 +9,6 @@
 #
 # should perhaps be called dagTopoSort
 
-
-
-
 #' @title Topological sort of vertices in directed acyclic graph
 #' 
 #' @description A topological ordering of a directed graph is a linear
@@ -24,7 +21,7 @@
 #' 
 #' @name graph-toposort
 #' 
-#' @aliases topoSort topoSort.default topoSortMAT topoSort_vparList
+#' @aliases topo_sort topo_sort.default topo_sortMAT topo_sort_vparList
 #' @param object An graph represented either as a \code{graphNEL}
 #'     object, an \code{igraph}, a (dense) \code{matrix}, a (sparse)
 #'     \code{dgCMatrix}.
@@ -36,7 +33,7 @@
 #'     \code{character(0)} otherwise. If TRUE, the index of the
 #'     variables in an adjacency matrix is returned and \code{-1}
 #'     otherwise.
-#' @section Note: The workhorse is the \code{topoSortMAT} function
+#' @section Note: The workhorse is the \code{topo_sortMAT} function
 #'     which takes an adjacency matrix as input
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{dag}}, \code{\link{ug}}
@@ -47,86 +44,42 @@
 #' dagMATS <- as(dagMAT, "dgCMatrix")
 #' dagNEL  <- as(dagMAT, "graphNEL")
 #' 
-#' topoSort(dagMAT)
-#' topoSort(dagMATS)
-#' topoSort(dagNEL)
+#' topo_sort(dagMAT)
+#' topo_sort(dagMATS)
+#' topo_sort(dagNEL)
 #' 
-#' @export topoSort
-topoSort <- function(object, index=FALSE){
-  UseMethod("topoSort")
+#' @export topo_sort
+topo_sort <- function(object, index=FALSE){
+  UseMethod("topo_sort")
 }
 
 #' @rdname graph-toposort
-topoSort.default <- function(object, index=FALSE){
-    cls <- match.arg(class( object ),
-                     c("graphNEL","igraph","matrix","dgCMatrix"))
-    switch(cls,
-           "graphNEL" ={topoSortMAT(graphNEL2dgCMatrix(object), index=index) },
-           "igraph"   ={topoSortMAT(igraph::get.adjacency(object), index=index) },
-           "dgCMatrix"=,
-           "matrix"   ={topoSortMAT(object, index=index)} )
+topo_sort.default <- function(object, index=FALSE){
+    ## cls <- match.arg(class( object ),
+    ##                  c("graphNEL", "igraph", "matrix", "dgCMatrix"))
+    topo_sortMAT(as_(object, "dgCMatrix"), index=index)
 }
 
 
 #' @rdname graph-toposort
 #' @param amat Adjacency matrix. 
-topoSortMAT <- function(amat, index=FALSE){
-    ans <- topoSortMAT_( amat )
+topo_sortMAT <- function(amat, index=FALSE){
+    ans <- topo_sortMAT_( amat )
     if (index){
-        if (ans[1]!=-1){
-            ans
-        } else {
-            -1L
-        }
+        if (ans[1] != -1) ans
+        else -1L
     } else {
-        if (ans[1]!=-1){
-            colnames(amat)[ans]
-        } else {
-            character(0)
-        }
+        if (ans[1] != -1) colnames(amat)[ans]
+        else character(0)
     }
 }
 
-
-## FIXME topoSort_vparList Delete?
-topoSort_vparList<- function(glist){
-    ##topoSort(vpaList2adjMAT(vpaL, result="Matrix"))
-    topoSort(dagList2M(glist, result="Matrix"))
+## FIXME topo_sort_vparList Delete?
+topo_sort_vparList<- function(glist){
+    ##topo_sort(vpaList2adjMAT(vpaL, result="Matrix"))
+    ##topo_sort(dagList2M(glist, result="dgCMatrix"))
+    topo_sortMAT(dgl2sm_(glist))
 }
 
 
 
-## topoSort.graphNEL<- function(object, index=FALSE){
-##   topoSortMAT(as(object,"Matrix"), index=index)
-## }
-
-
-
-## topoSort.matrix <- topoSort.Matrix <- function(object, index=FALSE){
-##   topoSortMAT(object, index=index)
-## }
-
-## topoSortMAT <- function(XX_, index=FALSE){
-##   if (inherits(XX_, "Matrix")){
-##     ans <- .Call("gRbase_topoSortMAT_sp", XX_ ,package="gRbase")
-##   } else {
-##     if (inherits(XX_, "matrix")){
-##       ans <- .Call("gRbase_topoSortMAT_st", XX_ ,package="gRbase")
-##     } else {
-##       stop("'XX_' must be a matrix or a sparse matrix (a 'dgCMatrix')")
-##     }
-##   }
-##   if (index){
-##     if (ans[1]!=-1){
-##       ans
-##     } else {
-##       -1L
-##     }
-##   } else {
-##     if (ans[1]!=-1){
-##       colnames(XX_)[ans]
-##     } else {
-##       character(0)
-##     }
-##   }
-## }

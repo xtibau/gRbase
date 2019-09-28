@@ -7,12 +7,13 @@
 ##
 ## ###################################################################
 
+## ###################################################################
 #' @title Maximum cardinality search on undirected graph.
-#' 
 #' @description Returns (if it exists) a perfect ordering of the
 #'     vertices in an undirected graph.
-#'
 #' @name graph-mcs
+#' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
+## ###################################################################
 #' 
 #' @details An undirected graph is decomposable iff there exists a
 #'     perfect ordering of the vertices. The maximum cardinality
@@ -30,8 +31,8 @@
 #'     whether vertices represent discrete or continuous variables,
 #'     this information is supplied in the \code{discrete} argument.
 #' 
-#' @aliases mcs mcs.default mcsMAT mcsmarked mcsmarked.default
-#'     mcsmarkedMAT
+#' @aliases mcs mcs.default mcsMAT mcs_marked mcsmarked.default
+#'     mcs_markedMAT
 #' @param object An undirected graph represented either as a
 #'     \code{graphNEL} object, an \code{igraph}, a (dense)
 #'     \code{matrix}, a (sparse) \code{dgCMatrix}.
@@ -48,15 +49,15 @@
 #'     cardinality search) of the variables or character(0) if such an
 #'     ordering can not be created.
 #' @note The workhorse is the \code{mcsMAT} function.
-#' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso \code{\link{moralize}}, \code{\link{jTree}},
+
+#' @seealso \code{\link{moralize}}, \code{\link{junction_tree}},
 #'     \code{\link{rip}}, \code{\link{ug}}, \code{\link{dag}}
 #' @keywords utilities
 #' @examples
 #' 
 #' uG <- ug(~ me:ve + me:al + ve:al + al:an + al:st + an:st)
 #' mcs(uG)
-#' mcsMAT( graphNEL2M(uG) )
+#' mcsMAT(as(uG, "matrix"))
 #' ## Same as
 #' uG <- ug(~ me:ve + me:al + ve:al + al:an + al:st + an:st, result="matrix")
 #' mcsMAT(uG)
@@ -65,9 +66,9 @@
 #' uG1 <- ug(~ a:b + b:c + c:d)
 #' uG2 <- ug(~ a:b + a:d + c:d)
 #' ## Not strongly decomposable:
-#' mcsmarked(uG1, discrete=c("a","d"))
+#' mcs_marked(uG1, discrete=c("a","d"))
 #' ## Strongly decomposable:
-#' mcsmarked(uG2, discrete=c("a","d"))
+#' mcs_marked(uG2, discrete=c("a","d"))
 #' 
 #' @export mcs
 mcs <- function(object, root=NULL, index=FALSE){
@@ -80,9 +81,9 @@ mcs <- function(object, root=NULL, index=FALSE){
 #' @rdname graph-mcs
 mcs.default <- function(object, root=NULL, index=FALSE){
     cls <- match.arg(class( object ),
-                     c("graphNEL","matrix","dgCMatrix","igraph"))
-    mm <- coerceGraph( object, "matrix" )
-    if ( !is.UGMAT(mm) )
+                     c("graphNEL", "matrix", "dgCMatrix", "igraph"))
+    mm <- coerceGraph(object, "matrix")
+    if (!is.UGMAT(mm))
         character(0) ##FIXME: mcs.default: Should perhaps be error...
     else
         mcsMAT( mm, root=root, index=index )
@@ -94,67 +95,64 @@ mcsMAT <- function (amat, vn = colnames(amat), root = NULL, index = FALSE)
     vn.old <- vn
     if (!is.null(root)){
         vn    <- c(root, setdiffPrim(vn, root))
-        root2 <- match(vn, vn.old)-1
+        root2 <- match(vn, vn.old) - 1
     } else {
-        root2 <- 0:(ncol(amat)-1)
+        root2 <- 0:(ncol(amat) - 1)
     }
     ##cat("mcsMAT:"); print(root2)
-
-    a <- mcsMAT_( amat, root2 )
+    a <- mcsMAT__( amat, root2 )
 
     if (index){
-        if (a[1]<0){
+        if (a[1] < 0){
             NA
         } else {
-            a+1
+            a + 1
         }
     } else {
-        if (a[1]<0){
+        if (a[1] < 0){
             character(0)
         } else {
-            vn.old[a+1]
+            vn.old[a + 1]
         }
     }
 }
 
 
 #' @rdname graph-mcs
-mcsmarked <- function (object, discrete=NULL, index = FALSE){
-  UseMethod("mcsmarked")
+mcs_marked <- function (object, discrete=NULL, index = FALSE){
+  UseMethod("mcs_marked")
 }
 
 #' @rdname graph-mcs
-mcsmarked.default <- function (object, discrete=NULL, index = FALSE){
+mcs_marked.default <- function (object, discrete=NULL, index = FALSE){
     cls <- match.arg(class( object ),
                      c("graphNEL","igraph","matrix","dgCMatrix"))
     switch(cls,
            "graphNEL" ={
                if (is.null(discrete))
-                   mcsMAT(graphNEL2dgCMatrix(object), index=index)
+                   mcsMAT(gn2sm_(object), index=index)
                else
-                   mcsmarkedMAT(graphNEL2dgCMatrix(object), discrete=discrete, index = index)
+                   mcs_markedMAT(gn2sm_(object), discrete=discrete, index = index)
            },
            "igraph"   ={
                if (is.null(discrete))
-                   mcsMAT(igraph::get.adjacency(object), index=index)
+                   mcsMAT(ig2sm_(object), index=index)
                else
-                   mcsmarkedMAT(igraph::get.adjacency(object), discrete=discrete, index = index)
+                   mcs_markedMAT(ig2sm_(object), discrete=discrete, index = index)
            },
            "dgCMatrix"=,
            "matrix"   ={
                if (is.null(discrete))
                    mcsMAT(object, index=index)
                else
-                   mcsmarkedMAT(object, discrete=discrete, index = index)
+                   mcs_markedMAT(object, discrete=discrete, index = index)
            })
 }
 
-
-
-## FIXME: mcsmarkedMAT: candidate for C++ implementation.
+## FIXME: mcs_marked_MAT: candidate for C++ implementation.
 
 #' @rdname graph-mcs
-mcsmarkedMAT <- function(amat, vn = colnames(amat), discrete = NULL, index = FALSE) {
+mcs_markedMAT <- function(amat, vn = colnames(amat), discrete = NULL, index = FALSE) {
 
     nv   <- length(vn)
 

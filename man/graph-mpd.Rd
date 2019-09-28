@@ -7,11 +7,12 @@
 \alias{mpdMAT}
 \title{Maximal prime subgraph decomposition}
 \usage{
-mpd(object, tobject = minimalTriang(object), details = 0)
+mpd(object, tobject = minimal_triang(object), details = 0)
 
-\method{mpd}{default}(object, tobject = triangulate(object), details = 0)
+\method{mpd}{default}(object, tobject = triangulate(object),
+  details = 0)
 
-mpdMAT(amat, tamat = minimalTriangMAT(amat), details = 0)
+mpdMAT(amat, tamat = minimal_triangMAT(amat), details = 0)
 }
 \arguments{
 \item{object}{An undirected graph; a graphNEL object}
@@ -48,10 +49,6 @@ if (interactive()) plot(as(g1m, "graphNEL"))
 x <- mpdMAT(g1m)
 
 }
-\author{
-Clive Bowsher \email{C.Bowsher@statslab.cam.ac.uk} with
-    modifications by Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \references{
 Kristian G. Olesen and Anders L. Madsen (2002): Maximal Prime
     Subgraph Decomposition of Bayesian Networks. IEEE TRANSACTIONS ON
@@ -60,9 +57,12 @@ Kristian G. Olesen and Anders L. Madsen (2002): Maximal Prime
 }
 \seealso{
 \code{\link{mcs}}, \code{\link{mcsMAT}},
-    \code{\link{minimalTriang}}, \code{\link{minimalTriangMAT}},
+    \code{\link{minimal_triang}}, \code{\link{minimal_triangMAT}},
     \code{\link{rip}}, \code{\link{ripMAT}}, \code{\link{triangulate}},
     \code{\link{triangulateMAT}}
 }
+\author{
+Clive Bowsher \email{C.Bowsher@statslab.cam.ac.uk} with
+    modifications by Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

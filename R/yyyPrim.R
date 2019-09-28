@@ -1,11 +1,7 @@
-uniquePrim <- function(x){    #OK
-  unique.default(x)
-}
-
-unlistPrim <- function(l){    #OK
-  unlist(l, use.names=FALSE)
-}
-
+#' @name internal
+#' @aliases  uniquePrim unlistPrim setdiffPrim intersectPrim outerPrim matchPrim
+#' 
+NULL
 
 setdiffPrim <- function (x, y){
     unique.default(
@@ -15,10 +11,13 @@ setdiffPrim <- function (x, y){
     )
 }
 
+unlistPrim <- function(x){    #OK
+  unlist(x, use.names=FALSE)
+}
+
 intersectPrim <- function (x, y){
   unique.default(y[match(x, y, 0L)])
 }
-
 
 outerPrim <- function(X,Y){
   nX  <- length(X)
@@ -28,6 +27,11 @@ outerPrim <- function(X,Y){
   ans <-X*Y
   dim(ans)<-c(nX,nY)
   ans
+}
+
+
+uniquePrim <- function(x){    #OK
+  unique.default(x)
 }
 
 

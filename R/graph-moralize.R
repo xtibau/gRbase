@@ -22,7 +22,7 @@
 #'     dense \code{matrix} or a sparse \code{dgCMatrix}.
 #' @note The workhorse is the \code{moralizeMAT} function.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso \code{\link{mcs}}, \code{\link{jTree}}, \code{\link{rip}},
+#' @seealso \code{\link{mcs}}, \code{\link{junction_tree}}, \code{\link{rip}},
 #'     \code{\link{ug}}, \code{\link{dag}}
 #' @keywords utilities
 #' @examples
@@ -58,7 +58,7 @@ moralize.default <- function(object, result=NULL, ...)
 
     switch(cls,
            "graphNEL" ={
-               m <- graphNEL2M( object )
+               m <- gn2sm_(object) ## FIXME check this graphNEL2M( object )
                if ( !is.DAGMAT( m ) )
                    stop("Graph must be directed")
                m <- moralizeMAT( m )
@@ -76,7 +76,7 @@ moralize.default <- function(object, result=NULL, ...)
                    igraph::V(object)$name <- igraph::V(object)
                m <- moralizeMAT(igraph::get.adjacency(object))
            })
-    coerceGraph( m, result)
+    coerceGraph(m, result)
 }
 
 

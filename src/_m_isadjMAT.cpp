@@ -6,7 +6,7 @@
    issymMAT_ (is symmetric)
    isadjMAT_ (is square and 0's on diagonal)
    isugMAT_  (is symmetric and 0's on diagonal)
-
+   
    Author: Soren Hojsgaard, November 2014
 
 **************************************************** */
@@ -45,8 +45,8 @@ bool do_issymMAT_ ( SEXP X_ ){
   for( i=0; i<nrX; ++i){
     for( j=i; j<ncX; ++j ){
       if ( fabs( (double) (X.coeff(i,j)-X.coeff(j,i)) ) > 1e-6 ){
-				out=false;
-				break;
+	out=false;
+	break;
       }
     }
   }
@@ -54,8 +54,10 @@ bool do_issymMAT_ ( SEXP X_ ){
 }
 
 // [[Rcpp::export]]
-bool issymMAT_ ( SEXP A_ ){
+bool issymMAT_ ( SEXP A_ )
+{
   int type = TYPEOF(A_) ;  //Rf_PrintValue(wrap(type));
+
   switch( type ){
   case INTSXP  : return do_issymMAT_<MapMati>( A_ ); 
   case REALSXP : return do_issymMAT_<MapMatd>( A_ ); 
@@ -81,14 +83,14 @@ bool do_isugMAT_ ( SEXP X_ ){
   if (nrX!=ncX) return false;
 	
   for( i=0; i<nrX; ++i){
-    if (X.coeff(i,i) != 0){
+    if (X.coeff(i,i) != 0){ // FIXME: Fragile; need eps here
       out=false;
       break;
     } 
     for( j=i; j<ncX; ++j ){
-      if ( fabs( (double) (X.coeff(i,j)-X.coeff(j,i)) ) > 1e-6 ){
-				out=false;
-				break;
+      if ( fabs( (double) (X.coeff(i, j) - X.coeff(j, i)) ) > 1e-6 ){
+	out=false;
+	break;
       }
     }
   }
@@ -97,8 +99,10 @@ bool do_isugMAT_ ( SEXP X_ ){
 
 
 // [[Rcpp::export]]
-bool isugMAT_ ( SEXP A_ ){
+bool isugMAT_ ( SEXP A_ )
+{
   int type = TYPEOF(A_) ;  //Rf_PrintValue(wrap(type));
+
   switch( type ){
   case INTSXP  : return do_isugMAT_<MapMati>( A_ ); 
   case REALSXP : return do_isugMAT_<MapMatd>( A_ ); 
@@ -120,11 +124,11 @@ template <typename TT>
 bool do_isadjMAT_ ( SEXP X_ ){
   const TT X(as<TT>(X_));
   int i, nrX(X.rows()), ncX(X.cols());
-  bool out=true;
+  bool out = true;
   if (nrX!=ncX) return false;
   for (i=0; i<nrX; ++i){
     if( X.coeff(i,i) != 0 ){
-      out=false;
+      out = false;
       break;
     }
   }
@@ -132,8 +136,10 @@ bool do_isadjMAT_ ( SEXP X_ ){
 }
 
 // [[Rcpp::export]]
-bool isadjMAT_ ( SEXP A_ ){
+bool isadjMAT_ ( SEXP A_ )
+{
   int type = TYPEOF(A_) ;  //Rf_PrintValue(wrap(type));
+
   switch( type ){
   case INTSXP  : return do_isadjMAT_<MapMati>( A_ ); 
   case REALSXP : return do_isadjMAT_<MapMatd>( A_ ); 
@@ -156,18 +162,19 @@ template <typename TT>
 bool do_isdagMAT_ ( SEXP X_ ){
   const TT X(as<TT>(X_));
   bool out=false;
-
+  
   if( do_isadjMAT_<TT>(X_) ){
     IntegerVector outvec = do_topoSortMAT_<TT>(X_);
-    if (outvec(0) != -1)
-      out = true;
+    if (outvec(0) != -1) out = true;
   }
   return out;
 }
 
 // [[Rcpp::export]]
-bool isdagMAT_ ( SEXP A_ ){
+bool isdagMAT_ ( SEXP A_ )
+{
   int type = TYPEOF(A_);  //Rf_PrintValue(wrap(type));
+  
   switch( type ){
   case INTSXP  : return do_isdagMAT_<MapMati>( A_ );
   case REALSXP : return do_isdagMAT_<MapMatd>( A_ );
@@ -175,28 +182,6 @@ bool isdagMAT_ ( SEXP A_ ){
   }
   return R_NilValue ;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -244,186 +229,3 @@ isugMAT_(m)
  */
 
 
-
-
-// template <typename TT>
-// bool do_isadjMAT_ ( SEXP X_ ){
-//   const TT X(as<TT>(X_));
-//   int i, nrX(X.rows()), ncX(X.cols());
-//   bool out=true;
-//   if (nrX!=ncX) return false;
-//   for (i=0; i<nrX; ++i){
-//     if( X.coeff(i,i) != 0 ){
-//       out=false;
-//       break;
-//     }
-//   }
-//   return out;
-// }
-
-
-
-// typedef Eigen::SparseMatrix<double> SpMat;
-// typedef Eigen::SparseVector<double> SpVec;
-// typedef SpVec::InnerIterator InIter;
-
-
-// bool isadjMAT_sp ( SEXP X_ ){
-//   SpMat   X(as<SpMat>(X_));
-//   int i, nrX(X.rows()), ncX(X.cols());
-//   bool out=true;
-
-//   if (nrX!=ncX) return false;
-
-//   for (i=0; i<nrX; ++i){
-//     if( X.coeff(i,i) != 0 ){
-//       out=false;
-//       break;
-//     }
-//   }
-//   return out;
-// }
-
-
-// bool isadjMAT_de ( NumericMatrix X ){
-//   int i, nrX(X.rows()), ncX(X.cols());
-//   bool out=true;
-
-//   if (nrX!=ncX)
-//     return false;
-
-//   for (i=0; i<nrX; ++i){
-//     if( X(i,i) != 0 ){
-//       out=false;
-//       break;
-//     }
-//   }
-//   return out;
-// }
-
-// // [[Rcpp::export]]
-// bool isadjMAT_ ( SEXP adjmat_ ){
-//   int type = TYPEOF(adjmat_) ;
-//   //Rf_PrintValue(wrap(type));
-//   switch( type ){
-//   case INTSXP  : return isadjMAT_de( adjmat_ ); 
-//   case REALSXP : return isadjMAT_de( adjmat_ ); 
-//   case S4SXP   : return isadjMAT_sp( adjmat_ ); 
-//   }
-//   return R_NilValue ;
-// }
-
-
-
-
-// // [[Rcpp::export]]
-// bool isugMAT_sp ( SEXP X_ ){
-//   SpMat   X(as<SpMat>(X_));
-//   int i, j, nrX(X.rows()), ncX(X.cols());
-//   bool out=true;
-
-//   if (nrX!=ncX) return false;
-  
-//   for( i=0; i<nrX; ++i){
-//     if (X.coeff(i,i) != 0){
-//       out=false;
-//       break;
-//     } 
-//     for( j=i; j<ncX; ++j ){
-//       if ( fabs( X.coeff(i,j)-X.coeff(j,i) ) > 1e-6 ){
-// 	out=false;
-// 	break;
-//       }
-//     }
-//   }
-//   return out;
-// }
-
-
-// // [[Rcpp::export]]
-// bool isugMAT_de ( NumericMatrix X ){
-//   int i, j, nrX(X.rows()), ncX(X.cols());
-//   bool out=true;
-
-//   if (nrX!=ncX) return false;
-  
-//   for( i=0; i<nrX; ++i){
-//     if (X(i,i) != 0){
-//       out=false;
-//       break;
-//     } 
-//     for( j=i; j<ncX; ++j ){
-//       if ( fabs( X(i,j)-X(j,i) ) > 1e-6 ){
-// 	out=false;
-// 	break;
-//       }
-//     }
-//   }
-//   return out;
-// }
-
-
-// // [[Rcpp::export]]
-// bool isugMAT_ ( SEXP adjmat_ ){
-//   int type = TYPEOF(adjmat_) ;
-//   //Rf_PrintValue(wrap(type));
-//   switch( type ){
-//   case INTSXP  : 
-//   case REALSXP : return isugMAT_de( adjmat_ ); // matrix - double
-//   case S4SXP   : return isugMAT_sp( adjmat_ ); // dgCMatrix
-//   }
-//   return R_NilValue ;
-// }
-
-
-
-
-// // [[Rcpp::export]]
-// bool issymMAT_sp ( SEXP X_ ){
-//   SpMat   X(as<SpMat>(X_));
-//   int i, j, nrX(X.rows()), ncX(X.cols());
-//   bool out=true;
-
-//   if (nrX!=ncX) return false;
-  
-//   for( i=0; i<nrX; ++i){
-//     for( j=i; j<ncX; ++j ){
-//       if ( fabs( X.coeff(i,j)-X.coeff(j,i) ) > 1e-6 ){
-// 	out=false;
-// 	break;
-//       }
-//     }
-//   }
-//   return out;
-// }
-
-
-// // [[Rcpp::export]]
-// bool issymMAT_de ( NumericMatrix X ){
-//   int i, j, nrX(X.rows()), ncX(X.cols());
-//   bool out=true;
-
-//   if (nrX!=ncX) return false;
-  
-//   for( i=0; i<nrX; ++i){
-//     for( j=i; j<ncX; ++j ){
-//       if ( fabs( X(i,j)-X(j,i) ) > 1e-6 ){
-// 	out=false;
-// 	break;
-//       }
-//     }
-//   }
-//   return out;
-// }
-
-// // [[Rcpp::export]]
-// bool issymMAT_ ( SEXP adjmat_ ){
-//   int type = TYPEOF(adjmat_) ;
-//   //Rf_PrintValue(wrap(type));
-//   switch( type ){
-//   case INTSXP  : 
-//   case REALSXP : return issymMAT_de( adjmat_ ); // matrix - double
-//   case S4SXP   : return issymMAT_sp( adjmat_ ); // dgCMatrix
-//   }
-//   return R_NilValue ;
-// }

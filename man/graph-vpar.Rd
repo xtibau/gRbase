@@ -3,15 +3,15 @@
 \name{graph-vpar}
 \alias{graph-vpar}
 \alias{vchi}
-\alias{vchi.Matrix}
-\alias{vchi.graphNEL}
-\alias{vchi.matrix}
 \alias{vchiMAT}
+\alias{vchi.graphNEL}
+\alias{vchi.Matrix}
+\alias{vchi.matrix}
 \alias{vpar}
-\alias{vpar.Matrix}
-\alias{vpar.graphNEL}
-\alias{vpar.matrix}
 \alias{vparMAT}
+\alias{vpar.graphNEL}
+\alias{vpar.Matrix}
+\alias{vpar.matrix}
 \title{List of vertices and their parents for graph.}
 \usage{
 vchi(object, getv = TRUE, forceCheck = TRUE)
@@ -58,14 +58,14 @@ Get list of vertices and their parents for graph.
 
 ## DAGs
 dagMAT <- dag(~a:b:c + c:d:e, result="matrix")
-dagNEL <- dag(~a:b:c + c:d:e, result="NEL")
+dagNEL <- dag(~a:b:c + c:d:e, result="graphNEL")
 vpar(dagMAT)
 vpar(dagNEL)
 vpar(dagMAT, getv=FALSE)
 vpar(dagNEL, getv=FALSE)
 ## Undirected graphs
 ugMAT <- ug(~a:b:c + c:d:e, result="matrix")
-ugNEL <- ug(~a:b:c + c:d:e, result="NEL")
+ugNEL <- ug(~a:b:c + c:d:e, result="graphNEL")
 \dontrun{
 ## This will fail because the adjacency matrix is symmetric and the
 ## graphNEL has undirected edges
@@ -87,4 +87,3 @@ vpar(ugNEL,FALSE)
 \seealso{
 \code{\link{dag}}, \code{\link{ug}}
 }
-

@@ -92,9 +92,9 @@ isGraphical.default <- function( x ){
 
 .isGraphical_glist <- function(x){
     vn <- unique( unlist(x) )
-    amat <- glist2adjMAT(x, vn=vn)
-    cliq <- maxCliqueMAT(amat)[[1]]
-    all(unlist(lapply(cliq, function(sss) isin(x, sss))))
+    amat <- ugList2M(x, vn=vn)
+    cliq <- max_cliqueMAT(amat)[[1]]
+    all(unlist(lapply(cliq, function(sss) .isin(x, sss))))
 }
 
 #' @rdname graph-gcproperties
@@ -126,9 +126,9 @@ isDecomposable.default <- function( x ){
 
 .isDecomposable_glist <- function(x){
     vn <- unique( unlist(x) )
-    amat <- glist2adjMAT(x, vn=vn)
-    cliq <- maxCliqueMAT(amat)[[1]]
-    isg <- all(unlist(lapply(cliq, function(sss) isin(x, sss))))
+    amat <- ugList2M(x, vn=vn)
+    cliq <- max_cliqueMAT(amat)[[1]]
+    isg <- all(unlist(lapply(cliq, function(sss) .isin(x, sss))))
     if (isg){
         length( mcsMAT( amat ) ) > 0
     } else
@@ -141,26 +141,26 @@ isDecomposable.default <- function( x ){
 
 isGSD_glist <- function(glist, vn=unique(unlist(glist)), discrete=NULL)
 {
-  amat <- glist2adjMAT(glist,vn=vn)
-  cliq <- maxCliqueMAT(amat)[[1]]
-  isg  <- all(unlist(lapply(cliq, function(sss) isin(glist, sss))))
+  amat <- ugList2M(glist, vn=vn)
+  cliq <- max_cliqueMAT(amat)[[1]]
+  isg  <- all(unlist(lapply(cliq, function(sss) .isin(glist, sss))))
   if (!isg){
     return(c(isg=FALSE, issd=FALSE))
   } else {
-    return(c(isg=TRUE, issd=length(mcsmarkedMAT(amat,discrete=discrete)) > 0))
+    return(c(isg=TRUE, issd=length(mcs_markedMAT(amat, discrete=discrete)) > 0))
   }
 }
 
 properties_glist <- function(glist,
                              vn=unique(unlist(glist)),
-                             amat=glist2adjMAT(glist,vn=vn),
-                             cliq=maxCliqueMAT(amat)[[1]],discrete=NULL){
+                             amat=ugList2M(glist,vn=vn),
+                             cliq=max_cliqueMAT(amat)[[1]], discrete=NULL){
 
-  isg <- all(unlist(lapply(cliq, function(sss) isin(glist, sss))))
+  isg <- all(unlist(lapply(cliq, function(sss) .isin(glist, sss))))
   if (!isg){
     return(c(isg=FALSE, issd=FALSE))
   } else {
-    return(c(isg=TRUE, issd=length(mcsmarkedMAT(amat,discrete=discrete)) > 0))
+    return(c(isg=TRUE, issd=length(mcs_markedMAT(amat,discrete=discrete)) > 0))
   }
 }
 
@@ -170,10 +170,8 @@ properties_glist <- function(glist,
 ##
 
 is.adjMAT <- function(x){
-    if (class(x) %in% c("matrix","dgCMatrix"))
-        isadjMAT_( x )
-    else
-        FALSE
+    .check.is.matrix(x)
+    isadjMAT_( x )
 }
 
 ## #####################################################
@@ -228,11 +226,12 @@ is.adjMAT <- function(x){
 #' undirected, triangulated, directed and directed acyclic.
 #' 
 #' @aliases is.DAG is.DAG.graphNEL is.DAG.default is.DAGMAT is.DG
-#' is.DG.graphNEL is.DG.default is.DGMAT is.UG is.UG.graphNEL is.UG.default
-#' is.UGMAT is.TUG is.TUG.graphNEL is.TUG.default is.TUGMAT is.adjMAT
-#' @param object A graph represented as 1) graphNEL (from the graph package),
-#' 2) an adjacency matrix, 3) a sparse adjacency matrix (a dgCMatrix from the
-#' Matrix package).
+#'     is.DG.graphNEL is.DG.default is.DGMAT is.UG is.UG.graphNEL
+#'     is.UG.default is.UGMAT is.TUG is.TUG.graphNEL is.TUG.default
+#'     is.TUGMAT is.adjMAT
+#' @param object A graph represented as 1) graphNEL (from the graph
+#'     package), 2) an adjacency matrix, 3) a sparse adjacency matrix
+#'     (a dgCMatrix from the Matrix package).
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{dag}}, \code{\link{ug}}
 #' @keywords utilities
@@ -240,14 +239,14 @@ is.adjMAT <- function(x){
 #' 
 #' 
 #' ## DAGs
-#' dagNEL  <- dag(~ a:b:c + c:d:e, result="NEL")
+#' dagNEL  <- dag(~ a:b:c + c:d:e, result="graphNEL")
 #' dagMAT  <- dag(~ a:b:c + c:d:e, result="matrix")
-#' dagMATS <- dag(~ a:b:c + c:d:e, result="Matrix")
+#' dagMATS <- dag(~ a:b:c + c:d:e, result="dgCMatrix")
 #' 
 #' ## Undirected graphs
-#' ugNEL  <- ug(~a:b:c + c:d:e, result="NEL")
+#' ugNEL  <- ug(~a:b:c + c:d:e, result="graphNEL")
 #' ugMAT  <- ug(~a:b:c + c:d:e, result="matrix")
-#' ugMATS <- ug(~a:b:c + c:d:e, result="Matrix")
+#' ugMATS <- ug(~a:b:c + c:d:e, result="dgCMatrix")
 #' 
 #' ## Is it a DAG?
 #' is.DAG(dagNEL)
@@ -277,9 +276,9 @@ is.adjMAT <- function(x){
 #' is.TUG(ugMATS)
 #' 
 #' ## Example where the graph is not triangulated
-#' ug2NEL  <- ug(~ a:b + b:c + c:d + d:a, result="NEL")
+#' ug2NEL  <- ug(~ a:b + b:c + c:d + d:a, result="graphNEL")
 #' ug2MAT  <- ug(~ a:b + b:c + c:d + d:a, result="matrix")
-#' ug2MATS <- ug(~ a:b + b:c + c:d + d:a, result="Matrix")
+#' ug2MATS <- ug(~ a:b + b:c + c:d + d:a, result="dgCMatrix")
 #' 
 #' is.TUG(ug2NEL)
 #' is.TUG(ug2MAT)
@@ -298,15 +297,13 @@ is.DAG <- function(object){UseMethod("is.DAG")}
 
 #' @rdname graph-is
 is.DAG.graphNEL <- function(object){
-    is.DAGMAT( graphNEL2dgCMatrix(object) )
+    is.DAGMAT( gn2sm_(object) )
 }
 
 #' @rdname graph-is
 is.DAG.default <- function( object ){
-    if (class(object) %in% c("matrix","dgCMatrix"))
-        isdagMAT_( object )
-    else
-        stop("'object' must be a matrix")
+    .check.is.matrix(object)
+    isdagMAT_( object )
 }
 
 #' @rdname graph-is
@@ -325,15 +322,13 @@ is.UG <- function(object){
 
 #' @rdname graph-is
 is.UG.graphNEL <- function(object){
-    isugMAT_( graphNEL2MAT( object ) )
+    isugMAT_( gn2dm_( object ) )
 }
 
 #' @rdname graph-is
 is.UG.default <- function( object ){
-    if (class(object) %in% c("matrix","dgCMatrix"))
-        isugMAT_( object )
-    else
-        stop("'object' must be a matrix")
+    .check.is.matrix(object)
+    isugMAT_( object )
 }
 
 #' @rdname graph-is
@@ -350,7 +345,7 @@ is.TUG <- function(object){
 
 #' @rdname graph-is
 is.TUG.graphNEL <- function(object){
-    z <- graphNEL2MAT( object )
+    z <- gn2dm_( object )
     if (!isugMAT_( z ))
         FALSE
     else
@@ -359,13 +354,11 @@ is.TUG.graphNEL <- function(object){
 
 #' @rdname graph-is
 is.TUG.default <- function(object){
-    if (class(object) %in% c("matrix","dgCMatrix")){
-        if (isugMAT_( object ))
-            length(mcsMAT(object))>0
-        else
-            FALSE
-    } else
-        stop("'object' must be a matrix")
+    .check.is.matrix(object)
+    if (isugMAT_( object ))
+        length(mcsMAT(object)) > 0
+    else
+        FALSE
 }
 
 #' @rdname graph-is
@@ -382,24 +375,22 @@ is.DG <- function(object){
 
 #' @rdname graph-is
 is.DG.graphNEL <- function(object){
-    is.DGMAT( graphNEL2MAT(object) )
+    is.DGMAT( gn2dm_(object) )
 }
 
 #' @rdname graph-is
 is.DG.default <- function(object){
-    if (class(object) %in% c("matrix","dgCMatrix")){
-        if (isadjMAT_(object))
-            sum(object * t(object))==0
-        else
-            FALSE
-    } else
+    .check.is.matrix(object)
+    if (isadjMAT_(object))
+        sum(object * t(object)) == 0
+    else
         FALSE
 }
 
 #' @rdname graph-is
 is.DGMAT <- function(object){
     if (!is.adjMAT(object)) stop("Matrix is not adjacency matrix...\n")
-    sum(object * t(object))==0
+    sum(object * t(object)) == 0
 }
 
 
@@ -423,7 +414,7 @@ is.DGMAT <- function(object){
 ## is.DG.matrix <- is.DG.Matrix <- is.DGMAT
 
 ## is.UG.graphNEL <- function(object){
-##     is.UGMAT( graphNEL2dgCMatrix(object) )
+##     is.UGMAT( gn2sm_(object) )
 ## }
 
 ## is.UGMAT <- function(object){

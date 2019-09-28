@@ -2,15 +2,15 @@
 % Please edit documentation in R/graph-rip.R
 \name{graph-rip}
 \alias{graph-rip}
-\alias{jTree}
-\alias{jTree.default}
-\alias{jTreeMAT}
-\alias{junctionTree}
-\alias{junctionTree.default}
-\alias{junctionTreeMAT}
 \alias{rip}
 \alias{rip.default}
 \alias{ripMAT}
+\alias{junction_tree}
+\alias{junction_tree.default}
+\alias{junction_treeMAT}
+\alias{junctionTree}
+\alias{junctionTree.default}
+\alias{junctionTreeMAT}
 \title{Create  RIP ordering of the cliques of  an undirected graph;
     create junction tree.}
 \usage{
@@ -20,11 +20,11 @@ rip(object, ...)
 
 ripMAT(amat, root = NULL, nLevels = rep(2, ncol(amat)))
 
-jTree(object, ...)
+junction_tree(object, ...)
 
-\method{jTree}{default}(object, nLevels = NULL, ...)
+\method{junction_tree}{default}(object, nLevels = NULL, ...)
 
-jTreeMAT(amat, nLevels = rep(2, ncol(amat)), ...)
+junction_treeMAT(amat, nLevels = rep(2, ncol(amat)), ...)
 }
 \arguments{
 \item{object}{An undirected graph represented either as a
@@ -60,7 +60,7 @@ The RIP ordering of the cliques of a decomposable
     variables linearly with maximum cardinality search (by
     \code{mcs}). The root argument is transfered to \code{mcs} as a
     way of controlling which clique will be the first in the RIP
-    ordering.  The \code{jTree()} (and \code{jTree()}) (for
+    ordering.  The \code{junction_tree()} (and \code{junction_tree()}) (for
     "junction tree") is just a wrapper for a call of
     \code{triangulate()} followed by a call of \code{rip()}.
 }
@@ -75,34 +75,33 @@ The workhorse is the \code{ripMAT()} function. The
 uG <- ug(~me:ve + me:al + ve:al + al:an + al:st + an:st)
 mcs(uG)
 rip(uG)
-jTree(uG)
+junction_tree(uG)
 
 ## Adjacency matrix
 uG <- ug(~me:ve:al + al:an:st, result="matrix")
 mcs(uG)
 rip(uG)
-jTree(uG)
+junction_tree(uG)
 
 ## Sparse adjacency matrix
-uG <- ug(c("me", "ve", "al"), c("al", "an", "st"), result="Matrix")
+uG <- ug(c("me", "ve", "al"), c("al", "an", "st"), result="dgCMatrix")
 mcs(uG)
 rip(uG)
-jTree(uG)
+junction_tree(uG)
 
 ## Non--decomposable graph
 uG <- ug(~1:2 + 2:3 + 3:4 + 4:5 + 5:1)
 mcs(uG)
 rip(uG)
-jTree(uG)
+junction_tree(uG)
 
 
-}
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \seealso{
 \code{\link{mcs}} \code{\link{triangulate}}
     \code{\link{moralize}} \code{\link{ug}}, \code{\link{dag}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

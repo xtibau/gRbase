@@ -29,4 +29,3 @@ iplot(UG)
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \keyword{graphics}
-

@@ -3,21 +3,21 @@
 \name{graph-is}
 \alias{graph-is}
 \alias{is.DAG}
-\alias{is.DAG.default}
 \alias{is.DAG.graphNEL}
+\alias{is.DAG.default}
 \alias{is.DAGMAT}
 \alias{is.DG}
-\alias{is.DG.default}
 \alias{is.DG.graphNEL}
+\alias{is.DG.default}
 \alias{is.DGMAT}
-\alias{is.TUG}
-\alias{is.TUG.default}
-\alias{is.TUG.graphNEL}
-\alias{is.TUGMAT}
 \alias{is.UG}
-\alias{is.UG.default}
 \alias{is.UG.graphNEL}
+\alias{is.UG.default}
 \alias{is.UGMAT}
+\alias{is.TUG}
+\alias{is.TUG.graphNEL}
+\alias{is.TUG.default}
+\alias{is.TUGMAT}
 \alias{is.adjMAT}
 \title{Check properties of graphs.}
 \usage{
@@ -54,9 +54,9 @@ is.DG(object)
 is.DGMAT(object)
 }
 \arguments{
-\item{object}{A graph represented as 1) graphNEL (from the graph package),
-2) an adjacency matrix, 3) a sparse adjacency matrix (a dgCMatrix from the
-Matrix package).}
+\item{object}{A graph represented as 1) graphNEL (from the graph
+package), 2) an adjacency matrix, 3) a sparse adjacency matrix
+(a dgCMatrix from the Matrix package).}
 }
 \description{
 Check if a graph is 1) a directed acyclic graph (DAG),
@@ -105,14 +105,14 @@ undirected, triangulated, directed and directed acyclic.
 
 
 ## DAGs
-dagNEL  <- dag(~ a:b:c + c:d:e, result="NEL")
+dagNEL  <- dag(~ a:b:c + c:d:e, result="graphNEL")
 dagMAT  <- dag(~ a:b:c + c:d:e, result="matrix")
-dagMATS <- dag(~ a:b:c + c:d:e, result="Matrix")
+dagMATS <- dag(~ a:b:c + c:d:e, result="dgCMatrix")
 
 ## Undirected graphs
-ugNEL  <- ug(~a:b:c + c:d:e, result="NEL")
+ugNEL  <- ug(~a:b:c + c:d:e, result="graphNEL")
 ugMAT  <- ug(~a:b:c + c:d:e, result="matrix")
-ugMATS <- ug(~a:b:c + c:d:e, result="Matrix")
+ugMATS <- ug(~a:b:c + c:d:e, result="dgCMatrix")
 
 ## Is it a DAG?
 is.DAG(dagNEL)
@@ -142,9 +142,9 @@ is.TUG(ugMAT)
 is.TUG(ugMATS)
 
 ## Example where the graph is not triangulated
-ug2NEL  <- ug(~ a:b + b:c + c:d + d:a, result="NEL")
+ug2NEL  <- ug(~ a:b + b:c + c:d + d:a, result="graphNEL")
 ug2MAT  <- ug(~ a:b + b:c + c:d + d:a, result="matrix")
-ug2MATS <- ug(~ a:b + b:c + c:d + d:a, result="Matrix")
+ug2MATS <- ug(~ a:b + b:c + c:d + d:a, result="dgCMatrix")
 
 is.TUG(ug2NEL)
 is.TUG(ug2MAT)
@@ -159,11 +159,10 @@ is.UG(ugNEL)
 
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{dag}}, \code{\link{ug}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

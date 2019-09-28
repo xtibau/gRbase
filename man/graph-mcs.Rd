@@ -5,9 +5,10 @@
 \alias{mcs}
 \alias{mcs.default}
 \alias{mcsMAT}
-\alias{mcsmarked}
+\alias{mcs_marked}
 \alias{mcsmarked.default}
-\alias{mcsmarkedMAT}
+\alias{mcs_markedMAT}
+\alias{mcs_marked.default}
 \title{Maximum cardinality search on undirected graph.}
 \usage{
 mcs(object, root = NULL, index = FALSE)
@@ -16,11 +17,12 @@ mcs(object, root = NULL, index = FALSE)
 
 mcsMAT(amat, vn = colnames(amat), root = NULL, index = FALSE)
 
-mcsmarked(object, discrete = NULL, index = FALSE)
+mcs_marked(object, discrete = NULL, index = FALSE)
 
-\method{mcsmarked}{default}(object, discrete = NULL, index = FALSE)
+\method{mcs_marked}{default}(object, discrete = NULL, index = FALSE)
 
-mcsmarkedMAT(amat, vn = colnames(amat), discrete = NULL, index = FALSE)
+mcs_markedMAT(amat, vn = colnames(amat), discrete = NULL,
+  index = FALSE)
 }
 \arguments{
 \item{object}{An undirected graph represented either as a
@@ -74,7 +76,7 @@ The workhorse is the \code{mcsMAT} function.
 
 uG <- ug(~ me:ve + me:al + ve:al + al:an + al:st + an:st)
 mcs(uG)
-mcsMAT( graphNEL2M(uG) )
+mcsMAT(as(uG, "matrix"))
 ## Same as
 uG <- ug(~ me:ve + me:al + ve:al + al:an + al:st + an:st, result="matrix")
 mcsMAT(uG)
@@ -83,17 +85,16 @@ mcsMAT(uG)
 uG1 <- ug(~ a:b + b:c + c:d)
 uG2 <- ug(~ a:b + a:d + c:d)
 ## Not strongly decomposable:
-mcsmarked(uG1, discrete=c("a","d"))
+mcs_marked(uG1, discrete=c("a","d"))
 ## Strongly decomposable:
-mcsmarked(uG2, discrete=c("a","d"))
+mcs_marked(uG2, discrete=c("a","d"))
 
+}
+\seealso{
+\code{\link{moralize}}, \code{\link{junction_tree}},
+    \code{\link{rip}}, \code{\link{ug}}, \code{\link{dag}}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
-\seealso{
-\code{\link{moralize}}, \code{\link{jTree}},
-    \code{\link{rip}}, \code{\link{ug}}, \code{\link{dag}}
-}
 \keyword{utilities}
-
