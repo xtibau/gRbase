@@ -1,9 +1,9 @@
-## ----echo=FALSE----------------------------------------------------------
+## ----echo=FALSE-----------------------------------------------------------------------------------
 require( gRbase )
 prettyVersion <- packageDescription("gRbase")$Version
 prettyDate <- format(Sys.Date())
 
-## ----include=FALSE-------------------------------------------------------
+## ----include=FALSE--------------------------------------------------------------------------------
 library(knitr)
 opts_chunk$set(
                fig.path='fig/graph',tidy=FALSE, 
@@ -66,22 +66,19 @@ par(mfrow=c(1,2)); plot(d1.bi); plot(d2.cyc)
 #  dag(~a:b + b:c + c:a, forceCheck=TRUE)
 
 ## -----------------------------------------------------------------------------
+properties <- function(x){
+  c(is_ug=is_ug(x), is_tug=is_tug(x), is_dg=is_dg(x), is_dag=is_dag(x),
+    isD=graph::isDirected(x))
+}
+properties( uG11 )
+properties( daG11 )
+properties( d1.bi )
+properties( d2.cyc )
+
+## -----------------------------------------------------------------------------
 mat <- as(uG11, "matrix")
 Mat <- as(mat, "dgCMatrix")
 NEL <- as(Mat, "graphNEL")
-
-## -----------------------------------------------------------------------------
-mat <- coerceGraph(uG11, "matrix")
-Mat <- coerceGraph(uG11, "dgCMatrix")
-NEL <- coerceGraph(mat, "graphNEL")
-
-## -----------------------------------------------------------------------------
-mat <- graphNEL2M(uG11, result="matrix")
-Mat <- graphNEL2M(uG11, result="dgCMatrix")
-NEL <- M2graphNEL(mat)
-
-## -----------------------------------------------------------------------------
-str( M2adjList(mat) )
 
 ## -----------------------------------------------------------------------------
 daG11.mor <- moralize(daG11)
@@ -136,7 +133,7 @@ par(mfrow=c(1,2)); plot(uG); plot(tuG)
 rp <- rip(tuG); rp
 
 ## -----------------------------------------------------------------------------
-plot( rp )
+plot(rp )
 
 ## -----------------------------------------------------------------------------
 names(rp)
@@ -160,7 +157,7 @@ g1mt2 <- minimal_triang(g1, tobject=g2)
 par(mfrow = c(1,2)); plot(g2); plot(g1mt2)
 
 ## -----------------------------------------------------------------------------
-mm <- mpd( g1 ); mm
+mm <- mpd(g1); mm
 
 ## -----------------------------------------------------------------------------
 par(mfrow = c(1,2))

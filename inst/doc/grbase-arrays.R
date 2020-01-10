@@ -1,10 +1,10 @@
-## ----include=FALSE-------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------
 library(knitr)
 opts_chunk$set(
 tidy=FALSE
 )
 
-## ----echo=FALSE----------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 #require( gRbase )
 prettyVersion <- packageDescription("gRbase")$Version
 prettyDate <- format(Sys.Date())
