@@ -19,7 +19,8 @@
 #' @param object A graph.
 #' @param op The operation or query.
 #' @param set,set2,set3 Sets of nodes in graph.
-#' 
+#'
+#' @export
 querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
 
   ## From RBGL / graph packages
@@ -77,6 +78,7 @@ querygraph <-function(object, op, set=NULL, set2=NULL, set3=NULL){
          )
 }
 
+#' @export
 #' @rdname graph-query
 qgraph <- querygraph
 
@@ -88,9 +90,10 @@ qgraph <- querygraph
 ########################################################################
 
 ## adjmat based
+#' @export
 #' @rdname graph-query
 ancestors <- function(set, object){
-  amat  <- gn2dm_(object)
+  amat  <- g_gn2dm_(object)
   ##if (isUndirectedMAT(amat))
   if (isugMAT_(amat))
     return(NULL)
@@ -110,10 +113,11 @@ ancestors <- function(set, object){
 }
 
 ## adjmat based -- Must be very slow !!!
+#' @export
 #' @rdname graph-query
 ancestralSet <- function(set, object){
 
-  amat  <- gn2dm_(object)
+  amat  <- g_gn2dm_(object)
   ##if (isUndirectedMAT(amat))
   if (isugMAT_(amat))
     return(NULL)
@@ -143,9 +147,10 @@ ancestralSet <- function(set, object){
 }
 
 ## adjmat based
+#' @export
 #' @rdname graph-query
 parents <- function(set, object){
-  amat  <- gn2dm_(object)
+  amat  <- g_gn2dm_(object)
   ##if (isUndirectedMAT(amat))
   if (isugMAT_(amat))
     return(NULL)
@@ -156,6 +161,7 @@ parents <- function(set, object){
 }
 
 ## graphNEL based
+#' @export
 #' @rdname graph-query
 children <- function(set, object){
   if (graph::edgemode(object)=="undirected")
@@ -165,12 +171,14 @@ children <- function(set, object){
 }
 
 ## graphNEL based
+#' @export
 #' @rdname graph-query
 closure <- function(set, object){
   unique.default(c(set, unlist(graph::adj(object, set))))
 }
 
 ## graphNEL based
+#' @export
 #' @rdname graph-query
 simplicialNodes <- function(object){
   nodes <- graph::nodes(object)
@@ -187,6 +195,7 @@ simplicialNodes <- function(object){
 ###
 ########################################################################
 
+#' @export
 #' @rdname graph-query
 ancestralGraph <- function(set, object){
   graph::subGraph(ancestralSet(set, object), object)
@@ -198,15 +207,17 @@ ancestralGraph <- function(set, object){
 ###
 ########################################################################
 
+#' @export
 #' @rdname graph-query
 is.complete <- function(object, set=NULL){
   if (is.null(set))
-    submat <- gn2dm_(object)
+    submat <- g_gn2dm_(object)
   else
-    submat <- gn2dm_(object)[set, set]
+    submat <- g_gn2dm_(object)[set, set]
   all(submat[upper.tri(submat)] > 0)
 }
 
+#' @export
 #' @rdname graph-query
 is.decomposition <- function(set, set2, set3, object){
   vn <- uniquePrim(c(set, set2, set3))
@@ -217,6 +228,7 @@ is.decomposition <- function(set, set2, set3, object){
   }
 }
 
+#' @export
 #' @rdname graph-query
 is.simplicial <- function(set, object){
   x <- unlist(graph::adj(object,set))

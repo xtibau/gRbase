@@ -1,16 +1,5 @@
-##################################################################
-####
-#### Find RIP-ordering of cliques of chordal (triangulated)
-#### undirected graph
-####
-#### Based on Algorithm 4.11 in Steffen et all (the yellow book)
-####
-#### Known issues: Should check that amat specifies TUG;
-#### possibly controlled by forceCheck argument
-####
-##################################################################
-
-#' @title Create  RIP ordering of the cliques of  an undirected graph;
+#############################################################################
+#' @title Create RIP ordering of the cliques of  an undirected graph;
 #'     create junction tree.
 #' 
 #' @description A RIP (running intersection property) ordering of the
@@ -18,7 +7,13 @@
 #'     chordal, then no such ordering exists.
 #' 
 #' @name graph-rip
-#' 
+#############################################################################
+
+#### Based on Algorithm 4.11 in Steffen et all (the yellow book)
+####
+#### Known issues: Should check that amat specifies TUG;
+#### possibly controlled by forceCheck argument
+
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' 
 #' @details The RIP ordering of the cliques of a decomposable
@@ -26,12 +21,11 @@
 #'     variables linearly with maximum cardinality search (by
 #'     \code{mcs}). The root argument is transfered to \code{mcs} as a
 #'     way of controlling which clique will be the first in the RIP
-#'     ordering.  The \code{junction_tree()} (and \code{junction_tree()}) (for
-#'     "junction tree") is just a wrapper for a call of
-#'     \code{triangulate()} followed by a call of \code{rip()}.
+#'     ordering.  The \code{junction_tree()} (and
+#'     \code{junction_tree()}) (for "junction tree") is just a wrapper
+#'     for a call of \code{triangulate()} followed by a call of
+#'     \code{rip()}.
 #'
-#' @aliases rip rip.default ripMAT junction_tree junction_tree.default junction_treeMAT
-#'     junctionTree junctionTree.default junctionTreeMAT
 #' @param object An undirected graph represented either as a
 #'     \code{graphNEL} object, an \code{igraph}, a (dense)
 #'     \code{matrix}, a (sparse) \code{dgCMatrix}.
@@ -52,9 +46,8 @@
 #'     \code{nLevels} argument to the \code{rip} functions has no
 #'     meaning.
 #' 
-#'
-#' @seealso \code{\link{mcs}} \code{\link{triangulate}}
-#'     \code{\link{moralize}} \code{\link{ug}}, \code{\link{dag}}
+#' @seealso \code{\link{mcs}}, \code{\link{triangulate}},
+#'     \code{\link{moralize}}, \code{\link{ug}}, \code{\link{dag}}
 #'
 #' @keywords utilities
 #' @examples
@@ -85,11 +78,13 @@
 #' 
 #' 
 
+#' @export
 #' @rdname graph-rip
 rip <- function(object, ...){
   UseMethod("rip")
 }
 
+#' @export
 #' @rdname graph-rip
 rip.default <- function(object, root=NULL, nLevels=NULL, ...){
 
@@ -102,6 +97,7 @@ rip.default <- function(object, root=NULL, nLevels=NULL, ...){
     ripMAT(as(object, "matrix"), root=root, nLevels=nLevels)
 }
 
+#' @export
 #' @rdname graph-rip
 ripMAT <- function(amat, root=NULL, nLevels=rep(2, ncol(amat))){
 
@@ -112,7 +108,7 @@ ripMAT <- function(amat, root=NULL, nLevels=rep(2, ncol(amat))){
     ## mcs.vn: corresponding ordering of nodes
 
   mcs.vn <- mcsMAT(amat, root=root)
-  if (length(mcs.vn)==0)
+  if (length(mcs.vn) == 0)
     return(NULL)
 
   cq.vn   <- max_cliqueMAT(amat)[[1]]
@@ -138,7 +134,7 @@ ripMAT <- function(amat, root=NULL, nLevels=rep(2, ncol(amat))){
       isect  <- intersectPrim( cq.mcs.idx[[ii]], paset )
       sp.idx[[ii]] <- isect
       if (length(isect)){
-        for (kk in (ii-1):1){
+        for (kk in (ii - 1):1){
             ##if (subsetof( isect, cq.mcs.idx[[kk]]) ){
             if (is_subsetof(isect, cq.mcs.idx[[kk]])){
             pa.idx[ii] <- kk
@@ -192,16 +188,20 @@ ripMAT <- function(amat, root=NULL, nLevels=rep(2, ncol(amat))){
 
 ## @rdname graph-rip
 ## @param x Object to be printet or plottet
+#' @export
 print.ripOrder <- function(x, ...){
   idx <- 1:length(x$cliques)
   cat("cliques\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$cliques, idx)
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"),
+         x$cliques, idx)
 
   cat("separators\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$separators, idx)
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"),
+         x$separators, idx)
 
   cat("parents\n")
-  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"), x$pa, idx)
+  mapply(function(xx,ii) cat(" ",ii,":",paste(xx, collapse=' '),"\n"),
+         x$pa, idx)
 
 #  cat("Children\n")
 #  mapply(function(xx,ii) cat(" ",ii,paste(xx, collapse=' '),"\n"), x$ch, idx)
@@ -209,6 +209,8 @@ print.ripOrder <- function(x, ...){
 
 
 ## @rdname graph-rip
+#' @method plot ripOrder
+#' @export
 plot.ripOrder <- function(x, ...){
     g <- .rip2ug(x)
     Rgraphviz::plot(g)
@@ -249,11 +251,14 @@ plot.ripOrder <- function(x, ...){
 }
 
 
+
+#' @export
 #' @rdname graph-rip
 junction_tree <- function(object, ...){
   UseMethod("junction_tree")
 }
 
+#' @export
 #' @rdname graph-rip
 junction_tree.default <-  function(object, nLevels = NULL, ...){
 
@@ -263,6 +268,7 @@ junction_tree.default <-  function(object, nLevels = NULL, ...){
     junction_treeMAT(as(object, "matrix"), nLevels=nLevels, ...)
 }
 
+#' @export
 #' @rdname graph-rip
 junction_treeMAT <- function(amat, nLevels=rep(2, ncol(amat)), ...){
   tug_mat  <- triangulateMAT(amat, nLevels=nLevels, result="dgCMatrix", ...)
@@ -271,3 +277,28 @@ junction_treeMAT <- function(amat, nLevels=rep(2, ncol(amat)), ...){
 
 
 
+#' @rdname graph-rip
+#' @section Synonymous functions:
+#'
+#' For backward compatibility with downstream packages we have the
+#' following synonymous functions:
+#'
+#' * jTree = junction_tree (Used in rags2ridges)
+#'
+#' * junctionTree = junction_tree
+#' 
+#' @aliases junctionTree jTree
+
+#' @export
+jTree <- junction_tree
+
+## #' @export
+## jTree <- function(object, ...){
+##   UseMethod("jTree")
+## }
+
+## #' @export
+## jTree.default  <- junction_tree.default
+
+#' @export
+junctionTree <- junction_tree

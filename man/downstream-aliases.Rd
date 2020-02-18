@@ -2,40 +2,38 @@
 % Please edit documentation in R/xxx_downstream-depends.R
 \name{downstream-aliases}
 \alias{downstream-aliases}
-\alias{tabAdd__}
-\alias{tabDiv__}
-\alias{tabDiv0__}
-\alias{tabMarg__}
-\alias{tabMult__}
-\alias{tabSubt__}
-\alias{topoSort}
-\alias{topoSort.default}
-\alias{topoSortMAT}
-\alias{subsetof}
+\alias{ar_prod_list}
 \alias{removeRedundant}
-\alias{mcsmarked}
-\alias{jTree}
-\alias{jTree.default}
-\alias{getCliques}
-\alias{maxCliqueMAT}
 \alias{combnPrim}
+\alias{mcsmarked}
 \alias{mcsmarkedMAT}
 \alias{nextCell}
 \alias{ell}
 \alias{ellK}
-\alias{isin}
-\alias{is.TUG}
-\alias{is.DAG}
-\alias{graphNEL2adjMAT}
 \alias{glist2adjMAT}
+\alias{ar_marg}
+\alias{ar_mult}
+\alias{ar_slice}
+\alias{ar_slice_mult}
+\alias{ar_new}
+\alias{ar_prod}
+\alias{ar_perm}
+\alias{isin}
+\alias{tab}
 \alias{is_subsetof_}
 \alias{get_superset_}
 \alias{get_subset_}
-\alias{is.UG}
-\alias{is.DG}
-\alias{graphNEL2M}
-\alias{M2graphNEL}
+\alias{subsetof}
+\alias{tabMult__}
+\alias{tabDiv0__}
+\alias{tabMarg__}
 \title{Downstream aliases}
+\usage{
+ar_prod_list(lst)
+}
+\arguments{
+\item{lst}{A list of arrays}
+}
 \description{
 Downstream aliases for other graphical modelling
     packages.  Will be deprecated in due course.

@@ -28,9 +28,8 @@
 ##			issues: clearly the triangulation is not guranteed to be a
 ##			minimUM one, but this is not necessary for our purposes here
 
-
+##############################################################################
 #' @title Minimal triangulation of an undirected graph
-#' 
 #' @description An undirected graph uG is triangulated (or chordal) if
 #'     it has no cycles of length >= 4 without a chord which is
 #'     equivalent to that the vertices can be given a perfect
@@ -38,9 +37,9 @@
 #'     edges to the graph, so called fill-ins which gives the graph
 #'     TuG.  A triangulation TuG is minimal if no fill-ins can be
 #'     removed without breaking the property that TuG is triangulated.
-#'
-#' @name graph-mintriang
-#' 
+#' @name graph-min-triangulate
+##############################################################################
+
 #' @details For a given triangulation tobject it may be so that some
 #'     of the fill-ins are superflous in the sense that they can be
 #'     removed from tobject without breaking the property that tobject
@@ -52,7 +51,6 @@
 #'     of fill-ins. The minimum triangulation is unique. Finding the
 #'     minimum triangulation is NP-hard.
 #' 
-#' @aliases minimal_triang minimal_triang.default minimal_triangMAT
 #' @param object An undirected graph represented either as a \code{graphNEL}
 #'     object, a (dense) \code{matrix}, a (sparse) \code{dgCMatrix}.
 #' @param tobject Any triangulation of \code{object}; must be of the same
@@ -89,12 +87,13 @@
 #' g1m <- ug(~a:b + b:c + c:d + d:e + e:f + a:f + b:e, result="matrix")
 #' x <- minimal_triangMAT(g1m)
 #' 
-#' @export graph-mintriang
+#' @export 
 minimal_triang <- function(object, tobject=triangulate(object), result=NULL, details=0){
     UseMethod("minimal_triang")
 }
 
-#' @rdname graph-mintriang
+#' @export 
+## #' @rdname graph-min-triangulate
 minimal_triang.default <- function(object, tobject=triangulate(object), result=NULL, details=0){
 
     graph_class <- c("graphNEL", "igraph", "matrix", "dgCMatrix")
@@ -127,7 +126,8 @@ minimal_triang.default <- function(object, tobject=triangulate(object), result=N
 }
 
 
-#' @rdname graph-mintriang
+#' @export
+#' @rdname graph-min-triangulate
 minimal_triangMAT <- function(amat, tamat=triangulateMAT(amat), details=0){
     as.adjMAT(.minimal_triang(as(amat, "graphNEL"), TuG=as(tamat, "graphNEL"),
                               details=details))

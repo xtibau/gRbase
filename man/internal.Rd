@@ -8,6 +8,12 @@
 \alias{isGSD_glist}
 \alias{solveSPD}
 \alias{randomGraph}
+\alias{addEdge.gModel}
+\alias{dropEdge.gModel}
+\alias{extract.power}
+\alias{processFormula}
+\alias{selectOrder}
+\alias{symMAT2ftM_}
 \alias{setdiffPrim}
 \alias{unlistPrim}
 \alias{intersectPrim}

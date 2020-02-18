@@ -3,21 +3,23 @@
 #' @title Find edges in a graph and edges not in a graph.
 #'
 #' @description Returns the edges of a graph (or edges not in a graph)
-#'     where the graph can be either a graphNEL object or an adjacency
-#'     matrix.
+#'     where the graph can be either a `graphNEL` object, an `igraph`
+#'     object or an adjacency matrix.
 #'
 #' @name graph-edgeList
 #'
-## Issues: Check that it works on undirected and DAGs; not implemented
-## for igraphs
+## Issues: Check that it works on undirected and DAGs.
 ##
 ## #######################################################################
 
-#' @param object A graphNEL object or an adjacency matrix.
-#' @param matrix If TRUE the result is a matrix; otherwise the result is a list.
-#' @param adjmat An adjacency matrix.
+#' @param object A `graphNEL` object, an `igraph` object, a dense
+#'     matrix or a sparse `dgCMatrix` (the two latter representing an
+#'     adjacency matrix).
+#' @param adjmat An adjacency matrix. 
+#' @param matrix If TRUE the result is a matrix; otherwise the result
+#'     is a list.
+#' 
 #' @examples
-#'
 #' ## A graph with edges
 #' g  <- ug(~a:b + b:c + c:d)
 #' gm <- as(g, "matrix")
@@ -50,55 +52,52 @@
 #' nonEdgeList(gm)
 #' nonEdgeListMAT(gm)
 #' 
+
+#' @export
 edgeList <- function(object, matrix=FALSE)
   UseMethod("edgeList")
 
-#' @rdname graph-edgeList
+#' @export
+## #' @rdname graph-edgeList
 edgeList.default <- function(object, matrix=FALSE){
-
-    ##cat("edgeList.default\n")
-    if (inherits(object, "graphNEL"))
-        return(edgeListMAT(gn2dm_(object), matrix=matrix))
+    if (inherits(object, c("graphNEL", "igraph")))
+        return(edgeListMAT(as(object, "matrix"), matrix=matrix))
     if (inherits(object, c("dgCMatrix", "matrix")))
         return(edgeListMAT(object, matrix=matrix))
     stop("Can not find edge list for this type of object\n")
 }
 
-
-
-
-
+#' @export
 #' @rdname graph-edgeList
 edgeListMAT <- function(adjmat, matrix=FALSE){
-    ans <-
-        if (issymMAT_(adjmat)){
-            symMAT2ftM_(adjmat)
-        } else {
-            MAT2ftM_(adjmat)
-        } 
+    out <- if (issymMAT_(adjmat)) symMAT2ftM_(adjmat)
+           else MAT2ftM_(adjmat)
     
-    di  <- dim(ans)
-    ans <- colnames(adjmat)[ans]
-    dim(ans) <- di
+    di  <- dim(out)
+    out <- colnames(adjmat)[out]
+    dim(out) <- di
 
-    if (!matrix) rowmat2list__(ans)
-    else ans
+    if (!matrix) rowmat2list__(out)
+    else out
     
 }
 
+#' @export
 #' @rdname graph-edgeList
 nonEdgeList <- function(object, matrix=FALSE)
   UseMethod("nonEdgeList")
 
-#' @rdname graph-edgeList
+#' @export
+## #' @rdname graph-edgeList
 nonEdgeList.default <- function(object, matrix=FALSE){
-    if (inherits(object, "graphNEL"))
-        return(nonEdgeListMAT(gn2dm_(object), matrix=matrix))
+    if (inherits(object, c("graphNEL", "graphNEL")))
+        return(nonEdgeListMAT(as(object, "matrix"), matrix=matrix))
     if (inherits(object, c("dgCMatrix", "matrix")))
         return(nonEdgeListMAT(object, matrix=matrix))
     stop("Can not find non-edge list for this type of object\n")
 }
 
+#' @export
 #' @rdname graph-edgeList
 nonEdgeListMAT <- function(adjmat, matrix=FALSE){
     if (!issymMAT_( adjmat )) stop("'adjmat' must be symmetric")
@@ -130,6 +129,7 @@ nonEdgeListMAT <- function(adjmat, matrix=FALSE){
 #' @param gn A graphNEL object or an object that can be converted to a
 #'     graphNEL object.
 
+#' @export
 #' @rdname graph-ug2dag
 ug2dag <- function(gn){
     if (!inherits(gn, "graphNEL")) stop("'gn' not a graphNEL object...")        
@@ -227,11 +227,12 @@ ug2dag <- function(gn){
 #' vpar(ugNEL,FALSE)
 #' }
 
-
+#' @export
 vchi <- function(object, getv=TRUE, forceCheck=TRUE){
   UseMethod("vchi")
 }
 
+#' @export
 #' @rdname graph-vpar
 vchiMAT <- function(object, getv=TRUE, forceCheck=TRUE){
   if (forceCheck && !is.adjMAT(object))
@@ -250,8 +251,8 @@ vchiMAT <- function(object, getv=TRUE, forceCheck=TRUE){
       out
 }
 
-
-#' @rdname graph-vpar
+#' @export
+## #' @rdname graph-vpar
 vchi.graphNEL <- function(object, getv=TRUE, forceCheck=TRUE){
     if (forceCheck && graph::edgemode(object)=="undirected")
         stop("Graph is undirected; (v,pa(v)) does not exist...\n")
@@ -269,17 +270,21 @@ vchi.graphNEL <- function(object, getv=TRUE, forceCheck=TRUE){
     else
         out
 }
-
-#' @rdname graph-vpar
+#' @export
+## #' @rdname graph-vpar
 vchi.Matrix <- vchiMAT
-#' @rdname graph-vpar
+
+#' @export
+## #' @rdname graph-vpar
 vchi.matrix <- vchiMAT
 
+#' @export
 #' @rdname graph-vpar
 vpar <- function(object, getv=TRUE, forceCheck=TRUE){
   UseMethod("vpar")
 }
 
+#' @export
 #' @rdname graph-vpar
 vparMAT <- function(object, getv=TRUE, forceCheck=TRUE){
   if (forceCheck && !is.adjMAT(object))
@@ -298,8 +303,8 @@ vparMAT <- function(object, getv=TRUE, forceCheck=TRUE){
       out
 }
 
-
-#' @rdname graph-vpar
+#' @export
+## #' @rdname graph-vpar
 vpar.graphNEL <- function(object, getv=TRUE, forceCheck=TRUE){
     if (forceCheck && graph::edgemode(object)=="undirected")
         stop("Graph is undirected; (v,pa(v)) does not exist...\n")
@@ -323,28 +328,27 @@ vpar.graphNEL <- function(object, getv=TRUE, forceCheck=TRUE){
         out
 }
 
-#' @rdname graph-vpar
+#' @export
+## #' @rdname graph-vpar
 vpar.Matrix <- vparMAT
-#' @rdname graph-vpar
+
+#' @export
+## #' @rdname graph-vpar
 vpar.matrix <- vparMAT
 
 
-## #############################################################
-##
-## Get the cliques of an undirected graph
-##
-## #############################################################
-
-#' @title Get cliques of an undirected graph
-#' 
-#' @description Return a list of (maximal) cliques of an undirected graph.
+#############################################################################
 #'
-#' @name graph-cliques
+#' @title Get cliques of an undirected graph 
+#' @description Return a list of (maximal) cliques of an undirected graph.
+#' @name graph-clique
 #' 
-#' @details In graph theory, a clique is often a complete subset of a graph. A maximal
-#' clique is a clique which can not be enlarged. In statistics (and that is the
-#' convention we follow here) a clique is usually understood to be a maximal
-#' clique.
+#############################################################################
+#' 
+#' @details In graph theory, a clique is often a complete subset of a
+#'     graph. A maximal clique is a clique which can not be
+#'     enlarged. In statistics (and that is the convention we follow
+#'     here) a clique is usually understood to be a maximal clique.
 #' 
 #' Finding the cliques of a general graph is an NP complete problem. Finding
 #' the cliques of triangualted graph is linear in the number of cliques.
@@ -352,67 +356,90 @@ vpar.matrix <- vparMAT
 #' The workhorse is the \code{max_cliqueMAT} function which calls the
 #' \code{maxClique} function in the \code{RBGL} package.
 #' 
-#' @aliases get_cliques get_cliques.graphNEL get_cliques.default max_cliqueMAT
 #' @param object An undirected graph represented either as a \code{graphNEL}
-#'     object, a (dense) \code{matrix}, a (sparse) \code{dgCMatrix}
+#'     object, an `igraph` object, a (dense) \code{matrix}, a (sparse) \code{dgCMatrix}
 #' @param amat An adjacency matrix.
 #' @return A list.
+#' 
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{ug}}, \code{\link{dag}}, \code{\link{mcs}},
 #'     \code{\link{mcsMAT}}, \code{\link{rip}}, \code{\link{ripMAT}},
 #'     \code{\link{moralize}}, \code{\link{moralizeMAT}}
 #' @keywords utilities
 #' @examples
-#' 
 #' ## graphNEL
-#' uG1 <- ug(~a:b + b:c + c:d + d:e + e:f + f:a)
+#' uG0 <- ug(~a:b + b:c + c:d + d:e + e:f + f:a) # a graphNEL object
+#' get_cliques(uG0)
+#'
+#' uG1 <- as(uG0, "igraph")
 #' get_cliques(uG1)
 #' 
-#' ## adjacency matrix
-#' uG2 <- ug(~a:b + b:c + c:d + d:e + e:f + f:a, result="matrix")
+#' uG2 <- as(uG0, "matrix") 
 #' get_cliques(uG2)
 #' 
-#' ## adjacency matrix (sparse)
-#' uG3 <- ug(~a:b + b:c + c:d + d:e + e:f + f:a, result="dgCMatrix")
+#' uG3 <- as(uG1, "dgCMatrix") 
 #' get_cliques(uG3)
-#' 
-#' 
-#' @export graph-cliques
+
+#' @export 
+#' @rdname graph-clique
 get_cliques <- function(object){
     UseMethod("get_cliques")
 }
 
-#' @rdname graph-cliques
+#' @export 
 get_cliques.graphNEL <- function(object){
-    max_cliqueMAT( gn2sm_(object) )[[1]]
+    max_cliqueMAT(as(object, "matrix"))[[1]]
 }
 
-#' @rdname graph-cliques
+#' @export 
+get_cliques.igraph <- function(object){
+    max_cliqueMAT(as(object, "matrix"))[[1]]
+}
+
+#' @export 
 get_cliques.default <- function(object){
     max_cliqueMAT(object)[[1]]
 }
 
 ## FIXME: Should check that it is undirected.
-
-#' @rdname graph-cliques
+#' @export 
+#' @rdname graph-clique
 max_cliqueMAT <- function(amat){
-  vn <- dimnames(amat)[[2L]]
-  em <- t.default( MAT2ftM_( amat ) )
-  RBGL::maxClique(nodes=vn, edgeMat=em)
+    .check.is.matrix(amat)
+    vn <- dimnames(amat)[[2L]]
+    em <- t.default(MAT2ftM_(amat))
+    RBGL::maxClique(nodes=vn, edgeMat=em)
 }
 
-## ############################################
-##
-## Generate a random dag
-##
-## ############################################
-
-#' @title Random directed acyclic graph
-#' 
-#' @description Generate a random directed acyclic graph (DAG)
+#' @rdname graph-clique
+#' @section Synonymous functions:
 #'
+#' For backward compatibility with downstream packages we have the
+#' following synonymous functions:
+#'
+#' * getCliques = get_cliques
+#'
+#' * maxCliqueMAT = max_cliqueMAT 
+
+#' @export
+getCliques    <- get_cliques
+
+#' @rdname graph-clique
+#' @aliases maxCliqueMAT
+
+#' @export
+maxCliqueMAT  <- max_cliqueMAT
+
+
+
+##################################################################
+#'
+#' @title Random directed acyclic graph
+#' @description Generate a random directed acyclic graph (DAG)
 #' @name graph-randomdag
 #' 
+##################################################################
+#'
 #' @details If the maximum number of parents for a node is, say 3 and
 #'     wgt=0.1, then the probability of the node ending up with
 #'     0,1,2,3 parents is proportional to 0.1^0, 0.1^1, 0.1^2, 0.1^3.
@@ -427,7 +454,6 @@ max_cliqueMAT <- function(amat){
 #' @keywords utilities
 #'
 #' @examples
-#' 
 #' dg   <- random_dag(1:1000, maxpar=5, wgt=.9)
 #' table(sapply(vpar(dg),length))
 #' 
@@ -467,11 +493,12 @@ random_dag <- function(V, maxpar=3, wgt=0.1){
 ##
 ## SHD version of DED's dual rep; based on faster set operations
 ##
-dual.rep <- function(glist, S, minimal=TRUE) {
+#' @export
+.dual.rep <- function(glist, S, minimal=TRUE) {
     ## S is total varset - often but by no means always given by unique(unlist(g.list))
     list.save <- list()
     ##if (length(glist)==0) list.save <- list(S)
-    if (length(glist)==1 & is.logical(glist[[1]]))
+    if (length(glist) == 1 & is.logical(glist[[1]]))
         list.save <- list(S)
     else {
         for (v in 1:length(glist)) {

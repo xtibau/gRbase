@@ -4,21 +4,17 @@
 \alias{graph-gcproperties}
 \alias{isGraphical}
 \alias{isGraphical.default}
-\alias{isDecomposable}
 \alias{isDecomposable.default}
-\title{Properties of a generating class (for defining a graph)}
+\alias{isDecomposable}
+\title{Properties of a generating class (for defining a graph).}
 \usage{
 isGraphical(x)
 
-\method{isGraphical}{default}(x)
-
 isDecomposable(x)
-
-\method{isDecomposable}{default}(x)
 }
 \arguments{
-\item{x}{A generating class given as right hand sided formula or a list; see
-'examples' below}
+\item{x}{A generating class given as right hand sided formula or a
+list; see `examples` below.}
 }
 \value{
 TRUE or FALSE
@@ -40,16 +36,16 @@ A set of sets of variables, say A_1, A_2, ... A_K is
     undirected edge between a and b.
 
     The graph induced by \code{g1 = ~a:b + a:c + b:c + c:d} has
-    edges \code{ab,ac,bc,cd}. The
-    cliques of this graph are \code{abc,cd}. Hence there is not a
+    edges \code{ab, ac, bc, cd}. The
+    cliques of this graph are \code{abc, cd}. Hence there is not a
     1-1-correspondance between the graph and the generators.
 
     On the other hand, \code{g2 <- ~a:b:c + c:d} induces the same
     graph in this case there is a 1-1-correspondance.
 
     The graph induced by \code{g3 <- ~a:b + b:c + c:d + d:a} is in
-    1-1-correspondance with its dependence graph, but the graph is not
-    chordal.
+    1-1-correspondance with its dependence graph, but the graph is
+    not chordal.
 }
 \examples{
 
