@@ -15,7 +15,7 @@ library(gRbase)
 options("width"=100, "digits"=4)
 options(useFancyQuotes="UTF-8")
 #chk = 'markup'
-chk = 'hide'
+chk = "hide"
 
 ## -------------------------------------------------------------------------------------------------
 hec <- c(32, 53, 11, 50, 10, 25, 36, 66, 9, 34, 5, 29) 

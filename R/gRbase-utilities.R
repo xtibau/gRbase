@@ -75,10 +75,20 @@ colmat2list <- colmat2list__
 
 #' @export
 #' @rdname grbase-utilities
+
 matrix2list <- function(X, byrow=TRUE){
   if (byrow) rowmat2list__(X) # cpp implementation
   else colmat2list__(X) # cpp implementation
 }
+
+## matrix2list <- function(X, MARGIN=1){
+##     if (!(MARGIN %in% c(1, 2))) stop("invalid MARGIN\n")
+
+##     if (MARGIN == 1) rowmat2list__(X) # cpp implementation
+##     else colmat2list__(X) # cpp implementation
+## }
+
+
 
 ## FIXME: which.arr.ind: Fails on sparse matrices!!
 ## FIXME: -> remove after check downstram!!

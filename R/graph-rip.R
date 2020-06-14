@@ -292,6 +292,10 @@ junction_treeMAT <- function(amat, nLevels=rep(2, ncol(amat)), ...){
 #' @export
 jTree <- junction_tree
 
+#' @export
+junctionTree <- junction_tree
+
+
 ## #' @export
 ## jTree <- function(object, ...){
 ##   UseMethod("jTree")
@@ -300,5 +304,3 @@ jTree <- junction_tree
 ## #' @export
 ## jTree.default  <- junction_tree.default
 
-#' @export
-junctionTree <- junction_tree

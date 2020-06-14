@@ -6,128 +6,100 @@
 
   ***************************************************** */
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
+#include "R_like.h"
 //[[Rcpp::interfaces(r,cpp)]]
-//[[Rcpp::depends(RcppEigen)]]
+//[[Rcpp::depends(RcppEigen,RcppArmadillo)]]
 
 using namespace Rcpp;
+using namespace arma;
+
+typedef Rcpp::NumericVector   numVec;
+typedef Rcpp::IntegerVector   intVec;
+typedef Rcpp::CharacterVector chrVec;
+typedef Rcpp::LogicalVector   logVec;
+
+
+//[[Rcpp::export]]
+IntegerVector which_ (SEXP x){
+  arma::vec u = as<arma::vec>(x);
+  arma::uvec r = find(abs(u) > 1e-6);
+  //Rf_PrintValue(wrap(r));
+  intVec out = IntegerVector(r.begin(), r.end());
+  //Rf_PrintValue(out);
+  return out;
+}
+
 
 /* *************************************************
 
-   Implements:
-   
-   get_superset, get_subset, is_subsetof
+   Implements: 
+   get_superset, 
+   get_subset
    
    ************************************************* */
 
-// //' @name internal_grbase_cpp
-// //' @aliases is_subsetof__ get_superset__ get_subset__
-
-IntegerVector get_superset_one_(CharacterVector x, List setlist){
-  bool outb=false;
-  int val=-1, k=0;
-  
-  for (int i=0; i<setlist.length(); ++i)
-    {
-      CharacterVector set=setlist[i];
-      outb = (any(is_na(match(x, set))));
-      outb = ! outb;
-      if (outb){
-	val = i+1;
-	k   = 1;
-	break;
-      }
-    }
-  IntegerVector out = IntegerVector(k);
-  out[0] = val;
-  return out;
-}
-
-IntegerVector get_superset_all_(CharacterVector x, List setlist){
+// FIXME: REPLACES get_superset_
+//[[Rcpp::export]]
+IntegerVector get_superset_ (CharacterVector x, List setlist, bool all=false){
   IntegerVector vec(setlist.length());
   int k=0;
   
-  for (int i=0; i<setlist.length(); ++i)
-    {
-      CharacterVector set=setlist[i];
-      bool out = (any(is_na(match(x, set))));
-      out = ! out;
-      if (out) vec[k++] = i+1;
+  for (int i=0; i<setlist.length(); ++i){
+    CharacterVector set=setlist[i];
+    bool not_contained = (any(is_na(match(x, set))));
+    if (!not_contained){
+      vec[k++] = i+1;
+      if (!all) break;
     }
-  
-  IntegerVector out = IntegerVector(k);
-  if (k>0){
-    for (int i=0; i<k; ++i)	out[i]=vec[i];
   }
   
-  return out;
-}
-
-IntegerVector get_subset_one_(CharacterVector x, List setlist)
-{
-  bool outb=false;
-  int val=-1, k=0;
-  
-  for (int i=0; i<setlist.length(); ++i)
-    {
-      CharacterVector set=setlist[i];
-      outb = (any(is_na(match(set, x))));
-      outb = ! outb;
-      if (outb){
-	val = i+1;
-	k   = 1;
-	break;
-      }
-    }
   IntegerVector out = IntegerVector(k);
-  out[0] = val;
+  if (k > 0) for (int i=0; i<k; ++i) out[i]=vec[i];
+  
   return out;
 }
 
-IntegerVector get_subset_all_(CharacterVector x, List setlist){
+
+
+// FIXME: REPLACES get_subset_
+//[[Rcpp::export]]
+IntegerVector get_subset_ (CharacterVector x, List setlist, bool all=false){
   IntegerVector vec(setlist.length());
   int k=0;
   
-  for (int i=0; i<setlist.length(); ++i)
-    {
-      CharacterVector set=setlist[i];
-      bool out = (any(is_na(match(set, x))));
-      out = ! out;
-      if (out)
-	vec[k++] = i+1;
+  for (int i=0; i<setlist.length(); ++i){
+    CharacterVector set=setlist[i];
+    bool not_contained = (any(is_na(match(set, x))));
+    if (!not_contained){
+      vec[k++] = i+1;
+      if (!all) break;
     }
+  }
   
   IntegerVector out = IntegerVector(k);
-  if (k > 0){
-    for (int i=0; i<k; ++i) out[i]=vec[i];
-  }
+  if (k > 0) for (int i=0; i<k; ++i) out[i]=vec[i];
   return out;
 }
 
-// get_superset_ is used in gRain
 
-//[[Rcpp::export]]
-IntegerVector get_superset_(CharacterVector set, List setlist, bool all=false)
-{
-  if (all) return get_superset_all_(set, setlist);
-  else return get_superset_one_(set, setlist);
-}
 
-//[[Rcpp::export]]
-IntegerVector get_subset_(CharacterVector set, List setlist, bool all=false)
-{
-  if (all) return get_subset_all_(set, setlist);
-  else return get_subset_one_(set, setlist);
-}
 
+
+
+/* *************************************************
+
+   Implements: 
+   
+   is_subsetof
+   
+   ************************************************* */
 
 // is_subsetof_ is used in gRain
 
-//[[Rcpp::export]]
-bool is_subsetof_(CharacterVector set, CharacterVector set2)
-{
-  if (set.length() > set2.length())
-    return false;
+template <int RTYPE>
+bool is_subsetof_impl(Vector<RTYPE> set, Vector<RTYPE> set2) {
+  if (set.length() > set2.length()) return false;
   else {
     IntegerVector m = match(set, set2);
     //Rf_PrintValue(m);
@@ -135,6 +107,17 @@ bool is_subsetof_(CharacterVector set, CharacterVector set2)
     return !out;
   }
 }
+
+// [[Rcpp::export]]
+bool is_subsetof_(SEXP set, SEXP set2) {
+    switch(TYPEOF(set)) {
+    case INTSXP:  return is_subsetof_impl<INTSXP>(set, set2);
+    case REALSXP: return is_subsetof_impl<REALSXP>(set, set2);
+    case STRSXP:  return is_subsetof_impl<STRSXP>(set, set2);
+    default: stop("Unsupported type.");
+    }
+}
+
 
 /* **************************************************************
 
@@ -197,8 +180,8 @@ SEXP allSubsets_( SEXP& x){
   case INTSXP  : return allSubsets0_( x ) ;
   case REALSXP : return do_allSubsets<REALSXP>( x ) ;
   case STRSXP  : return do_allSubsets<STRSXP> ( x ) ;
+  default: stop("Unsupported type.");
   }
-  return R_NilValue ;
 }
 
 
@@ -275,9 +258,6 @@ CharacterMatrix sortmat_(CharacterMatrix X){
   return X2;
 }
 
-// //' @name internal_grbase_cpp
-// //' @aliases all_pairs__
-
 //[[Rcpp::export]]
 SEXP all_pairs__(CharacterVector x,
 		 CharacterVector y=CharacterVector(0),
@@ -296,6 +276,144 @@ SEXP all_pairs__(CharacterVector x,
     return(out);
   } 
 }
+
+
+
+
+
+
+inline int get_length(CharacterVector x){return x.length();}
+
+//[[Rcpp::export]]
+SEXP max_set_(const List L, bool index=false){
+  int nset = L.length();
+  intVec len = sapply(L, get_length);
+
+  intVec perm = order2_(len, true);
+  //Rcout << "perm: "; print(perm);
+  
+  List L2 = L[perm - 1];
+  //print(L2);
+  
+  intVec keepvec2 = rep(1, nset);
+  //keepvec2[0] = 0;
+  for (int i=0; i<nset-1; i++){
+    if (keepvec2[i] == 1){
+      for (int j=i+1; j<nset; j++){
+	if (keepvec2[j] == 1){
+	  //Rf_PrintValue(L2[j]);	  Rf_PrintValue(L2[i]);
+	  bool omit = is_subsetof_(L2[j], L2[i]);
+	  if (omit) keepvec2[j]=0;
+	}
+      }
+    }
+  }
+
+  // Rcout << "keepvec2 : "; print(keepvec2);
+
+  if (index){
+    intVec one2n = seq(1, nset); 
+    intVec perm_inv = match(one2n, perm);
+    // Rcout << "perm_inv : "; print(perm_inv);
+    
+    intVec idx2 = which_(keepvec2);
+    // Rcout << "idx2 : "; print(idx2); The good ones in L2
+    
+    intVec idx1 = match(idx2 + 1, perm_inv) - 1;
+    //  Rcout << "idx1 : "; print(idx1);
+    
+    intVec out = rep(0, nset);
+    out[idx1] = 1;
+    //Rcout << "out : "; print(out);
+    return out;
+  }
+  else {  
+    L2 = L2[(LogicalVector) keepvec2];
+    return L2;
+  }
+}
+
+
+
+//[[Rcpp::export]]
+SEXP min_set_(const List L, bool index=false){
+  int nset = L.length();
+  intVec len = sapply(L, get_length);
+  intVec perm = order2_(len, false);
+  List L2 = L[perm - 1];  
+  intVec keepvec2 = rep(1, nset);
+  
+  for (int i=0; i<nset-1; i++){
+    if (keepvec2[i] == 1){
+      for (int j=i+1; j<nset; j++){
+	if (keepvec2[j] == 1){
+	  bool omit = is_subsetof_(L2[i], L2[j]);
+	  if (omit) keepvec2[j]=0;
+	}
+      }
+    }
+  }
+  if (index){
+    intVec one2n = seq(1, nset); 
+    intVec perm_inv = match(one2n, perm);
+    // Rcout << "perm_inv : "; print(perm_inv);
+    
+    intVec idx2 = which_(keepvec2);
+    // Rcout << "idx2 : "; print(idx2); The good ones in L2
+    
+    intVec idx1 = match(idx2 + 1, perm_inv) - 1;
+    //  Rcout << "idx1 : "; print(idx1);
+    
+    intVec out = rep(0, nset);
+    out[idx1] = 1;
+    //Rcout << "out : "; print(out);
+    return out;
+  }
+  else {  
+    L2 = L2[(LogicalVector) keepvec2];
+    return L2;
+  }
+
+}
+
+//[[Rcpp::export]]
+SEXP isin_(List L, SEXP set, bool index=false){
+  int nset = L.length();
+
+  if (index){
+    // Rcout << "here.." << endl;
+    intVec out = rep(0, nset);
+    for (int i=0; i<nset; i++){
+      if (is_subsetof_(set, L[i])) out[i] = 1;
+    }
+    return out;
+  } else {
+    // Rcout << "there.." << endl;
+    for (int i=0; i<nset; i++){
+      if (is_subsetof_(set, L[i])) return wrap(true);
+    }
+    return wrap(false);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*** R

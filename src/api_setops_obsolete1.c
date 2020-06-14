@@ -1,3 +1,16 @@
+/* JUNE 2020: 
+
+   The functions in this file are now obsolete and are not used in
+   gRbase any longer. Re-implementations made in Rcpp exist in another
+   file.
+
+   The resasons for re-implementation: 1) An error on cran check that
+   seems to be related to these functions. 2) The implementation is
+   old and kludgy.
+
+ */
+
+
 /* **********************************************************
 
    Code is used in gRbase
@@ -59,10 +72,8 @@ void C_maxset(char **setlist, int *ends, int *nset, int *keepvec)
 	  /* Rprintf("  SET 2: %i %i %i\n", jj, starts[jj], ends[jj]);   */
 	  C_subsetof1(setlist, &starts[jj], &ends[jj], &starts[ii], &ends[ii], &ans); 
 	  /* Rprintf("  ans: %i \n", ans);    */
-	  if (ans==1)
-	    keepvec[jj] = 0;
-	  else
-	    keepvec[jj] = 1;
+	  if (ans==1) keepvec[jj] = 0;
+	  else keepvec[jj] = 1;
 	}
       }
     }
@@ -72,7 +83,6 @@ void C_maxset(char **setlist, int *ends, int *nset, int *keepvec)
 
 void C_minset(char **setlist, int *ends, int *nset, int *keepvec)
 {
-  
   int ii, jj;
   int ans;
 
@@ -92,10 +102,8 @@ void C_minset(char **setlist, int *ends, int *nset, int *keepvec)
 	  /* 	  Rprintf("  SET 2: %i %i %i\n", jj, starts[jj], ends[jj]);    */
 	  C_subsetof1(setlist, &starts[ii], &ends[ii], &starts[jj], &ends[jj],  &ans); 
 	  /* 	  Rprintf("  ans: %i \n", ans);     */
-	  if (ans==1)
-	    keepvec[jj] = 0;
-	  else
-	    keepvec[jj] = 1;
+	  if (ans==1) keepvec[jj] = 0;
+	  else keepvec[jj] = 1;
 	}
       }
     }

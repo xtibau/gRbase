@@ -1,8 +1,28 @@
-
 // ------------------------------------------------------------
-// Utility functions intended to mimic R's c() function
+//
+// Mimicing some R functions
+//
 // Author: Søren Højsgaard
-// ------------------------------------------------------------
+//
+//------------------------------------------------------------ 
+
+#ifndef RLIKE_H
+#define RLIKE_H
+
+#include <Rcpp.h>
+//[[Rcpp::plugins(cpp11)]]
+
+using namespace Rcpp;
+using namespace std;
+// using namespace arma;
+
+typedef Rcpp::NumericVector   numVec;
+typedef Rcpp::IntegerVector   intVec;
+typedef Rcpp::CharacterVector chrVec;
+typedef Rcpp::LogicalVector   logVec;
+
+
+// ### Mimic c() function ###
 
 #define DO_CONCAT							\
   for (int i=0; i<nx; ++i)   out[i] = x[i];				\
@@ -16,7 +36,7 @@
       for (int i=0; i<nx; ++i)	nam[i] = xnam[i];			\
     }									\
     if ( has_ynames ){							\
-      Rcpp::CharacterVector ynam = y.names();														\
+      Rcpp::CharacterVector ynam = y.names();				\
       for (int i=0; i<ny; ++i)	nam[i+nx] = ynam[i];			\
     }									\
     out.names() = nam;							\
@@ -30,13 +50,71 @@ T do_concat_(const T& x, const T& y){
   return out;
 }
 
-template <int RTYPE>
-Rcpp::Vector<RTYPE> do_concat2_(const Rcpp::Vector<RTYPE>& x, const Rcpp::Vector<RTYPE>& y){
-  int nx=x.size(), ny=y.size();
-  Rcpp::Vector<RTYPE>   out( nx + ny );
-  DO_CONCAT;
-  return out;
-}
+// ### Mimic order()
+Rcpp::IntegerVector order_(Rcpp::IntegerVector x);
+
+// ### Mimic order()
+
+IntegerVector order2_(SEXP x, bool desc = false);
+
+// ### Mimic which()
+
+IntegerVector which2_ (const SEXP& x);
+  
+#endif
+
+
+
+// NOTE TO SELF: Template can be in .cpp or .h
+// template <int RTYPE>
+// IntegerVector order_impl(const Vector<RTYPE>& x, bool desc);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// template <int RTYPE>
+// Rcpp::Vector<RTYPE> do_concat2_(const Rcpp::Vector<RTYPE>& x, const Rcpp::Vector<RTYPE>& y){
+//   int nx=x.size(), ny=y.size();
+//   Rcpp::Vector<RTYPE>   out( nx + ny );
+//   DO_CONCAT;
+//   return out;
+// }
+
+
 
 /*** R
      
@@ -64,7 +142,7 @@ cppFunction(
 
 
 
-/* #include <Rcpp.h> */
+
 /* /\* using namespace Rcpp; *\/ */
 
 // // [[Rcpp::export]]

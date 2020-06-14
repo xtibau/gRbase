@@ -1,13 +1,8 @@
-## #' @name internal
-## #' @aliases get_subset_ get_superset_ is_subsetof_ 
-## NULL
-
-
 ## #############################################################
 ##
 #' @title Suite of set operations
 #' @description Set operations for gRbase and related packages.
-#' @name set_operations
+#' @name set-operations
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 ##
 ## #############################################################
@@ -40,15 +35,14 @@
 #'  Notice that the comparisons are made by turning the elements into
 #'  characters and then comparing these. Hence 1 is identical to "1".
 #'
-#' 
 #' @examples
 #'
-#' set <- list(c(1,2), c(1,2,3), c(2,3,6), c(2,4), c(5,6), 5)            
+#' set <- list(c(1, 2), c(1, 2, 3), c(2, 3, 6), c(2, 4), c(5, 6), 5)            
 #'                                                             
-#' el1 <- c(2,1)                                               
-#' el2 <- c(2,3)                                               
-#' el3 <- c(4,3)                                               
-#' el4 <- c(2,1,3)                                             
+#' el1 <- c(2, 1)                                               
+#' el2 <- c(2, 3)                                               
+#' el3 <- c(4, 3)                                               
+#' el4 <- c(2, 1, 3)                                             
 #'                                                             
 #' maximal_sets(set)                                           
 #' minimal_sets(set)                                           
@@ -68,61 +62,24 @@
 #' get_superset(el1, set)                                      
 #' get_superset(el1, set, all=TRUE)                                      
 #' get_superset(el2, set)                                      
-#' get_superset(el3, set)                                      
-#'                                                             
+#' get_superset(el3, set)
+#' 
 #' is_subsetof(el1, el1)                                       
 #' is_subsetof(el1, el2)                                       
-#' is_subsetof(el1, el4)                                       
-#'
+#' is_subsetof(el1, el4)
+#' 
+
 
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 maximal_sets <- function(setlist, index=FALSE){
-    if (length(setlist)<=1){
-        if (index) return(1)
-        else return(setlist)
-    }
-    
-    lenx     <- c(lapply(setlist,length), recursive=TRUE)
-    ooo      <- order(lenx, decreasing=TRUE)
-    setlist2 <- setlist[ooo]
-    ends     <- cumsum(c( lapply(setlist2,length), recursive=TRUE ))
-    iii<-.C("C_maxset",
-            setlist=as.character(c(setlist2, recursive=TRUE)),
-            ends=ends, nset=length(setlist2), ans=integer(length(setlist2))
-          , PACKAGE="gRbase")$ans
-    iii <- iii[order(ooo)]
-    
-    if (index){
-        iii
-    } else {
-        setlist[iii==1]
-    }
+    max_set_(setlist, index=index)
 }
 
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 minimal_sets <- function(setlist, index=FALSE){
-    if (length(setlist) <= 1){
-        if (index) return(1)
-        else return(setlist)
-    }
-    
-    lenx     <- c(lapply(setlist,length), recursive=TRUE)
-    ooo      <- order(lenx, decreasing=FALSE)
-    setlist2 <- setlist[ooo]
-    ends     <- cumsum(c( lapply(setlist2,length), recursive=TRUE ))
-    iii<-.C("C_minset",
-            setlist=as.character(c(setlist2, recursive=TRUE)),
-            ends=ends, nset=length(setlist2), ans=integer(length(setlist2))
-          , PACKAGE="gRbase")$ans
-    iii <- iii[order(ooo)]
-    
-    if (index){
-        iii
-    } else {
-        setlist[iii==1]
-    }
+    min_set_(setlist, index=index)
 }
 
 ## A function to remove redundant generators.  If maximal=T, returns
@@ -130,7 +87,7 @@ minimal_sets <- function(setlist, index=FALSE){
 ## Can be speeded up if the as.character part can be avoided...
 
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 remove_redundant <- function(setlist, maximal=TRUE, index=FALSE){
   if (maximal) maximal_sets(setlist, index)
   else minimal_sets(setlist, index)
@@ -138,52 +95,36 @@ remove_redundant <- function(setlist, maximal=TRUE, index=FALSE){
 
 ## Is x contained in any vector in setlist;
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 is_inset <- function(x, setlist, index=FALSE){
   .isin(setlist, x, index)
 }
 
 .isin <- function(setlist, x, index=FALSE){
-    len.setlist <- length(setlist)
-    if (len.setlist == 0){
-        if (index) return(0)
-        else return(FALSE)
-    }
-
-    ## FIXME: Looks strange
-    if (len.setlist < 1){
-        if (index) return(rep(1, length(x)))
-        else return(TRUE)
-    }
-    
-    ll    <- cumsum(c(lapply(setlist, length), recursive=TRUE))
-    iii<-.C("C_isin",
-            as.character(x), length(x),
-            as.character(c(setlist, recursive=TRUE)), ll, len.setlist,
-            ans=integer(len.setlist)
-          , PACKAGE="gRbase")$ans
-    
-    if (index) { return(iii) }
-    else { return(any(iii)) }
+    isin_(setlist, x, index=index)
 }
 
+
+
+
+
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 get_subset <- get_subset_
 
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 get_superset <- get_superset_
 
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 is_subsetof <- is_subsetof_
 
 
 ## FIXME: is.subsetof : Use Rcpp implementation
 
 #' @export
-#' @rdname set_operations
+#' @rdname set-operations
 is.subsetof <- function(x, set){
   all(match(x, set) > 0)
 }
